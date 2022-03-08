@@ -5,12 +5,21 @@ rm ./png/small/*
 rm ./headers/*
 
 # arguments 1($1) and 2($2) determine the resolution of the output images
-LDENSITY="$(($1*96))"
-SDENSITY="$(($2*96))"
+# IMAGES MUST HAVE A TOTAL NUMBER OF PIXELS THAT IS DIVISIBLE BY 8
+# For sqaure images:
+# x = original dimension of icon
+# y = desired dimension of icon
+# z = density
+# In this case we are scaling by 0.25 for better image quality
+# ImageMagick default density is 96
+# z = 96 * y / (0.25 * x)
+LDENSITY=$1 # 2508.8
+SDENSITY=$2 # 819.2
+
 echo "Converting .svg files to 'large' .png files..."
-mogrify -format png -path ./png/large -colorspace sRGB -density $LDENSITY ./svg/*.svg
+mogrify -format png -path ./png/large -colorspace sRGB -density $LDENSITY -resize 25% ./svg/*.svg
 echo "Converting .svg files to 'small' .png files..."
-mogrify -format png -path ./png/small -colorspace sRGB -density $SDENSITY ./svg/*.svg
+mogrify -format png -path ./png/small -colorspace sRGB -density $SDENSITY -resize 25% ./svg/*.svg
 
 FILES="./png/large/*.png"
 for f in $FILES
