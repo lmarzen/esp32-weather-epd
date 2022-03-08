@@ -1,0 +1,6 @@
+Weather icons (.svg files) were obtained from:
+https://erikflowers.github.io/weather-icons/
+
+The bash script, svg_to_headers.sh, will convert the svg files to various 
+sizes of png which will then be converted to header files each containing 
+a bitmap formatted for use by the G6EJP EPD library.
