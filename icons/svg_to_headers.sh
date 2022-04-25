@@ -1,10 +1,19 @@
 #!/bin/bash
-echo "Cleaning old files..."
-rm ./png/large/*
-rm ./png/small/*
-rm ./headers/*
+SVG_FILES="./svg/*.svg"
+PNG_PATH="./png/${1}x${1}"
+PNG_FILES="${PNG_PATH}/*.png"
+HEADER_PATH="./icons/${1}x${1}"
+HEADER="./icons/icons_${1}x${1}.h"
 
-# arguments 1($1) and 2($2) determine the resolution of the output images
+echo "Cleaning old files..."
+if [ -e "$PNG_PATH" ];then rm -rf "$PNG_PATH" ; fi
+mkdir $PNG_PATH
+if [ -e "$HEADER_PATH" ];then rm -rf "$HEADER_PATH" ; fi
+mkdir $HEADER_PATH
+if [ -e "$HEADER" ];then rm "$HEADER" ; fi
+
+
+# arguments 1($1) determines the resolution of the output images
 # IMAGES MUST HAVE A TOTAL NUMBER OF PIXELS THAT IS DIVISIBLE BY 8
 # For sqaure images:
 # x = original dimension of icon
@@ -13,28 +22,29 @@ rm ./headers/*
 # In this case we are scaling by 0.25 for better image quality
 # ImageMagick default density is 96
 # z = 96 * y / (0.25 * x)
-LDENSITY=$1 # 2508.8
-SDENSITY=$2 # 819.2
 
-echo "Converting .svg files to 'large' .png files..."
-mogrify -format png -path ./png/large -colorspace sRGB -density $LDENSITY -resize 25% ./svg/*.svg
-echo "Converting .svg files to 'small' .png files..."
-mogrify -format png -path ./png/small -colorspace sRGB -density $SDENSITY -resize 25% ./svg/*.svg
-
-FILES="./png/large/*.png"
-for f in $FILES
+for f in $SVG_FILES
 do
-  echo "Processing $f..."
-  out="./headers/$(basename $f .png | tr -s -c [:alnum:] _)large.h"
+  echo "Converting .svg to .png for $f..."
+  SVG_SIZE=$(identify -format '%w' $f)
+  DENSITY=$(bc -l <<< "96 * $1 / $SVG_SIZE")
+  mogrify -format png -path $PNG_PATH -colorspace sRGB -density $DENSITY $f
+done
+
+for f in $PNG_FILES
+do
+  echo "Generating header for $f..."
+  out="${HEADER_PATH}/$(basename $f .png | tr -s -c [:alnum:] _)${1}x${1}.h"
   python3 png_to_header.py -i $f -o $out
 done
 
-FILES="./png/small/*.png"
-for f in $FILES
+echo "Generating include statements..."
+echo "#ifndef __ICONS_${1}x${1}_H__" > $HEADER
+echo "#define __ICONS_${1}x${1}_H__" >> $HEADER
+for f in ${HEADER_PATH}/*.h
 do
-  echo "Processing $f..."
-  out="./headers/$(basename $f .png | tr -s -c [:alnum:] _)small.h"
-  python3 png_to_header.py -i $f -o $out
+    echo "#include \"${1}x${1}/$(basename $f)\"" >> $HEADER
 done
+echo "#endif" >> $HEADER
 
 echo "Done."
