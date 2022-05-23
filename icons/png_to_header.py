@@ -5,6 +5,7 @@ from PIL import Image
 
 BITES_PER_LINE = 12
 BITS_PER_BITE = 8
+THRESHOLD = 127
 
 try:
     opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
@@ -30,10 +31,10 @@ except NameError:
     exit()
    
 src_image = Image.open(inputfile)
-# Converts the image to black and white
-src_bw = src_image.convert('1')
-# Creates a list of the pixel values (0/1)
-pixels = list(src_bw.getdata())
+# Converts the image to grayscale
+src_g = src_image.convert('L')
+# Creates a list of the pixel values
+pixels = list(src_g.getdata())
 
 f = open(outputfile, "w")
 var = os.path.basename(outputfile)
@@ -43,27 +44,35 @@ width, height = src_image.size
 f.write("// " + str(width) + " x " + str(height) + "\n")
 f.write("const unsigned char " + var + "[] PROGMEM = {\n ")
 
-
 bit_cnt = 1
-line_width = 1
+transcribed_width = 1
 tmp_bite = 0
 n = len(pixels)
+line_width = 0
 
 for i in range(n):
-    if (pixels[i] != 0):
+    line_width += 1
+    if (pixels[i] > THRESHOLD):
         tmp_bite |= 1
+    if (line_width == width):
+        tmp_bite <<= BITS_PER_BITE - bit_cnt
+        line_width = 0
+        bit_cnt = 8
+    # if there is still more room in the current byte, shift the bits to make room for the next new bit
     if (bit_cnt < BITS_PER_BITE and i != n - 1):
         tmp_bite <<= 1
         bit_cnt += 1
+    # else byte must be complete, write the byte to file
     elif (i != n - 1):
         f.write(" " + "0x{:02x}".format(tmp_bite) + ",")
-        if (line_width == BITES_PER_LINE):
+        if (transcribed_width == BITES_PER_LINE):
             f.write("\n ")
-            line_width = 1
+            transcribed_width = 1
         else:
-            line_width += 1
+            transcribed_width += 1
         tmp_bite = 0
         bit_cnt = 1
         
+tmp_bite <<= BITS_PER_BITE - bit_cnt
 f.write(" " + "0x{:02x}".format(tmp_bite) + "\n};")
 f.close()

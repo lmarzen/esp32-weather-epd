@@ -26,9 +26,15 @@ if [ -e "$HEADER" ];then rm "$HEADER" ; fi
 for f in $SVG_FILES
 do
   echo "Converting .svg to .png for $f..."
-  SVG_SIZE=$(identify -format '%w' $f)
-  DENSITY=$(bc -l <<< "96 * $1 / $SVG_SIZE")
-  mogrify -format png -path $PNG_PATH -colorspace sRGB -density $DENSITY $f
+
+  # use mogrify to convert to png 
+  # SVG_SIZE=$(identify -format '%w' $f)
+  # DENSITY=$(bc -l <<< "96 * $1 / $SVG_SIZE")
+  # mogrify -format png -path $PNG_PATH -colorspace sRGB -density $DENSITY $f
+
+  # using inkscape to convert to png because mogrify was being troublesome
+  out="$PNG_PATH/$(basename $f .svg).png"
+  inkscape -w ${1} -h ${1} $f -o $out --export-background="#ffffff"
 done
 
 for f in $PNG_FILES
