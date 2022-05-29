@@ -1,4 +1,4 @@
-const uint8_t FreeSans_temperature_set72pt7bBitmaps[] PROGMEM = {
+const uint8_t FreeSans72pt_temperatureBitmaps[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -705,7 +705,7 @@ const uint8_t FreeSans_temperature_set72pt7bBitmaps[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-const GFXglyph FreeSans_temperature_set72pt7bGlyphs[] PROGMEM = {
+const GFXglyph FreeSans72pt_temperatureGlyphs[] PROGMEM = {
   {     0,   1,   1, 113,    0,    0 },   // 0x20 ' '
   {     1,   1,   1, 113,    0,    0 },   // 0x21 '!'
   {     2,   1,   1, 113,    0,    0 },   // 0x22 '"'
@@ -802,9 +802,9 @@ const GFXglyph FreeSans_temperature_set72pt7bGlyphs[] PROGMEM = {
   {  8458,   1,   1, 113,    0,    0 },   // 0x7D '}'
   {  8459,   1,   1, 113,    0,    0 } }; // 0x7E '~'
 
-const GFXfont FreeSans_temperature_set72pt7b PROGMEM = {
-  (uint8_t  *)FreeSans_temperature_set72pt7bBitmaps,
-  (GFXglyph *)FreeSans_temperature_set72pt7bGlyphs,
+const GFXfont FreeSans72pt_temperature PROGMEM = {
+  (uint8_t  *)FreeSans72pt_temperatureBitmaps,
+  (GFXglyph *)FreeSans72pt_temperatureGlyphs,
   0x20, 0x7E, 169 };
 
 // Approx. 9132 bytes

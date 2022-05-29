@@ -1,6 +1,6 @@
 #!/bin/bash
 OUTPUT_PATH="./fonts/"
-SIZES=(9 12 18 24 72)
+SIZES=(12 14 16 20 24 26)
 TEMPERATURE_SIZES=(72)
 
 # ascii hexidecimal value of the character to remap degree symbol to
@@ -12,7 +12,7 @@ rm $OUTPUT_PATH**.h
 
 REMAP_OUT="${1%%.*}_remap.${1##*.}"
 SUBSET_OUT="${1%%.*}_temperature_set.${1##*.}"
-# generate temperature display subset version
+# generate temperature display subset version of the font
 pyftsubset ${1} \
   --text="0123456789." \
   --unicodes=U+00B0 \
@@ -48,12 +48,14 @@ for SI in ${SIZES[*]}
   OUTFILE=$OUTPUT_PATH$FONT$SI"pt7b.h"
   echo "fontconvert $REMAP_OUT $SI > $OUTFILE"
   ./fontconvert/fontconvert $REMAP_OUT $SI > $OUTFILE
+  sed -i "s/_remap${SI}pt7b/${SI}pt7b/g" $OUTFILE
 done
 for SI in ${TEMPERATURE_SIZES[*]}
   do
-  OUTFILE=$OUTPUT_PATH$FONT$SI"pttempdisp.h"
+  OUTFILE=$OUTPUT_PATH$FONT$SI"pt_temperature.h"
   echo "fontconvert $SUBSET_OUT $SI > $OUTFILE"
   ./fontconvert/fontconvert $SUBSET_OUT $SI > $OUTFILE
+  sed -i "s/_temperature_set${SI}pt7b/${SI}pt_temperature/g" $OUTFILE
 done
 
 # clean up

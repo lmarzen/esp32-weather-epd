@@ -8,16 +8,19 @@
 #include <Adafruit_BusIO_Register.h>
 #include <ArduinoJson.h>
 #include <GxEPD2_BW.h>
-// fonts
-#include <Fonts/FreeSans9pt7b.h>
-#include <Fonts/FreeSans12pt7b.h>
-#include <Fonts/FreeSans18pt7b.h>
-#include <Fonts/FreeSans24pt7b.h>
+// fonts (these are modified font files that have the degree symbol mapped "`")
+#include "fonts/FreeSans12pt7b.h"
+#include "fonts/FreeSans14pt7b.h"
+#include "fonts/FreeSans16pt7b.h"
+#include "fonts/FreeSans20pt7b.h"
+#include "fonts/FreeSans24pt7b.h"
+#include "fonts/FreeSans26pt7b.h"
+#include "fonts/FreeSans72pt_temperature.h" // This font only has 0-9 . `
 
 // header files
 #include "config.h"
 #include "lang.h"
-// icon header files
+// icon header files 
 #include "icons/icons_16x16.h"
 #include "icons/icons_32x32.h"
 #include "icons/icons_48x48.h"
@@ -189,25 +192,35 @@ void updateDisplayBuffer() {
   display.drawInvertedBitmap(0, 0, wi_day_rain_wind_196x196, 196, 196, GxEPD_BLACK);
 
   // current temp
+  display.setFont(&FreeSans12pt7b);
+  display.setTextSize(1);
+  drawString(250, 150, "102`", CENTER);
+  display.setTextSize(2);
+  drawString(250, 200, "102`", CENTER);
+  display.setTextSize(3);
+  drawString(250, 250, "102`", CENTER);
+  display.setTextSize(4);
+  drawString(250, 300, "102`", CENTER);
+
   display.setFont(&FreeSans24pt7b);
   display.setTextSize(1);
-  drawString(250, 150, "102°", CENTER);
+  drawString(350, 150, "102`", CENTER);
   display.setTextSize(2);
-  drawString(250, 200, "102°", CENTER);
+  drawString(350, 200, "102`", CENTER);
   display.setTextSize(3);
-  drawString(250, 250, "102°", CENTER);
+  drawString(350, 250, "102`", CENTER);
   display.setTextSize(4);
-  drawString(250, 300, "102°", CENTER);
+  drawString(350, 300, "102`", CENTER);
 
-  display.setFont(&FreeSans9pt7b);
+  display.setFont(&FreeSans72pt_temperature);
   display.setTextSize(1);
-  drawString(350, 150, "102°", CENTER);
+  drawString(500, 150, "102`", CENTER);
   display.setTextSize(2);
-  drawString(350, 200, "102°", CENTER);
+  drawString(500, 200, "102`", CENTER);
   display.setTextSize(3);
-  drawString(350, 250, "102°", CENTER);
+  drawString(500, 250, "102`", CENTER);
   display.setTextSize(4);
-  drawString(350, 300, "102°", CENTER);
+  drawString(500, 300, "102`", CENTER);
   
   
 

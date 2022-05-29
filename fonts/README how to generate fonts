@@ -28,3 +28,5 @@ What does this script do?
 
   This is done to conserve EEPROM space. 
   (only need 0-9/./° for the large primary temperature display)
+
+The fonts used for this project could be swapped out relatively easily if desired.
