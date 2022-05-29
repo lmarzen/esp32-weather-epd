@@ -8,7 +8,11 @@
 #include <Adafruit_BusIO_Register.h>
 #include <ArduinoJson.h>
 #include <GxEPD2_BW.h>
-#include <U8g2_for_Adafruit_GFX.h>
+// fonts
+#include <Fonts/FreeSans9pt7b.h>
+#include <Fonts/FreeSans12pt7b.h>
+#include <Fonts/FreeSans18pt7b.h>
+#include <Fonts/FreeSans24pt7b.h>
 
 // header files
 #include "config.h"
@@ -46,15 +50,6 @@ static const uint8_t EPD_MOSI = 2;
 GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(GxEPD2_750_T7(/*CS=*/ EPD_CS, /*DC=*/ EPD_DC, /*RST=*/ EPD_RST, /*BUSY=*/ EPD_BUSY)); // B/W display
 // GxEPD2_3C<GxEPD2_750c, GxEPD2_750c::HEIGHT> display(GxEPD2_750(/*CS=*/ EPD_CS, /*DC=*/ EPD_DC, /*RST=*/ EPD_RST, /*BUSY=*/ EPD_BUSY));     // 3-colour displays
 
-U8G2_FOR_ADAFRUIT_GFX u8g2Fonts;  // Select u8g2 font from here: https://github.com/olikraus/u8g2/wiki/fntlistall
-// Using fonts:
-// u8g2_font_helvB08_tf
-// u8g2_font_helvB10_tf
-// u8g2_font_helvB12_tf
-// u8g2_font_helvB14_tf
-// u8g2_font_helvB18_tf
-// u8g2_font_helvB24_tf
-
 void printLocalTime()
 {
   if(!getLocalTime(&timeinfo, 10000)){
@@ -64,7 +59,7 @@ void printLocalTime()
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
 }
 
-uint8_t StartWifi() {
+uint8_t startWiFi() {
   WiFi.mode(WIFI_STA);
   Serial.printf("Connecting to '%s'", ssid);
   WiFi.begin(ssid, password);
@@ -88,12 +83,12 @@ uint8_t StartWifi() {
   return connection_status;
 }
 
-void KillWiFi() {
+void killWiFi() {
   WiFi.disconnect();
   WiFi.mode(WIFI_OFF);
 }
 
-bool SetupTime() {
+bool setupTime() {
   configTime(0, 0, ntp_server1, ntp_server2); // We will pass 0 for gmtOffset_sec and daylightOffset_sec and use setenv() for timezone offsets
   setenv("TZ", timezone, 1);
   tzset();
@@ -106,7 +101,7 @@ bool SetupTime() {
 }
 
 // TODO
-bool UpdateTimeDateStrings() {
+bool updateTimeDateStrings() {
   char time_output[30], day_output[30], update_time[30];
   // see http://www.cplusplus.com/reference/ctime/strftime/
   if (units[0] == 'm') {
@@ -131,7 +126,7 @@ bool UpdateTimeDateStrings() {
   return true;
 }
 
-void BeginSleep() {
+void beginSleep() {
   display.powerOff();
   if (!getLocalTime(&timeinfo, 10000)) {
     Serial.println("Failed to obtain time before deep-sleep, using old time.");
@@ -151,28 +146,22 @@ void drawString(int x, int y, String text, alignment align) {
   display.getTextBounds(text, x, y, &x1, &y1, &w, &h);
   if (align == RIGHT)  x = x - w;
   if (align == CENTER) x = x - w / 2;
-  u8g2Fonts.setCursor(x, y + h);
-  u8g2Fonts.print(text);
+  display.setCursor(x, y + h);
+  display.print(text);
 }
 //#########################################################################################
-void drawStringMaxWidth(int x, int y, unsigned int text_width, String text, alignment align) {
+void drawStringMaxWidth(int x, int y, int text_width, String text, alignment align) {
   int16_t  x1, y1; //the bounds of x,y and w and h of the variable 'text' in pixels.
   uint16_t w, h;
+  if (text.length() > text_width * 2) text = text.substring(0, text_width * 2); // Truncate if too long for 2 rows of text
   display.getTextBounds(text, x, y, &x1, &y1, &w, &h);
   if (align == RIGHT)  x = x - w;
   if (align == CENTER) x = x - w / 2;
-  u8g2Fonts.setCursor(x, y);
-  if (text.length() > text_width * 2) {
-    u8g2Fonts.setFont(u8g2_font_helvB10_tf);
-    text_width = 42;
-    y = y - 3;
-  }
-  u8g2Fonts.println(text.substring(0, text_width));
+  display.setCursor(x, y + h);
+  display.println(text.substring(0, text_width));
   if (text.length() > text_width) {
-    u8g2Fonts.setCursor(x, y + h + 15);
-    String secondLine = text.substring(text_width);
-    secondLine.trim(); // Remove any leading spaces
-    u8g2Fonts.println(secondLine);
+    display.setCursor(x, y + h * 2);
+    display.println(text.substring(text_width));
   }
 }
 
@@ -188,33 +177,40 @@ void initDisplay() {
   SPI.end();
   SPI.begin(EPD_SCK, EPD_MISO, EPD_MOSI, EPD_CS);
 
-  u8g2Fonts.begin(display);                  // connect u8g2 procedures to Adafruit GFX
-  u8g2Fonts.setFontMode(1);                  // use u8g2 transparent mode (this is default)
-  u8g2Fonts.setFontDirection(0);             // left to right (this is default)
-  u8g2Fonts.setForegroundColor(GxEPD_BLACK); // apply Adafruit GFX color
-  u8g2Fonts.setBackgroundColor(GxEPD_WHITE); // apply Adafruit GFX color
-  u8g2Fonts.setFont(u8g2_font_helvB10_tf);   // select u8g2 font from here: https://github.com/olikraus/u8g2/wiki/fntlistall
+  display.setRotation(0);
+  display.setTextSize(1);
+  display.setTextColor(GxEPD_BLACK);
   display.fillScreen(GxEPD_WHITE);
   display.setFullWindow();
 }
 
 void updateDisplayBuffer() {
-  // NOTE: Using 'drawInvertedBitmap' and not 'drawBitmap' so that images are WYSIWYG, otherwise all images need to be inverted
+  // current weather icon
   display.drawInvertedBitmap(0, 0, wi_day_rain_wind_196x196, 196, 196, GxEPD_BLACK);
-  display.drawInvertedBitmap(196, 0, wi_day_rain_wind_160x160, 160, 160, GxEPD_BLACK);
-  display.drawInvertedBitmap(356, 0, wi_day_rain_wind_96x96, 96, 96, GxEPD_BLACK);
-  display.drawInvertedBitmap(452, 0, wi_day_rain_wind_64x64, 64, 64, GxEPD_BLACK);
-  display.drawInvertedBitmap(516, 0, wi_day_rain_wind_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(564, 0, wi_day_rain_wind_32x32, 32, 32, GxEPD_BLACK);
-  display.drawInvertedBitmap(596, 0, wi_day_rain_wind_16x16, 16, 16, GxEPD_BLACK);
 
-  display.drawInvertedBitmap(0, 196, house_thermometer_196x196, 196, 196, GxEPD_BLACK);
-  display.drawInvertedBitmap(196, 196, house_thermometer_160x160, 160, 160, GxEPD_BLACK);
-  display.drawInvertedBitmap(356, 196, house_thermometer_96x96, 96, 96, GxEPD_BLACK);
-  display.drawInvertedBitmap(452, 196, house_thermometer_64x64, 64, 64, GxEPD_BLACK);
-  display.drawInvertedBitmap(516, 196, house_thermometer_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(564, 196, house_thermometer_32x32, 32, 32, GxEPD_BLACK);
-  display.drawInvertedBitmap(596, 196, house_thermometer_16x16, 16, 16, GxEPD_BLACK);
+  // current temp
+  display.setFont(&FreeSans24pt7b);
+  display.setTextSize(1);
+  drawString(250, 150, "102°", CENTER);
+  display.setTextSize(2);
+  drawString(250, 200, "102°", CENTER);
+  display.setTextSize(3);
+  drawString(250, 250, "102°", CENTER);
+  display.setTextSize(4);
+  drawString(250, 300, "102°", CENTER);
+
+  display.setFont(&FreeSans9pt7b);
+  display.setTextSize(1);
+  drawString(350, 150, "102°", CENTER);
+  display.setTextSize(2);
+  drawString(350, 200, "102°", CENTER);
+  display.setTextSize(3);
+  drawString(350, 250, "102°", CENTER);
+  display.setTextSize(4);
+  drawString(350, 300, "102°", CENTER);
+  
+  
+
   
 }
 
@@ -253,11 +249,11 @@ void setup() {
 //  digitalWrite(LED_BUILTIN, HIGH);
 //#endif
 
-  if ( (StartWifi() == WL_CONNECTED) && SetupTime() ) {
+  if ( (startWiFi() == WL_CONNECTED) && setupTime() ) {
     initDisplay();
 
-    UpdateTimeDateStrings();
-    KillWiFi();
+    updateTimeDateStrings();
+    killWiFi();
     /*
     if ((CurrentHour >= WakeupTime && CurrentHour <= SleepTime) || DebugDisplayUpdate) {
       //InitialiseDisplay(); // Give screen time to initialise by getting weather data!
@@ -279,7 +275,7 @@ void setup() {
     updateDisplayBuffer();
     display.display(false); // Full display refresh
   }
-  BeginSleep();
+  beginSleep();
 }
 
 void loop() { // this will never run

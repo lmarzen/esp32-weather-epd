@@ -1,0 +1,30 @@
+Instructions for running ttf_to_adafruit_gfx.sh:
+
+Dependencies:
+  fonttools
+    fonttools must be installed
+    pyftsubset is part of fonttools, a python based command line tool for 
+    manipulating fonts. pyftsubset will be used to generate 2 subsets of the 
+    desired font.
+  Adafruit fontconvert
+    Adafruit provides a tool as part of their Adafruit GFX Library that converts
+    font files to c-style arrays that can be used by the before-mentioned 
+    library. The necessary components have been included as part of this 
+    repository.
+    https://github.com/adafruit/Adafruit-GFX-Library/tree/master/fontconvert
+  freetype2
+    dependency for fontconvert.
+
+To run this script execute the following command:
+  ./ttf_to_adafruit_gfx.sh /path/to/font.otf
+
+What does this script do?
+  This script converts ttf or otf (font) files to c-style arrays to be used by 
+  the Adafruit GFX Library.
+
+  2 font subsets will be generated:
+    1. ASCII
+    2. Numbers (0-9), decimal point (.) and the degree symbol (°)
+
+  This is done to conserve EEPROM space. 
+  (only need 0-9/./° for the large primary temperature display)
