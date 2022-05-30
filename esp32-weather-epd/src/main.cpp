@@ -8,14 +8,23 @@
 #include <Adafruit_BusIO_Register.h>
 #include <ArduinoJson.h>
 #include <GxEPD2_BW.h>
-// fonts (these are modified font files that have the degree symbol mapped "`")
+// fonts (these are modified font files that have the degree symbol mapped '`')
+#include "fonts/FreeSans6pt7b.h"
+#include "fonts/FreeSans7pt7b.h"
+#include "fonts/FreeSans8pt7b.h"
+#include "fonts/FreeSans9pt7b.h"
+#include "fonts/FreeSans10pt7b.h"
+#include "fonts/FreeSans11pt7b.h"
 #include "fonts/FreeSans12pt7b.h"
 #include "fonts/FreeSans14pt7b.h"
 #include "fonts/FreeSans16pt7b.h"
+#include "fonts/FreeSans18pt7b.h"
 #include "fonts/FreeSans20pt7b.h"
+#include "fonts/FreeSans22pt7b.h"
 #include "fonts/FreeSans24pt7b.h"
 #include "fonts/FreeSans26pt7b.h"
-#include "fonts/FreeSans72pt_temperature.h" // This font only has 0-9 . `
+// only has character set used for displaying temperature (0123456789.-`)
+#include "fonts/FreeSans48pt_temperature.h"
 
 // header files
 #include "config.h"
@@ -36,8 +45,8 @@ int     wifiSignal;
 long    startTime = 0;
 String  timeStr, dateStr;
 
-#define SCREEN_WIDTH  800
-#define SCREEN_HEIGHT 480
+#define DISP_WIDTH  800
+#define DISP_HEIGHT 480
 
 enum alignment {LEFT, RIGHT, CENTER};
 
@@ -141,9 +150,8 @@ void beginSleep() {
   esp_deep_sleep_start();
 }
 
-//#########################################################################################
 void drawString(int x, int y, String text, alignment align) {
-  int16_t  x1, y1; //the bounds of x,y and w and h of the variable 'text' in pixels.
+  int16_t  x1, y1;
   uint16_t w, h;
   display.setTextWrap(false);
   display.getTextBounds(text, x, y, &x1, &y1, &w, &h);
@@ -151,27 +159,6 @@ void drawString(int x, int y, String text, alignment align) {
   if (align == CENTER) x = x - w / 2;
   display.setCursor(x, y + h);
   display.print(text);
-}
-//#########################################################################################
-void drawStringMaxWidth(int x, int y, int text_width, String text, alignment align) {
-  int16_t  x1, y1; //the bounds of x,y and w and h of the variable 'text' in pixels.
-  uint16_t w, h;
-  if (text.length() > text_width * 2) text = text.substring(0, text_width * 2); // Truncate if too long for 2 rows of text
-  display.getTextBounds(text, x, y, &x1, &y1, &w, &h);
-  if (align == RIGHT)  x = x - w;
-  if (align == CENTER) x = x - w / 2;
-  display.setCursor(x, y + h);
-  display.println(text.substring(0, text_width));
-  if (text.length() > text_width) {
-    display.setCursor(x, y + h * 2);
-    display.println(text.substring(text_width));
-  }
-}
-
-void helloWorld()
-{
-  drawString(100, 100, "Hello World", CENTER);
-  display.display(false);
 }
 
 void initDisplay() {
@@ -188,39 +175,70 @@ void initDisplay() {
 }
 
 void updateDisplayBuffer() {
+  // location, date
+  display.setFont(&FreeSans16pt7b);
+  drawString(DISP_WIDTH - 1, 0, "Tucson, Arizona", RIGHT);
+  display.setFont(&FreeSans12pt7b);
+  drawString(DISP_WIDTH - 1, 32, "Saturday, May 29", RIGHT);
+
   // current weather icon
   display.drawInvertedBitmap(0, 0, wi_day_rain_wind_196x196, 196, 196, GxEPD_BLACK);
-
   // current temp
+  display.setFont(&FreeSans48pt_temperature);
+  drawString(196 + 190 / 2, 98 - 69 / 2, "75`", CENTER);
+  // today's high | low
+  display.setFont(&FreeSans14pt7b);
+  drawString(196 + 190 / 2 - 29 / 2     , 98 + 69 / 2 + 12, "|", CENTER);
+  drawString(196 + 190 / 2 - 29 / 2 - 10, 98 + 69 / 2 + 22, "199`", RIGHT);
+  drawString(196 + 190 / 2 - 29 / 2 + 12, 98 + 69 / 2 + 22, "76`", LEFT);
+
+  // 5 day, forecast icons
+  display.drawInvertedBitmap(404, 98 + 69 / 2 - 32 - 6, wi_day_fog_64x64, 64, 64, GxEPD_BLACK);
+  display.drawInvertedBitmap(484, 98 + 69 / 2 - 32 - 6, wi_day_rain_wind_64x64, 64, 64, GxEPD_BLACK);
+  display.drawInvertedBitmap(568, 98 + 69 / 2 - 32 - 6, wi_snow_64x64, 64, 64, GxEPD_BLACK);
+  display.drawInvertedBitmap(646, 98 + 69 / 2 - 32 - 6, wi_thunderstorm_64x64, 64, 64, GxEPD_BLACK);
+  display.drawInvertedBitmap(724, 98 + 69 / 2 - 32 - 6, wi_windy_64x64, 64, 64, GxEPD_BLACK);
+  // 5 day, day of week label
+  display.setFont(&FreeSans11pt7b);
+  drawString(406 + 32, 98 + 69 / 2 - 32 - 26 - 6, "Sun", CENTER);
+  drawString(486 + 32, 98 + 69 / 2 - 32 - 26 - 6, "Mon", CENTER);
+  drawString(566 + 32, 98 + 69 / 2 - 32 - 26 - 6, "Tue", CENTER);
+  drawString(646 + 32, 98 + 69 / 2 - 32 - 26 - 6, "Wed", CENTER);
+  drawString(726 + 32, 98 + 69 / 2 - 32 - 26 - 6, "Thur", CENTER);
+  // 5 day, high | low
+  display.setFont(&FreeSans8pt7b);
+  drawString(406 + 32    , 98 + 69 / 2 + 38 - 4 - 6, "|", CENTER);
+  drawString(406 + 32 - 4, 98 + 69 / 2 + 38 - 6, "199`", RIGHT);
+  drawString(406 + 32 + 5, 98 + 69 / 2 + 38 - 6, "198`", LEFT);
+  drawString(486 + 32    , 98 + 69 / 2 + 38 - 4 - 6, "|", CENTER);
+  drawString(486 + 32 - 4, 98 + 69 / 2 + 38 - 6, "199`", RIGHT);
+  drawString(486 + 32 + 5, 98 + 69 / 2 + 38 - 6, "-22`", LEFT);
+  drawString(566 + 32    , 98 + 69 / 2 + 38 - 4 - 6, "|", CENTER);
+  drawString(566 + 32 - 4, 98 + 69 / 2 + 38 - 6, "99`", RIGHT);
+  drawString(566 + 32 + 5, 98 + 69 / 2 + 38 - 6, "67`", LEFT);
+  drawString(646 + 32    , 98 + 69 / 2 + 38 - 4 - 6, "|", CENTER);
+  drawString(646 + 32 - 4, 98 + 69 / 2 + 38 - 6, "0`", RIGHT);
+  drawString(646 + 32 + 5, 98 + 69 / 2 + 38 - 6, "0`", LEFT);
+  drawString(726 + 32    , 98 + 69 / 2 + 38 - 4 - 6, "|", CENTER);
+  drawString(726 + 32 - 4, 98 + 69 / 2 + 38 - 6, "79`", RIGHT);
+  drawString(726 + 32 + 5, 98 + 69 / 2 + 38 - 6, "199`", LEFT);
+
+  
+  // debug
+  int16_t  x1, y1;
+  uint16_t w, h;
+  display.setFont(&FreeSans18pt7b);
+  display.getTextBounds("Tucson, Arizona", 0, 0, &x1, &y1, &w, &h);
+  char str[20];
   display.setFont(&FreeSans12pt7b);
-  display.setTextSize(1);
-  drawString(250, 150, "102`", CENTER);
-  display.setTextSize(2);
-  drawString(250, 200, "102`", CENTER);
-  display.setTextSize(3);
-  drawString(250, 250, "102`", CENTER);
-  display.setTextSize(4);
-  drawString(250, 300, "102`", CENTER);
+  sprintf(str, "w: %d h: %d", w, h);
+  drawString(0,400, str, LEFT);
+  sprintf(str, "x1: %d y1: %d", x1, y1);
+  drawString(0,425, str, LEFT);
+  // end debug
 
-  display.setFont(&FreeSans24pt7b);
-  display.setTextSize(1);
-  drawString(350, 150, "102`", CENTER);
-  display.setTextSize(2);
-  drawString(350, 200, "102`", CENTER);
-  display.setTextSize(3);
-  drawString(350, 250, "102`", CENTER);
-  display.setTextSize(4);
-  drawString(350, 300, "102`", CENTER);
-
-  display.setFont(&FreeSans72pt_temperature);
-  display.setTextSize(1);
-  drawString(500, 150, "102`", CENTER);
-  display.setTextSize(2);
-  drawString(500, 200, "102`", CENTER);
-  display.setTextSize(3);
-  drawString(500, 250, "102`", CENTER);
-  display.setTextSize(4);
-  drawString(500, 300, "102`", CENTER);
+  // Line dividing top and bottom display areas
+  display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
   
   
 

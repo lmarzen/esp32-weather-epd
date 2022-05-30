@@ -24,7 +24,7 @@ What does this script do?
 
   2 font subsets will be generated:
     1. ASCII
-    2. Numbers (0-9), decimal point (.) and the degree symbol (°)
+    2. Numbers (0-9), decimal point (.), dash (-), and the degree symbol (°)
 
   This is done to conserve EEPROM space. 
   (only need 0-9/./° for the large primary temperature display)

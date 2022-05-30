@@ -1,7 +1,7 @@
 #!/bin/bash
 OUTPUT_PATH="./fonts/"
-SIZES=(12 14 16 20 24 26)
-TEMPERATURE_SIZES=(72)
+SIZES=(6 7 8 9 10 11 12 14 16 18 20 22 24 26)
+TEMPERATURE_SIZES=(48)
 
 # ascii hexidecimal value of the character to remap degree symbol to
 REMAP_CH="0x60"
@@ -14,7 +14,7 @@ REMAP_OUT="${1%%.*}_remap.${1##*.}"
 SUBSET_OUT="${1%%.*}_temperature_set.${1##*.}"
 # generate temperature display subset version of the font
 pyftsubset ${1} \
-  --text="0123456789." \
+  --text="0123456789.-" \
   --unicodes=U+00B0 \
   --output-file=$SUBSET_OUT \
 
