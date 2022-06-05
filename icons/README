@@ -4,7 +4,7 @@ https://erikflowers.github.io/weather-icons/
 Battery and WiFi (.svg files) were obtained from:
 https://fonts.google.com/icons
 
-Wind Icon (wind-sign-svgrepo-com.svg) was obtained from: 
+alternative Wind Icon (wind-sign.svg) was obtained from: 
 https://www.svgrepo.com/svg/61395/wind-sign
 
 Visibility Icon (visibility_icon.svg) was obtained from:
@@ -13,18 +13,29 @@ https://www.iconfinder.com/icons/352209/visibility_icon
 House Icon (house.svg) was obtained from:
 https://seekicon.com/free-icon/house_16
 
+warning(alert) icon (warning_icon.svg) was obtained from:
+https://icon-icons.com/icon/warning/172115
+
 house_temperature.svg and house_humidity.svg were created by merging icons from
 https://erikflowers.github.io/weather-icons/ with house.svg from 
 https://seekicon.com/free-icon/house_16
 
+air_quality.svg was derived from WeatherBug's air quality icon
+https://www.weatherbug.com/air-quality/
+
 HOW TO RUN SCRIPT TO GENERATE .h FILES FROM .svg FILES
 ---
-svg_to_headers.sh, will convert the svg files to a 
-specified size of png which will then be converted to header files each 
-containing a bitmap formatted for use by the G6EJP EPD library. This script depends on png_to_header.py (in this folder).
+svg_to_headers.sh, will convert the svg files in ./svg/ to the
+specified size of .png which will then be converted to header files each 
+containing a bitmap formatted for use by the AdafruitGFX library.
+This script depends on png_to_header.py (in this folder).
 
 Usage:
-bash svg_to_headers.sh <size_of_output_image>
+  bash svg_to_headers.sh <size_of_output_image>
+
+Dependencies: 
+  Inkscape - Inkscape's cli is used to convert .svg to .png
+  Python3
 
 To regenerate all icons execute the following command:
 bash svg_to_headers.sh 16 & bash svg_to_headers.sh 24 & bash svg_to_headers.sh 32 & bash svg_to_headers.sh 48 & bash svg_to_headers.sh 64 & bash svg_to_headers.sh 96 & bash svg_to_headers.sh 128 & bash svg_to_headers.sh 160 & bash svg_to_headers.sh 196

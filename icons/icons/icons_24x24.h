@@ -1,5 +1,6 @@
 #ifndef __ICONS_24x24_H__
 #define __ICONS_24x24_H__
+#include "24x24/air_filter_24x24.h"
 #include "24x24/battery_0_bar_black_24dp_24x24.h"
 #include "24x24/battery_1_bar_black_24dp_24x24.h"
 #include "24x24/battery_2_bar_black_24dp_24x24.h"
@@ -14,6 +15,7 @@
 #include "24x24/house_humidity_24x24.h"
 #include "24x24/house_thermometer_24x24.h"
 #include "24x24/visibility_icon_24x24.h"
+#include "24x24/warning_icon_24x24.h"
 #include "24x24/wi_alien_24x24.h"
 #include "24x24/wi_barometer_24x24.h"
 #include "24x24/wi_celsius_24x24.h"
@@ -138,7 +140,7 @@
 #include "24x24/wi_moon_waxing_gibbous_5_24x24.h"
 #include "24x24/wi_moon_waxing_gibbous_6_24x24.h"
 #include "24x24/wi_na_24x24.h"
-#include "24x24/wind_sign_svgrepo_com_24x24.h"
+#include "24x24/wind_sign_24x24.h"
 #include "24x24/wi_night_alt_cloudy_24x24.h"
 #include "24x24/wi_night_alt_cloudy_gusts_24x24.h"
 #include "24x24/wi_night_alt_cloudy_high_24x24.h"

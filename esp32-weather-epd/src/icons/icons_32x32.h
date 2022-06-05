@@ -1,5 +1,6 @@
 #ifndef __ICONS_32x32_H__
 #define __ICONS_32x32_H__
+#include "32x32/air_filter_32x32.h"
 #include "32x32/battery_0_bar_black_24dp_32x32.h"
 #include "32x32/battery_1_bar_black_24dp_32x32.h"
 #include "32x32/battery_2_bar_black_24dp_32x32.h"
@@ -14,6 +15,7 @@
 #include "32x32/house_humidity_32x32.h"
 #include "32x32/house_thermometer_32x32.h"
 #include "32x32/visibility_icon_32x32.h"
+#include "32x32/warning_icon_32x32.h"
 #include "32x32/wi_alien_32x32.h"
 #include "32x32/wi_barometer_32x32.h"
 #include "32x32/wi_celsius_32x32.h"
@@ -138,7 +140,7 @@
 #include "32x32/wi_moon_waxing_gibbous_5_32x32.h"
 #include "32x32/wi_moon_waxing_gibbous_6_32x32.h"
 #include "32x32/wi_na_32x32.h"
-#include "32x32/wind_sign_svgrepo_com_32x32.h"
+#include "32x32/wind_sign_32x32.h"
 #include "32x32/wi_night_alt_cloudy_32x32.h"
 #include "32x32/wi_night_alt_cloudy_gusts_32x32.h"
 #include "32x32/wi_night_alt_cloudy_high_32x32.h"
