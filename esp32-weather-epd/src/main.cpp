@@ -1,5 +1,6 @@
 // built-in Arduino/C libraries
 #include <Arduino.h>
+#include <HTTPClient.h>
 #include <SPI.h>
 #include <WiFi.h>
 #include <time.h>
@@ -25,10 +26,6 @@
 #include "fonts/FreeSans26pt7b.h"
 // only has character set used for displaying temperature (0123456789.-`)
 #include "fonts/FreeSans48pt_temperature.h"
-
-// header files
-#include "config.h"
-#include "lang.h"
 // icon header files 
 #include "icons/icons_16x16.h"
 #include "icons/icons_32x32.h"
@@ -39,10 +36,17 @@
 #include "icons/icons_160x160.h"
 #include "icons/icons_196x196.h"
 
+// header files
+#include "config.h"
+#include "lang.h"
+#include "parse.h"
+
 // GLOBAL VARIABLES
 tm timeinfo;
 int     wifiSignal;
 long    startTime = 0;
+owm_resp_onecall_t       owm_onecall       = {};
+owm_resp_air_pollution_t owm_air_pollution = {};
 String  timeStr, dateStr;
 
 #define DISP_WIDTH  800
@@ -71,13 +75,13 @@ void printLocalTime()
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
 }
 
-uint8_t startWiFi() {
+wl_status_t startWiFi() {
   WiFi.mode(WIFI_STA);
   Serial.printf("Connecting to '%s'", ssid);
   WiFi.begin(ssid, password);
   
   unsigned long timeout = millis() + 10000; // timeout if wifi does not connect in 10s from now
-  uint8_t connection_status = WiFi.status();
+  wl_status_t connection_status = WiFi.status();
   
   while ( (connection_status != WL_CONNECTED) && (millis() < timeout) ) {
     Serial.print(".");
@@ -116,8 +120,8 @@ bool setupTime() {
 bool updateTimeDateStrings() {
   char time_output[30], day_output[30], update_time[30];
   // see http://www.cplusplus.com/reference/ctime/strftime/
-  if (units[0] == 'm') {
-    if ((!strcmp(lang,"cz")) || !(strcmp(lang,"de")) || !(strcmp(lang,"pl")) || !(strcmp(lang,"nl"))){
+  if (units == 'm') {
+    if ( (lang == "cz") || (lang == "de") || (lang == "pl") || (lang == "nl") ) {
       sprintf(day_output, "%s, %02u. %s %04u", weekday_D[timeinfo.tm_wday], timeinfo.tm_mday, month_M[timeinfo.tm_mon], (timeinfo.tm_year) + 1900); // day_output >> So., 23. Juni 2019 <<
     }
     else
@@ -296,7 +300,7 @@ void updateDisplayBuffer() {
   drawString(48, 204 + 10 + (48 + sp) * 0, "Sunrise", LEFT);
   drawString(48, 204 + 10 + (48 + sp) * 1, "Wind", LEFT);
   drawString(48, 204 + 10 + (48 + sp) * 2, "UV Index", LEFT);
-  drawString(48, 204 + 10 + (48 + sp) * 3, "Air Quality", LEFT);
+  drawString(48, 204 + 10 + (48 + sp) * 3, "Air Quality Index", LEFT);
   drawString(48, 204 + 10 + (48 + sp) * 4, "Temperature", LEFT);
 
   drawString(170 + 48, 204 + 10 + (48 + sp) * 0, "Sunset", LEFT);
@@ -521,34 +525,53 @@ void updateDisplayBuffer() {
   
 }
 
-/*
-// debug performance testing
-bool isPrime(int N)
-{
-    for(int i = 2 ; i * i <= N ; i++)
-        if(N % i == 0)
-            return false;
-    return true;
+/* Perform an HTTP GET request to OpenWeatherMap's "One Call" API
+ * If data is recieved, it will be parsed and stored in the global variable 
+ * owm_onecall.
+ * 
+ * Returns true if OK response is recieved and response is successfully parsed, 
+ * otherwise false.
+ */
+bool getOWMonecall(WiFiClient &client) {
+  int attempts = 0;
+  bool rxSuccess = false;
+  String unitsStr = (units == 'i') ? "imperial" : "metric";
+  String uri = "/data/2.5/onecall?lat=" + lat + "&lon=" + lon 
+               + "&units=" + unitsStr + "&lang=" + lang 
+               + "&exclude=minutely&appid=" + owm_apikey;
+
+  while (!rxSuccess || attempts < 2) {
+    HTTPClient http;
+    http.begin(client, owm_endpoint, 80, uri);
+    int httpResponse = http.GET();
+    if (httpResponse == HTTP_CODE_OK) {
+      rxSuccess = deserializeOneCall(http.getStream(), &owm_onecall);
+    } else {
+      Serial.printf("Connection failed: %s"
+                    , http.errorToString(httpResponse).c_str());
+    }
+    client.stop();
+    http.end();
+    ++attempts;
+  }
+
+  return rxSuccess;
 }
-int countPrimes(int N)
-{
-    if(N < 3)
-        return 0;
-    int cnt = 1;
-    for(int i = 3 ; i < N ; i += 2)
-        if(isPrime(i))
-            cnt++;
-    return cnt;
+
+/* Perform an HTTP GET request to OpenWeatherMap's "Air Pollution" API
+ * If data is recieved, it will be parsed and stored in the global variable 
+ * owm_air_pollution.
+ * 
+ * Returns true if OK response is recieved and response is successfully parsed, 
+ * otherwise false.
+ */
+bool getOWMairpollution(WiFiClient &client) {
+  return false;
 }
-*/
 
 void setup() {
   startTime = millis();
   Serial.begin(115200);
-  // Serial.println("Primes: " + String(countPrimes(1000000)));
-  // esp_sleep_enable_timer_wakeup((5) * 1000000LL);
-  // Serial.println("Awake for: " + String((millis() - startTime) / 1000.0, 3) + "s");
-  // esp_deep_sleep_start();
 
   // TODO will firebeetle led stay off when on battery? otheriwse desolder...
 //#ifdef LED_BUILTIN
@@ -556,36 +579,36 @@ void setup() {
 //  digitalWrite(LED_BUILTIN, HIGH);
 //#endif
 
-  if ( (startWiFi() == WL_CONNECTED) && setupTime() ) {
-    initDisplay();
+  wl_status_t wifiStatus = startWiFi();
 
-    updateTimeDateStrings();
-    killWiFi();
-    /*
-    if ((CurrentHour >= WakeupTime && CurrentHour <= SleepTime) || DebugDisplayUpdate) {
-      //InitialiseDisplay(); // Give screen time to initialise by getting weather data!
-      uint8_t Attempts = 1;
-      bool RxWeather = false, RxForecast = false;
-      WiFiClient client;   // wifi client object
-      while ((RxWeather == false || RxForecast == false) && Attempts <= 2) { // Try up-to 2 time for Weather and Forecast data
-        if (RxWeather  == false) RxWeather  = obtain_wx_data(client, "weather");
-        if (RxForecast == false) RxForecast = obtain_wx_data(client, "forecast");
-        Attempts++;
-      }
-      if (RxWeather && RxForecast) { // Only if received both Weather or Forecast proceed
-        StopWiFi(); // Reduces power consumption
-        DisplayWeather();
-        display.display(false); // Full screen update mode
-      }
-    }
-    */
+  bool timeConfigured = false;
+  if (wifiStatus == WL_CONNECTED) {
+    timeConfigured = setupTime();
+  }
+
+  bool rxOWM = false;
+  if ( (wifiStatus == WL_CONNECTED) && timeConfigured) {
+      WiFiClient client;
+      rxOWM |= getOWMonecall(client);
+      rxOWM |= getOWMairpollution(client);
+  }
+  killWiFi();
+  initDisplay();
+
+  if (rxOWM) {
     updateDisplayBuffer();
     display.display(false); // Full display refresh
+  } else {
+    // partialRefreshStatus(wifiStatus, timeConfigured, rxOWM);
+    display.display(true); // partial display refresh
   }
+
   beginSleep();
 }
 
-void loop() { // this will never run
+void loop() 
+{ 
+  // this will never run
 }
 
 
