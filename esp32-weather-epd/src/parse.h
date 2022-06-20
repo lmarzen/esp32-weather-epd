@@ -9,11 +9,11 @@
 #include <ArduinoJson.h>
 
 
-const int owm_num_minutely   = 61;
-const int owm_num_hourly     = 48;
-const int owm_num_daily      = 8;
-const int owm_num_alerts     = 8;  // OpenWeatherMaps does not specify a limit, but if you need more alerts you are probably doomed.
-const int owm_num_components = 24; // Depending on AQI scale, hourly concentrations will need to be averaged over a period of 1h to 24h
+const int owm_num_minutely      = 61;
+const int owm_num_hourly        = 48;
+const int owm_num_daily         = 8;
+const int owm_num_alerts        = 8;  // OpenWeatherMaps does not specify a limit, but if you need more alerts you are probably doomed.
+const int owm_num_air_pollution = 24; // Depending on AQI scale, hourly concentrations will need to be averaged over a period of 1h to 24h
 
 typedef struct owm_weather {
   int     id;               // Weather condition id
@@ -154,6 +154,13 @@ typedef struct owm_resp_onecall {
   owm_alerts_t    alerts[owm_num_alerts];
 } owm_resp_onecall_t;
 
+/*
+ * Coordinates from the specified location (latitude, longitude)
+ */
+typedef struct owm_coord {
+  float   lat;
+  float   lon;
+} owm_coord_t;
 
 typedef struct owm_components {
   float   co;               // Сoncentration of CO (Carbon monoxide), μg/m^3
@@ -170,11 +177,14 @@ typedef struct owm_components {
  * Response from OpenWeatherMap's Air Pollution API
  */
 typedef struct owm_resp_air_pollution {
-  owm_components_t components[owm_num_components];
+  owm_coord_t coord;
+  int              main_aqi[owm_num_air_pollution];   // Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 = Good, 2 = Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor.
+  owm_components_t components[owm_num_air_pollution];
+  int64_t          dt[owm_num_air_pollution];         // Date and time, Unix, UTC;
 } owm_resp_air_pollution_t;
 
-bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t *results);
-bool deserializeAirQuality(WiFiClient &json, owm_resp_air_pollution_t *results);
+bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t *r);
+bool deserializeAirQuality(WiFiClient &json, owm_resp_air_pollution_t *r);
 
 
 #endif

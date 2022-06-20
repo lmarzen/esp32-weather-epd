@@ -1,14 +1,18 @@
-// built-in Arduino/C libraries
+// built-in C++ libraries
+#include <cstring>
+
+// framework-arduinoespressif32 libraries
 #include <Arduino.h>
 #include <HTTPClient.h>
 #include <SPI.h>
-#include <WiFi.h>
 #include <time.h>
+#include <WiFi.h>
 
 // additional libraries
 #include <Adafruit_BusIO_Register.h>
 #include <ArduinoJson.h>
 #include <GxEPD2_BW.h>
+
 // fonts (these are modified font files that have the degree symbol mapped '`')
 #include "fonts/FreeSans6pt7b.h"
 #include "fonts/FreeSans7pt7b.h"
@@ -26,6 +30,7 @@
 #include "fonts/FreeSans26pt7b.h"
 // only has character set used for displaying temperature (0123456789.-`)
 #include "fonts/FreeSans48pt_temperature.h"
+
 // icon header files 
 #include "icons/icons_16x16.h"
 #include "icons/icons_32x32.h"
@@ -68,7 +73,7 @@ GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(GxEPD2_750_T7(/*CS=*/ EP
 
 void printLocalTime()
 {
-  if(!getLocalTime(&timeinfo, 10000)){
+  if (!getLocalTime(&timeinfo, 10000)){
     Serial.println("Failed to obtain time");
     return;
   }
@@ -520,9 +525,6 @@ void updateDisplayBuffer() {
   drawString(500,440, str, LEFT);
   // end debug
   
-  
-
-  
 }
 
 /* Perform an HTTP GET request to OpenWeatherMap's "One Call" API
@@ -540,15 +542,16 @@ bool getOWMonecall(WiFiClient &client) {
                + "&units=" + unitsStr + "&lang=" + lang 
                + "&exclude=minutely&appid=" + owm_apikey;
 
-  while (!rxSuccess || attempts < 2) {
+  while (!rxSuccess && attempts < 2) {
     HTTPClient http;
     http.begin(client, owm_endpoint, 80, uri);
     int httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK) {
       rxSuccess = deserializeOneCall(http.getStream(), &owm_onecall);
     } else {
-      Serial.printf("Connection failed: %s"
-                    , http.errorToString(httpResponse).c_str());
+      Serial.println("OpenWeatherMap One Call API connection error: " 
+                     + String(httpResponse, DEC) + " " 
+                     + http.errorToString(httpResponse));
     }
     client.stop();
     http.end();
@@ -566,7 +569,41 @@ bool getOWMonecall(WiFiClient &client) {
  * otherwise false.
  */
 bool getOWMairpollution(WiFiClient &client) {
-  return false;
+  int attempts = 0;
+  bool rxSuccess = false;
+  String unitsStr = (units == 'i') ? "imperial" : "metric";
+
+  // set start and end to approriate values so that the last 24 hours of air 
+  // pollution history is returned. Unix, UTC. Us
+  time_t now;
+  int64_t end = time(&now);
+  int64_t start = end - (3600 * 23);
+  char endStr[22];
+  char startStr[22];
+  sprintf(endStr, "%lld", end);
+  sprintf(startStr, "%lld", start);
+
+  String uri = "/data/2.5/air_pollution/history?lat=" + lat + "&lon=" + lon 
+               + "&start=" + startStr + "&end=" + endStr 
+               + "&appid=" + owm_apikey;
+
+  while (!rxSuccess && attempts < 2) {
+    HTTPClient http;
+    http.begin(client, owm_endpoint, 80, uri);
+    int httpResponse = http.GET();
+    if (httpResponse == HTTP_CODE_OK) {
+      rxSuccess = deserializeAirQuality(http.getStream(), &owm_air_pollution);
+    } else {
+      Serial.println("OpenWeatherMap Air Pollution API connection error: " 
+                     + String(httpResponse, DEC) + " " 
+                     + http.errorToString(httpResponse));
+    }
+    client.stop();
+    http.end();
+    ++attempts;
+  }
+
+  return rxSuccess;
 }
 
 void setup() {
