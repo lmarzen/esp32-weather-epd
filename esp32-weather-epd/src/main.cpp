@@ -1,7 +1,8 @@
 // built-in C++ libraries
 #include <cstring>
+#include <vector>
 
-// framework-arduinoespressif32 libraries
+// arduino/esp32 libraries
 #include <Arduino.h>
 #include <HTTPClient.h>
 #include <SPI.h>
@@ -42,6 +43,8 @@
 #include "icons/icons_196x196.h"
 
 // header files
+#include "alerts.h"
+#include "aqi.h"
 #include "config.h"
 #include "lang.h"
 #include "parse.h"
