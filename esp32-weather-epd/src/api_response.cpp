@@ -1,5 +1,6 @@
+#include <vector>
 #include <ArduinoJson.h>
-#include "parse.h"
+#include "api_response.h"
 
 bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t *r) {
   int i;
@@ -195,12 +196,14 @@ bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t *r) {
 
   i = 0;
   for (JsonObject alerts : doc["alerts"].as<JsonArray>()) {
-    // r->alerts[i].sender_name = alerts["sender_name"].as<const char*>();
-    r->alerts[i].event       = alerts["event"]      .as<const char*>();
-    r->alerts[i].start       = alerts["start"]      .as<int64_t>();
-    r->alerts[i].end         = alerts["end"]        .as<int64_t>();
-    // r->alerts[i].description = alerts["description"].as<const char*>();
-    r->alerts[i].tags        = alerts["tags"][0]    .as<const char*>();
+    owm_alerts_t new_alert = {};
+    // new_alert.sender_name = alerts["sender_name"].as<const char*>();
+    new_alert.event       = alerts["event"]      .as<const char*>();
+    new_alert.start       = alerts["start"]      .as<int64_t>();
+    new_alert.end         = alerts["end"]        .as<int64_t>();
+    // new_alert.description = alerts["description"].as<const char*>();
+    new_alert.tags        = alerts["tags"][0]    .as<const char*>();
+    r->alerts.push_back(new_alert);
 
     if (i == owm_num_alerts - 1) {
       break;

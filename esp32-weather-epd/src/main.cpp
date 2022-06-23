@@ -14,7 +14,7 @@
 #include <ArduinoJson.h>
 #include <GxEPD2_BW.h>
 
-// fonts (these are modified font files that have the degree symbol mapped '`')
+// fonts (modified font files that have the degree symbol mapped to '`')
 #include "fonts/FreeSans6pt7b.h"
 #include "fonts/FreeSans7pt7b.h"
 #include "fonts/FreeSans8pt7b.h"
@@ -44,10 +44,25 @@
 
 // header files
 #include "alerts.h"
+#include "api_response.h"
 #include "aqi.h"
 #include "config.h"
 #include "lang.h"
-#include "parse.h"
+#include "util.h"
+
+// PREPROCESSOR MACROS
+#define DISP_WIDTH  800
+#define DISP_HEIGHT 480
+#define VOLTAGE_PIN
+
+// connections for Waveshare e-paper Driver Board
+#define EPD_BUSY 26
+#define EPD_CS   5
+#define EPD_RST  27 
+#define EPD_DC   13 
+#define EPD_SCK  25
+#define EPD_MISO 12 // Master-In Slave-Out not used, as no data from display
+#define EPD_MOSI 2
 
 // GLOBAL VARIABLES
 tm timeinfo;
@@ -55,24 +70,14 @@ int     wifiSignal;
 long    startTime = 0;
 owm_resp_onecall_t       owm_onecall       = {};
 owm_resp_air_pollution_t owm_air_pollution = {};
-String  timeStr, dateStr;
-
-#define DISP_WIDTH  800
-#define DISP_HEIGHT 480
+String timeStr, dateStr;
 
 enum alignment {LEFT, RIGHT, CENTER};
 
-// Connections for Waveshare e-paper Driver Board
-static const uint8_t EPD_BUSY = 26;
-static const uint8_t EPD_CS   = 5;
-static const uint8_t EPD_RST  = 27; 
-static const uint8_t EPD_DC   = 13; 
-static const uint8_t EPD_SCK  = 25;
-static const uint8_t EPD_MISO = 12; // Master-In Slave-Out not used, as no data from display
-static const uint8_t EPD_MOSI = 2;
 
-GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(GxEPD2_750_T7(/*CS=*/ EPD_CS, /*DC=*/ EPD_DC, /*RST=*/ EPD_RST, /*BUSY=*/ EPD_BUSY)); // B/W display
-// GxEPD2_3C<GxEPD2_750c, GxEPD2_750c::HEIGHT> display(GxEPD2_750(/*CS=*/ EPD_CS, /*DC=*/ EPD_DC, /*RST=*/ EPD_RST, /*BUSY=*/ EPD_BUSY));     // 3-colour displays
+
+GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(GxEPD2_750_T7(EPD_CS, EPD_DC, EPD_RST, EPD_BUSY)); // B/W display
+// GxEPD2_3C<GxEPD2_750c, GxEPD2_750c::HEIGHT> display(GxEPD2_750(EPD_CS, EPD_DC, EPD_RST, EPD_BUSY));     // 3-colour displays
 
 void printLocalTime()
 {

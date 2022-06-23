@@ -1,7 +1,8 @@
 #ifndef __API_RESPONSE_H__
-#define __PARSE_H__
+#define __API_RESPONSE_H__
 
 #include <cstdint>
+#include <vector>
 #include <Arduino.h>
 #include <HTTPClient.h>
 #include <WiFi.h>
@@ -151,7 +152,7 @@ typedef struct owm_resp_onecall {
   
   owm_hourly_t    hourly[owm_num_hourly];
   owm_daily_t     daily[owm_num_daily];
-  owm_alerts_t    alerts[owm_num_alerts];
+  std::vector<owm_alerts_t> alerts;
 } owm_resp_onecall_t;
 
 /*
@@ -177,7 +178,7 @@ typedef struct owm_components {
  * Response from OpenWeatherMap's Air Pollution API
  */
 typedef struct owm_resp_air_pollution {
-  owm_coord_t coord;
+  owm_coord_t      coord;
   int              main_aqi[owm_num_air_pollution];   // Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 = Good, 2 = Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor.
   owm_components_t components[owm_num_air_pollution];
   int64_t          dt[owm_num_air_pollution];         // Date and time, Unix, UTC;
