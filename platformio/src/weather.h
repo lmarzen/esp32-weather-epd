@@ -1,5 +1,5 @@
-#ifndef __ALERTS_H__
-#define __ALERTS_H__
+#ifndef __WEATHER_H__
+#define __WEATHER_H__
 
 #include <vector>
 #include "api_response.h"

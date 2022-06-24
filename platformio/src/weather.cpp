@@ -1,12 +1,10 @@
 #include <vector>
 #include <Arduino.h>
 
-#include "alerts.h"
 #include "api_response.h"
+#include "config.h"
 #include "util.h"
-
-// extern to avoid redefintion of variables defined in config.h
-extern const std::vector<String> alert_urgency;
+#include "weather.h"
 
 /* Returns the urgency of an event based by checking if the event String
  * contains any indicator keywords.
@@ -14,15 +12,15 @@ extern const std::vector<String> alert_urgency;
  * Urgency keywords are defined in config.h because they are very regional. 
  *   ex: United States - (Watch < Advisory < Warning)
  * 
- * The index in vector<String> alert_urgency indicates the urgency level.
+ * The index in vector<String> ALERT_URGENCY indicates the urgency level.
  * If an event string matches none of these keywords the urgency is unknown, -1
  * is returned.
  * In the United States example, Watch = 0, Advisory = 1, Warning = 2
  */
 int eventUrgency(String &event) {
   int urgency_lvl = -1;
-  for (int i = 0; i < alert_urgency.size(); ++i) {
-    if(event.indexOf(alert_urgency[i]) > 0) {
+  for (int i = 0; i < ALERT_URGENCY.size(); ++i) {
+    if(event.indexOf(ALERT_URGENCY[i]) > 0) {
       urgency_lvl = i;
     }
   }
