@@ -47,8 +47,7 @@
 #include "aqi.h"
 #include "config.h"
 #include "lang.h"
-#include "util.h"
-#include "weather.h"
+#include "weather_utils.h"
 
 // PREPROCESSOR MACROS
 #define DISP_WIDTH  800
