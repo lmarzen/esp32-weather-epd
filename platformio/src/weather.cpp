@@ -19,8 +19,8 @@
  */
 int eventUrgency(String &event) {
   int urgency_lvl = -1;
-  for (int i = 0; i < ALERT_URGENCY.size(); ++i) {
-    if(event.indexOf(ALERT_URGENCY[i]) > 0) {
+  for (int i = 0; i < config::ALERT_URGENCY.size(); ++i) {
+    if(event.indexOf(config::ALERT_URGENCY[i]) > 0) {
       urgency_lvl = i;
     }
   }

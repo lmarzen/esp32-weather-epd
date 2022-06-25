@@ -64,10 +64,18 @@ String timeStr, dateStr;
 
 enum alignment {LEFT, RIGHT, CENTER};
 
-
-
-GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(GxEPD2_750_T7(PIN_EPD_CS, PIN_EPD_DC, PIN_EPD_RST, PIN_EPD_BUSY)); // B/W display
-// GxEPD2_3C<GxEPD2_750c, GxEPD2_750c::HEIGHT> display(GxEPD2_750(PIN_EPD_CS, PIN_EPD_DC, PIN_EPD_RST, PIN_EPD_BUSY));     // 3-colour displays
+// B/W display
+GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
+  GxEPD2_750_T7(config::PIN_EPD_CS, 
+                config::PIN_EPD_DC, 
+                config::PIN_EPD_RST, 
+                config::PIN_EPD_BUSY));
+// 3-colour displays
+// GxEPD2_3C<GxEPD2_750c, GxEPD2_750c::HEIGHT> display(
+//   GxEPD2_750(config::PIN_EPD_CS, 
+//              config::PIN_EPD_DC, 
+//              config::PIN_EPD_RST, 
+//              config::PIN_EPD_BUSY));
 
 void printLocalTime()
 {
@@ -80,8 +88,8 @@ void printLocalTime()
 
 wl_status_t startWiFi() {
   WiFi.mode(WIFI_STA);
-  Serial.printf("Connecting to '%s'", SSID);
-  WiFi.begin(SSID, PASSWORD);
+  Serial.printf("Connecting to '%s'", config::WIFI_SSID);
+  WiFi.begin(config::WIFI_SSID, config::WIFI_PASSWORD);
   
   unsigned long timeout = millis() + 10000; // timeout if wifi does not connect in 10s from now
   wl_status_t connection_status = WiFi.status();
@@ -97,7 +105,7 @@ wl_status_t startWiFi() {
     wifiSignal = WiFi.RSSI(); // get Wifi signal strength now, because the WiFi will be turned off to save power!
     Serial.println("IP: " + WiFi.localIP().toString());
   } else {
-    Serial.printf("Could not connect to '%s'\n", SSID);
+    Serial.printf("Could not connect to '%s'\n", config::WIFI_SSID);
   }
   return connection_status;
 }
@@ -108,8 +116,8 @@ void killWiFi() {
 }
 
 bool setupTime() {
-  configTime(0, 0, NTP_SERVER_1, NTP_SERVER_2); // We will pass 0 for gmtOffset_sec and daylightOffset_sec and use setenv() for timezone offsets
-  setenv("TZ", TIMEZONE, 1);
+  configTime(0, 0, config::NTP_SERVER_1, config::NTP_SERVER_2); // We will pass 0 for gmtOffset_sec and daylightOffset_sec and use setenv() for timezone offsets
+  setenv("TZ", config::TIMEZONE, 1);
   tzset();
   if (!getLocalTime(&timeinfo, 10000)) {
     Serial.println("Failed to obtain time");
@@ -123,8 +131,11 @@ bool setupTime() {
 bool updateTimeDateStrings() {
   char time_output[30], day_output[30], update_time[30];
   // see http://www.cplusplus.com/reference/ctime/strftime/
-  if (UNITS == 'm') {
-    if ( (LANG == "cz") || (LANG == "de") || (LANG == "pl") || (LANG == "nl") ) {
+  if (config::UNITS == 'm') {
+    if ((config::LANG == "cz") 
+     || (config::LANG == "de") 
+     || (config::LANG == "pl") 
+     || (config::LANG == "nl") ) {
       sprintf(day_output, "%s, %02u. %s %04u", weekday_D[timeinfo.tm_wday], timeinfo.tm_mday, month_M[timeinfo.tm_mon], (timeinfo.tm_year) + 1900); // day_output >> So., 23. Juni 2019 <<
     }
     else
@@ -150,7 +161,7 @@ void beginSleep() {
   if (!getLocalTime(&timeinfo, 10000)) {
     Serial.println("Failed to obtain time before deep-sleep, using old time.");
   }
-  long sleep_timer = (SLEEP_DUR * 60 - ((timeinfo.tm_min % SLEEP_DUR) * 60 + timeinfo.tm_sec));
+  long sleep_timer = (config::SLEEP_DUR * 60 - ((timeinfo.tm_min % config::SLEEP_DUR) * 60 + timeinfo.tm_sec));
   esp_sleep_enable_timer_wakeup((sleep_timer + 1) * 1000000LL); // Add 1s extra sleep to allow for fast ESP32 RTCs
   Serial.println("Awake for: " + String((millis() - startTime) / 1000.0, 3) + "s");
   Serial.println("Entering deep-sleep for " + String(sleep_timer) + "(+1)s");
@@ -172,7 +183,10 @@ void initDisplay() {
   display.init(115200, true, 2, false); // init(uint32_t serial_diag_bitrate, bool initial, uint16_t reset_duration, bool pulldown_rst_mode)
   //display.init(); for older Waveshare HAT's
   SPI.end();
-  SPI.begin(PIN_EPD_SCK, PIN_EPD_MISO, PIN_EPD_MOSI, PIN_EPD_CS);
+  SPI.begin(config::PIN_EPD_SCK, 
+            config::PIN_EPD_MISO, 
+            config::PIN_EPD_MOSI, 
+            config::PIN_EPD_CS);
 
   display.setRotation(0);
   display.setTextSize(1);
@@ -535,14 +549,14 @@ void updateDisplayBuffer() {
 bool getOWMonecall(WiFiClient &client) {
   int attempts = 0;
   bool rxSuccess = false;
-  String unitsStr = (UNITS == 'i') ? "imperial" : "metric";
-  String uri = "/data/2.5/onecall?lat=" + LAT + "&lon=" + LON 
-               + "&units=" + unitsStr + "&lang=" + LANG 
-               + "&exclude=minutely&appid=" + OWM_APIKEY;
+  String unitsStr = (config::UNITS == 'i') ? "imperial" : "metric";
+  String uri = "/data/2.5/onecall?lat=" + config::LAT + "&lon=" + config::LON 
+               + "&units=" + unitsStr + "&lang=" + config::LANG 
+               + "&exclude=minutely&appid=" + config::OWM_APIKEY;
 
   while (!rxSuccess && attempts < 2) {
     HTTPClient http;
-    http.begin(client, OWM_ENDPOINT, 80, uri);
+    http.begin(client, config::OWM_ENDPOINT, 80, uri);
     int httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK) {
       rxSuccess = deserializeOneCall(http.getStream(), &owm_onecall);
@@ -569,7 +583,7 @@ bool getOWMonecall(WiFiClient &client) {
 bool getOWMairpollution(WiFiClient &client) {
   int attempts = 0;
   bool rxSuccess = false;
-  String unitsStr = (UNITS == 'i') ? "imperial" : "metric";
+  String unitsStr = (config::UNITS == 'i') ? "imperial" : "metric";
 
   // set start and end to approriate values so that the last 24 hours of air 
   // pollution history is returned. Unix, UTC. Us
@@ -581,13 +595,14 @@ bool getOWMairpollution(WiFiClient &client) {
   sprintf(endStr, "%lld", end);
   sprintf(startStr, "%lld", start);
 
-  String uri = "/data/2.5/air_pollution/history?lat=" + LAT + "&lon=" + LON 
+  String uri = "/data/2.5/air_pollution/history?lat=" 
+               + config::LAT + "&lon=" + config::LON 
                + "&start=" + startStr + "&end=" + endStr 
-               + "&appid=" + OWM_APIKEY;
+               + "&appid=" + config::OWM_APIKEY;
 
   while (!rxSuccess && attempts < 2) {
     HTTPClient http;
-    http.begin(client, OWM_ENDPOINT, 80, uri);
+    http.begin(client, config::OWM_ENDPOINT, 80, uri);
     int httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK) {
       rxSuccess = deserializeAirQuality(http.getStream(), &owm_air_pollution);
