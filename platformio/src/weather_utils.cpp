@@ -3,7 +3,6 @@
 
 #include "api_response.h"
 #include "config.h"
-#include "util.h"
 #include "weather_utils.h"
 
 /* Takes a String and capitalizes the first letter of every word.
@@ -18,7 +17,9 @@ void toTitleCase(String *text)
 
   for (int i = 1; i < text->length(); ++i)
   {
-    if (text->charAt(i - 1) == ' ' || text->charAt(i - 1) == '-' || text->charAt(i - 1) == '(')
+    if (text->charAt(i - 1) == ' ' 
+     || text->charAt(i - 1) == '-' 
+     || text->charAt(i - 1) == '(')
     {
       text->setCharAt(i, toUpperCase(text->charAt(i)));
     }
@@ -47,7 +48,10 @@ void truncateExtraneousInfo(String *text)
 
   int i = 1;
   int lastChar = i;
-  while (i < text->length() && (text->charAt(i) != ',' || text->charAt(i) != '.' || text->charAt(i) != '('))
+  while (i < text->length() 
+   && (text->charAt(i) != ',' 
+    || text->charAt(i) != '.' 
+    || text->charAt(i) != '('))
   {
     if (text->charAt(i) != ' ')
     {

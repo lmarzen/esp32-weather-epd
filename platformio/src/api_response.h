@@ -4,19 +4,18 @@
 #include <cstdint>
 #include <vector>
 #include <Arduino.h>
+#include <ArduinoJson.h>
 #include <HTTPClient.h>
 #include <WiFi.h>
 
-#include <ArduinoJson.h>
+extern const int OWM_NUM_MINUTELY;
+extern const int OWM_NUM_HOURLY;
+extern const int OWM_NUM_DAILY
+extern const int OWM_NUM_ALERTS;
+extern const int OWM_NUM_AIR_POLLUTION;
 
-
-const int owm_num_minutely      = 61;
-const int owm_num_hourly        = 48;
-const int owm_num_daily         = 8;
-const int owm_num_alerts        = 8;  // OpenWeatherMaps does not specify a limit, but if you need more alerts you are probably doomed.
-const int owm_num_air_pollution = 24; // Depending on AQI scale, hourly concentrations will need to be averaged over a period of 1h to 24h
-
-typedef struct owm_weather {
+typedef struct owm_weather
+{
   int     id;               // Weather condition id
   String  main;             // Group of weather parameters (Rain, Snow, Extreme etc.)
   String  description;      // Weather condition within the group (full list of weather conditions). Get the output in your language
@@ -26,7 +25,8 @@ typedef struct owm_weather {
 /*
  * Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
  */
-typedef struct owm_temp {
+typedef struct owm_temp
+{
   float   morn;             // Morning temperature.
   float   day;              // Day temperature.
   float   eve;              // Evening temperature.
@@ -38,7 +38,8 @@ typedef struct owm_temp {
 /*
  * This accounts for the human perception of weather. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
  */
-typedef struct owm_feels_like {
+typedef struct owm_feels_like
+{
   float   morn;             // Morning temperature.
   float   day;              // Day temperature.
   float   eve;              // Evening temperature.
@@ -48,7 +49,8 @@ typedef struct owm_feels_like {
 /*
  * Current weather data API response
  */
-typedef struct owm_current {
+typedef struct owm_current
+{
   int64_t dt;               // Current time, Unix, UTC
   int64_t sunrise;          // Sunrise time, Unix, UTC
   int64_t sunset;           // Sunset time, Unix, UTC
@@ -71,7 +73,8 @@ typedef struct owm_current {
 /*
  * Minute forecast weather data API response
  */
-typedef struct owm_minutely {
+typedef struct owm_minutely
+{
   int64_t dt;               // Time of the forecasted data, unix, UTC
   float   precipitation;    // Precipitation volume, mm
 } owm_minutely_t;
@@ -79,7 +82,8 @@ typedef struct owm_minutely {
 /*
  * Hourly forecast weather data API response
  */
-typedef struct owm_hourly {
+typedef struct owm_hourly
+{
   int64_t dt;               // Time of the forecasted data, unix, UTC
   float   temp;             // Temperature. Units - default: kelvin, metric: Celsius, imperial: Fahrenheit.
   float   feels_like;       // Temperature. This temperature parameter accounts for the human perception of weather. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
@@ -101,7 +105,8 @@ typedef struct owm_hourly {
 /*
  * Daily forecast weather data API response
  */
-typedef struct owm_daily {
+typedef struct owm_daily
+{
   int64_t dt;               // Time of the forecasted data, unix, UTC
   int64_t sunrise;          // Sunrise time, Unix, UTC
   int64_t sunset;           // Sunset time, Unix, UTC
@@ -128,7 +133,8 @@ typedef struct owm_daily {
 /*
  * National weather alerts data from major national weather warning systems
  */
-typedef struct owm_alerts {
+typedef struct owm_alerts
+{
   String  sender_name;      // Name of the alert source.
   String  event;            // Alert event name
   int64_t start;            // Date and time of the start of the alert, Unix, UTC
@@ -142,28 +148,31 @@ typedef struct owm_alerts {
  * 
  * https://openweathermap.org/api/one-call-api
  */
-typedef struct owm_resp_onecall {
+typedef struct owm_resp_onecall
+{
   float   lat;              // Geographical coordinates of the location (latitude)
   float   lon;              // Geographical coordinates of the location (longitude)
   String  timezone;         // Timezone name for the requested location
   int     timezone_offset;  // Shift in seconds from UTC
   owm_current_t   current;
-  // owm_minutely_t  minutely[owm_num_minutely];
+  // owm_minutely_t  minutely[OWM_NUM_MINUTELY];
   
-  owm_hourly_t    hourly[owm_num_hourly];
-  owm_daily_t     daily[owm_num_daily];
+  owm_hourly_t    hourly[OWM_NUM_HOURLY];
+  owm_daily_t     daily[OWM_NUM_DAILY];
   std::vector<owm_alerts_t> alerts;
 } owm_resp_onecall_t;
 
 /*
  * Coordinates from the specified location (latitude, longitude)
  */
-typedef struct owm_coord {
+typedef struct owm_coord
+{
   float   lat;
   float   lon;
 } owm_coord_t;
 
-typedef struct owm_components {
+typedef struct owm_components
+{
   float   co;               // Сoncentration of CO (Carbon monoxide), μg/m^3
   float   no;               // Сoncentration of NO (Nitrogen monoxide), μg/m^3
   float   no2;              // Сoncentration of NO2 (Nitrogen dioxide), μg/m^3
@@ -177,11 +186,12 @@ typedef struct owm_components {
 /* 
  * Response from OpenWeatherMap's Air Pollution API
  */
-typedef struct owm_resp_air_pollution {
+typedef struct owm_resp_air_pollution
+{
   owm_coord_t      coord;
-  int              main_aqi[owm_num_air_pollution];   // Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 = Good, 2 = Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor.
-  owm_components_t components[owm_num_air_pollution];
-  int64_t          dt[owm_num_air_pollution];         // Date and time, Unix, UTC;
+  int              main_aqi[OWM_NUM_AIR_POLLUTION];   // Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 = Good, 2 = Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor.
+  owm_components_t components[OWM_NUM_AIR_POLLUTION];
+  int64_t          dt[OWM_NUM_AIR_POLLUTION];         // Date and time, Unix, UTC;
 } owm_resp_air_pollution_t;
 
 bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t *r);

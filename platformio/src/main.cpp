@@ -32,7 +32,7 @@
 // only has character set used for displaying temperature (0123456789.-`)
 #include "fonts/FreeSans48pt_temperature.h"
 
-// icon header files 
+// icon header files
 #include "icons/icons_16x16.h"
 #include "icons/icons_32x32.h"
 #include "icons/icons_48x48.h"
@@ -55,70 +55,84 @@
 
 // GLOBAL VARIABLES
 tm timeinfo;
-int     wifiSignal;
-long    startTime = 0;
-owm_resp_onecall_t       owm_onecall       = {};
+int wifiSignal;
+long startTime = 0;
+owm_resp_onecall_t       owm_onecall = {};
 owm_resp_air_pollution_t owm_air_pollution = {};
 String timeStr, dateStr;
 
-enum alignment {LEFT, RIGHT, CENTER};
+enum alignment
+{
+  LEFT,
+  RIGHT,
+  CENTER
+};
 
 // B/W display
 GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
-  GxEPD2_750_T7(config::PIN_EPD_CS, 
-                config::PIN_EPD_DC, 
-                config::PIN_EPD_RST, 
+  GxEPD2_750_T7(config::PIN_EPD_CS,
+                config::PIN_EPD_DC,
+                config::PIN_EPD_RST,
                 config::PIN_EPD_BUSY));
 // 3-colour displays
 // GxEPD2_3C<GxEPD2_750c, GxEPD2_750c::HEIGHT> display(
-//   GxEPD2_750(config::PIN_EPD_CS, 
-//              config::PIN_EPD_DC, 
-//              config::PIN_EPD_RST, 
+//   GxEPD2_750(config::PIN_EPD_CS,
+//              config::PIN_EPD_DC,
+//              config::PIN_EPD_RST,
 //              config::PIN_EPD_BUSY));
 
 void printLocalTime()
 {
-  if (!getLocalTime(&timeinfo, 10000)){
+  if (!getLocalTime(&timeinfo, 10000))
+  {
     Serial.println("Failed to obtain time");
     return;
   }
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
 }
 
-wl_status_t startWiFi() {
+wl_status_t startWiFi()
+{
   WiFi.mode(WIFI_STA);
   Serial.printf("Connecting to '%s'", config::WIFI_SSID);
   WiFi.begin(config::WIFI_SSID, config::WIFI_PASSWORD);
-  
+
   unsigned long timeout = millis() + 10000; // timeout if wifi does not connect in 10s from now
   wl_status_t connection_status = WiFi.status();
-  
-  while ( (connection_status != WL_CONNECTED) && (millis() < timeout) ) {
+
+  while ((connection_status != WL_CONNECTED) && (millis() < timeout))
+  {
     Serial.print(".");
     delay(50);
     connection_status = WiFi.status();
   }
   Serial.println();
-  
-  if (connection_status == WL_CONNECTED) {
+
+  if (connection_status == WL_CONNECTED)
+  {
     wifiSignal = WiFi.RSSI(); // get Wifi signal strength now, because the WiFi will be turned off to save power!
     Serial.println("IP: " + WiFi.localIP().toString());
-  } else {
+  }
+  else
+  {
     Serial.printf("Could not connect to '%s'\n", config::WIFI_SSID);
   }
   return connection_status;
 }
 
-void killWiFi() {
+void killWiFi()
+{
   WiFi.disconnect();
   WiFi.mode(WIFI_OFF);
 }
 
-bool setupTime() {
+bool setupTime()
+{
   configTime(0, 0, config::NTP_SERVER_1, config::NTP_SERVER_2); // We will pass 0 for gmtOffset_sec and daylightOffset_sec and use setenv() for timezone offsets
   setenv("TZ", config::TIMEZONE, 1);
   tzset();
-  if (!getLocalTime(&timeinfo, 10000)) {
+  if (!getLocalTime(&timeinfo, 10000))
+  {
     Serial.println("Failed to obtain time");
     return false;
   }
@@ -127,21 +141,24 @@ bool setupTime() {
 }
 
 // TODO
-bool updateTimeDateStrings() {
+bool updateTimeDateStrings()
+{
   char time_output[30], day_output[30], update_time[30];
   // see http://www.cplusplus.com/reference/ctime/strftime/
-  if (config::UNITS == 'm') {
+  if (config::UNITS == 'm')
+  {
     if ((config::LANG == "cz") 
      || (config::LANG == "de") 
      || (config::LANG == "pl") 
-     || (config::LANG == "nl") ) {
+     || (config::LANG == "nl"))
+    {
       sprintf(day_output, "%s, %02u. %s %04u", weekday_D[timeinfo.tm_wday], timeinfo.tm_mday, month_M[timeinfo.tm_mon], (timeinfo.tm_year) + 1900); // day_output >> So., 23. Juni 2019 <<
     }
     else
     {
       sprintf(day_output, "%s %02u-%s-%04u", weekday_D[timeinfo.tm_wday], timeinfo.tm_mday, month_M[timeinfo.tm_mon], (timeinfo.tm_year) + 1900);
     }
-    strftime(update_time, sizeof(update_time), "%H:%M:%S", &timeinfo);  // Creates: '14:05:49'
+    strftime(update_time, sizeof(update_time), "%H:%M:%S", &timeinfo); // Creates: '14:05:49'
     sprintf(time_output, "%s %s", TXT_UPDATED, update_time);
   }
   else
@@ -155,36 +172,44 @@ bool updateTimeDateStrings() {
   return true;
 }
 
-void beginSleep() {
+void beginSleep()
+{
   display.powerOff();
-  if (!getLocalTime(&timeinfo, 10000)) {
+  if (!getLocalTime(&timeinfo, 10000))
+  {
     Serial.println("Failed to obtain time before deep-sleep, using old time.");
   }
-  long sleep_timer = (config::SLEEP_DUR * 60 - ((timeinfo.tm_min % config::SLEEP_DUR) * 60 + timeinfo.tm_sec));
+  long sleep_timer = (config::SLEEP_DUR * 60 
+                     - ((timeinfo.tm_min % config::SLEEP_DUR) * 60 
+                     + timeinfo.tm_sec));
   esp_sleep_enable_timer_wakeup((sleep_timer + 1) * 1000000LL); // Add 1s extra sleep to allow for fast ESP32 RTCs
   Serial.println("Awake for: " + String((millis() - startTime) / 1000.0, 3) + "s");
   Serial.println("Entering deep-sleep for " + String(sleep_timer) + "(+1)s");
   esp_deep_sleep_start();
 }
 
-void drawString(int x, int y, String text, alignment align) {
-  int16_t  x1, y1;
+void drawString(int x, int y, String text, alignment align)
+{
+  int16_t x1, y1;
   uint16_t w, h;
   display.setTextWrap(false);
   display.getTextBounds(text, x, y, &x1, &y1, &w, &h);
-  if (align == RIGHT)  x = x - w;
-  if (align == CENTER) x = x - w / 2;
+  if (align == RIGHT)
+    x = x - w;
+  if (align == CENTER)
+    x = x - w / 2;
   display.setCursor(x, y);
   display.print(text);
 }
 
-void initDisplay() {
-  display.init(115200, true, 2, false); // init(uint32_t serial_diag_bitrate, bool initial, uint16_t reset_duration, bool pulldown_rst_mode)
-  //display.init(); for older Waveshare HAT's
+void initDisplay()
+{
+  display.init(115200, true, 2, false);
+  // display.init(); for older Waveshare HAT's
   SPI.end();
-  SPI.begin(config::PIN_EPD_SCK, 
-            config::PIN_EPD_MISO, 
-            config::PIN_EPD_MOSI, 
+  SPI.begin(config::PIN_EPD_SCK,
+            config::PIN_EPD_MISO,
+            config::PIN_EPD_MOSI,
             config::PIN_EPD_CS);
 
   display.setRotation(0);
@@ -194,7 +219,8 @@ void initDisplay() {
   display.setFullWindow();
 }
 
-void updateDisplayBuffer() {
+void updateDisplayBuffer()
+{
   // location, date
   display.setFont(&FreeSans16pt7b);
   drawString(DISP_WIDTH - 1, 23, "Tucson, Arizona", RIGHT);
@@ -236,7 +262,7 @@ void updateDisplayBuffer() {
   display.setFont(&FreeSans48pt_temperature);
   drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, "88", CENTER);
   display.setFont(&FreeSans14pt7b);
-  drawString(display.getCursorX(), 196 / 2  - 69 / 2 + 20, "`F", LEFT);
+  drawString(display.getCursorX(), 196 / 2 - 69 / 2 + 20, "`F", LEFT);
   // current feels like
   display.setFont(&FreeSans12pt7b);
   drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, "Feels Like 86`", CENTER);
@@ -263,7 +289,6 @@ void updateDisplayBuffer() {
   drawString(196 + 162 / 2 + 4, 98 + 69 / 2 + 40, "Like 86`", CENTER);
   */
 
-
   // 5 day, forecast icons
   display.drawInvertedBitmap(398, 98 + 69 / 2 - 32 - 6, wi_day_fog_64x64, 64, 64, GxEPD_BLACK);
   display.drawInvertedBitmap(480, 98 + 69 / 2 - 32 - 6, wi_day_rain_wind_64x64, 64, 64, GxEPD_BLACK);
@@ -279,25 +304,25 @@ void updateDisplayBuffer() {
   drawString(726 + 32, 98 + 69 / 2 - 32 - 26 - 6 + 16, "Thur", CENTER);
   // 5 day, high | low
   display.setFont(&FreeSans8pt7b);
-  drawString(398 + 32    , 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
+  drawString(398 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
   drawString(398 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "199`", RIGHT);
   drawString(398 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "198`", LEFT);
-  drawString(480 + 32    , 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
+  drawString(480 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
   drawString(480 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "199`", RIGHT);
   drawString(480 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "-22`", LEFT);
-  drawString(562 + 32    , 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
+  drawString(562 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
   drawString(562 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "99`", RIGHT);
   drawString(562 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "67`", LEFT);
-  drawString(644 + 32    , 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
+  drawString(644 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
   drawString(644 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "0`", RIGHT);
   drawString(644 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "0`", LEFT);
-  drawString(726 + 32    , 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
+  drawString(726 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
   drawString(726 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "79`", RIGHT);
   drawString(726 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "199`", LEFT);
 
   // line dividing top and bottom display areas
   display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
-  
+
   // current weather data
   int16_t sp = 8;
   display.drawInvertedBitmap(0, 204 + (48 + sp) * 0, wi_sunrise_48x48, 48, 48, GxEPD_BLACK);
@@ -338,11 +363,8 @@ void updateDisplayBuffer() {
   drawString(170 + 48, 204 + 17 + (48 + sp) * 3 - 17 / 2 + 48 / 2, "4000ft", LEFT);
   drawString(170 + 48, 204 + 17 + (48 + sp) * 4 - 17 / 2 + 48 / 2, "20%", LEFT);
 
-  
-
-  
   // debug
-  int16_t  x1, y1;
+  int16_t x1, y1;
   uint16_t w, h;
   char str[20];
 
@@ -351,201 +373,200 @@ void updateDisplayBuffer() {
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "6 h: %d", h);
-  drawString(500,215, str, LEFT);
+  drawString(500, 215, str, LEFT);
 
   display.setFont(&FreeSans7pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "7 h: %d", h);
-  drawString(500,230, str, LEFT);
+  drawString(500, 230, str, LEFT);
 
   display.setFont(&FreeSans8pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "8 h: %d", h);
-  drawString(500,245, str, LEFT);
+  drawString(500, 245, str, LEFT);
 
   display.setFont(&FreeSans9pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "9 h: %d", h);
-  drawString(500,260, str, LEFT);
+  drawString(500, 260, str, LEFT);
 
   display.setFont(&FreeSans10pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "10 h: %d", h);
-  drawString(500,275, str, LEFT);
+  drawString(500, 275, str, LEFT);
 
   display.setFont(&FreeSans11pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "11 h: %d", h);
-  drawString(500,290, str, LEFT);
+  drawString(500, 290, str, LEFT);
 
   display.setFont(&FreeSans12pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "12 h: %d", h);
-  drawString(500,305, str, LEFT);
+  drawString(500, 305, str, LEFT);
 
   display.setFont(&FreeSans14pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "14 h: %d", h);
-  drawString(500,320, str, LEFT);
+  drawString(500, 320, str, LEFT);
 
   display.setFont(&FreeSans16pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "16 h: %d", h);
-  drawString(500,335, str, LEFT);
+  drawString(500, 335, str, LEFT);
 
   display.setFont(&FreeSans18pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "18 h: %d", h);
-  drawString(500,350, str, LEFT);
+  drawString(500, 350, str, LEFT);
 
   display.setFont(&FreeSans20pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "20 h: %d", h);
-  drawString(500,365, str, LEFT);
+  drawString(500, 365, str, LEFT);
 
   display.setFont(&FreeSans22pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "22 h: %d", h);
-  drawString(500,380, str, LEFT);
+  drawString(500, 380, str, LEFT);
 
   display.setFont(&FreeSans24pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "24 h: %d", h);
-  drawString(500,395, str, LEFT);
+  drawString(500, 395, str, LEFT);
 
   display.setFont(&FreeSans26pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "26 h: %d", h);
-  drawString(500,410, str, LEFT);
+  drawString(500, 410, str, LEFT);
 
   display.setFont(&FreeSans48pt_temperature);
   display.getTextBounds("1234567890.-`", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "48temp h: %d", h);
-  drawString(500,425, str, LEFT);
+  drawString(500, 425, str, LEFT);
 
   // Upper font height
-    display.setFont(&FreeSans6pt7b);
+  display.setFont(&FreeSans6pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "6 h: %d", h);
-  drawString(580,215, str, LEFT);
+  drawString(580, 215, str, LEFT);
 
   display.setFont(&FreeSans7pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "7 h: %d", h);
-  drawString(580,230, str, LEFT);
+  drawString(580, 230, str, LEFT);
 
   display.setFont(&FreeSans8pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "8 h: %d", h);
-  drawString(580,245, str, LEFT);
+  drawString(580, 245, str, LEFT);
 
   display.setFont(&FreeSans9pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "9 h: %d", h);
-  drawString(580,260, str, LEFT);
+  drawString(580, 260, str, LEFT);
 
   display.setFont(&FreeSans10pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "10 h: %d", h);
-  drawString(580,275, str, LEFT);
+  drawString(580, 275, str, LEFT);
 
   display.setFont(&FreeSans11pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "11 h: %d", h);
-  drawString(580,290, str, LEFT);
+  drawString(580, 290, str, LEFT);
 
   display.setFont(&FreeSans12pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "12 h: %d", h);
-  drawString(580,305, str, LEFT);
+  drawString(580, 305, str, LEFT);
 
   display.setFont(&FreeSans14pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "14 h: %d", h);
-  drawString(580,320, str, LEFT);
+  drawString(580, 320, str, LEFT);
 
   display.setFont(&FreeSans16pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "16 h: %d", h);
-  drawString(580,335, str, LEFT);
+  drawString(580, 335, str, LEFT);
 
   display.setFont(&FreeSans18pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "18 h: %d", h);
-  drawString(580,350, str, LEFT);
+  drawString(580, 350, str, LEFT);
 
   display.setFont(&FreeSans20pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "20 h: %d", h);
-  drawString(580,365, str, LEFT);
+  drawString(580, 365, str, LEFT);
 
   display.setFont(&FreeSans22pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "22 h: %d", h);
-  drawString(580,380, str, LEFT);
+  drawString(580, 380, str, LEFT);
 
   display.setFont(&FreeSans24pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "24 h: %d", h);
-  drawString(580,395, str, LEFT);
+  drawString(580, 395, str, LEFT);
 
   display.setFont(&FreeSans26pt7b);
   display.getTextBounds("TMNH", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "26 h: %d", h);
-  drawString(580,410, str, LEFT);
+  drawString(580, 410, str, LEFT);
 
   display.setFont(&FreeSans48pt_temperature);
   display.getTextBounds("1234567890.-`", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "48temp h: %d", h);
-  drawString(580,425, str, LEFT);
-
+  drawString(580, 425, str, LEFT);
 
   display.setFont(&FreeSans14pt7b);
   display.getTextBounds("`F`", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "w: %d h: %d", w, h);
-  drawString(500,440, str, LEFT);
+  drawString(500, 440, str, LEFT);
   // end debug
-  
 }
 
 /* Perform an HTTP GET request to OpenWeatherMap's "One Call" API
- * If data is recieved, it will be parsed and stored in the global variable 
+ * If data is recieved, it will be parsed and stored in the global variable
  * owm_onecall.
- * 
- * Returns true if OK response is recieved and response is successfully parsed, 
+ *
+ * Returns true if OK response is recieved and response is successfully parsed,
  * otherwise false.
  */
-bool getOWMonecall(WiFiClient &client) {
+bool getOWMonecall(WiFiClient &client)
+{
   int attempts = 0;
   bool rxSuccess = false;
   String unitsStr = (config::UNITS == 'i') ? "imperial" : "metric";
@@ -553,16 +574,19 @@ bool getOWMonecall(WiFiClient &client) {
                + "&units=" + unitsStr + "&lang=" + config::LANG 
                + "&exclude=minutely&appid=" + config::OWM_APIKEY;
 
-  while (!rxSuccess && attempts < 2) {
+  while (!rxSuccess && attempts < 2)
+  {
     HTTPClient http;
     http.begin(client, config::OWM_ENDPOINT, 80, uri);
     int httpResponse = http.GET();
-    if (httpResponse == HTTP_CODE_OK) {
+    if (httpResponse == HTTP_CODE_OK)
+    {
       rxSuccess = deserializeOneCall(http.getStream(), &owm_onecall);
-    } else {
+    }
+    else
+    {
       Serial.println("OpenWeatherMap One Call API connection error: " 
-                     + String(httpResponse, DEC) + " " 
-                     + http.errorToString(httpResponse));
+        + String(httpResponse, DEC) + " " + http.errorToString(httpResponse));
     }
     client.stop();
     http.end();
@@ -573,18 +597,19 @@ bool getOWMonecall(WiFiClient &client) {
 }
 
 /* Perform an HTTP GET request to OpenWeatherMap's "Air Pollution" API
- * If data is recieved, it will be parsed and stored in the global variable 
+ * If data is recieved, it will be parsed and stored in the global variable
  * owm_air_pollution.
- * 
- * Returns true if OK response is recieved and response is successfully parsed, 
+ *
+ * Returns true if OK response is recieved and response is successfully parsed,
  * otherwise false.
  */
-bool getOWMairpollution(WiFiClient &client) {
+bool getOWMairpollution(WiFiClient &client)
+{
   int attempts = 0;
   bool rxSuccess = false;
   String unitsStr = (config::UNITS == 'i') ? "imperial" : "metric";
 
-  // set start and end to approriate values so that the last 24 hours of air 
+  // set start and end to approriate values so that the last 24 hours of air
   // pollution history is returned. Unix, UTC. Us
   time_t now;
   int64_t end = time(&now);
@@ -596,19 +621,22 @@ bool getOWMairpollution(WiFiClient &client) {
 
   String uri = "/data/2.5/air_pollution/history?lat=" 
                + config::LAT + "&lon=" + config::LON 
-               + "&start=" + startStr + "&end=" + endStr 
-               + "&appid=" + config::OWM_APIKEY;
+              + "&start=" + startStr + "&end=" + endStr 
+              + "&appid=" + config::OWM_APIKEY;
 
-  while (!rxSuccess && attempts < 2) {
+  while (!rxSuccess && attempts < 2)
+  {
     HTTPClient http;
     http.begin(client, config::OWM_ENDPOINT, 80, uri);
     int httpResponse = http.GET();
-    if (httpResponse == HTTP_CODE_OK) {
+    if (httpResponse == HTTP_CODE_OK)
+    {
       rxSuccess = deserializeAirQuality(http.getStream(), &owm_air_pollution);
-    } else {
+    }
+    else
+    {
       Serial.println("OpenWeatherMap Air Pollution API connection error: " 
-                     + String(httpResponse, DEC) + " " 
-                     + http.errorToString(httpResponse));
+        + String(httpResponse, DEC) + " " + http.errorToString(httpResponse));
     }
     client.stop();
     http.end();
@@ -618,36 +646,42 @@ bool getOWMairpollution(WiFiClient &client) {
   return rxSuccess;
 }
 
-void setup() {
+void setup()
+{
   startTime = millis();
   Serial.begin(115200);
 
   // TODO will firebeetle led stay off when on battery? otheriwse desolder...
-//#ifdef LED_BUILTIN
-//  pinMode(LED_BUILTIN, INPUT); // If it's On, turn it off and some boards use GPIO-5 for SPI-SS, which remains low after screen use
-//  digitalWrite(LED_BUILTIN, HIGH);
-//#endif
+  //#ifdef LED_BUILTIN
+  //  pinMode(LED_BUILTIN, INPUT); // If it's On, turn it off and some boards use GPIO-5 for SPI-SS, which remains low after screen use
+  //  digitalWrite(LED_BUILTIN, HIGH);
+  //#endif
 
   wl_status_t wifiStatus = startWiFi();
 
   bool timeConfigured = false;
-  if (wifiStatus == WL_CONNECTED) {
+  if (wifiStatus == WL_CONNECTED)
+  {
     timeConfigured = setupTime();
   }
 
   bool rxOWM = false;
-  if ( (wifiStatus == WL_CONNECTED) && timeConfigured) {
-      WiFiClient client;
-      rxOWM |= getOWMonecall(client);
-      rxOWM |= getOWMairpollution(client);
+  if ((wifiStatus == WL_CONNECTED) && timeConfigured)
+  {
+    WiFiClient client;
+    rxOWM |= getOWMonecall(client);
+    rxOWM |= getOWMairpollution(client);
   }
   killWiFi();
   initDisplay();
 
-  if (rxOWM) {
+  if (rxOWM)
+  {
     updateDisplayBuffer();
     display.display(false); // Full display refresh
-  } else {
+  }
+  else
+  {
     // partialRefreshStatus(wifiStatus, timeConfigured, rxOWM);
     display.display(true); // partial display refresh
   }
@@ -655,12 +689,7 @@ void setup() {
   beginSleep();
 }
 
-void loop() 
-{ 
+void loop()
+{
   // this will never run
 }
-
-
-
-
-
