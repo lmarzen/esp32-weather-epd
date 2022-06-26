@@ -47,7 +47,7 @@
 #include "aqi.h"
 #include "config.h"
 #include "lang.h"
-#include "weather_utils.h"
+#include "display_utils.h"
 
 // PREPROCESSOR MACROS
 #define DISP_WIDTH  800
@@ -257,7 +257,7 @@ void updateDisplayBuffer()
   */
 
   // current weather icon
-  display.drawInvertedBitmap(0, 0, wi_day_rain_wind_196x196, 196, 196, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 0, getCurrentBitmap(owm_onecall.current), 196, 196, GxEPD_BLACK);
   // current temp
   display.setFont(&FreeSans48pt_temperature);
   drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, "88", CENTER);
@@ -555,6 +555,9 @@ void updateDisplayBuffer()
   display.setFont(&FreeSans8pt7b);
   sprintf(str, "w: %d h: %d", w, h);
   drawString(500, 440, str, LEFT);
+
+  display.drawInvertedBitmap(170, 200, getForecastBitmap(owm_onecall.daily[1]), 48, 48, GxEPD_BLACK);
+
   // end debug
 }
 
