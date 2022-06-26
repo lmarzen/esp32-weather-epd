@@ -23,33 +23,30 @@
 #define UNITED_STATES_AQI
 
 // Set the below variables in "config.cpp"
-namespace config
-{
-  extern const uint8_t PIN_BAT_ADC;
-  extern const uint8_t PIN_EPD_BUSY;
-  extern const uint8_t PIN_EPD_CS;
-  extern const uint8_t PIN_EPD_RST;
-  extern const uint8_t PIN_EPD_DC;
-  extern const uint8_t PIN_EPD_SCK;
-  extern const uint8_t PIN_EPD_MISO;
-  extern const uint8_t PIN_EPD_MOSI;
-  extern const char* WIFI_SSID;
-  extern const char* WIFI_PASSWORD;
-  extern const String OWM_APIKEY;
-  extern const String OWM_ENDPOINT;
-  extern const String LAT;
-  extern const String LON;
-  extern const String CITY;
-  extern const char* TIMEZONE;
-  extern const char* NTP_SERVER_1;
-  extern const char* NTP_SERVER_2;
-  extern const long SLEEP_DUR;
-  extern const int WAKE_TIME;
-  extern const int BED_TIME;
-  extern const String LANG;
-  extern const char UNITS;
-  extern const int HOURLY_GRAPH_MAX;
-  extern const std::vector<String> ALERT_URGENCY;
-}
+extern const uint8_t PIN_BAT_ADC;
+extern const uint8_t PIN_EPD_BUSY;
+extern const uint8_t PIN_EPD_CS;
+extern const uint8_t PIN_EPD_RST;
+extern const uint8_t PIN_EPD_DC;
+extern const uint8_t PIN_EPD_SCK;
+extern const uint8_t PIN_EPD_MISO;
+extern const uint8_t PIN_EPD_MOSI;
+extern const char *WIFI_SSID;
+extern const char *WIFI_PASSWORD;
+extern const String OWM_APIKEY;
+extern const String OWM_ENDPOINT;
+extern const String LAT;
+extern const String LON;
+extern const String CITY;
+extern const char *TIMEZONE;
+extern const char *NTP_SERVER_1;
+extern const char *NTP_SERVER_2;
+extern const long SLEEP_DUR;
+extern const int WAKE_TIME;
+extern const int BED_TIME;
+extern const String LANG;
+extern const char UNITS;
+extern const int HOURLY_GRAPH_MAX;
+extern const std::vector<String> ALERT_URGENCY;
 
 #endif
