@@ -2,12 +2,6 @@
 #include <ArduinoJson.h>
 #include "api_response.h"
 
-const int OWM_NUM_MINUTELY      = 61;
-const int OWM_NUM_HOURLY        = 48;
-const int OWM_NUM_DAILY         = 8;
-const int OWM_NUM_ALERTS        = 8;  // OpenWeatherMaps does not specify a limit, but if you need more alerts you are probably doomed.
-const int OWM_NUM_AIR_POLLUTION = 24; // Depending on AQI scale, hourly concentrations will need to be averaged over a period of 1h to 24h
-
 bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t *r) 
 {
   int i;

@@ -7,19 +7,17 @@ extern "C" {
 
 /* Each AQI scale has a maximum value, above which AQI is typically denoted by
  * ">{AQI_MAX}" or "{AQI_MAX}+".
- * 
- * Uncomment if you want to make use of these preprocessor macros
  */
-// #define AUSTRALIA_AQI_MAX       200
-// #define CANADA_AQHI_MAX         10
-// #define EUROPE_CAQI_MAX         100
-// #define HONG_KONG_AQHI_MAX      10
-// #define INDIA_AQI_MAX           400
-// #define MAINLAND_CHINA_AQI_MAX  500
-// #define SINGAPORE_PSI_MAX       500
-// #define SOUTH_KOREA_CAI_MAX     500
-// #define UNITED_KINGDOM_DAQI_MAX 10
-// #define UNITED_STATES_AQI_MAX   500
+#define AUSTRALIA_AQI_MAX       200
+#define CANADA_AQHI_MAX          10
+#define EUROPE_CAQI_MAX         100
+#define HONG_KONG_AQHI_MAX       10
+#define INDIA_AQI_MAX           400
+#define MAINLAND_CHINA_AQI_MAX  500
+#define SINGAPORE_PSI_MAX       500
+#define SOUTH_KOREA_CAI_MAX     500
+#define UNITED_KINGDOM_DAQI_MAX  10
+#define UNITED_STATES_AQI_MAX   500
 
 /* Returns the Air Quality Index, rounded to the nearest integer
  * 
@@ -87,19 +85,20 @@ int united_states_aqi(float co_8h,    float no2_1h,
  *   returns "Moderate"
  */
 
-const char* australia_aqi_desc(      int aqi);
-const char* canada_aqhi_desc(        int aqhi);
-const char* europe_caqi_desc(        int caqi);
-const char* hong_kong_aqhi_desc(     int aqhi);
-const char* india_aqi_desc(          int aqi);
-const char* mainland_china_aqi_desc( int aqi);
-const char* singapore_psi_desc(      int psi);
-const char* south_korea_cai_desc(    int cai);
-const char* united_kingdom_daqi_desc(int daqi);
-const char* united_states_aqi_desc(  int aqi);
+const char *australia_aqi_desc(      int aqi);
+const char *canada_aqhi_desc(        int aqhi);
+const char *europe_caqi_desc(        int caqi);
+const char *hong_kong_aqhi_desc(     int aqhi);
+const char *india_aqi_desc(          int aqi);
+const char *mainland_china_aqi_desc( int aqi);
+const char *singapore_psi_desc(      int psi);
+const char *south_korea_cai_desc(    int cai);
+const char *united_kingdom_daqi_desc(int daqi);
+const char *united_states_aqi_desc(  int aqi);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+
