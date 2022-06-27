@@ -56,7 +56,7 @@
 // GLOBAL VARIABLES
 tm timeinfo;
 int wifiSignal;
-long startTime = 0;
+unsigned long startTime = 0;
 owm_resp_onecall_t       owm_onecall = {};
 owm_resp_air_pollution_t owm_air_pollution = {};
 String timeStr, dateStr;
