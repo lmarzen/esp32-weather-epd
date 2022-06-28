@@ -475,3 +475,16 @@ const uint8_t *getCurrentBitmap(owm_current_t &current)
     return wi_na_196x196;
   }
 }
+
+
+
+const uint8_t *getAlertBitmap48(owm_alerts_t &alert)
+{
+  
+
+
+
+}
+
+
+const uint8_t *getAlertBitmap32(owm_alerts_t &alert);

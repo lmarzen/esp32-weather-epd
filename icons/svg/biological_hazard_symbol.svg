@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-26 -28 52 52"
+   version="1.1"
+   id="svg42"
+   sodipodi:docname="biological_hazard_symbol.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview44"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="16.403846"
+     inkscape:cx="26"
+     inkscape:cy="25.451348"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg42" />
+  <defs
+     id="defs30">
+    <clipPath
+       id="b">
+      <circle
+         cy="-15"
+         r="9.5"
+         id="circle2" />
+      <circle
+         cy="-15"
+         r="9.5"
+         transform="rotate(120)"
+         id="circle4" />
+      <circle
+         cy="-15"
+         r="9.5"
+         transform="rotate(240)"
+         id="circle6" />
+    </clipPath>
+    <mask
+       id="a"
+       width="60"
+       height="60"
+       x="-30"
+       y="-30"
+       maskUnits="userSpaceOnUse">
+      <path
+         fill="#fff"
+         d="M-27-27h54v54h-54z"
+         id="path9" />
+      <path
+         d="M2-23v-4h-4v4M-.5-6v4h1v-4"
+         id="path11" />
+      <circle
+         cy="-15"
+         r="10.5"
+         id="circle13" />
+      <g
+         transform="rotate(120)"
+         id="g19">
+        <path
+           d="M2-23v-4h-4v4M-.5-6v4h1v-4"
+           id="path15" />
+        <circle
+           cy="-15"
+           r="10.5"
+           id="circle17" />
+      </g>
+      <g
+         transform="rotate(240)"
+         id="g25">
+        <path
+           d="M2-23v-4h-4v4M-.5-6v4h1v-4"
+           id="path21" />
+        <circle
+           cy="-15"
+           r="10.5"
+           id="circle23" />
+      </g>
+      <circle
+         r="3"
+         id="circle27" />
+    </mask>
+  </defs>
+  <g
+     id="g209"
+     transform="matrix(0.93776963,0,0,0.93776963,0,0.57886648)">
+    <g
+       mask="url(#a)"
+       id="g38">
+      <circle
+         cy="-11"
+         r="15"
+         id="circle32"
+         cx="0" />
+      <circle
+         cy="-11"
+         r="15"
+         transform="rotate(120)"
+         id="circle34"
+         cx="0" />
+      <circle
+         cy="-11"
+         r="15"
+         transform="rotate(-120)"
+         id="circle36"
+         cx="0" />
+    </g>
+    <circle
+       r="11.75"
+       fill="none"
+       stroke="#000000"
+       stroke-width="3.5"
+       clip-path="url(#b)"
+       id="circle40"
+       cx="0"
+       cy="0" />
+  </g>
+</svg>

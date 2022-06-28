@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.0"
+   width="1280.000000pt"
+   height="1280.000000pt"
+   viewBox="0 0 1280.000000 1280.000000"
+   preserveAspectRatio="xMidYMid meet"
+   id="svg14"
+   sodipodi:docname="ionizing_radiation_symbol.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs18" />
+  <sodipodi:namedview
+     id="namedview16"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="pt"
+     showgrid="false"
+     inkscape:zoom="0.49980469"
+     inkscape:cx="551.21532"
+     inkscape:cy="823.32161"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg14" />
+  <metadata
+     id="metadata2">
+Created by potrace 1.15, written by Peter Selinger 2001-2017
+</metadata>
+  <g
+     transform="matrix(0.09,0,0,-0.09,64,1177.0805)"
+     fill="#000000"
+     stroke="none"
+     id="g12">
+    <path
+       d="M 3043,11841 C 2357,11414 1781,10889 1296,10250 496,9197 50,7937 4,6600 l -7,-200 h 2241 2242 v 45 c 0,25 5,89 11,143 63,583 374,1097 855,1413 l 94,62 -29,51 c -725,1263 -2204,3812 -2213,3813 -7,1 -77,-38 -155,-86 z"
+       id="path4" />
+    <path
+       d="M 9337,11488 C 8933,10787 7368,8076 7364,8069 c -2,-4 33,-30 77,-59 430,-280 739,-732 838,-1225 22,-110 41,-269 41,-340 v -45 h 2242 2241 l -7,198 c -23,649 -134,1264 -337,1857 -452,1325 -1323,2461 -2494,3251 -171,115 -347,224 -362,224 -6,0 -125,-199 -266,-442 z"
+       id="path6" />
+    <path
+       d="m 6225,7665 c -675,-94 -1166,-714 -1096,-1382 32,-312 152,-565 370,-784 219,-218 472,-338 783,-370 360,-38 734,93 1001,350 469,452 527,1168 137,1690 -275,368 -738,560 -1195,496 z"
+       id="path8" />
+    <path
+       d="M 4932,3856 C 3132,739 3206,869 3221,855 3245,833 3546,676 3715,597 4394,282 5073,100 5851,23 c 249,-24 844,-24 1098,1 764,73 1449,256 2121,566 144,66 464,233 501,261 l 22,17 -1078,1868 C 7922,3764 7419,4635 7398,4671 l -38,66 -118,-58 c -204,-100 -422,-163 -654,-188 -339,-37 -716,32 -1032,188 l -116,57 z"
+       id="path10" />
+  </g>
+</svg>

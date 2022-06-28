@@ -46,7 +46,7 @@
 #include "api_response.h"
 #include "aqi.h"
 #include "config.h"
-#include "lang.h"
+#include "lang_en_us.h"
 #include "display_utils.h"
 
 // PREPROCESSOR MACROS
@@ -152,11 +152,11 @@ bool updateTimeDateStrings()
      || (LANG == "pl") 
      || (LANG == "nl"))
     {
-      sprintf(day_output, "%s, %02u. %s %04u", weekday_D[timeinfo.tm_wday], timeinfo.tm_mday, month_M[timeinfo.tm_mon], (timeinfo.tm_year) + 1900); // day_output >> So., 23. Juni 2019 <<
+      sprintf(day_output, "%s, %02u. %s %04u", TXT_dddd[timeinfo.tm_wday], timeinfo.tm_mday, TXT_MMMM[timeinfo.tm_mon], (timeinfo.tm_year) + 1900); // day_output >> So., 23. Juni 2019 <<
     }
     else
     {
-      sprintf(day_output, "%s %02u-%s-%04u", weekday_D[timeinfo.tm_wday], timeinfo.tm_mday, month_M[timeinfo.tm_mon], (timeinfo.tm_year) + 1900);
+      sprintf(day_output, "%s %02u-%s-%04u", TXT_dddd[timeinfo.tm_wday], timeinfo.tm_mday, TXT_MMMM[timeinfo.tm_mon], (timeinfo.tm_year) + 1900);
     }
     strftime(update_time, sizeof(update_time), "%H:%M:%S", &timeinfo); // Creates: '14:05:49'
     sprintf(time_output, "%s %s", TXT_UPDATED, update_time);

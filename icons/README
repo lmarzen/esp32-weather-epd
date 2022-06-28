@@ -23,6 +23,14 @@ https://seekicon.com/free-icon/house_16
 air_quality.svg was derived from WeatherBug's air quality icon
 https://www.weatherbug.com/air-quality/
 
+ionizing_radiation_symbol.svg was obtained from
+https://svgsilh.com/image/309911.html
+
+biological_hazard_symbol.svg was obtained from 
+https://upload.wikimedia.org/wikipedia/commons/c/c0/Biohazard_symbol.svg
+
+
+
 HOW TO RUN SCRIPT TO GENERATE .h FILES FROM .svg FILES
 ---
 svg_to_headers.sh, will convert the svg files in ./svg/ to the
