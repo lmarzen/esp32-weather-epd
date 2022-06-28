@@ -48,36 +48,56 @@ const std::vector<String> ALERT_URGENCY = {"statement", "watch", "advisory", "wa
 // const std::vector<String> ALERT_URGENCY = {}; // Disable urgency interpretation (algorithm will fallback to only prefer the most recently issued alerts)
 
 // Weather terminology associated with each alert icon
-const std::vector<String> TERM_SMOG = {"smog"};
-const std::vector<String> TERM_SMOKE = {"smoke"};
-const std::vector<String> TERM_FOG = {"fog", "haar"};
-const std::vector<String> TERM_METEOR = {"meteor", "asteroid"};
-const std::vector<String> TERM_NUCLEAR = {"nuclear", "ionizing radiation"};
-const std::vector<String> TERM_BIOHAZARD = {"biohazard", "biological hazard"};
-const std::vector<String> TERM_EARTHQUAKE = {"earthquake"};
-const std::vector<String> TERM_TSUNAMI = {"tsunami"};
-const std::vector<String> TERM_FIRE = {"fire", "red flag"};
-const std::vector<String> TERM_THERMOMETER_HOT = {"heat"};
-const std::vector<String> TERM_SNOWFLAKE_COLD = {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain", "wind chill", "freeze", "frost", "hail"};
-const std::vector<String> TERM_LIGHTNING = {"thunderstorm", "storm cell", "pulse storm", "squall line", "supercells", "lightning"};
-const std::vector<String> TERM_SANDSTORM = {"sandstorm", "blowing dust", "dust storm"};
-const std::vector<String> TERM_FLOOD = {"flood", "storm surge", "seiche", "swell", "high seas", "high tides", "tidal surge"};
-const std::vector<String> TERM_VOLCANO = {"volcanic", "ash", "volcano", "eruption"};
-const std::vector<String> TERM_AIR_QUALITY = {"air", "stagnation", "pollution"};
-const std::vector<String> TERM_TORNADO = {"tornado"};
-const std::vector<String> TERM_SMALL_CRAFT_ADVISORY = {"small craft", "wind advisory"};
-const std::vector<String> TERM_GALE_WARNING = {"gale"};
-const std::vector<String> TERM_STORM_WARNING = {"storm warning"};
-const std::vector<String> TERM_HURRICANE_WARNING = {"hurricane force wind", "extreme wind", "high wind"};
-const std::vector<String> TERM_HURRICANE = {"hurricane", "tropical storm", "typhoon", "cyclone"};
-const std::vector<String> TERM_DUST = {"dust"};
-const std::vector<String> TERM_STRONG_WIND = {"wind"};
-
-
-
-
-
-
-
+const std::vector<String> TERM_SMOG =
+    {"smog"};
+const std::vector<String> TERM_SMOKE =
+    {"smoke"};
+const std::vector<String> TERM_FOG =
+    {"fog", "haar"};
+const std::vector<String> TERM_METEOR =
+    {"meteor", "asteroid"};
+const std::vector<String> TERM_NUCLEAR =
+    {"nuclear", "ionizing radiation"};
+const std::vector<String> TERM_BIOHAZARD =
+    {"biohazard", "biological hazard"};
+const std::vector<String> TERM_EARTHQUAKE =
+    {"earthquake"};
+const std::vector<String> TERM_TSUNAMI =
+    {"tsunami"};
+const std::vector<String> TERM_FIRE =
+    {"fire", "red flag"};
+const std::vector<String> TERM_THERMOMETER_HOT =
+    {"heat"};
+const std::vector<String> TERM_SNOWFLAKE_COLD =
+    {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain", 
+     "wind chill", "freeze", "frost", "hail"};
+const std::vector<String> TERM_LIGHTNING =
+    {"thunderstorm", "storm cell", "pulse storm", "squall line", "supercells",
+     "lightning"};
+const std::vector<String> TERM_SANDSTORM =
+    {"sandstorm", "blowing dust", "dust storm"};
+const std::vector<String> TERM_FLOOD =
+    {"flood", "storm surge", "seiche", "swell", "high seas", "high tides",
+     "tidal surge"};
+const std::vector<String> TERM_VOLCANO =
+    {"volcanic", "ash", "volcano", "eruption"};
+const std::vector<String> TERM_AIR_QUALITY =
+    {"air", "stagnation", "pollution"};
+const std::vector<String> TERM_TORNADO =
+    {"tornado"};
+const std::vector<String> TERM_SMALL_CRAFT_ADVISORY =
+    {"small craft", "wind advisory"};
+const std::vector<String> TERM_GALE_WARNING =
+    {"gale"};
+const std::vector<String> TERM_STORM_WARNING =
+    {"storm warning"};
+const std::vector<String> TERM_HURRICANE_WARNING =
+    {"hurricane force wind", "extreme wind", "high wind"};
+const std::vector<String> TERM_HURRICANE =
+    {"hurricane", "tropical storm", "typhoon", "cyclone"};
+const std::vector<String> TERM_DUST =
+    {"dust", "sand"};
+const std::vector<String> TERM_STRONG_WIND =
+    {"wind"};
 
 #endif
