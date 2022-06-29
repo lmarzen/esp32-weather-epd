@@ -4,7 +4,7 @@
 #include "api_response.h"
 #include "config.h"
 #include "display_utils.h"
-#include "languages/lang_en_us.h"
+#include LANGUAGE_HEADER
 
 // icon header files
 #include "icons/icons_32x32.h"
@@ -132,7 +132,7 @@ int eventUrgency(String &event)
 void prepareAlerts(std::vector<owm_alerts_t> &resp)
 {
   // Convert all event text and tags to lowercase.
-  for (auto alert : resp)
+  for (auto &alert : resp)
   {
     alert.event.toLowerCase();
     alert.tags.toLowerCase();
@@ -167,7 +167,7 @@ void prepareAlerts(std::vector<owm_alerts_t> &resp)
   }
 
   // Prettify event strings
-  for (auto alert : resp)
+  for (auto &alert : resp)
   {
     truncateExtraneousInfo(alert.event);
     // toTitleCase(alert.event);

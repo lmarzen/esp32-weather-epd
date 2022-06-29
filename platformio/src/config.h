@@ -5,6 +5,10 @@
 #include <vector>
 #include <Arduino.h>
 
+// LANGUAGE
+// language header to use
+#define LANGUAGE_HEADER "languages/lang_en_us.h"
+
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).
 // I have written a library to calculate many of the most popular AQI scales.

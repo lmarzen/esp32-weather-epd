@@ -33,14 +33,14 @@
 #include "icons/icons_160x160.h"
 #include "icons/icons_196x196.h"
 
-// language
-#include "languages/lang_en_us.h"
-
 // header files
 #include "api_response.h"
 #include "config.h"
 #include "display_utils.h"
 #include "renderer.h"
+
+// language
+#include LANGUAGE_HEADER
 
 // B/W display
 GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
