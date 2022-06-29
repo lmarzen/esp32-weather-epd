@@ -4,6 +4,7 @@
 #include "api_response.h"
 #include "config.h"
 #include "display_utils.h"
+#include "languages/lang_en_us.h"
 
 // icon header files
 #include "icons/icons_32x32.h"
@@ -127,7 +128,6 @@ int eventUrgency(String &event)
  *
  * Truncate Extraneous Info (anything that follows a comma, period, or open
  *   parentheses)
- * Convert all event text to Title Case. (Every Word Has Capital First Letter)
  */
 void prepareAlerts(std::vector<owm_alerts_t> &resp)
 {
@@ -170,7 +170,7 @@ void prepareAlerts(std::vector<owm_alerts_t> &resp)
   for (auto alert : resp)
   {
     truncateExtraneousInfo(alert.event);
-    toTitleCase(alert.event);
+    // toTitleCase(alert.event);
   }
 
   return;
@@ -476,15 +476,261 @@ const uint8_t *getCurrentBitmap196(owm_current_t &current)
   }
 }
 
-
-
-const uint8_t *getAlertBitmap48(owm_alerts_t &alert)
-{
-  return NULL;
-}
-
-
+/* Returns a 32x32 bitmap for a given alert.
+ *
+ * The purpose of this function is to return a relevant bitmap for an alert.
+ * This is done by searching the event text for key terminology defined in the 
+ * included language header.
+ * If a relevant category can not be determined, the default alert bitmap will 
+ * be returned. (warning triangle icon)
+ */
 const uint8_t *getAlertBitmap32(owm_alerts_t &alert)
 {
-  return NULL;
+  enum alert_category c = getAlertCategory(alert);
+  switch (c)
+  {
+  case NOT_FOUND:
+    // this is the default if an alert wasn't associated with a catagory
+    return warning_icon_32x32;
+  case SMOG:
+    return wi_smog_32x32;
+  case SMOKE:
+    return wi_smoke_32x32;
+  case FOG:
+    return wi_fog_32x32;
+  case METEOR:
+    return wi_meteor_32x32;
+  case NUCLEAR:
+    return ionizing_radiation_symbol_32x32;
+  case BIOHAZARD:
+    return biological_hazard_symbol_32x32;
+  case EARTHQUAKE:
+    return wi_earthquake_32x32;
+  case TSUNAMI:
+    return wi_tsunami_32x32;
+  case FIRE:
+    return wi_fire_32x32;
+  case HEAT:
+    return wi_fire_32x32;
+  case WINTER:
+    return wi_snowflake_cold_32x32;
+  case LIGHTNING:
+    return wi_lightning_32x32;
+  case SANDSTORM:
+    return wi_sandstorm_32x32;
+  case FLOOD:
+    return wi_flood_32x32;
+  case VOLCANO:
+    return wi_volcano_32x32;
+  case AIR_QUALITY:
+    return wi_dust_32x32;
+  case TORNADO:
+    return wi_tornado_32x32;
+  case SMALL_CRAFT_ADVISORY:
+    return wi_small_craft_advisory_32x32;
+  case GALE_WARNING:
+    return wi_gale_warning_32x32;
+  case STORM_WARNING:
+    return wi_storm_warning_32x32;
+  case HURRICANE_WARNING:
+    return wi_hurricane_warning_32x32;
+  case HURRICANE:
+    return wi_hurricane_32x32;
+  case DUST:
+    return wi_dust_32x32;
+  case STRONG_WIND:
+    return wi_strong_wind_32x32;
+  }
+  return NULL; // this return should never be reached
+}
+
+/* Returns a 48x48 bitmap for a given alert.
+ *
+ * The purpose of this function is to return a relevant bitmap for an alert.
+ * This is done by searching the event text for key terminology defined in the 
+ * included language header.
+ * If a relevant category can not be determined, the default alert bitmap will 
+ * be returned. (warning triangle icon)
+ */
+const uint8_t *getAlertBitmap48(owm_alerts_t &alert)
+{
+  enum alert_category c = getAlertCategory(alert);
+  switch (c)
+  {
+  case NOT_FOUND:
+    // this is the default if an alert wasn't associated with a catagory
+    return warning_icon_48x48;
+  case SMOG:
+    return wi_smog_48x48;
+  case SMOKE:
+    return wi_smoke_48x48;
+  case FOG:
+    return wi_fog_48x48;
+  case METEOR:
+    return wi_meteor_48x48;
+  case NUCLEAR:
+    return ionizing_radiation_symbol_48x48;
+  case BIOHAZARD:
+    return biological_hazard_symbol_48x48;
+  case EARTHQUAKE:
+    return wi_earthquake_48x48;
+  case TSUNAMI:
+    return wi_tsunami_48x48;
+  case FIRE:
+    return wi_fire_48x48;
+  case HEAT:
+    return wi_fire_48x48;
+  case WINTER:
+    return wi_snowflake_cold_48x48;
+  case LIGHTNING:
+    return wi_lightning_48x48;
+  case SANDSTORM:
+    return wi_sandstorm_48x48;
+  case FLOOD:
+    return wi_flood_48x48;
+  case VOLCANO:
+    return wi_volcano_48x48;
+  case AIR_QUALITY:
+    return wi_dust_48x48;
+  case TORNADO:
+    return wi_tornado_48x48;
+  case SMALL_CRAFT_ADVISORY:
+    return wi_small_craft_advisory_48x48;
+  case GALE_WARNING:
+    return wi_gale_warning_48x48;
+  case STORM_WARNING:
+    return wi_storm_warning_48x48;
+  case HURRICANE_WARNING:
+    return wi_hurricane_warning_48x48;
+  case HURRICANE:
+    return wi_hurricane_48x48;
+  case DUST:
+    return wi_dust_48x48;
+  case STRONG_WIND:
+    return wi_strong_wind_48x48;
+  }
+  return NULL; // this code return never be reached 
+}
+
+/* Returns true of a String, s, contains any of the strings in the terminology 
+ * vector.
+ *
+ * Note: This function is case sensitive.
+ */
+bool containsTerminology(const String s, const std::vector<String> &terminology)
+{
+  for (const String &term : terminology)
+  {
+    if (s.indexOf(term) > 0)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+/* Returns the category of an alert based on the terminology found in the event 
+ * name.
+ *
+ * Weather alert terminology is defined in the included language header.
+ */
+enum alert_category getAlertCategory(owm_alerts_t &alert)
+{
+  if (containsTerminology(alert.event, TERM_SMOG))
+  {
+    return alert_category::SMOG;
+  }
+  if (containsTerminology(alert.event, TERM_SMOKE))
+  {
+    return alert_category::SMOKE;
+  }
+  if (containsTerminology(alert.event, TERM_FOG))
+  {
+    return alert_category::FOG;
+  }
+  if (containsTerminology(alert.event, TERM_METEOR))
+  {
+    return alert_category::METEOR;
+  }
+  if (containsTerminology(alert.event, TERM_NUCLEAR))
+  {
+    return alert_category::NUCLEAR;
+  }
+  if (containsTerminology(alert.event, TERM_BIOHAZARD))
+  {
+    return alert_category::BIOHAZARD;
+  }
+  if (containsTerminology(alert.event, TERM_EARTHQUAKE))
+  {
+    return alert_category::EARTHQUAKE;
+  }
+  if (containsTerminology(alert.event, TERM_TSUNAMI))
+  {
+    return alert_category::TSUNAMI;
+  }
+  if (containsTerminology(alert.event, TERM_FIRE))
+  {
+    return alert_category::FIRE;
+  }
+  if (containsTerminology(alert.event, TERM_HEAT))
+  {
+    return alert_category::HEAT;
+  }
+  if (containsTerminology(alert.event, TERM_WINTER))
+  {
+    return alert_category::WINTER;
+  }
+  if (containsTerminology(alert.event, TERM_LIGHTNING))
+  {
+    return alert_category::LIGHTNING;
+  }
+  if (containsTerminology(alert.event, TERM_SANDSTORM))
+  {
+    return alert_category::SANDSTORM;
+  }
+  if (containsTerminology(alert.event, TERM_FLOOD))
+  {
+    return alert_category::FLOOD;
+  }
+  if (containsTerminology(alert.event, TERM_VOLCANO))
+  {
+    return alert_category::VOLCANO;
+  }
+  if (containsTerminology(alert.event, TERM_AIR_QUALITY))
+  {
+    return alert_category::AIR_QUALITY;
+  }
+  if (containsTerminology(alert.event, TERM_TORNADO))
+  {
+    return alert_category::TORNADO;
+  }
+  if (containsTerminology(alert.event, TERM_SMALL_CRAFT_ADVISORY))
+  {
+    return alert_category::SMALL_CRAFT_ADVISORY;
+  }
+  if (containsTerminology(alert.event, TERM_GALE_WARNING))
+  {
+    return alert_category::GALE_WARNING;
+  }
+  if (containsTerminology(alert.event, TERM_STORM_WARNING))
+  {
+    return alert_category::STORM_WARNING;
+  }
+  if (containsTerminology(alert.event, TERM_HURRICANE_WARNING))
+  {
+    return alert_category::HURRICANE_WARNING;
+  }
+  if (containsTerminology(alert.event, TERM_HURRICANE))
+  {
+    return alert_category::HURRICANE;
+  }
+  if (containsTerminology(alert.event, TERM_DUST))
+  {
+    return alert_category::DUST;
+  }
+  if (containsTerminology(alert.event, TERM_STRONG_WIND))
+  {
+    return alert_category::STRONG_WIND;
+  }
+  return alert_category::NOT_FOUND;
 }

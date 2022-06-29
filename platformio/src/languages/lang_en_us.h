@@ -23,31 +23,31 @@ extern const char *TXT_MMM[];
 extern const char *TXT_MMMM[];
 
 // ALERTS
-const std::vector<String> ALERT_URGENCY;
+extern const std::vector<String> ALERT_URGENCY;
 // ALERT TERMINOLOGY
-const std::vector<String> TERM_SMOG;
-const std::vector<String> TERM_SMOKE;
-const std::vector<String> TERM_FOG;
-const std::vector<String> TERM_METEOR;
-const std::vector<String> TERM_NUCLEAR;
-const std::vector<String> TERM_BIOHAZARD;
-const std::vector<String> TERM_EARTHQUAKE;
-const std::vector<String> TERM_TSUNAMI;
-const std::vector<String> TERM_FIRE;
-const std::vector<String> TERM_THERMOMETER_HOT;
-const std::vector<String> TERM_SNOWFLAKE_COLD;
-const std::vector<String> TERM_LIGHTNING;
-const std::vector<String> TERM_SANDSTORM;
-const std::vector<String> TERM_FLOOD;
-const std::vector<String> TERM_VOLCANO;
-const std::vector<String> TERM_AIR_QUALITY;
-const std::vector<String> TERM_TORNADO;
-const std::vector<String> TERM_SMALL_CRAFT_ADVISORY;
-const std::vector<String> TERM_GALE_WARNING;
-const std::vector<String> TERM_STORM_WARNING;
-const std::vector<String> TERM_HURRICANE_WARNING;
-const std::vector<String> TERM_HURRICANE;
-const std::vector<String> TERM_DUST;
-const std::vector<String> TERM_STRONG_WIND;
+extern const std::vector<String> TERM_SMOG;
+extern const std::vector<String> TERM_SMOKE;
+extern const std::vector<String> TERM_FOG;
+extern const std::vector<String> TERM_METEOR;
+extern const std::vector<String> TERM_NUCLEAR;
+extern const std::vector<String> TERM_BIOHAZARD;
+extern const std::vector<String> TERM_EARTHQUAKE;
+extern const std::vector<String> TERM_TSUNAMI;
+extern const std::vector<String> TERM_FIRE;
+extern const std::vector<String> TERM_HEAT;
+extern const std::vector<String> TERM_WINTER;
+extern const std::vector<String> TERM_LIGHTNING;
+extern const std::vector<String> TERM_SANDSTORM;
+extern const std::vector<String> TERM_FLOOD;
+extern const std::vector<String> TERM_VOLCANO;
+extern const std::vector<String> TERM_AIR_QUALITY;
+extern const std::vector<String> TERM_TORNADO;
+extern const std::vector<String> TERM_SMALL_CRAFT_ADVISORY;
+extern const std::vector<String> TERM_GALE_WARNING;
+extern const std::vector<String> TERM_STORM_WARNING;
+extern const std::vector<String> TERM_HURRICANE_WARNING;
+extern const std::vector<String> TERM_HURRICANE;
+extern const std::vector<String> TERM_DUST;
+extern const std::vector<String> TERM_STRONG_WIND;
 
 #endif

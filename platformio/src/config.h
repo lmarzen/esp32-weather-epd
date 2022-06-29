@@ -47,6 +47,5 @@ extern const int BED_TIME;
 extern const String LANG;
 extern const char UNITS;
 extern const int HOURLY_GRAPH_MAX;
-extern const std::vector<String> ALERT_URGENCY;
 
 #endif

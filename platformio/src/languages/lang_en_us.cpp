@@ -1,5 +1,6 @@
 #include <vector>
 #include <Arduino.h>
+#include "lang_en_us.h"
 
 // CURRENT CONDITIONS
 const String TXT_SUNRISE            = "Sunrise";
@@ -65,9 +66,9 @@ const std::vector<String> TERM_TSUNAMI =
     {"tsunami"};
 const std::vector<String> TERM_FIRE =
     {"fire", "red flag"};
-const std::vector<String> TERM_THERMOMETER_HOT =
+const std::vector<String> TERM_HEAT =
     {"heat"};
-const std::vector<String> TERM_SNOWFLAKE_COLD =
+const std::vector<String> TERM_WINTER =
     {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain", 
      "wind chill", "freeze", "frost", "hail"};
 const std::vector<String> TERM_LIGHTNING =

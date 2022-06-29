@@ -424,7 +424,10 @@ void refreshDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   sprintf(str, "w: %d h: %d", w, h);
   drawString(500, 440, str, LEFT);
 
-  display.drawInvertedBitmap(170, 200, getForecastBitmap64(owm_onecall.daily[1]), 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(400, 0, getAlertBitmap48(owm_onecall.alerts[0]), 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(400, 0, getAlertBitmap32(owm_onecall.alerts[1]), 32, 32, GxEPD_BLACK);
+
+  display.drawInvertedBitmap(400, 400, getForecastBitmap64(owm_onecall.daily[1]), 48, 48, GxEPD_BLACK);
 
   // end debug
 }
