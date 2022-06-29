@@ -1,18 +1,8 @@
-// built-in C++ libraries
-#include <cstring>
-#include <vector>
-
 // arduino/esp32 libraries
 #include <Arduino.h>
-#include <HTTPClient.h>
 #include <SPI.h>
 #include <time.h>
 #include <WiFi.h>
-
-// additional libraries
-#include <Adafruit_BusIO_Register.h>
-#include <ArduinoJson.h>
-#include <GxEPD2_BW.h>
 
 // header files
 #include "api_response.h"

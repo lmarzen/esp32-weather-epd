@@ -22,9 +22,6 @@
 #include "display_utils.h"
 #include "renderer.h"
 
-extern owm_resp_onecall_t       owm_onecall;
-extern owm_resp_air_pollution_t owm_air_pollution;
-
 /* Power-on and connect wifi.
  * Takes int parameter to store wifi RSSI, or “Received Signal Strength 
  * Indicator"

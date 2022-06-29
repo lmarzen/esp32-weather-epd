@@ -1,11 +1,8 @@
-#include "renderer.h"
-
 // built-in C++ libraries
 // ...
 
 // additional libraries
-#include <Adafruit_BusIO_Register.h>
-#include <ArduinoJson.h>
+//#include <Adafruit_BusIO_Register.h>
 #include <GxEPD2_BW.h>
 
 // fonts (modified font files that have the degree symbol mapped to '`')
@@ -43,6 +40,7 @@
 #include "api_response.h"
 #include "config.h"
 #include "display_utils.h"
+#include "renderer.h"
 
 // B/W display
 GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
