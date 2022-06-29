@@ -1,10 +1,7 @@
-#ifndef __LANG_EN_US_H__
-#define __LANG_EN_US_H__
-
 #include <vector>
 #include <Arduino.h>
 
-// Current Conditions
+// CURRENT CONDITIONS
 const String TXT_SUNRISE            = "Sunrise";
 const String TXT_SUNSET             = "Sunset";
 const String TXT_PRECIPITATION      = "Precipitation";
@@ -16,6 +13,7 @@ const String TXT_VISIBILITY         = "Visibility";
 const String TXT_INDOOR_TEMPERATURE = "Temperature";
 const String TXT_INDOOR_HUMIDITY    = "Humidity";
 
+// TIME/DATE
 // The abbreviated name of the day of the week.
 const char *TXT_ddd[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 // The full name of the day of the week.
@@ -47,6 +45,7 @@ const std::vector<String> ALERT_URGENCY = {"statement", "watch", "advisory", "wa
 // const std::vector<String> ALERT_URGENCY = {"minor", "moderate", "severe", "extreme"}; // METEO
 // const std::vector<String> ALERT_URGENCY = {}; // Disable urgency interpretation (algorithm will fallback to only prefer the most recently issued alerts)
 
+// ALERT TERMINOLOGY
 // Weather terminology associated with each alert icon
 const std::vector<String> TERM_SMOG =
     {"smog"};
@@ -99,5 +98,3 @@ const std::vector<String> TERM_DUST =
     {"dust", "sand"};
 const std::vector<String> TERM_STRONG_WIND =
     {"wind"};
-
-#endif
