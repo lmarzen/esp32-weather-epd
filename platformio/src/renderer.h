@@ -1,7 +1,10 @@
 #ifndef __RENDERER_H__
 #define __RENDERER_H__
 
+#include <vector>
+#include <Arduino.h>
 #include <GxEPD2_BW.h>
+#include <time.h>
 #include "api_response.h"
 
 #define DISP_WIDTH  800
@@ -21,8 +24,13 @@ typedef enum alignment
 
 void initDisplay();
 void drawString(int x, int y, String text, alignment_t alignment);
-void refreshDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
-                          owm_resp_air_pollution_t &owm_air_pollution);
-// void refreshStatusBuffer(); // TODO
+void drawCurrentConditions(owm_current_t &owm_onecall, 
+                           owm_resp_air_pollution_t &owm_air_pollution, 
+                           float inTemp, float inHumidity);
+void drawForecast(owm_daily_t *const daily);
+void drawAlerts(std::vector<owm_alerts_t> &alerts);
+void drawLocationDate(const String &city, tm &timeInfo);
+void drawOutlookGraph(owm_hourly_t *const hourly);
+void drawStatusBar(char *const statusStr, int wifiRSSI, double batteryVoltage);
 
 #endif

@@ -89,6 +89,13 @@ void drawString(int x, int y, String text, alignment_t alignment)
 void refreshDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
                           owm_resp_air_pollution_t &owm_air_pollution)
 {
+  drawCurrentWeather(owm_onecall.current);
+  drawForecast(owm_onecall.daily);
+  drawAlerts(owm_onecall.alerts);
+  drawLocationDate(CITY_STRING, t);
+  drawOutlookGraph(owm_onecall.hourly);
+  drawStatusBar();
+
   // location, date
   display.setFont(&FreeSans16pt7b);
   drawString(DISP_WIDTH - 1, 23, "Tucson, Arizona", RIGHT);
@@ -125,7 +132,7 @@ void refreshDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   */
 
   // current weather icon
-  display.drawInvertedBitmap(0, 0, getCurrentBitmap196(owm_onecall.current), 196, 196, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 0, getCurrentConditionsBitmap196(owm_onecall.current), 196, 196, GxEPD_BLACK);
   // current temp
   display.setFont(&FreeSans48pt_temperature);
   drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, "88", CENTER);

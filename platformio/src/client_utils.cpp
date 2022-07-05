@@ -65,6 +65,21 @@ void killWiFi()
   WiFi.mode(WIFI_OFF);
 }
 
+/* Prints the local time to serial monitor.
+ *
+ * Returns true if getting local time was a success, otherwise false.
+ */
+bool printLocalTime(tm *timeInfo)
+{
+  if (!getLocalTime(timeInfo))
+  {
+    Serial.println("Failed to obtain time");
+    return false;
+  }
+  Serial.println(timeInfo, "%A, %B %d %Y %H:%M:%S");
+  return true;
+}
+
 /* Connects to NTP server and stores time in a tm struct, adjusted for the time
  * zone specified in config.cpp.
  * 
@@ -77,25 +92,7 @@ bool setupTime(tm *timeInfo)
   configTime(0, 0, NTP_SERVER_1, NTP_SERVER_2); // We will pass 0 for gmtOffset_sec and daylightOffset_sec and use setenv() for timezone offsets
   setenv("TZ", TIMEZONE, 1);
   tzset();
-  if (!getLocalTime(timeInfo, 10000))
-  {
-    Serial.println("Failed to obtain time");
-    return false;
-  }
-  Serial.println(timeInfo, "Time setup complete at: %A, %B %d %Y %H:%M:%S");
-  return true;
-}
-
-/* Prints the local time to serial monitor.
- */
-void printLocalTime(tm *timeInfo)
-{
-  if (!getLocalTime(timeInfo, 10000))
-  {
-    Serial.println("Failed to obtain time");
-    return;
-  }
-  Serial.println(timeInfo, "%A, %B %d %Y %H:%M:%S");
+  return printLocalTime(timeInfo);
 }
 
 /* Perform an HTTP GET request to OpenWeatherMap's "One Call" API

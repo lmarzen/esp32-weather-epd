@@ -329,7 +329,7 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
  *   https://openweathermap.org/weather-conditions
  *   https://www.weather.gov/ajk/ForecastTerms
  */
-const uint8_t *getCurrentBitmap196(owm_current_t &current)
+const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current)
 {
   int id = current.weather.id;
   bool day = current.weather.icon.charAt(
