@@ -117,7 +117,7 @@ void setup()
 
   if (rxOWM)
   {
-    snprintf(statusStr, sizeof(statusStr), "%A, %B %d %Y %H:%M:%S", timeInfo);
+    //snprintf(statusStr, sizeof(statusStr), "%A, %B %d %Y %H:%M:%S", timeInfo);
     
     drawCurrentConditions(owm_onecall.current, owm_air_pollution, inTemp, inHumidity);
     drawForecast(owm_onecall.daily);
