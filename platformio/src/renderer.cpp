@@ -406,32 +406,32 @@ void drawCurrentConditions(owm_current_t &current,
   // line dividing top and bottom display areas
   display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
 
-  // current weather data
+  // current weather data icons
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 0, wi_sunrise_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 1, wi_strong_wind_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 2, wi_day_sunny_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 3, air_filter_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 4, house_thermometer_48x48, 48, 48, GxEPD_BLACK);
-
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 0, wi_sunset_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 1, wi_humidity_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 2, wi_barometer_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 3, visibility_icon_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 4, house_humidity_48x48, 48, 48, GxEPD_BLACK);
 
+  // current weather data labels
   display.setFont(&FreeSans7pt7b);
   drawString(48, 204 + 10 + (48 + 8) * 0, TXT_SUNRISE, LEFT);
   drawString(48, 204 + 10 + (48 + 8) * 1, TXT_WIND, LEFT);
   drawString(48, 204 + 10 + (48 + 8) * 2, TXT_UV_INDEX, LEFT);
   drawString(48, 204 + 10 + (48 + 8) * 3, TXT_AIR_QUALITY_INDEX, LEFT);
   drawString(48, 204 + 10 + (48 + 8) * 4, TXT_INDOOR_TEMPERATURE, LEFT);
-
   drawString(170 + 48, 204 + 10 + (48 + 8) * 0, TXT_SUNSET, LEFT);
   drawString(170 + 48, 204 + 10 + (48 + 8) * 1, TXT_HUMIDITY, LEFT);
   drawString(170 + 48, 204 + 10 + (48 + 8) * 2, TXT_PRESSURE, LEFT);
   drawString(170 + 48, 204 + 10 + (48 + 8) * 3, TXT_VISIBILITY, LEFT);
   drawString(170 + 48, 204 + 10 + (48 + 8) * 4, TXT_INDOOR_HUMIDITY, LEFT);
 
+  // current weather data
   display.setFont(&FreeSans12pt7b);
   char timeBuffer[8] = {};
   time_t ts = current.sunrise;
@@ -442,7 +442,6 @@ void drawCurrentConditions(owm_current_t &current,
   drawString(48, 204 + 17 + (48 + 8) * 2 - 17 / 2 + 48 / 2, "10 - High", LEFT);
   drawString(48, 204 + 17 + (48 + 8) * 3 - 17 / 2 + 48 / 2, "Good", LEFT);
   drawString(48, 204 + 17 + (48 + 8) * 4 - 17 / 2 + 48 / 2, "78`", LEFT);
-
   memset(timeBuffer, '\0', sizeof(timeBuffer));
   ts = current.sunset;
   timeInfo = localtime(&ts);
@@ -467,12 +466,12 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts)
 void drawLocationDate(const String &city, tm *timeInfo)
 {
   char dateBuffer[48] = {};
-  snprintf(dateBuffer, sizeof(dateBuffer), "%s, %s %d",
-           TXT_dddd[timeInfo->tm_wday],
-           TXT_MMMM[timeInfo->tm_mon],
-           timeInfo->tm_mday);
-  // alternatively,
-  // strftime(dateBuffer, sizeof(dateBuffer), "%A, %B %d", timeInfo);
+  strftime(dateBuffer, sizeof(dateBuffer), DATE_FORMAT, timeInfo);
+  // alternatively...
+  // snprintf(dateBuffer, sizeof(dateBuffer), "%s, %s %d",
+  //          TXT_dddd[timeInfo->tm_wday],
+  //          TXT_MMMM[timeInfo->tm_mon],
+  //          timeInfo->tm_mday);
 
   // location, date
   display.setFont(&FreeSans16pt7b);
