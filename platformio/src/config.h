@@ -50,7 +50,6 @@ extern const char *NTP_SERVER_2;
 extern const long SLEEP_DURATION;
 extern const int WAKE_TIME;
 extern const int BED_TIME;
-extern const String LANG;
 extern const char UNITS;
 extern const int HOURLY_GRAPH_MAX;
 extern const float LOW_BATTERY_VOLTAGE;

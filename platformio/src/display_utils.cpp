@@ -46,7 +46,7 @@ void toTitleCase(String &text)
  *   input   : "Severe Thunderstorm Warning, (Starting At 10 Pm)"
  *   becomes : "Severe Thunderstorm Warning"
  */
-void truncateExtraneousInfo(String &text)
+void truncateExtraAlertInfo(String &text)
 {
   if (text.isEmpty())
   {
@@ -169,7 +169,7 @@ void filterAlerts(std::vector<owm_alerts_t> &resp)
   // Remove trailing/extraneous information
   for (auto &alert : resp)
   {
-    truncateExtraneousInfo(alert.event);
+    truncateExtraAlertInfo(alert.event);
   }
 
   return;

@@ -94,12 +94,6 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
 {
 
 
-  // location, date
-  display.setFont(&FreeSans16pt7b);
-  drawString(DISP_WIDTH - 1, 23, "Tucson, Arizona", RIGHT);
-  display.setFont(&FreeSans12pt7b);
-  drawString(DISP_WIDTH - 1, 30 + 4 + 17, "Saturday, May 29", RIGHT);
-
   // 1 Alert
   // (fits on 1 line)
   /*
@@ -129,16 +123,6 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   drawString(196 + 32 + 3, 32 + 5 + 17, "Hurricane Force Wind Warning", LEFT);
   */
 
-  // current weather icon
-  display.drawInvertedBitmap(0, 0, getCurrentConditionsBitmap196(owm_onecall.current), 196, 196, GxEPD_BLACK);
-  // current temp
-  display.setFont(&FreeSans48pt_temperature);
-  drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, "88", CENTER);
-  display.setFont(&FreeSans14pt7b);
-  drawString(display.getCursorX(), 196 / 2 - 69 / 2 + 20, "`F", LEFT);
-  // current feels like
-  display.setFont(&FreeSans12pt7b);
-  drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, "Feels Like 86`", CENTER);
 
   // OLD IDEA TO DISPLAY HIGH AND LOW WITH CURRENT TEMP
   // decided against this to because it is redundent with temperature graph
@@ -193,48 +177,7 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   drawString(726 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "79`", RIGHT);
   drawString(726 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "199`", LEFT);
 
-  // line dividing top and bottom display areas
-  display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
 
-  // current weather data
-  int16_t sp = 8;
-  display.drawInvertedBitmap(0, 204 + (48 + sp) * 0, wi_sunrise_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(0, 204 + (48 + sp) * 1, wi_strong_wind_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(0, 204 + (48 + sp) * 2, wi_day_sunny_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(0, 204 + (48 + sp) * 3, air_filter_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(0, 204 + (48 + sp) * 4, house_thermometer_48x48, 48, 48, GxEPD_BLACK);
-
-  display.drawInvertedBitmap(170, 204 + (48 + sp) * 0, wi_sunset_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(170, 204 + (48 + sp) * 1, wi_humidity_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(170, 204 + (48 + sp) * 2, wi_barometer_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(170, 204 + (48 + sp) * 3, visibility_icon_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(170, 204 + (48 + sp) * 4, house_humidity_48x48, 48, 48, GxEPD_BLACK);
-
-  display.setFont(&FreeSans7pt7b);
-  drawString(48, 204 + 10 + (48 + sp) * 0, "Sunrise", LEFT);
-  drawString(48, 204 + 10 + (48 + sp) * 1, "Wind", LEFT);
-  drawString(48, 204 + 10 + (48 + sp) * 2, "UV Index", LEFT);
-  drawString(48, 204 + 10 + (48 + sp) * 3, "Air Quality Index", LEFT);
-  drawString(48, 204 + 10 + (48 + sp) * 4, "Temperature", LEFT);
-
-  drawString(170 + 48, 204 + 10 + (48 + sp) * 0, "Sunset", LEFT);
-  drawString(170 + 48, 204 + 10 + (48 + sp) * 1, "Humidity", LEFT);
-  drawString(170 + 48, 204 + 10 + (48 + sp) * 2, "Pressure", LEFT);
-  drawString(170 + 48, 204 + 10 + (48 + sp) * 3, "Visibiliy", LEFT);
-  drawString(170 + 48, 204 + 10 + (48 + sp) * 4, "Humidity", LEFT);
-
-  display.setFont(&FreeSans12pt7b);
-  drawString(48, 204 + 17 + (48 + sp) * 0 - 17 / 2 + 48 / 2, "6:00", LEFT);
-  drawString(48, 204 + 17 + (48 + sp) * 1 - 17 / 2 + 48 / 2, "18mph", LEFT);
-  drawString(48, 204 + 17 + (48 + sp) * 2 - 17 / 2 + 48 / 2, "10 - High", LEFT);
-  drawString(48, 204 + 17 + (48 + sp) * 3 - 17 / 2 + 48 / 2, "Good", LEFT);
-  drawString(48, 204 + 17 + (48 + sp) * 4 - 17 / 2 + 48 / 2, "78`", LEFT);
-
-  drawString(170 + 48, 204 + 17 + (48 + sp) * 0 - 17 / 2 + 48 / 2, "18:00", LEFT);
-  drawString(170 + 48, 204 + 17 + (48 + sp) * 1 - 17 / 2 + 48 / 2, "12%", LEFT);
-  drawString(170 + 48, 204 + 17 + (48 + sp) * 2 - 17 / 2 + 48 / 2, "29.65in", LEFT);
-  drawString(170 + 48, 204 + 17 + (48 + sp) * 3 - 17 / 2 + 48 / 2, "4000ft", LEFT);
-  drawString(170 + 48, 204 + 17 + (48 + sp) * 4 - 17 / 2 + 48 / 2, "20%", LEFT);
 
   // debug
   int16_t x1, y1;
@@ -439,10 +382,69 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
 }
 
 
-void drawCurrentConditions(owm_current_t &owm_onecall, 
+void drawCurrentConditions(owm_current_t &current, 
                            owm_resp_air_pollution_t &owm_air_pollution, 
                            float inTemp, float inHumidity)
 {
+  String str;
+  // current weather icon
+  display.drawInvertedBitmap(0, 0, getCurrentConditionsBitmap196(current), 196, 196, GxEPD_BLACK);
+
+  // current temp
+  display.setFont(&FreeSans48pt_temperature);
+  str = String(round(current.temp), 0);
+  drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, str, CENTER);
+  display.setFont(&FreeSans14pt7b);
+  char tempUnits[3] = {'`', (UNITS == 'm') ? 'C' : 'F', '\0'};
+  drawString(display.getCursorX(), 196 / 2 - 69 / 2 + 20, tempUnits, LEFT);
+
+  // current feels like
+  display.setFont(&FreeSans12pt7b);
+  str = String(TXT_FEELS_LIKE) + ' ' + String(round(current.feels_like), 0) + '`';
+  drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, str, CENTER);
+
+  // line dividing top and bottom display areas
+  display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
+
+  // current weather data
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 0, wi_sunrise_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 1, wi_strong_wind_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 2, wi_day_sunny_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 3, air_filter_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 4, house_thermometer_48x48, 48, 48, GxEPD_BLACK);
+
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 0, wi_sunset_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 1, wi_humidity_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 2, wi_barometer_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 3, visibility_icon_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 4, house_humidity_48x48, 48, 48, GxEPD_BLACK);
+
+  display.setFont(&FreeSans7pt7b);
+  drawString(48, 204 + 10 + (48 + 8) * 0, TXT_SUNRISE, LEFT);
+  drawString(48, 204 + 10 + (48 + 8) * 1, TXT_WIND, LEFT);
+  drawString(48, 204 + 10 + (48 + 8) * 2, TXT_UV_INDEX, LEFT);
+  drawString(48, 204 + 10 + (48 + 8) * 3, TXT_AIR_QUALITY_INDEX, LEFT);
+  drawString(48, 204 + 10 + (48 + 8) * 4, TXT_INDOOR_TEMPERATURE, LEFT);
+
+  drawString(170 + 48, 204 + 10 + (48 + 8) * 0, TXT_SUNSET, LEFT);
+  drawString(170 + 48, 204 + 10 + (48 + 8) * 1, TXT_HUMIDITY, LEFT);
+  drawString(170 + 48, 204 + 10 + (48 + 8) * 2, TXT_PRESSURE, LEFT);
+  drawString(170 + 48, 204 + 10 + (48 + 8) * 3, TXT_VISIBILITY, LEFT);
+  drawString(170 + 48, 204 + 10 + (48 + 8) * 4, TXT_INDOOR_HUMIDITY, LEFT);
+
+  display.setFont(&FreeSans12pt7b);
+  drawString(48, 204 + 17 + (48 + 8) * 0 - 17 / 2 + 48 / 2, "6:00", LEFT);
+  drawString(48, 204 + 17 + (48 + 8) * 1 - 17 / 2 + 48 / 2, "18mph", LEFT);
+  drawString(48, 204 + 17 + (48 + 8) * 2 - 17 / 2 + 48 / 2, "10 - High", LEFT);
+  drawString(48, 204 + 17 + (48 + 8) * 3 - 17 / 2 + 48 / 2, "Good", LEFT);
+  drawString(48, 204 + 17 + (48 + 8) * 4 - 17 / 2 + 48 / 2, "78`", LEFT);
+
+  drawString(170 + 48, 204 + 17 + (48 + 8) * 0 - 17 / 2 + 48 / 2, "18:00", LEFT);
+  drawString(170 + 48, 204 + 17 + (48 + 8) * 1 - 17 / 2 + 48 / 2, "12%", LEFT);
+  drawString(170 + 48, 204 + 17 + (48 + 8) * 2 - 17 / 2 + 48 / 2, "29.65in", LEFT);
+  drawString(170 + 48, 204 + 17 + (48 + 8) * 3 - 17 / 2 + 48 / 2, "4000ft", LEFT);
+  drawString(170 + 48, 204 + 17 + (48 + 8) * 4 - 17 / 2 + 48 / 2, "20%", LEFT);
+
   return;
 }
 void drawForecast(owm_daily_t *const daily)
@@ -453,10 +455,25 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts)
 {
   return;
 }
-void drawLocationDate(const String &city, tm &timeInfo)
+
+void drawLocationDate(const String &city, tm *timeInfo)
 {
+  char dateBuffer[48] = {};
+  snprintf(dateBuffer, sizeof(dateBuffer), "%s, %s %d",
+           TXT_dddd[timeInfo->tm_wday],
+           TXT_MMMM[timeInfo->tm_mon],
+           timeInfo->tm_mday);
+  // alternatively,
+  // strftime(dateBuffer, sizeof(dateBuffer), "%A, %B %d", timeInfo);
+
+  // location, date
+  display.setFont(&FreeSans16pt7b);
+  drawString(DISP_WIDTH - 1, 23, city, RIGHT);
+  display.setFont(&FreeSans12pt7b);
+  drawString(DISP_WIDTH - 1, 30 + 4 + 17, dateBuffer, RIGHT);
   return;
 }
+
 void drawOutlookGraph(owm_hourly_t *const hourly)
 {
   return;

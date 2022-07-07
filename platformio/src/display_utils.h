@@ -33,7 +33,7 @@ enum alert_category {
 };
 
 void toTitleCase(String &text);
-void truncateExtraneousInfo(String &text);
+void truncateExtraAlertInfo(String &text);
 void filterAlerts(std::vector<owm_alerts_t> &resp);
 const uint8_t *getForecastBitmap64(owm_daily_t &daily);
 const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current);

@@ -4,17 +4,22 @@
 #include <vector>
 #include <Arduino.h>
 
+
+// LANGUAGE
+extern const String LANG;
+
 // CURRENT CONDITIONS
-extern const String TXT_SUNRISE;
-extern const String TXT_SUNSET;
-extern const String TXT_PRECIPITATION;
-extern const String TXT_HUMIDITY;
-extern const String TXT_WIND;
-extern const String TXT_PRESSURE;
-extern const String TXT_UV_INDEX;
-extern const String TXT_VISIBILITY;
-extern const String TXT_INDOOR_TEMPERATURE;
-extern const String TXT_INDOOR_HUMIDITY;
+extern const char *TXT_FEELS_LIKE;
+extern const char *TXT_SUNRISE;
+extern const char *TXT_SUNSET;
+extern const char *TXT_WIND;
+extern const char *TXT_HUMIDITY;
+extern const char *TXT_UV_INDEX;
+extern const char *TXT_PRESSURE;
+extern const char *TXT_AIR_QUALITY_INDEX;
+extern const char *TXT_VISIBILITY;
+extern const char *TXT_INDOOR_TEMPERATURE;
+extern const char *TXT_INDOOR_HUMIDITY;
 
 // TIME/DATE
 extern const char *TXT_ddd[];

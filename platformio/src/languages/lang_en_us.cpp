@@ -2,17 +2,23 @@
 #include <Arduino.h>
 #include "lang_en_us.h"
 
+// LANGUAGE
+// For full list of languages, see https://openweathermap.org/api/one-call-api#multi
+// Note: "[only] The contents of the 'description' field will be translated."
+const String LANG = "en";
+
 // CURRENT CONDITIONS
-const String TXT_SUNRISE            = "Sunrise";
-const String TXT_SUNSET             = "Sunset";
-const String TXT_PRECIPITATION      = "Precipitation";
-const String TXT_HUMIDITY           = "Humidity";
-const String TXT_WIND               = "Wind";
-const String TXT_PRESSURE           = "Pressure";
-const String TXT_UV_INDEX           = "UV Index";
-const String TXT_VISIBILITY         = "Visibility";
-const String TXT_INDOOR_TEMPERATURE = "Temperature";
-const String TXT_INDOOR_HUMIDITY    = "Humidity";
+const char *TXT_FEELS_LIKE         = "Feels Like";
+const char *TXT_SUNRISE            = "Sunrise";
+const char *TXT_SUNSET             = "Sunset";
+const char *TXT_WIND               = "Wind";
+const char *TXT_HUMIDITY           = "Humidity";
+const char *TXT_UV_INDEX           = "UV Index";
+const char *TXT_PRESSURE           = "Pressure";
+const char *TXT_AIR_QUALITY_INDEX  = "Air Quality Index";
+const char *TXT_VISIBILITY         = "Visibility";
+const char *TXT_INDOOR_TEMPERATURE = "Temperature";
+const char *TXT_INDOOR_HUMIDITY    = "Humidity";
 
 // TIME/DATE
 // The abbreviated name of the day of the week.

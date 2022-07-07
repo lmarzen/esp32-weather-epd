@@ -22,6 +22,9 @@
 #include "display_utils.h"
 #include "renderer.h"
 
+// language
+#include LANGUAGE_HEADER
+
 /* Power-on and connect wifi.
  * Takes int parameter to store wifi RSSI, or “Received Signal Strength 
  * Indicator"
@@ -76,7 +79,7 @@ bool printLocalTime(tm *timeInfo)
     Serial.println("Failed to obtain time");
     return false;
   }
-  Serial.println(timeInfo, "%A, %B %d %Y %H:%M:%S");
+  Serial.println(timeInfo, "%A, %B %d, %Y %H:%M:%S");
   return true;
 }
 
