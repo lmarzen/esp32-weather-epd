@@ -33,4 +33,7 @@ void drawLocationDate(const String &city, tm &timeInfo);
 void drawOutlookGraph(owm_hourly_t *const hourly);
 void drawStatusBar(char *const statusStr, int wifiRSSI, double batteryVoltage);
 
+void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
+                        owm_resp_air_pollution_t &owm_air_pollution);
+
 #endif

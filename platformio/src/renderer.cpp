@@ -55,6 +55,9 @@ GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
 //              PIN_EPD_RST,
 //              PIN_EPD_BUSY));
 
+extern owm_resp_onecall_t owm_onecall;
+extern owm_resp_air_pollution_t owm_air_pollution;
+
 void initDisplay()
 {
   display.init(115200, true, 2, false);
@@ -86,15 +89,10 @@ void drawString(int x, int y, String text, alignment_t alignment)
   display.print(text);
 }
 
-void refreshDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
-                          owm_resp_air_pollution_t &owm_air_pollution)
+void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
+                        owm_resp_air_pollution_t &owm_air_pollution)
 {
-  drawCurrentWeather(owm_onecall.current);
-  drawForecast(owm_onecall.daily);
-  drawAlerts(owm_onecall.alerts);
-  drawLocationDate(CITY_STRING, t);
-  drawOutlookGraph(owm_onecall.hourly);
-  drawStatusBar();
+
 
   // location, date
   display.setFont(&FreeSans16pt7b);
@@ -431,10 +429,39 @@ void refreshDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   sprintf(str, "w: %d h: %d", w, h);
   drawString(500, 440, str, LEFT);
 
-  display.drawInvertedBitmap(400, 0, getAlertBitmap48(owm_onecall.alerts[0]), 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(400, 0, getAlertBitmap32(owm_onecall.alerts[1]), 32, 32, GxEPD_BLACK);
+  // if vector size...
+  //display.drawInvertedBitmap(400, 0, getAlertBitmap48(owm_onecall.alerts[0]), 48, 48, GxEPD_BLACK);
+  //display.drawInvertedBitmap(400, 0, getAlertBitmap32(owm_onecall.alerts[1]), 32, 32, GxEPD_BLACK);
 
-  display.drawInvertedBitmap(400, 400, getForecastBitmap64(owm_onecall.daily[1]), 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(400, 400, getForecastBitmap64(owm_onecall.daily[1]), 64, 64, GxEPD_BLACK);
 
   // end debug
+}
+
+
+void drawCurrentConditions(owm_current_t &owm_onecall, 
+                           owm_resp_air_pollution_t &owm_air_pollution, 
+                           float inTemp, float inHumidity)
+{
+  return;
+}
+void drawForecast(owm_daily_t *const daily)
+{
+  return;
+}
+void drawAlerts(std::vector<owm_alerts_t> &alerts)
+{
+  return;
+}
+void drawLocationDate(const String &city, tm &timeInfo)
+{
+  return;
+}
+void drawOutlookGraph(owm_hourly_t *const hourly)
+{
+  return;
+}
+void drawStatusBar(char *const statusStr, int wifiRSSI, double batteryVoltage)
+{
+  return;
 }

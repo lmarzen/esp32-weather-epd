@@ -96,7 +96,7 @@ int eventUrgency(String &event)
   return urgency_lvl;
 }
 
-/* This algorithm prepares alerts from the API responses to be displayed.
+/* This algorithm filters alerts from the API responses to be displayed.
  *
  * Background:
  * The display layout is setup to show up to 2 alerts, but alerts can be 
@@ -129,7 +129,7 @@ int eventUrgency(String &event)
  * Truncate Extraneous Info (anything that follows a comma, period, or open
  *   parentheses)
  */
-void prepareAlerts(std::vector<owm_alerts_t> &resp)
+void filterAlerts(std::vector<owm_alerts_t> &resp)
 {
   // Convert all event text and tags to lowercase.
   for (auto &alert : resp)
@@ -166,11 +166,10 @@ void prepareAlerts(std::vector<owm_alerts_t> &resp)
     resp.pop_back();
   }
 
-  // Prettify event strings
+  // Remove trailing/extraneous information
   for (auto &alert : resp)
   {
     truncateExtraneousInfo(alert.event);
-    // toTitleCase(alert.event);
   }
 
   return;
