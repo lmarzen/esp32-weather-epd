@@ -467,6 +467,9 @@ void drawLocationDate(const String &city, tm *timeInfo)
 {
   char dateBuffer[48] = {};
   strftime(dateBuffer, sizeof(dateBuffer), DATE_FORMAT, timeInfo);
+  String dateStr = dateBuffer;
+  // remove double spaces. %e will add an extra space, ie. " 1" instead of "1"
+  dateStr.replace("  ", " ");
   // alternatively...
   // snprintf(dateBuffer, sizeof(dateBuffer), "%s, %s %d",
   //          TXT_dddd[timeInfo->tm_wday],
@@ -477,7 +480,7 @@ void drawLocationDate(const String &city, tm *timeInfo)
   display.setFont(&FreeSans16pt7b);
   drawString(DISP_WIDTH - 1, 23, city, RIGHT);
   display.setFont(&FreeSans12pt7b);
-  drawString(DISP_WIDTH - 1, 30 + 4 + 17, dateBuffer, RIGHT);
+  drawString(DISP_WIDTH - 1, 30 + 4 + 17, dateStr, RIGHT);
   return;
 }
 
