@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 1000 1000"
+   enable-background="new 0 0 1000 1000"
+   xml:space="preserve"
+   id="svg175"
+   sodipodi:docname="wind_direction_meteorological_.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs179" /><sodipodi:namedview
+   id="namedview177"
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1.0"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="0.854"
+   inkscape:cx="501.75644"
+   inkscape:cy="500"
+   inkscape:window-width="1920"
+   inkscape:window-height="1029"
+   inkscape:window-x="0"
+   inkscape:window-y="23"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg175" />
+<g
+   id="g173"
+   transform="matrix(0.81632653,0,0,0.81632653,91.852699,91.836735) rotate(356, 500, 500)"><path
+     d="m 510.5,749.6 c -14.9,-9.9 -38.1,-9.9 -53.1,1.7 l -262,207.3 c -14.9,11.6 -21.6,6.6 -14.9,-11.6 L 474,48.1 c 5,-16.6 14.9,-18.2 21.6,0 l 325,898.7 c 6.6,16.6 -1.7,23.2 -14.9,11.6 z"
+     id="path169" /><path
+     d="m 817.2,990 c -8.3,0 -16.6,-3.3 -26.5,-9.9 L 497.2,769.5 c -5,-3.3 -18.2,-3.3 -23.2,0 L 210.3,976.7 c -19.9,16.6 -41.5,14.9 -51.4,0 -6.6,-9.9 -8.3,-21.6 -3.3,-38.1 L 449.1,39.8 C 459,13.3 477.3,10 483.9,10 c 6.6,0 24.9,3.3 34.8,29.8 l 325,898.7 c 5,14.9 5,28.2 -1.7,38.1 -4.9,8.4 -14.8,13.4 -24.8,13.4 z M 485.6,716.4 c 14.9,0 28.2,5 39.8,11.6 L 780.8,910.4 485.6,92.9 218.6,907.1 442.5,729.7 c 11.6,-8.3 26.5,-13.3 43.1,-13.3 z"
+     id="path171" /></g>
+</svg>

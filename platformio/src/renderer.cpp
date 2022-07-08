@@ -437,20 +437,21 @@ void drawCurrentConditions(owm_current_t &current,
   time_t ts = current.sunrise;
   tm *timeInfo = localtime(&ts);
   strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
-  drawString(48, 204 + 17 + (48 + 8) * 0 - 17 / 2 + 48 / 2, timeBuffer, LEFT);
-  drawString(48, 204 + 17 + (48 + 8) * 1 - 17 / 2 + 48 / 2, "18mph", LEFT);
-  drawString(48, 204 + 17 + (48 + 8) * 2 - 17 / 2 + 48 / 2, "10 - High", LEFT);
-  drawString(48, 204 + 17 + (48 + 8) * 3 - 17 / 2 + 48 / 2, "Good", LEFT);
-  drawString(48, 204 + 17 + (48 + 8) * 4 - 17 / 2 + 48 / 2, "78`", LEFT);
+  drawString(48, 204 + 17 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
+  display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1, getWindBitmap24(current.wind_deg), 24, 24, GxEPD_BLACK);
+  drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, "18mph", LEFT);
+  drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, "10 - High", LEFT);
+  drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, "Good", LEFT);
+  drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "78`", LEFT);
   memset(timeBuffer, '\0', sizeof(timeBuffer));
   ts = current.sunset;
   timeInfo = localtime(&ts);
   strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
-  drawString(170 + 48, 204 + 17 + (48 + 8) * 0 - 17 / 2 + 48 / 2, timeBuffer, LEFT);
-  drawString(170 + 48, 204 + 17 + (48 + 8) * 1 - 17 / 2 + 48 / 2, "12%", LEFT);
-  drawString(170 + 48, 204 + 17 + (48 + 8) * 2 - 17 / 2 + 48 / 2, "29.65in", LEFT);
-  drawString(170 + 48, 204 + 17 + (48 + 8) * 3 - 17 / 2 + 48 / 2, "4000ft", LEFT);
-  drawString(170 + 48, 204 + 17 + (48 + 8) * 4 - 17 / 2 + 48 / 2, "20%", LEFT);
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, "12%", LEFT);
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, "29.65in", LEFT);
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, "4000ft", LEFT);
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "20%", LEFT);
 
   return;
 }

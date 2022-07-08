@@ -17,18 +17,21 @@ warning(alert) icon (warning_icon.svg) was obtained from:
 https://icon-icons.com/icon/warning/172115
 
 house_temperature.svg and house_humidity.svg were created by merging icons from
-https://erikflowers.github.io/weather-icons/ with house.svg from 
+https://erikflowers.github.io/weather-icons/ with house.svg from
 https://seekicon.com/free-icon/house_16
 
 air_quality.svg was derived from WeatherBug's air quality icon
 https://www.weatherbug.com/air-quality/
 
-ionizing_radiation_symbol.svg was obtained from
+ionizing_radiation_symbol.svg was obtained from:
 https://svgsilh.com/image/309911.html
 
-biological_hazard_symbol.svg was obtained from 
+biological_hazard_symbol.svg was obtained from:
 https://upload.wikimedia.org/wikipedia/commons/c/c0/Biohazard_symbol.svg
 
+alternative wind direction icon (meteorological_wind_direction_xdeg.svg) was 
+obtained from:
+https://www.onlinewebfonts.com/icon/251550
 
 
 HOW TO RUN SCRIPT TO GENERATE .h FILES FROM .svg FILES
@@ -47,4 +50,3 @@ Dependencies:
 
 To regenerate all icons execute the following command:
 bash svg_to_headers.sh 16 & bash svg_to_headers.sh 24 & bash svg_to_headers.sh 32 & bash svg_to_headers.sh 48 & bash svg_to_headers.sh 64 & bash svg_to_headers.sh 96 & bash svg_to_headers.sh 128 & bash svg_to_headers.sh 160 & bash svg_to_headers.sh 196
-
