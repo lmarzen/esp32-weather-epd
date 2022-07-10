@@ -202,14 +202,6 @@ const char *getUVIdesc(unsigned int uvi)
   }
 } // end getUVIdesc
 
-/* Converts pressure with units hPa to inHg
- */
-float hPa_to_inHg(float hPa)
-{
-  return hPa * 0.02953;
-} // end hPa_to_inHg
-
-
 /* Takes the daily weather forecast (from OpenWeatherMap API 
  * response) and returns a pointer to the icon's 64x64 bitmap.
  *

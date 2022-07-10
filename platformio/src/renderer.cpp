@@ -480,15 +480,56 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   unitStr = "hPa";
 #endif // end UNITS_METRIC
 #ifdef UNITS_IMPERIAL
-  dataStr = String(round(100 * hPa_to_inHg(current.pressure)) / 100.0, 2) ;
+  // hPa to inHg (rounded to 2 decimal places)
+  dataStr = String(round(100 * current.humidity * 0.02953) / 100.0, 2);
   unitStr = "in";
 #endif // end UNITS_IMPERIAL
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans10pt7b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, unitStr, LEFT);
   display.setFont(&FreeSans12pt7b);
-  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, "4000ft", LEFT);
-  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "20%", LEFT);
+#ifdef UNITS_METRIC
+  float vis = current.visibility / 1000.0; // m to km
+  unitStr = "km";
+#endif // end UNITS_METRIC
+#ifdef UNITS_IMPERIAL
+  float vis = current.visibility * 0.000621371; // m to mi
+  unitStr = "mi";
+#endif // end UNITS_IMPERIAL
+  // if visibility is less than 1.95, round to 1 decimal place
+  // else round to int
+  if (vis < 1.95)
+  {
+    dataStr = String(round(10 * vis) / 10.0, 1);
+  }
+  else
+  {
+    dataStr = String(round(vis), 0);
+  }
+#ifdef UNITS_METRIC
+  if (vis >= 10) {
+#endif // end UNITS_METRIC
+#ifdef UNITS_IMPERIAL
+  if (vis >= 6) {
+#endif // end UNITS_IMPERIAL
+    dataStr = ">" + dataStr;
+  }
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
+  display.setFont(&FreeSans10pt7b);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, unitStr, LEFT);
+  display.setFont(&FreeSans12pt7b);
+  if (!isnan(inHumidity))
+  {
+    dataStr = String(round(inHumidity), 0);
+  }
+  else
+  {
+    dataStr = "-";
+  }
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
+  display.setFont(&FreeSans10pt7b);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "%", LEFT);
+  display.setFont(&FreeSans12pt7b);
 
   return;
 }
