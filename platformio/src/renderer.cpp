@@ -382,13 +382,13 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
 }
 
 
-void drawCurrentConditions(owm_current_t &current, 
+void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                            owm_resp_air_pollution_t &owm_air_pollution, 
                            float inTemp, float inHumidity)
 {
   String str;
   // current weather icon
-  display.drawInvertedBitmap(0, 0, getCurrentConditionsBitmap196(current), 196, 196, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 0, getCurrentConditionsBitmap196(current, today), 196, 196, GxEPD_BLACK);
 
   // current temp
   display.setFont(&FreeSans48pt_temperature);

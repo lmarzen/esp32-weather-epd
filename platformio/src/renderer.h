@@ -24,7 +24,7 @@ typedef enum alignment
 
 void initDisplay();
 void drawString(int x, int y, String text, alignment_t alignment);
-void drawCurrentConditions(owm_current_t &current, 
+void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                            owm_resp_air_pollution_t &owm_air_pollution, 
                            float inTemp, float inHumidity);
 void drawForecast(owm_daily_t *const daily);

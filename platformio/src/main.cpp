@@ -120,7 +120,7 @@ void setup()
     initDisplay();
     debugDisplayBuffer(owm_onecall, owm_air_pollution); // debug, remove later
     
-    drawCurrentConditions(owm_onecall.current, owm_air_pollution, inTemp, inHumidity);
+    drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0], owm_air_pollution, inTemp, inHumidity);
     drawForecast(owm_onecall.daily);
     drawAlerts(owm_onecall.alerts);
     drawLocationDate(CITY_STRING, &timeInfo);
