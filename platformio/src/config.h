@@ -9,6 +9,13 @@
 // language header to use
 #define LANGUAGE_HEADER "languages/lang_en_us.h"
 
+// UNITS
+// Select either metric or imperial units
+// https://openweathermap.org/api/one-call-api#data
+// Uncomment your preferred units. (exactly 1 must be defined)
+// #define UNITS_METRIC
+#define UNITS_IMPERIAL
+
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).
 // I have written a library to calculate many of the most popular AQI scales.

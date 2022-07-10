@@ -386,22 +386,28 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                            owm_resp_air_pollution_t &owm_air_pollution, 
                            float inTemp, float inHumidity)
 {
-  String str;
+  String tempStr;
   // current weather icon
   display.drawInvertedBitmap(0, 0, getCurrentConditionsBitmap196(current, today), 196, 196, GxEPD_BLACK);
 
   // current temp
   display.setFont(&FreeSans48pt_temperature);
-  str = String(round(current.temp), 0);
-  drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, str, CENTER);
+  tempStr = String(round(current.temp), 0);
+  drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, tempStr, CENTER);
   display.setFont(&FreeSans14pt7b);
-  char tempUnits[3] = {'`', (UNITS == 'm') ? 'C' : 'F', '\0'};
+#ifdef UNITS_METRIC
+  const char tempUnits[] = "`C";
+#endif // end UNITS_METRIC
+#ifdef UNITS_IMPERIAL
+  const char tempUnits[] = "`F";
+#endif // end UNITS_IMPERIAL
   drawString(display.getCursorX(), 196 / 2 - 69 / 2 + 20, tempUnits, LEFT);
 
   // current feels like
   display.setFont(&FreeSans12pt7b);
-  str = String(TXT_FEELS_LIKE) + ' ' + String(round(current.feels_like), 0) + '`';
-  drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, str, CENTER);
+  tempStr = String(TXT_FEELS_LIKE) + ' ' 
+            + String(round(current.feels_like), 0) + '`';
+  drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, tempStr, CENTER);
 
   // line dividing top and bottom display areas
   display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
@@ -439,7 +445,13 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
   drawString(48, 204 + 17 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
   display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1, getWindBitmap24(current.wind_deg), 24, 24, GxEPD_BLACK);
-  drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, "18mph", LEFT);
+#ifdef UNITS_METRIC
+  tempStr =  String(round(current.wind_speed), 0) + "m/s";
+#endif // end UNITS_METRIC
+#ifdef UNITS_IMPERIAL
+  tempStr =  String(round(current.wind_speed), 0) + "m/h";
+#endif // end UNITS_IMPERIAL
+  drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, tempStr, LEFT);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, "10 - High", LEFT);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, "Good", LEFT);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "78`", LEFT);

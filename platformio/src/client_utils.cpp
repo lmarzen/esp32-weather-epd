@@ -109,7 +109,13 @@ bool getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
 {
   int attempts = 0;
   bool rxSuccess = false;
-  String unitsStr = (UNITS == 'i') ? "imperial" : "metric";
+#ifdef UNITS_METRIC
+  const char unitsStr[] = "metric";
+#endif // end UNITS_METRIC
+#ifdef UNITS_IMPERIAL
+  const char unitsStr[] = "imperial";
+#endif // end UNITS_IMPERIAL
+
   String uri = "/data/2.5/onecall?lat=" + LAT + "&lon=" + LON 
                + "&units=" + unitsStr + "&lang=" + LANG 
                + "&exclude=minutely&appid=" + OWM_APIKEY;
@@ -147,7 +153,6 @@ bool getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
 {
   int attempts = 0;
   bool rxSuccess = false;
-  String unitsStr = (UNITS == 'i') ? "imperial" : "metric";
 
   // set start and end to approriate values so that the last 24 hours of air
   // pollution history is returned. Unix, UTC. Us
