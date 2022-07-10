@@ -176,6 +176,40 @@ void filterAlerts(std::vector<owm_alerts_t> &resp)
   return;
 } // end filterAlerts
 
+/* Returns the descriptor text for the given UV index.
+ */
+const char *getUVIdesc(unsigned int uvi)
+{
+  if (uvi <= 2)
+  {
+    return TXT_UV_LOW;
+  }
+  else if (uvi <= 5)
+  {
+    return TXT_UV_MODERATE;
+  }
+  else if (uvi <= 7)
+  {
+    return TXT_UV_HIGH; 
+  }
+  else if (uvi <= 10)
+  {
+    return TXT_UV_VERY_HIGH;
+  }
+  else // uvi >= 11
+  {
+    return TXT_UV_EXTREME;
+  }
+} // end getUVIdesc
+
+/* Converts pressure with units hPa to inHg
+ */
+float hPa_to_inHg(float hPa)
+{
+  return hPa * 0.02953;
+} // end hPa_to_inHg
+
+
 /* Takes the daily weather forecast (from OpenWeatherMap API 
  * response) and returns a pointer to the icon's 64x64 bitmap.
  *

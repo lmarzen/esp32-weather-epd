@@ -452,7 +452,13 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   tempStr =  String(round(current.wind_speed), 0) + "mph";
 #endif // end UNITS_IMPERIAL
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, tempStr, LEFT);
-  drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, "10 - High", LEFT);
+  uint uvi = static_cast<uint>(max(round(current.uvi), 0.0));
+  tempStr = uvi;
+  drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, tempStr, LEFT);
+  display.setFont(&FreeSans7pt7b);
+  tempStr = " - " + String(getUVIdesc(uvi));
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, tempStr, LEFT);
+  display.setFont(&FreeSans12pt7b);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, "Good", LEFT);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "78`", LEFT);
   memset(timeBuffer, '\0', sizeof(timeBuffer));
@@ -460,8 +466,16 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   timeInfo = localtime(&ts);
   strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
-  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, "12%", LEFT);
-  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, "29.65in", LEFT);
+  tempStr = String(current.humidity) + "%";
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, tempStr, LEFT);
+#ifdef UNITS_METRIC
+  tempStr = String(current.pressure) + "hPa";
+#endif // end UNITS_METRIC
+#ifdef UNITS_IMPERIAL
+  tempStr = String(round(100 * hPa_to_inHg(current.pressure)) / 100.0, 2) 
+            + "in";
+#endif // end UNITS_IMPERIAL
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, tempStr, LEFT);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, "4000ft", LEFT);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "20%", LEFT);
 
