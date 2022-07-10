@@ -386,14 +386,14 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                            owm_resp_air_pollution_t &owm_air_pollution, 
                            float inTemp, float inHumidity)
 {
-  String tempStr;
+  String dataStr, unitStr;
   // current weather icon
   display.drawInvertedBitmap(0, 0, getCurrentConditionsBitmap196(current, today), 196, 196, GxEPD_BLACK);
 
   // current temp
   display.setFont(&FreeSans48pt_temperature);
-  tempStr = String(round(current.temp), 0);
-  drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, tempStr, CENTER);
+  dataStr = String(round(current.temp), 0);
+  drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, dataStr, CENTER);
   display.setFont(&FreeSans14pt7b);
 #ifdef UNITS_METRIC
   const char tempUnits[] = "`C";
@@ -405,9 +405,9 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // current feels like
   display.setFont(&FreeSans12pt7b);
-  tempStr = String(TXT_FEELS_LIKE) + ' ' 
+  dataStr = String(TXT_FEELS_LIKE) + ' ' 
             + String(round(current.feels_like), 0) + '`';
-  drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, tempStr, CENTER);
+  drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, dataStr, CENTER);
 
   // line dividing top and bottom display areas
   display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
@@ -445,19 +445,23 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
   drawString(48, 204 + 17 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
   display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1, getWindBitmap24(current.wind_deg), 24, 24, GxEPD_BLACK);
-#ifdef UNITS_METRIC
-  tempStr =  String(round(current.wind_speed), 0) + "m/s";
+  dataStr =  String(round(current.wind_speed), 0);
+  drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
+  #ifdef UNITS_METRIC
+  unitStr = "m/s";
 #endif // end UNITS_METRIC
 #ifdef UNITS_IMPERIAL
-  tempStr =  String(round(current.wind_speed), 0) + "mph";
+  unitStr = "mph";
 #endif // end UNITS_IMPERIAL
-  drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, tempStr, LEFT);
+  display.setFont(&FreeSans10pt7b);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, unitStr, LEFT);
+  display.setFont(&FreeSans12pt7b);
   uint uvi = static_cast<uint>(max(round(current.uvi), 0.0));
-  tempStr = uvi;
-  drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, tempStr, LEFT);
+  dataStr = uvi;
+  drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans7pt7b);
-  tempStr = " - " + String(getUVIdesc(uvi));
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, tempStr, LEFT);
+  dataStr = " - " + String(getUVIdesc(uvi));
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans12pt7b);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, "Good", LEFT);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "78`", LEFT);
@@ -466,16 +470,23 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   timeInfo = localtime(&ts);
   strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
-  tempStr = String(current.humidity) + "%";
-  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, tempStr, LEFT);
+  dataStr = String(current.humidity);
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
+  display.setFont(&FreeSans10pt7b);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, "%", LEFT);
+  display.setFont(&FreeSans12pt7b);
 #ifdef UNITS_METRIC
-  tempStr = String(current.pressure) + "hPa";
+  dataStr = String(current.pressure);
+  unitStr = "hPa";
 #endif // end UNITS_METRIC
 #ifdef UNITS_IMPERIAL
-  tempStr = String(round(100 * hPa_to_inHg(current.pressure)) / 100.0, 2) 
-            + "in";
+  dataStr = String(round(100 * hPa_to_inHg(current.pressure)) / 100.0, 2) ;
+  unitStr = "in";
 #endif // end UNITS_IMPERIAL
-  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, tempStr, LEFT);
+  drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
+  display.setFont(&FreeSans10pt7b);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, unitStr, LEFT);
+  display.setFont(&FreeSans12pt7b);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, "4000ft", LEFT);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "20%", LEFT);
 
