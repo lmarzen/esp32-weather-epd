@@ -34,6 +34,13 @@ const char *TXT_MMMM[] = {"January",   "February", "March",    "April",
                           "May",       "June",     "July",     "August", 
                           "September", "October",  "November", "December"};
 
+// UV INDEX
+const char *TXT_UV_LOW       = "Low";
+const char *TXT_UV_MODERATE  = "Moderate";
+const char *TXT_UV_HIGH      = "High";
+const char *TXT_UV_VERY_HIGH = "Very High";
+const char *TXT_UV_EXTREME   = "Extreme";
+
 // ALERTS
 // The display can show up to 2 alerts, but alerts can be unpredictible in
 // severity and number. If more than 2 alerts are active, the esp32 will attempt

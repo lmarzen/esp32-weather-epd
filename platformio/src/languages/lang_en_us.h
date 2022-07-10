@@ -27,6 +27,13 @@ extern const char *TXT_dddd[];
 extern const char *TXT_MMM[];
 extern const char *TXT_MMMM[];
 
+// UV INDEX
+extern const char *TXT_UV_LOW;
+extern const char *TXT_UV_MODERATE;
+extern const char *TXT_UV_HIGH;
+extern const char *TXT_UV_VERY_HIGH;
+extern const char *TXT_UV_EXTREME;
+
 // ALERTS
 extern const std::vector<String> ALERT_URGENCY;
 // ALERT TERMINOLOGY

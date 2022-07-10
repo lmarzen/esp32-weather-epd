@@ -439,7 +439,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // current weather data
   display.setFont(&FreeSans12pt7b);
-  char timeBuffer[8] = {};
+  char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
   time_t ts = current.sunrise;
   tm *timeInfo = localtime(&ts);
   strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
@@ -449,7 +449,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   tempStr =  String(round(current.wind_speed), 0) + "m/s";
 #endif // end UNITS_METRIC
 #ifdef UNITS_IMPERIAL
-  tempStr =  String(round(current.wind_speed), 0) + "m/h";
+  tempStr =  String(round(current.wind_speed), 0) + "mph";
 #endif // end UNITS_IMPERIAL
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, tempStr, LEFT);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, "10 - High", LEFT);
