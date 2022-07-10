@@ -9,24 +9,6 @@
 // language header to use
 #define LANGUAGE_HEADER "languages/lang_en_us.h"
 
-// WIND
-// The wind direction icon shown to the left of the wind speed can point to a max
-// precision of ±0.5°. This uses more flash storage because all 360 24x24 
-// wind direction icons must be stored, totaling ~25kB.
-//
-// directions                 #  precision  storage  
-// Cardinal                   4   ±45.000°     288B  N
-// Ordinal                    8   ±22.500°     576B  NE
-// Secondary Intercardinal   16   ±11.250°   1,152B  NNE
-// Tertiary Intercardinal    32    ±5.625°   2,304B  NbE
-// (360)                    360    ±0.500°  25,920B  1°
-// Uncomment your preferred wind directions. (exactly 1 must be defined)
-// #define WIND_DIRECTIONS_CARDINAL                  4
-// #define WIND_DIRECTIONS_ORDINAL                   8
-#define WIND_DIRECTIONS_SECONDARY_INTERCARDINAL  16
-// #define WIND_DIRECTIONS_TERTIARY_INTERCARDINAL   32
-// #define WIND_DIRECTIONS_360                     360
-
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).
 // I have written a library to calculate many of the most popular AQI scales.
@@ -43,6 +25,28 @@
 // #define SOUTH_KOREA_CAI
 // #define UNITED_KINGDOM_DAQI
 #define UNITED_STATES_AQI
+
+// WIND
+// The wind direction icon shown to the left of the wind speed can indicate wind
+// direction with a minimum error of ±0.5°. This uses more flash storage because
+// 360 24x24 wind direction icons must be stored, totaling ~25kB. For either
+// preference or incase flash space becomes a concern there are a handful of
+// selectable options listed below. 360 points seems excessive, but the option
+// is there.
+//
+// DIRECTIONS                 #     ERROR  STORAGE  
+// Cardinal                   4  ±45.000°     288B  N
+// Ordinal                    8  ±22.500°     576B  NE
+// Secondary Intercardinal   16  ±11.250°   1,152B  NNE
+// Tertiary Intercardinal    32   ±5.625°   2,304B  NbE
+// (360)                    360   ±0.500°  25,920B  1°
+// Uncomment your preferred wind level direction precision.
+// (exactly 1 must be defined)
+// #define WIND_DIRECTIONS_CARDINAL
+// #define WIND_DIRECTIONS_ORDINAL
+// #define WIND_DIRECTIONS_SECONDARY_INTERCARDINAL
+// #define WIND_DIRECTIONS_TERTIARY_INTERCARDINAL
+// #define WIND_DIRECTIONS_360
 
 // Set the below variables in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;
