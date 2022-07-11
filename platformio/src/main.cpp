@@ -33,7 +33,7 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
                  + String((millis() - startTime) / 1000.0, 3) + "s");
   Serial.println("Deep-sleep for " + String(sleepDuration) + "s");
   esp_deep_sleep_start();
-}
+} // end beginDeepSleep
 
 void setup()
 {
@@ -137,9 +137,9 @@ void setup()
   Serial.println("Min Free Mem: " + String(ESP.getMinFreeHeap()));
   Serial.println("Status: " + String(status));
   beginDeepSleep(startTime, &timeInfo);
-}
+} // end setup
 
 void loop()
 {
   // this will never run
-}
+} // end loop

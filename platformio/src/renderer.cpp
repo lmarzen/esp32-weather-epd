@@ -73,7 +73,7 @@ void initDisplay()
   display.setTextColor(GxEPD_BLACK);
   display.fillScreen(GxEPD_WHITE);
   display.setFullWindow();
-}
+} // end initDisplay
 
 void drawString(int x, int y, String text, alignment_t alignment)
 {
@@ -87,7 +87,7 @@ void drawString(int x, int y, String text, alignment_t alignment)
     x = x - w / 2;
   display.setCursor(x, y);
   display.print(text);
-}
+} // end drawString
 
 void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
                         owm_resp_air_pollution_t &owm_air_pollution)
@@ -532,15 +532,17 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   display.setFont(&FreeSans12pt7b);
 
   return;
-}
+} // end drawCurrentConditions
+
 void drawForecast(owm_daily_t *const daily)
 {
   return;
-}
+} // end drawForecast
+
 void drawAlerts(std::vector<owm_alerts_t> &alerts)
 {
   return;
-}
+} // end drawAlerts
 
 void drawLocationDate(const String &city, tm *timeInfo)
 {
@@ -561,13 +563,14 @@ void drawLocationDate(const String &city, tm *timeInfo)
   display.setFont(&FreeSans12pt7b);
   drawString(DISP_WIDTH - 1, 30 + 4 + 17, dateStr, RIGHT);
   return;
-}
+} // end drawLocationDate
 
 void drawOutlookGraph(owm_hourly_t *const hourly)
 {
   return;
-}
+} // end drawOutlookGraph
+
 void drawStatusBar(char *const statusStr, int wifiRSSI, double batteryVoltage)
 {
   return;
-}
+} // end drawStatusBar

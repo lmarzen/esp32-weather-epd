@@ -58,7 +58,7 @@ wl_status_t startWiFi(int &wifiRSSI)
     Serial.printf("Could not connect to '%s'\n", WIFI_SSID);
   }
   return connection_status;
-}
+} // startWiFi
 
 /* Disconnect and power-off wifi.
  */
@@ -81,7 +81,7 @@ bool printLocalTime(tm *timeInfo)
   }
   Serial.println(timeInfo, "%A, %B %d, %Y %H:%M:%S");
   return true;
-}
+} // killWiFi
 
 /* Connects to NTP server and stores time in a tm struct, adjusted for the time
  * zone specified in config.cpp.
@@ -96,7 +96,7 @@ bool setupTime(tm *timeInfo)
   setenv("TZ", TIMEZONE, 1);
   tzset();
   return printLocalTime(timeInfo);
-}
+} // setupTime
 
 /* Perform an HTTP GET request to OpenWeatherMap's "One Call" API
  * If data is recieved, it will be parsed and stored in the global variable
@@ -120,7 +120,7 @@ bool getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
                + "&units=" + unitsStr + "&lang=" + LANG 
                + "&exclude=minutely&appid=" + OWM_APIKEY;
 
-  while (!rxSuccess && attempts < 2)
+  while (!rxSuccess && attempts < 3)
   {
     HTTPClient http;
     http.begin(client, OWM_ENDPOINT, 80, uri);
@@ -140,7 +140,7 @@ bool getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
   }
 
   return rxSuccess;
-}
+} // getOWMonecall
 
 /* Perform an HTTP GET request to OpenWeatherMap's "Air Pollution" API
  * If data is recieved, it will be parsed and stored in the global variable
@@ -168,7 +168,7 @@ bool getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
                + "&start=" + startStr + "&end=" + endStr 
                + "&appid=" + OWM_APIKEY;
 
-  while (!rxSuccess && attempts < 2)
+  while (!rxSuccess && attempts < 3)
   {
     HTTPClient http;
     http.begin(client, OWM_ENDPOINT, 80, uri);
@@ -188,7 +188,7 @@ bool getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
   }
 
   return rxSuccess;
-}
+} // getOWMairpollution
 
 /*
 // TODO

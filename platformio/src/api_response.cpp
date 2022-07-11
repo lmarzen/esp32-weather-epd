@@ -223,7 +223,7 @@ bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t &r)
   }
 
   return true;
-}
+} // end deserializeOneCall
 
 bool deserializeAirQuality(WiFiClient& json, owm_resp_air_pollution_t &r) 
 {
@@ -267,4 +267,4 @@ bool deserializeAirQuality(WiFiClient& json, owm_resp_air_pollution_t &r)
   }
 
   return true;
-}
+} // end deserializeAirQuality
