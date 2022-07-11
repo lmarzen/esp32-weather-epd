@@ -1,6 +1,9 @@
 #include "aqi.h"
 #include <math.h>
 
+int max(int a, int b) { return a >= b ? a : b; }
+int min(int a, int b) { return a <= b ? a : b; }
+
 float truncate_float(float val, int decimal_places)
 {
   int n = pow(10, decimal_places);
