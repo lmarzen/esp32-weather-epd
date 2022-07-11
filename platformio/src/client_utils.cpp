@@ -158,7 +158,8 @@ bool getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
   // pollution history is returned. Unix, UTC. Us
   time_t now;
   int64_t end = time(&now);
-  int64_t start = end - (3600 * (OWM_NUM_AIR_POLLUTION - 1));
+  // minus 1 is important here, otherwise we could get an extra hour of history
+  int64_t start = end - ((3600 * OWM_NUM_AIR_POLLUTION) - 1);
   char endStr[22];
   char startStr[22];
   sprintf(endStr, "%lld", end);

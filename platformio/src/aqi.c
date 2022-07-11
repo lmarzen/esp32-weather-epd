@@ -18,8 +18,9 @@ int compute_nepm_aqi(float std, float c)
 int compute_piecewise_aqi(float i_lo, float i_hi,
                           float c_lo, float c_hi, float c)
 {
-  return (int)min(i_hi, max(i_lo, round(
-                     (((i_hi - i_lo)) / ((c_hi - c_lo))) * (c - c_lo) + i_lo)));
+  return min(i_hi, max(i_lo, round(
+                             ( ((float)(i_hi - i_lo)) / ((float)(c_hi - c_lo)) ) 
+                             * (c - c_lo) + i_lo)));
 } // end compute_piecewise_aqi
 
 /* Australia (AQI)

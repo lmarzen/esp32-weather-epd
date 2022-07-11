@@ -24,14 +24,14 @@
 // Uncomment your preferred AQI scale. (exactly 1 must be defined)
 // #define AUSTRALIA_AQI
 // #define CANADA_AQHI
-// #define EUROPE_CAQI
+#define EUROPE_CAQI
 // #define HONG_KONG_AQHI
 // #define INDIA_AQI
 // #define MAINLAND_CHINA_AQI
 // #define SINGAPORE_PSI
 // #define SOUTH_KOREA_CAI
 // #define UNITED_KINGDOM_DAQI
-#define UNITED_STATES_AQI
+// #define UNITED_STATES_AQI
 
 // WIND
 // The wind direction icon shown to the left of the wind speed can indicate wind

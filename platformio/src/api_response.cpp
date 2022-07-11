@@ -229,7 +229,7 @@ bool deserializeAirQuality(WiFiClient& json, owm_resp_air_pollution_t &r)
 {
   int i = 0;
 
-  DynamicJsonDocument doc(6 * 1024);
+  DynamicJsonDocument doc(8 * 1024);
 
   DeserializationError error = deserializeJson(doc, json);
 

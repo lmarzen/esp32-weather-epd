@@ -342,7 +342,9 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   //display.drawInvertedBitmap(400, 0, getAlertBitmap48(owm_onecall.alerts[0]), 48, 48, GxEPD_BLACK);
   //display.drawInvertedBitmap(400, 0, getAlertBitmap32(owm_onecall.alerts[1]), 32, 32, GxEPD_BLACK);
 
-  display.drawInvertedBitmap(400, 400, getForecastBitmap64(owm_onecall.daily[1]), 64, 64, GxEPD_BLACK);
+  display.drawInvertedBitmap(400, 400,
+                             getForecastBitmap64(owm_onecall.daily[1]),
+                             64, 64, GxEPD_BLACK);
 
   // end debug
 }
@@ -356,7 +358,9 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 {
   String dataStr, unitStr;
   // current weather icon
-  display.drawInvertedBitmap(0, 0, getCurrentConditionsBitmap196(current, today), 196, 196, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 0,
+                             getCurrentConditionsBitmap196(current, today), 
+                             196, 196, GxEPD_BLACK);
 
   // current temp
   display.setFont(&FreeSans48pt_temperature);
@@ -381,16 +385,26 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
 
   // current weather data icons
-  display.drawInvertedBitmap(0, 204 + (48 + 8) * 0, wi_sunrise_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(0, 204 + (48 + 8) * 1, wi_strong_wind_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(0, 204 + (48 + 8) * 2, wi_day_sunny_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(0, 204 + (48 + 8) * 3, air_filter_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(0, 204 + (48 + 8) * 4, house_thermometer_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(170, 204 + (48 + 8) * 0, wi_sunset_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(170, 204 + (48 + 8) * 1, wi_humidity_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(170, 204 + (48 + 8) * 2, wi_barometer_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(170, 204 + (48 + 8) * 3, visibility_icon_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(170, 204 + (48 + 8) * 4, house_humidity_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 0,
+                             wi_sunrise_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 1,
+                             wi_strong_wind_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 2,
+                             wi_day_sunny_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 3,
+                             air_filter_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 204 + (48 + 8) * 4,
+                             house_thermometer_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 0,
+                             wi_sunset_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 1,
+                             wi_humidity_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 2,
+                             wi_barometer_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 3,
+                             visibility_icon_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(170, 204 + (48 + 8) * 4,
+                             house_humidity_48x48, 48, 48, GxEPD_BLACK);
 
   // current weather data labels
   display.setFont(&FreeSans7pt7b);
@@ -444,10 +458,10 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   int aqi = getAQI(owm_air_pollution);
   dataStr = String(aqi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
-  // display.setFont(&FreeSans7pt7b);
-  // dataStr = " - " + String(getAQIdesc(aqi));
-  // drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
-  //            dataStr, LEFT);
+  display.setFont(&FreeSans7pt7b);
+  dataStr = " - " + String(getAQIdesc(aqi));
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+             dataStr, LEFT);
 
   // indoor temperature
   display.setFont(&FreeSans12pt7b);
@@ -528,7 +542,8 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans10pt7b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "%", LEFT);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, 
+             "%", LEFT);
 
   return;
 } // end drawCurrentConditions
@@ -591,9 +606,9 @@ void drawLocationDate(const String &city, tm *timeInfo)
 
   // location, date
   display.setFont(&FreeSans16pt7b);
-  drawString(DISP_WIDTH - 1, 23, city, RIGHT);
+  drawString(DISP_WIDTH - 2, 23, city, RIGHT);
   display.setFont(&FreeSans12pt7b);
-  drawString(DISP_WIDTH - 1, 30 + 4 + 17, dateStr, RIGHT);
+  drawString(DISP_WIDTH - 2, 30 + 4 + 17, dateStr, RIGHT);
   return;
 } // end drawLocationDate
 
