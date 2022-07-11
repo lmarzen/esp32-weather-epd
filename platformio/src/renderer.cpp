@@ -405,14 +405,18 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   drawString(170 + 48, 204 + 10 + (48 + 8) * 3, TXT_VISIBILITY, LEFT);
   drawString(170 + 48, 204 + 10 + (48 + 8) * 4, TXT_INDOOR_HUMIDITY, LEFT);
 
-  // current weather data
+  // sunrise
   display.setFont(&FreeSans12pt7b);
   char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
   time_t ts = current.sunrise;
   tm *timeInfo = localtime(&ts);
   strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
-  drawString(48, 204 + 17 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
-  display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1, getWindBitmap24(current.wind_deg), 24, 24, GxEPD_BLACK);
+  drawString(48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
+
+  // wind
+  display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1, 
+                             getWindBitmap24(current.wind_deg), 
+                             24, 24, GxEPD_BLACK);
   dataStr =  String(round(current.wind_speed), 0);
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
   #ifdef UNITS_METRIC
@@ -422,26 +426,48 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   unitStr = "mph";
 #endif // end UNITS_IMPERIAL
   display.setFont(&FreeSans10pt7b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, unitStr, LEFT);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, 
+             unitStr, LEFT);
+
+  // ui index
   display.setFont(&FreeSans12pt7b);
   uint uvi = static_cast<uint>(max(round(current.uvi), 0.0));
-  dataStr = uvi;
+  dataStr = String(uvi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans7pt7b);
   dataStr = " - " + String(getUVIdesc(uvi));
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+             dataStr, LEFT);
+
+  // air quality index
   display.setFont(&FreeSans12pt7b);
-  drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, "Good", LEFT);
+  int aqi = getAQI(owm_air_pollution);
+  dataStr = String(aqi);
+  drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
+  // display.setFont(&FreeSans7pt7b);
+  // dataStr = " - " + String(getAQIdesc(aqi));
+  // drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+  //            dataStr, LEFT);
+
+  // indoor temperature
+  display.setFont(&FreeSans12pt7b);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "78`", LEFT);
+
+  // sunset
   memset(timeBuffer, '\0', sizeof(timeBuffer));
   ts = current.sunset;
   timeInfo = localtime(&ts);
   strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
+
+  // humidity
   dataStr = String(current.humidity);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans10pt7b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, "%", LEFT);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, 
+             "%", LEFT);
+
+  // pressure
   display.setFont(&FreeSans12pt7b);
 #ifdef UNITS_METRIC
   dataStr = String(current.pressure);
@@ -454,7 +480,10 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 #endif // end UNITS_IMPERIAL
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans10pt7b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, unitStr, LEFT);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+             unitStr, LEFT);
+
+  // visibility
   display.setFont(&FreeSans12pt7b);
 #ifdef UNITS_METRIC
   float vis = current.visibility / 1000.0; // m to km
@@ -484,7 +513,10 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans10pt7b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, unitStr, LEFT);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+             unitStr, LEFT);
+
+  // indoor humidity
   display.setFont(&FreeSans12pt7b);
   if (!isnan(inHumidity))
   {
@@ -497,7 +529,6 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans10pt7b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "%", LEFT);
-  display.setFont(&FreeSans12pt7b);
 
   return;
 } // end drawCurrentConditions

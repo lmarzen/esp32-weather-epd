@@ -248,14 +248,14 @@ bool deserializeAirQuality(WiFiClient& json, owm_resp_air_pollution_t &r)
     r.main_aqi[i] = list["main"]["aqi"].as<int>();
 
     JsonObject list_components = list["components"];
-    r.components[i].co = list_components["co"].as<float>();
-    r.components[i].no = list_components["no"].as<float>();
-    r.components[i].no2 = list_components["no2"].as<float>();
-    r.components[i].o3 = list_components["o3"].as<float>();
-    r.components[i].so2 = list_components["so2"].as<float>();
-    r.components[i].pm2_5 = list_components["pm2_5"].as<float>();
-    r.components[i].pm10 = list_components["pm10"].as<float>();
-    r.components[i].nh3 = list_components["nh3"].as<float>();
+    r.components.co[i]    = list_components["co"].as<float>();
+    r.components.no[i]    = list_components["no"].as<float>();
+    r.components.no2[i]   = list_components["no2"].as<float>();
+    r.components.o3[i]    = list_components["o3"].as<float>();
+    r.components.so2[i]   = list_components["so2"].as<float>();
+    r.components.pm2_5[i] = list_components["pm2_5"].as<float>();
+    r.components.pm10[i]  = list_components["pm10"].as<float>();
+    r.components.nh3[i]   = list_components["nh3"].as<float>();
 
     r.dt[i] = list["dt"].as<int64_t>();
 

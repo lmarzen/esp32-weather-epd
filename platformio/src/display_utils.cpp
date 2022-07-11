@@ -2,6 +2,7 @@
 #include <Arduino.h>
 
 #include "api_response.h"
+#include "aqi.h"
 #include "config.h"
 #include "display_utils.h"
 #include LANGUAGE_HEADER
@@ -201,6 +202,177 @@ const char *getUVIdesc(unsigned int uvi)
     return TXT_UV_EXTREME;
   }
 } // end getUVIdesc
+
+/*
+ *   co    μg/m^3, Carbon Monoxide (CO)               1 ppb = 1.1456 μg/m^3
+ *   nh3   μg/m^3, Ammonia (NH3)                      1 ppb = 0.6966 μg/m^3
+ *   no    μg/m^3, Nitric Oxide (NO)                  1 ppb = 1.2274 μg/m^3
+ *   no2   μg/m^3, Nitrogen Dioxide (NO2)             1 ppb = 1.8816 μg/m^3
+ *   o3    μg/m^3, Ozone (O3)                         1 ppb = 1.9632 μg/m^3
+ *   pb    μg/m^3, Lead (Pb)                          1 ppb = 1.9632 μg/m^3
+ *   so2   μg/m^3, Sulfur Dioxide (SO2)               1 ppb = 8.4744 μg/m^3
+ *   pm10  μg/m^3, Coarse Particulate Matter (<10μm)
+ *   pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
+ */
+/* Returns the average pollutant concentration over a given number of previous
+ * hours.
+ *
+ * hours must be a positive integer
+ */
+float getAvgConc(float pollutant[], int hours)
+{
+  float avg = 0;
+  // index (OWM_NUM_AIR_POLLUTION - 1) is most recent hourly concentration
+  for (int h = (OWM_NUM_AIR_POLLUTION - 1) - (hours - 1)
+       ; h < OWM_NUM_AIR_POLLUTION
+       ; ++h)
+  {
+    avg += pollutant[h];
+  }
+
+  avg = avg / hours;
+  return avg;
+}
+
+/* Returns the aqi for the given AQI and the selected AQI scale(defined in 
+ * config.h)
+ */
+int getAQI(owm_resp_air_pollution_t &p)
+{
+#ifdef AUSTRALIA_AQI
+float co_8h     = getAvgConc(p.components.co,     8);
+float no2_1h    = getAvgConc(p.components.no2,    1);
+float o3_1h     = getAvgConc(p.components.o3,     1);
+float o3_4h     = getAvgConc(p.components.o3,     4);
+float so2_1h    = getAvgConc(p.components.so2,    1);
+float pm10_24h  = getAvgConc(p.components.pm10,  24);
+float pm2_5_24h = getAvgConc(p.components.pm2_5, 24);
+return australia_aqi(co_8h, no2_1h, o3_1h, o3_4h, so2_1h, pm10_24h, pm2_5_24h);
+#endif // end AUSTRALIA_AQI
+#ifdef CANADA_AQHI
+float no2_3h    = getAvgConc(p.components.no2,    3);
+float o3_3h     = getAvgConc(p.components.o3,     3);
+float pm2_5_3h  = getAvgConc(p.components.pm2_5,  3);
+return canada_aqhi(no2_3h, o3_3h, pm2_5_3h);
+#endif // end CANADA_AQHI
+#ifdef EUROPE_CAQI
+float no2_1h    = getAvgConc(p.components.no2,    1);
+float o3_1h     = getAvgConc(p.components.o3,     1);
+float pm10_1h   = getAvgConc(p.components.pm10,   1);
+float pm2_5_1h  = getAvgConc(p.components.pm2_5,  1);
+return europe_caqi(no2_1h, o3_1h, pm10_1h, pm2_5_1h);
+#endif // end EUROPE_CAQI
+#ifdef HONG_KONG_AQHI
+float no2_3h    = getAvgConc(p.components.no2,    3);
+float o3_3h     = getAvgConc(p.components.o3,     3);
+float so2_3h    = getAvgConc(p.components.so2,    3);
+float pm10_3h   = getAvgConc(p.components.pm10,   3);
+float pm2_5_3h  = getAvgConc(p.components.pm2_5,  3);
+return hong_kong_aqhi(no2_3h,  o3_3h, so2_3h, pm10_3h, pm2_5_3h);
+#endif // end HONG_KONG_AQHI
+#ifdef INDIA_AQI
+float co_8h     = getAvgConc(p.components.co,     8);
+float nh3_24h   = getAvgConc(p.components.nh3,   24);
+float no2_24h   = getAvgConc(p.components.no2,   24);
+float o3_8h     = getAvgConc(p.components.o3,     8);
+float pb_24h    = 0; // OpenWeatherMap does not report pb concentration
+float so2_24h   = getAvgConc(p.components.so2,   24);
+float pm10_24h  = getAvgConc(p.components.pm10,  24);
+float pm2_5_24h = getAvgConc(p.components.pm2_5, 24);
+return india_aqi(co_8h, nh3_24h, no2_24h, o3_8h, pb_24h, so2_24h, pm10_24h,
+                 pm2_5_24h);
+#endif // end INDIA_AQI
+#ifdef MAINLAND_CHINA_AQI
+float co_1h     = getAvgConc(p.components.co,     1);
+float co_24h    = getAvgConc(p.components.co,    24);
+float no2_1h    = getAvgConc(p.components.no2,    1);
+float no2_24h   = getAvgConc(p.components.no2,   24);
+float o3_1h     = getAvgConc(p.components.o3,     1);
+float o3_8h     = getAvgConc(p.components.o3,     8);
+float so2_1h    = getAvgConc(p.components.so2,    1);
+float so2_24h   = getAvgConc(p.components.so2,   24);
+float pm10_24h  = getAvgConc(p.components.pm10,  24);
+float pm2_5_24h = getAvgConc(p.components.pm2_5, 24);
+return mainland_china_aqi(co_1h, co_24h, no2_1h, no2_24h, o3_1h, o3_8h, so2_1h,
+                          so2_24h, pm10_24h, pm2_5_24h);
+#endif // end MAINLAND_CHINA_AQI
+#ifdef SINGAPORE_PSI
+float co_8h     = getAvgConc(p.components.co,     8);
+float no2_1h    = getAvgConc(p.components.no2,    1);
+float o3_1h     = getAvgConc(p.components.o3,     1);
+float o3_8h     = getAvgConc(p.components.o3,     8);
+float so2_24h   = getAvgConc(p.components.so2,   24);
+float pm10_24h  = getAvgConc(p.components.pm10,  24);
+float pm2_5_24h = getAvgConc(p.components.pm2_5, 24);
+return singapore_psi(co_8h, no2_1h, o3_1h, o3_8h, so2_24h, pm10_24h, pm2_5_24h);
+#endif // end SINGAPORE_PSI
+#ifdef SOUTH_KOREA_CAI
+float co_1h     = getAvgConc(p.components.co,     1);
+float no2_1h    = getAvgConc(p.components.no2,    1);
+float o3_1h     = getAvgConc(p.components.o3,     1);
+float so2_1h    = getAvgConc(p.components.so2,    1);
+float pm10_24h  = getAvgConc(p.components.pm10,  24);
+float pm2_5_24h = getAvgConc(p.components.pm2_5, 24);
+return south_korea_cai(co_1h, no2_1h, o3_1h, so2_1h, pm10_24h, pm2_5_24h);
+#endif // end SOUTH_KOREA_CAI
+#ifdef UNITED_KINGDOM_DAQI
+float no2_1h    = getAvgConc(p.components.no2,    1);
+float o3_8h     = getAvgConc(p.components.o3,     8);
+float so2_15min = getAvgConc(p.components.so2,    1); // OWM only gives hourly
+float pm10_24h  = getAvgConc(p.components.pm10,  24);
+float pm2_5_24h = getAvgConc(p.components.pm2_5, 24);
+return united_kingdom_daqi(no2_1h, o3_8h, so2_15min, pm10_24h, pm2_5_24h);
+#endif // end UNITED_KINGDOM_DAQI
+#ifdef UNITED_STATES_AQI
+float co_8h     = getAvgConc(p.components.co,     8);
+float no2_1h    = getAvgConc(p.components.no2,    1);
+float o3_1h     = getAvgConc(p.components.o3,     1);
+float o3_8h     = getAvgConc(p.components.o3,     8);
+float so2_1h    = getAvgConc(p.components.so2,    1);
+float so2_24h   = getAvgConc(p.components.so2,   24);
+float pm10_24h  = getAvgConc(p.components.pm10,  24);
+float pm2_5_24h = getAvgConc(p.components.pm2_5, 24);
+return united_states_aqi(co_8h, no2_1h, o3_1h, o3_8h, so2_1h, so2_24h, pm10_24h,
+                         pm2_5_24h);
+#endif // end UNITED_STATES_AQI
+} // end getAQI
+
+/* Returns the descriptor text for the given AQI and the selected AQI 
+ * scale(defined in config.h)
+ */
+const char *getAQIdesc(int aqi)
+{
+#ifdef AUSTRALIA_AQI
+
+#endif // end AUSTRALIA_AQI
+#ifdef CANADA_AQHI
+
+#endif // end CANADA_AQHI
+#ifdef EUROPE_CAQI
+
+#endif // end EUROPE_CAQI
+#ifdef HONG_KONG_AQHI
+
+#endif // end HONG_KONG_AQHI
+#ifdef INDIA_AQI
+
+#endif // end INDIA_AQI
+#ifdef MAINLAND_CHINA_AQI
+
+#endif // end MAINLAND_CHINA_AQI
+#ifdef SINGAPORE_PSI
+
+#endif // end SINGAPORE_PSI
+#ifdef SOUTH_KOREA_CAI
+
+#endif // end SOUTH_KOREA_CAI
+#ifdef UNITED_KINGDOM_DAQI
+
+#endif // end UNITED_KINGDOM_DAQI
+#ifdef UNITED_STATES_AQI
+
+#endif // end UNITED_STATES_AQI
+} // end getAQIdesc
 
 /* Takes the daily weather forecast (from OpenWeatherMap API 
  * response) and returns a pointer to the icon's 64x64 bitmap.

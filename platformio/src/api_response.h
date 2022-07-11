@@ -173,14 +173,14 @@ typedef struct owm_coord
 
 typedef struct owm_components
 {
-  float   co;               // Сoncentration of CO (Carbon monoxide), μg/m^3
-  float   no;               // Сoncentration of NO (Nitrogen monoxide), μg/m^3
-  float   no2;              // Сoncentration of NO2 (Nitrogen dioxide), μg/m^3
-  float   o3;               // Сoncentration of O3 (Ozone), μg/m^3
-  float   so2;              // Сoncentration of SO2 (Sulphur dioxide), μg/m^3
-  float   pm2_5;            // Сoncentration of PM2.5 (Fine particles matter), μg/m^3
-  float   pm10;             // Сoncentration of PM10 (Coarse particulate matter), μg/m^3
-  float   nh3;              // Сoncentration of NH3 (Ammonia), μg/m^3
+  float   co[OWM_NUM_AIR_POLLUTION];    // Сoncentration of CO (Carbon monoxide), μg/m^3
+  float   no[OWM_NUM_AIR_POLLUTION];    // Сoncentration of NO (Nitrogen monoxide), μg/m^3
+  float   no2[OWM_NUM_AIR_POLLUTION];   // Сoncentration of NO2 (Nitrogen dioxide), μg/m^3
+  float   o3[OWM_NUM_AIR_POLLUTION];    // Сoncentration of O3 (Ozone), μg/m^3
+  float   so2[OWM_NUM_AIR_POLLUTION];   // Сoncentration of SO2 (Sulphur dioxide), μg/m^3
+  float   pm2_5[OWM_NUM_AIR_POLLUTION]; // Сoncentration of PM2.5 (Fine particles matter), μg/m^3
+  float   pm10[OWM_NUM_AIR_POLLUTION];  // Сoncentration of PM10 (Coarse particulate matter), μg/m^3
+  float   nh3[OWM_NUM_AIR_POLLUTION];   // Сoncentration of NH3 (Ammonia), μg/m^3
 } owm_components_t;
 
 /* 
@@ -190,7 +190,7 @@ typedef struct owm_resp_air_pollution
 {
   owm_coord_t      coord;
   int              main_aqi[OWM_NUM_AIR_POLLUTION];   // Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 = Good, 2 = Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor.
-  owm_components_t components[OWM_NUM_AIR_POLLUTION];
+  owm_components_t components;
   int64_t          dt[OWM_NUM_AIR_POLLUTION];         // Date and time, Unix, UTC;
 } owm_resp_air_pollution_t;
 
