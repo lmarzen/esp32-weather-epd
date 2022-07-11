@@ -1,26 +1,23 @@
 #include "aqi.h"
 #include <math.h>
 
-int max(int a, int b) { return a >= b ? a : b; }
-int min(int a, int b) { return a <= b ? a : b; }
-
 float truncate_float(float val, int decimal_places)
 {
   int n = pow(10, decimal_places);
   return floorf(val * n) / n;
-}
+} // end truncate_float
 
 int compute_nepm_aqi(float std, float c)
 {
   return (int)round(c / std * 100);
-}
+} // end compute_nepm_aqi
 
 int compute_piecewise_aqi(float i_lo, float i_hi,
                           float c_lo, float c_hi, float c)
 {
   return (int)min(i_hi, max(i_lo, round(
                      (((i_hi - i_lo)) / ((c_hi - c_lo))) * (c - c_lo) + i_lo)));
-}
+} // end compute_piecewise_aqi
 
 /* Australia (AQI)
  *
@@ -52,7 +49,7 @@ int australia_aqi(float co_8h,  float no2_1h,   float o3_1h, float o3_4h,
   aqi = max(aqi, compute_nepm_aqi(25, pm2_5_24h));
 
   return aqi;
-}
+} // end australia_aqi
 
 /* Canada (AQHI)
  *
@@ -65,7 +62,7 @@ int canada_aqhi(float no2_3h, float o3_3h, float pm2_5_3h)
                     (1000 / 10.4) * ((exp(0.000273533 * o3_3h) - 1)    // 0.000537 * 1ppb/1.9632 μg/m^3 = 0.000273533
                                      + (exp(0.000462904 * no2_3h) - 1) // 0.000871 * 1ppb/1.8816 μg/m^3 = 0.000462904
                                      + (exp(0.000487 * pm2_5_3h) - 1))));
-}
+} // end canada_aqhi
 
 /* Europe (CAQI)
  *
@@ -224,7 +221,7 @@ int europe_caqi(float no2_1h, float o3_1h, float pm10_1h, float pm2_5_1h)
   caqi = max(caqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_1h));
 
   return caqi;
-}
+} // end europe_caqi
 
 /* Hong Kong (AQHI)
  *
@@ -281,7 +278,7 @@ int hong_kong_aqhi(float no2_3h,  float o3_3h, float so2_3h,
     // index > 10
     return 11;
   }
-}
+} // end hong_kong_aqhi
 
 /* India (AQI)
  *
@@ -642,7 +639,7 @@ int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
 
   return aqi;
-}
+} // end india_aqi
 
 /* Mainland China (AQI)
  *
@@ -1192,7 +1189,7 @@ int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
 
   return aqi;
-}
+} // end mainland_china_aqi
 
 /* Singapore (PSI)
  *
@@ -1537,7 +1534,7 @@ int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h,
   psi = max(psi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
 
   return psi;
-}
+} // end singapore_psi
 
 /* South Korea (CAI)
  *
@@ -1772,7 +1769,7 @@ int south_korea_cai(float co_1h,  float no2_1h,   float o3_1h,
   cai = max(cai, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
 
   return cai;
-}
+} // end south_korea_cai
 
 /* United Kingdom (DAQI)
  *
@@ -1834,7 +1831,7 @@ int united_kingdom_daqi(float no2_1h,   float o3_8h, float so2_15min,
   {
     return 1;
   }
-}
+} // end united_kingdom_daqi
 
 /* United States (AQI)
  *
@@ -2262,7 +2259,7 @@ int united_states_aqi(float co_8h,    float no2_1h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
 
   return aqi;
-}
+} // end united_states_aqi
 
 /*
  * Indicates Air Quality
@@ -2293,7 +2290,7 @@ const char *australia_aqi_desc(int aqi)
   {
     return "Hazardous";
   }
-}
+} // end australia_aqi_desc
 
 /*
  * Indicates Health Risk
@@ -2316,7 +2313,7 @@ const char *canada_aqhi_desc(int aqhi)
   {
     return "Very High";
   }
-}
+} // end canada_aqhi_desc
 
 /*
  * Indicates Air Pollution
@@ -2343,7 +2340,7 @@ const char *europe_caqi_desc(int caqi)
   {
     return "Very High";
   }
-}
+} // end europe_caqi_desc
 
 /*
  * Indicates Health Risk
@@ -2370,7 +2367,7 @@ const char *hong_kong_aqhi_desc(int aqhi)
   {
     return "Hazardous";
   }
-}
+} // end hong_kong_aqhi_desc
 
 /*
  * Indicates Air Quality
@@ -2401,7 +2398,7 @@ const char *india_aqi_desc(int aqi)
   {
     return "Severe";
   }
-}
+} // end india_aqi_desc
 
 /*
  * Indicates Air Pollution
@@ -2432,7 +2429,7 @@ const char *mainland_china_aqi_desc(int aqi)
   {
     return "Severely Polluted";
   }
-}
+} // end mainland_china_aqi_desc
 
 /*
  * Indicates Health Risk
@@ -2459,7 +2456,7 @@ const char *singapore_psi_desc(int psi)
   {
     return "Hazardous";
   }
-}
+} // end singapore_psi_desc
 
 /*
  * Indicates Health Risk
@@ -2482,7 +2479,7 @@ const char *south_korea_cai_desc(int cai)
   {
     return "Very Unhealthy";
   }
-}
+} // end south_korea_cai_desc
 
 /*
  * Indicates Air Pollution
@@ -2505,7 +2502,7 @@ const char *united_kingdom_daqi_desc(int daqi)
   {
     return "Very High";
   }
-}
+} // end united_kingdom_daqi_desc
 
 /*
  * Indicates Health Risk
@@ -2536,4 +2533,4 @@ const char *united_states_aqi_desc(int aqi)
   {
     return "Hazardous";
   }
-}
+} // end united_states_aqi_desc
