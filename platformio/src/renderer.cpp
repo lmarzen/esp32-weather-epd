@@ -489,7 +489,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 #endif // end UNITS_METRIC
 #ifdef UNITS_IMPERIAL
   // hPa to inHg (rounded to 2 decimal places)
-  dataStr = String(round(100 * current.humidity * 0.02953) / 100.0, 2);
+  dataStr = String(round(100.0 * current.pressure * 0.02953) / 100.0, 2);
   unitStr = "in";
 #endif // end UNITS_IMPERIAL
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
