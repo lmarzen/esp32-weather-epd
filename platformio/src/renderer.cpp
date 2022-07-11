@@ -123,7 +123,6 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   drawString(196 + 32 + 3, 32 + 5 + 17, "Hurricane Force Wind Warning", LEFT);
   */
 
-
   // OLD IDEA TO DISPLAY HIGH AND LOW WITH CURRENT TEMP
   // decided against this to because it is redundent with temperature graph
   // and removing this from above the current temperture helps reduce clutter
@@ -145,39 +144,6 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   display.setFont(&FreeSans12pt7b);
   drawString(196 + 162 / 2 + 4, 98 + 69 / 2 + 40, "Like 86`", CENTER);
   */
-
-  // 5 day, forecast icons
-  display.drawInvertedBitmap(398, 98 + 69 / 2 - 32 - 6, wi_day_fog_64x64, 64, 64, GxEPD_BLACK);
-  display.drawInvertedBitmap(480, 98 + 69 / 2 - 32 - 6, wi_day_rain_wind_64x64, 64, 64, GxEPD_BLACK);
-  display.drawInvertedBitmap(562, 98 + 69 / 2 - 32 - 6, wi_snow_64x64, 64, 64, GxEPD_BLACK);
-  display.drawInvertedBitmap(644, 98 + 69 / 2 - 32 - 6, wi_thunderstorm_64x64, 64, 64, GxEPD_BLACK);
-  display.drawInvertedBitmap(726, 98 + 69 / 2 - 32 - 6, wi_windy_64x64, 64, 64, GxEPD_BLACK);
-  // 5 day, day of week label
-  display.setFont(&FreeSans11pt7b);
-  drawString(398 + 32, 98 + 69 / 2 - 32 - 26 - 6 + 16, "Sun", CENTER);
-  drawString(480 + 32, 98 + 69 / 2 - 32 - 26 - 6 + 16, "Mon", CENTER);
-  drawString(562 + 32, 98 + 69 / 2 - 32 - 26 - 6 + 16, "Tue", CENTER);
-  drawString(644 + 32, 98 + 69 / 2 - 32 - 26 - 6 + 16, "Wed", CENTER);
-  drawString(726 + 32, 98 + 69 / 2 - 32 - 26 - 6 + 16, "Thur", CENTER);
-  // 5 day, high | low
-  display.setFont(&FreeSans8pt7b);
-  drawString(398 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
-  drawString(398 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "199`", RIGHT);
-  drawString(398 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "198`", LEFT);
-  drawString(480 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
-  drawString(480 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "199`", RIGHT);
-  drawString(480 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "-22`", LEFT);
-  drawString(562 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
-  drawString(562 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "99`", RIGHT);
-  drawString(562 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "67`", LEFT);
-  drawString(644 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
-  drawString(644 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "0`", RIGHT);
-  drawString(644 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "0`", LEFT);
-  drawString(726 + 32, 98 + 69 / 2 + 38 - 4 + 12 - 2, "|", CENTER);
-  drawString(726 + 32 - 4, 98 + 69 / 2 + 38 - 6 + 12, "79`", RIGHT);
-  drawString(726 + 32 + 5, 98 + 69 / 2 + 38 - 6 + 12, "199`", LEFT);
-
-
 
   // debug
   int16_t x1, y1;
@@ -366,9 +332,9 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   sprintf(str, "48temp h: %d", h);
   drawString(580, 425, str, LEFT);
 
-  display.setFont(&FreeSans14pt7b);
-  display.getTextBounds("`F`", 0, 0, &x1, &y1, &w, &h);
-  display.setFont(&FreeSans8pt7b);
+  display.setFont(&FreeSans11pt7b);
+  display.getTextBounds("u", 0, 0, &x1, &y1, &w, &h);
+  display.setFont(&FreeSans12pt7b);
   sprintf(str, "w: %d h: %d", w, h);
   drawString(500, 440, str, LEFT);
 
@@ -381,7 +347,9 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   // end debug
 }
 
-
+/* This function is responsible for drawing the current conditions and 
+ * associated icons.
+ */
 void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                            owm_resp_air_pollution_t &owm_air_pollution, 
                            float inTemp, float inHumidity)
@@ -534,16 +502,49 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   return;
 } // end drawCurrentConditions
 
-void drawForecast(owm_daily_t *const daily)
+/* This function is responsible for drawing the five day forecast.
+ */
+void drawForecast(owm_daily_t *const daily, tm timeInfo)
 {
+  // 5 day, forecast
+  for (int i = 0; i < 5; ++i)
+  {
+    int x = 398 + (i * 82);
+    // daily[0] would be today's daily forcast, so for tommorrow's daily[i + 1]
+    // icons
+    display.drawInvertedBitmap(x, 98 + 69 / 2 - 32 - 6,
+                               getForecastBitmap64(daily[i + 1]),
+                               64, 64, GxEPD_BLACK);
+    // day of week label
+    display.setFont(&FreeSans11pt7b);
+    char dayBuffer[8] = {};
+    timeInfo.tm_wday = (timeInfo.tm_wday + 1) % 7; // next day
+    strftime(dayBuffer, sizeof(dayBuffer), "%a", &timeInfo); // abbreviated day
+    drawString(x + 31 - 2, 98 + 69 / 2 - 32 - 26 - 6 + 16, dayBuffer, CENTER);
+
+    // high | low
+    String tempStr;
+    display.setFont(&FreeSans8pt7b);
+    drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
+    tempStr = String(round(daily[i + 1].temp.max), 0) + "`";
+    drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, tempStr, RIGHT);
+    tempStr = String(round(daily[i + 1].temp.min), 0) + "`";
+    drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, tempStr, LEFT);
+  }
+
   return;
 } // end drawForecast
 
+/* This function is responsible for drawing the current alerts if any.
+ */
 void drawAlerts(std::vector<owm_alerts_t> &alerts)
 {
   return;
 } // end drawAlerts
 
+/* This function is responsible for drawing the city string and date 
+ * information in the top right corner.
+ */
 void drawLocationDate(const String &city, tm *timeInfo)
 {
   char dateBuffer[48] = {};
@@ -565,11 +566,17 @@ void drawLocationDate(const String &city, tm *timeInfo)
   return;
 } // end drawLocationDate
 
+/* This function is responsible for drawing the outlook graph for the specified
+ * number of hours(up to 47).
+ */
 void drawOutlookGraph(owm_hourly_t *const hourly)
 {
   return;
 } // end drawOutlookGraph
 
+/* This function is responsible for drawing the status bar along the bottom of
+ * the display.
+ */
 void drawStatusBar(char *const statusStr, int wifiRSSI, double batteryVoltage)
 {
   return;

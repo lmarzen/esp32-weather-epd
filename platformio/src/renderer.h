@@ -27,7 +27,7 @@ void drawString(int x, int y, String text, alignment_t alignment);
 void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                            owm_resp_air_pollution_t &owm_air_pollution, 
                            float inTemp, float inHumidity);
-void drawForecast(owm_daily_t *const daily);
+void drawForecast(owm_daily_t *const daily, tm timeInfo);
 void drawAlerts(std::vector<owm_alerts_t> &alerts);
 void drawLocationDate(const String &city, tm *timeInfo);
 void drawOutlookGraph(owm_hourly_t *const hourly);
