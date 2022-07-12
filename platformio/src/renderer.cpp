@@ -468,21 +468,18 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   if (!isnan(inTemp))
   {
 #ifdef UNITS_METRIC
-    dataStr = String(round(inTemp), 0);
+    dataStr = String(round(inTemp), 0) + "`";
 #endif // end UNITS_METRIC
 #ifdef UNITS_IMPERIAL
     // C to F
-    dataStr = String(round((inTemp * 9.0 / 5.0) + 32 ), 0);
+    dataStr = String(round((inTemp * 9.0 / 5.0) + 32 ), 0) + "`";
 #endif // end UNITS_IMPERIAL
   }
   else
   {
-    dataStr = "-";
+    dataStr = "-`";
   }
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
-  display.setFont(&FreeSans10pt7b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, 
-             "`", LEFT);
 
   // sunset
   memset(timeBuffer, '\0', sizeof(timeBuffer));
