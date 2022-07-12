@@ -465,7 +465,24 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // indoor temperature
   display.setFont(&FreeSans12pt7b);
-  drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, "78`", LEFT);
+  if (!isnan(inTemp))
+  {
+#ifdef UNITS_METRIC
+    dataStr = String(round(inTemp), 0);
+#endif // end UNITS_METRIC
+#ifdef UNITS_IMPERIAL
+    // C to F
+    dataStr = String(round((inTemp * 9.0 / 5.0) + 32 ), 0);
+#endif // end UNITS_IMPERIAL
+  }
+  else
+  {
+    dataStr = "-";
+  }
+  drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
+  display.setFont(&FreeSans10pt7b);
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, 
+             "`", LEFT);
 
   // sunset
   memset(timeBuffer, '\0', sizeof(timeBuffer));
@@ -556,25 +573,24 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
   for (int i = 0; i < 5; ++i)
   {
     int x = 398 + (i * 82);
-    // daily[0] would be today's daily forcast, so for tommorrow's daily[i + 1]
     // icons
     display.drawInvertedBitmap(x, 98 + 69 / 2 - 32 - 6,
-                               getForecastBitmap64(daily[i + 1]),
+                               getForecastBitmap64(daily[i]),
                                64, 64, GxEPD_BLACK);
     // day of week label
     display.setFont(&FreeSans11pt7b);
     char dayBuffer[8] = {};
-    timeInfo.tm_wday = (timeInfo.tm_wday + 1) % 7; // next day
     strftime(dayBuffer, sizeof(dayBuffer), "%a", &timeInfo); // abbreviated day
     drawString(x + 31 - 2, 98 + 69 / 2 - 32 - 26 - 6 + 16, dayBuffer, CENTER);
+    timeInfo.tm_wday = (timeInfo.tm_wday + 1) % 7; // increment to next day
 
     // high | low
     String tempStr;
     display.setFont(&FreeSans8pt7b);
     drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
-    tempStr = String(round(daily[i + 1].temp.max), 0) + "`";
+    tempStr = String(round(daily[i].temp.max), 0) + "`";
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, tempStr, RIGHT);
-    tempStr = String(round(daily[i + 1].temp.min), 0) + "`";
+    tempStr = String(round(daily[i].temp.min), 0) + "`";
     drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, tempStr, LEFT);
   }
 

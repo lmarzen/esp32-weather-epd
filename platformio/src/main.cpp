@@ -1,14 +1,15 @@
 // arduino/esp32 libraries
 #include <Arduino.h>
-#include <DHT.h>
-#include <SPI.h>
 #include <time.h>
 #include <WiFi.h>
+
+// external library
+#include <Adafruit_BME280.h>
+#include <Adafruit_Sensor.h>
 #include <Wire.h>
 
 // header files
 #include "api_response.h"
-#include "aqi.h"
 #include "client_utils.h"
 #include "config.h"
 #include "display_utils.h"
@@ -40,6 +41,7 @@ void setup()
   unsigned long startTime = millis();
   Serial.begin(115200);
 
+  // GET BATTERY VOLTAGE
   // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings 
   // must be multiplied by 2. Readings are divided by 1000 to convert mV to V.
   double batteryVoltage = 
@@ -65,6 +67,7 @@ void setup()
 
   char status[30] = {};
 
+  // START WIFI AND CONFIGURE TIME
   int wifiRSSI = 0; // “Received Signal Strength Indicator"
   wl_status_t wifiStatus = startWiFi(wifiRSSI);
 
@@ -79,6 +82,7 @@ void setup()
     strncpy(status, "WiFi connection failed", sizeof(status) - 1);
   }
 
+  // MAKE API REQUESTS, if wifi is connected and time is configured
   bool rxOWM = false;
   if ((wifiStatus == WL_CONNECTED) && timeConfigured)
   {
@@ -99,20 +103,38 @@ void setup()
   }
   killWiFi();
 
-  // SWITCHING TO BME280
-  // read DHT sensor (needs 2s to ensure new readings)
-  float inTemp     = 0; // Celsius
-  float inHumidity = 0;    // %
-  // check if DHT readings are valid
-  // note: readings are checked again before drawing to screen. A dash '-' will 
-  //       be displayed if an invalid DHT reading is detected.
-  if (isnan(inTemp) || isnan(inHumidity)) {
-    strncpy(status, "DHT read failed", sizeof(status) - 1);
-  }
-  delay(20); // Serial print sometimes fails without this delay
-
   if (rxOWM)
   {
+    // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
+    float inTemp     = NAN;
+    float inHumidity = NAN;
+
+    TwoWire I2C_bme = TwoWire(0);
+    Adafruit_BME280 bme;
+
+    I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
+    if(bme.begin(BME_ADDRESS, &I2C_bme))
+    { 
+      inTemp     = bme.readTemperature(); // Celsius
+      inHumidity = bme.readHumidity();    // %
+
+      Serial.println(inTemp);
+      Serial.println(inHumidity);
+
+      // check if BME readings are valid
+      // note: readings are checked again before drawing to screen. If a reading is 
+      //       not a number (NAN) then an error occured, a dash '-' will be 
+      //       displayed.
+      if (isnan(inTemp) || isnan(inHumidity)) {
+        strncpy(status, "BME read failed", sizeof(status) - 1);
+      }
+    }
+    else
+    {
+      strncpy(status, "BME not found", sizeof(status) - 1); // check wiring
+    }
+
+    // RENDER FULL REFRESH
     filterAlerts(owm_onecall.alerts);
     initDisplay();
     debugDisplayBuffer(owm_onecall, owm_air_pollution); // debug, remove later
@@ -129,14 +151,18 @@ void setup()
   }
   else
   {
+    // RENDER STATUS BAR PARTIAL REFRESH
     initDisplay();
     drawStatusBar(status, wifiRSSI, batteryVoltage);
     display.display(true); // partial display refresh
     display.powerOff();
   }
+
+  // DEEP-SLEEP
   Serial.println("Min Free Mem: " + String(ESP.getMinFreeHeap()));
   Serial.println("Status: " + String(status));
   beginDeepSleep(startTime, &timeInfo);
+  
 } // end setup
 
 void loop()
