@@ -91,6 +91,11 @@ void drawString(int x, int y, String text, alignment_t alignment)
 /* Draws a string that will flow into the next line when max_width is reached.
  * If a string exceeds max_lines an ellipsis (...) will terminate the last word.
  * Lines will break at spaces(' ') and dashes('-').
+ * 
+ * Note: max_width should be big enough to accommodate the largest word that
+ *       will be displayed. If an unbroken string of characters longer than
+ *       max_width exist in text, then the string will be printed beyond 
+ *       max_width.
  */
 void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment, 
                        uint16_t max_width, uint16_t max_lines, 
@@ -121,9 +126,17 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
         subStr.remove(subStr.length() - 1);
       }
 
-      // find the last place in the string that we could break it.
-      splitAt = max(subStr.lastIndexOf(" "), 
+      // find the last place in the string that we can break it.
+      if (current_line < max_lines - 1)
+      {
+        splitAt = max(subStr.lastIndexOf(" "), 
                     subStr.lastIndexOf("-"));
+      }
+      else
+      {
+        // this is the last line, only break at spaces so we can add ellipsis
+        splitAt = subStr.lastIndexOf(" ");
+      }
       
       // if splitAt == -1 then there is an unbroken set of characters that is 
       // longer than max_width. Otherwise if splitAt != -1 then we can continue
@@ -147,9 +160,24 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
           keepLastChar = 1;
         }
 
-        // update w.
-        display.getTextBounds(subStr, 0, 0, &x1, &y1, &w, &h);
-      }
+        if (current_line < max_lines - 1)
+        {
+          // this is not the last line
+          display.getTextBounds(subStr, 0, 0, &x1, &y1, &w, &h);
+        }
+        else
+        {
+          // this is the last line, we need to make sure there is space for 
+          // ellipsis
+          display.getTextBounds(subStr + "...", 0, 0, &x1, &y1, &w, &h);
+          if (w <= max_width)
+          {
+            // ellipsis fit, add them to subStr
+            subStr = subStr + "...";
+          }
+        }
+
+      } // end if (splitAt != -1)
     } // end inner while
     
     drawString(x, y + (current_line * line_spacing), subStr, alignment);
@@ -157,7 +185,6 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
     // update textRemaining to no longer include what was printed
     // +1 for exclusive bounds, +1 to get passed space/dash 
     textRemaining = textRemaining.substring(endIndex + 2 - keepLastChar);
-    Serial.println("textRemaining: *" + textRemaining + "*");
 
     ++current_line;
   } // end outer while
@@ -543,7 +570,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   display.setFont(&FreeSans8pt7b);
   display.drawLine(300 + 100, 0, 300 + 100, DISP_HEIGHT - 1, GxEPD_BLACK);
-  drawMultiLnString(300, 220, "The quick brown fox jumps over the-lazy dog a b c d - - --  - e--f g  -h i j k-l-m n o p q r s t u 0123456789012345678901234567890123456789 test-01234566767767565454349 test-test 0123456789012345678901234567890123456789", LEFT, 100, 16, 20);
+  drawMultiLnString(300, 220, "The quick brown fox jumps over the lazy dog ab-3-test-sfsgfsg-sgfgsf asdf--ad dsaf-d", LEFT, 100, 5, 20);
   
   //drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
   //           dataStr, LEFT);
