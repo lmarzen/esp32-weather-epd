@@ -1,8 +1,3 @@
-// built-in C++ libraries
-// ...
-
-// additional libraries
-//#include <Adafruit_BusIO_Register.h>
 #include <GxEPD2_BW.h>
 
 // fonts (modified font files that have the degree symbol mapped to '`')
@@ -58,6 +53,8 @@ GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
 extern owm_resp_onecall_t owm_onecall;
 extern owm_resp_air_pollution_t owm_air_pollution;
 
+/* Initialize e-paper display
+ */
 void initDisplay()
 {
   display.init(115200, true, 2, false);
@@ -75,6 +72,8 @@ void initDisplay()
   display.setFullWindow();
 } // end initDisplay
 
+/* Draws a string with alignment
+ */
 void drawString(int x, int y, String text, alignment_t alignment)
 {
   int16_t x1, y1;
@@ -88,6 +87,83 @@ void drawString(int x, int y, String text, alignment_t alignment)
   display.setCursor(x, y);
   display.print(text);
 } // end drawString
+
+/* Draws a string that will flow into the next line when max_width is reached.
+ * If a string exceeds max_lines an ellipsis (...) will terminate the last word.
+ * Lines will break at spaces(' ') and dashes('-').
+ */
+void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment, 
+                       uint16_t max_width, uint16_t max_lines, 
+                       int16_t line_spacing)
+{
+  
+  uint16_t current_line = 0;
+  String textRemaining = text;
+  // print until we reach max_lines or no more text remains
+  while (current_line < max_lines && !textRemaining.isEmpty())
+  {
+    int16_t  x1, y1;
+    uint16_t w, h;
+
+    display.getTextBounds(textRemaining, 0, 0, &x1, &y1, &w, &h);
+    
+    int endIndex = textRemaining.length();
+    // check if remaining text is to wide, if it is then print what we can
+    String subStr = textRemaining;
+    int splitAt = 0;
+    int keepLastChar = 0;
+    while (w > max_width && splitAt != -1)
+    {
+      if (keepLastChar)
+      {
+        // if we kept the last character during the last iteration of this while
+        // loop, remove it now so we don't get stuck in an infinite loop.
+        subStr.remove(subStr.length() - 1);
+      }
+
+      // find the last place in the string that we could break it.
+      splitAt = max(subStr.lastIndexOf(" "), 
+                    subStr.lastIndexOf("-"));
+      
+      // if splitAt == -1 then there is an unbroken set of characters that is 
+      // longer than max_width. Otherwise if splitAt != -1 then we can continue
+      // the loop until the string is <= max_width
+      if (splitAt != -1)
+      {
+        endIndex = splitAt;
+        subStr = subStr.substring(0, endIndex + 1);
+
+        char lastChar = subStr.charAt(endIndex);
+        if (lastChar == ' ')
+        {
+          // remove this char now so it is not counted towards line width
+          keepLastChar = 0;
+          subStr.remove(endIndex);
+          --endIndex;
+        }
+        else if (lastChar == '-')
+        {
+          // this char will be printed on this line and removed next iteration
+          keepLastChar = 1;
+        }
+
+        // update w.
+        display.getTextBounds(subStr, 0, 0, &x1, &y1, &w, &h);
+      }
+    } // end inner while
+    
+    drawString(x, y + (current_line * line_spacing), subStr, alignment);
+
+    // update textRemaining to no longer include what was printed
+    // +1 for exclusive bounds, +1 to get passed space/dash 
+    textRemaining = textRemaining.substring(endIndex + 2 - keepLastChar);
+    Serial.println("textRemaining: *" + textRemaining + "*");
+
+    ++current_line;
+  } // end outer while
+
+  return;
+} // end drawMultiLnString
 
 void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
                         owm_resp_air_pollution_t &owm_air_pollution)
@@ -443,25 +519,34 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, 
              unitStr, LEFT);
 
-  // ui index
+  // uv index
   display.setFont(&FreeSans12pt7b);
   uint uvi = static_cast<uint>(max(round(current.uvi), 0.0));
   dataStr = String(uvi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
-  display.setFont(&FreeSans7pt7b);
-  dataStr = " - " + String(getUVIdesc(uvi));
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+  display.setFont(&FreeSans6pt7b);
+  dataStr = String(getUVIdesc(uvi));
+  drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
              dataStr, LEFT);
 
   // air quality index
   display.setFont(&FreeSans12pt7b);
   int aqi = getAQI(owm_air_pollution);
+  aqi = 120;// debug
   dataStr = String(aqi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
-  display.setFont(&FreeSans7pt7b);
-  dataStr = " - " + String(getAQIdesc(aqi));
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
-             dataStr, LEFT);
+  display.setFont(&FreeSans6pt7b);
+  dataStr = String(getAQIdesc(aqi));
+
+  //drawMultiLnString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+  //           dataStr, LEFT, 50, 1, 20);
+
+  display.setFont(&FreeSans8pt7b);
+  display.drawLine(300 + 100, 0, 300 + 100, DISP_HEIGHT - 1, GxEPD_BLACK);
+  drawMultiLnString(300, 220, "The quick brown fox jumps over the-lazy dog a b c d - - --  - e--f g  -h i j k-l-m n o p q r s t u 0123456789012345678901234567890123456789 test-01234566767767565454349 test-test 0123456789012345678901234567890123456789", LEFT, 100, 16, 20);
+  
+  //drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+  //           dataStr, LEFT);
 
   // indoor temperature
   display.setFont(&FreeSans12pt7b);
