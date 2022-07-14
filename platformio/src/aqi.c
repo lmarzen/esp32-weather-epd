@@ -2523,7 +2523,7 @@ const char *united_states_aqi_desc(int aqi)
   }
   else if (aqi <= 150)
   {
-    return "Unhealthy for Sensitive Individuals";
+    return "Unhealthy for Sensitive Groups";
   }
   else if (aqi <= 200)
   {
