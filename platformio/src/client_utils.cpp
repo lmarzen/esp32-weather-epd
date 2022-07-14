@@ -190,37 +190,3 @@ bool getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
 
   return rxSuccess;
 } // getOWMairpollution
-
-/*
-// TODO
-bool updateTimeDateStrings()
-{
-  char time_output[30], day_output[30], update_time[30];
-  // see http://www.cplusplus.com/reference/ctime/strftime/
-  if (UNITS == 'm')
-  {
-    if ((LANG == "cz") 
-     || (LANG == "de") 
-     || (LANG == "pl") 
-     || (LANG == "nl"))
-    {
-      sprintf(day_output, "%s, %02u. %s %04u", TXT_dddd[timeInfo.tm_wday], timeInfo.tm_mday, TXT_MMMM[timeInfo.tm_mon], (timeInfo.tm_year) + 1900); // day_output >> So., 23. Juni 2019 <<
-    }
-    else
-    {
-      sprintf(day_output, "%s %02u-%s-%04u", TXT_dddd[timeInfo.tm_wday], timeInfo.tm_mday, TXT_MMMM[timeInfo.tm_mon], (timeInfo.tm_year) + 1900);
-    }
-    strftime(update_time, sizeof(update_time), "%H:%M:%S", &timeInfo); // Creates: '14:05:49'
-    sprintf(time_output, "%s %s", TXT_UPDATED, update_time);
-  }
-  else
-  {
-    strftime(day_output, sizeof(day_output), "%a %b-%d-%Y", &timeInfo); // Creates  'Sat May-31-2019'
-    strftime(update_time, sizeof(update_time), "%r", &timeInfo);        // Creates: '02:05:49pm'
-    sprintf(time_output, "%s %s", TXT_UPDATED, update_time);
-  }
-  dateStr = day_output;
-  timeStr = time_output;
-  return true;
-}
-*/

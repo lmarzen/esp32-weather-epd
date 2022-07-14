@@ -101,4 +101,3 @@ const char *united_states_aqi_desc(  int aqi);
 #endif
 
 #endif
-
