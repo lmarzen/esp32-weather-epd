@@ -53,32 +53,32 @@ GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
 extern owm_resp_onecall_t owm_onecall;
 extern owm_resp_air_pollution_t owm_air_pollution;
 
-/* Initialize e-paper display
+/* Returns the string width in pixels
  */
-void initDisplay()
-{
-  display.init(115200, true, 2, false);
-  // display.init(); for older Waveshare HAT's
-  SPI.end();
-  SPI.begin(PIN_EPD_SCK,
-            PIN_EPD_MISO,
-            PIN_EPD_MOSI,
-            PIN_EPD_CS);
-
-  display.setRotation(0);
-  display.setTextSize(1);
-  display.setTextColor(GxEPD_BLACK);
-  display.fillScreen(GxEPD_WHITE);
-  display.setFullWindow();
-} // end initDisplay
-
-/* Draws a string with alignment
- */
-void drawString(int x, int y, String text, alignment_t alignment)
+uint16_t getStringWidth(String text)
 {
   int16_t x1, y1;
   uint16_t w, h;
-  display.setTextWrap(false);
+  display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
+  return w;
+}
+
+/* Returns the string height in pixels
+ */
+uint16_t getStringHeight(String text)
+{
+  int16_t x1, y1;
+  uint16_t w, h;
+  display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
+  return h;
+}
+
+/* Draws a string with alignment
+ */
+void drawString(int16_t x, int16_t y, String text, alignment_t alignment)
+{
+  int16_t x1, y1;
+  uint16_t w, h;
   display.getTextBounds(text, x, y, &x1, &y1, &w, &h);
   if (alignment == RIGHT)
     x = x - w;
@@ -191,6 +191,26 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
 
   return;
 } // end drawMultiLnString
+
+/* Initialize e-paper display
+ */
+void initDisplay()
+{
+  display.init(115200, true, 2, false);
+  // display.init(); for older Waveshare HAT's
+  SPI.end();
+  SPI.begin(PIN_EPD_SCK,
+            PIN_EPD_MISO,
+            PIN_EPD_MOSI,
+            PIN_EPD_CS);
+
+  display.setRotation(0);
+  display.setTextSize(1);
+  display.setTextColor(GxEPD_BLACK);
+  display.fillScreen(GxEPD_WHITE);
+  display.setFullWindow();
+  display.setTextWrap(false);
+} // end initDisplay
 
 void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
                         owm_resp_air_pollution_t &owm_air_pollution)
@@ -564,16 +584,17 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans6pt7b);
   dataStr = String(getAQIdesc(aqi));
-
-  //drawMultiLnString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
-  //           dataStr, LEFT, 50, 1, 20);
-
-  display.setFont(&FreeSans8pt7b);
-  display.drawLine(300 + 100, 0, 300 + 100, DISP_HEIGHT - 1, GxEPD_BLACK);
-  drawMultiLnString(300, 220, "The quick brown fox jumps over the lazy dog ab-3-test-sfsgfsg-sgfgsf asdf--ad dsaf-d", LEFT, 100, 5, 20);
-  
-  //drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
-  //           dataStr, LEFT);
+  if (getStringWidth(dataStr) < 100)
+  { // Fits on a single line, draw along bottom
+    drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+               dataStr, LEFT);
+  }
+  else
+  { // Does not fit on a single line, draw higher to allow room for second line
+    drawMultiLnString(display.getCursorX() + 6,
+                      204 + 17 / 2 + (48 + 8) * 3 + 48 / 2 - 12, 
+                      dataStr, LEFT, 120, 2, 12);
+  }
 
   // indoor temperature
   display.setFont(&FreeSans12pt7b);

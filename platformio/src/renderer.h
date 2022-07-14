@@ -22,8 +22,13 @@ typedef enum alignment
   CENTER
 } alignment_t;
 
+uint16_t getStringWidth(String text);
+uint16_t getStringHeight(String text);
+void drawString(int16_t x, int16_t y, String text, alignment_t alignment);
+void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment, 
+                       uint16_t max_width, uint16_t max_lines, 
+                       int16_t line_spacing);
 void initDisplay();
-void drawString(int x, int y, String text, alignment_t alignment);
 void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                            owm_resp_air_pollution_t &owm_air_pollution, 
                            float inTemp, float inHumidity);
