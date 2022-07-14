@@ -276,6 +276,18 @@ void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
   char str[20];
 
   // Total font height
+  display.setFont(&FreeSans4pt7b);
+  display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
+  display.setFont(&FreeSans8pt7b);
+  sprintf(str, "4 h: %d", h);
+  drawString(680, 215, str, LEFT);
+
+  display.setFont(&FreeSans5pt7b);
+  display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
+  display.setFont(&FreeSans8pt7b);
+  sprintf(str, "5 h: %d", h);
+  drawString(680, 230, str, LEFT);
+
   display.setFont(&FreeSans6pt7b);
   display.getTextBounds("TpXygQq", 0, 0, &x1, &y1, &w, &h);
   display.setFont(&FreeSans8pt7b);
@@ -568,37 +580,68 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, 
              unitStr, LEFT);
 
+  // uv and air quality indices
+  // spacing between end of index value and start of descriptor text
+  const int sp = 8;
+
   // uv index
   display.setFont(&FreeSans12pt7b);
   uint uvi = static_cast<uint>(max(round(current.uvi), 0.0));
   dataStr = String(uvi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
-  display.setFont(&FreeSans6pt7b);
+  display.setFont(&FreeSans7pt7b);
   dataStr = String(getUVIdesc(uvi));
-  drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
-             dataStr, LEFT);
+  int max_w = 170 - (display.getCursorX() + sp);
+  if (getStringWidth(dataStr) <= max_w)
+  { // Fits on a single line, draw along bottom
+    drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+               dataStr, LEFT);
+  }
+  else
+  { // use smaller font
+    display.setFont(&FreeSans5pt7b);
+    if (getStringWidth(dataStr) <= max_w)
+    { // Fits on a single line with smaller font, draw along bottom
+      drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+               dataStr, LEFT);
+    }
+    else
+    { // Does not fit on a single line, draw higher to allow room for 2nd line
+      drawMultiLnString(display.getCursorX() + sp,
+                        204 + 17 / 2 + (48 + 8) * 2 + 48 / 2 - 10, 
+                        dataStr, LEFT, max_w, 2, 10);
+    }
+  }
 
   // air quality index
   display.setFont(&FreeSans12pt7b);
   int aqi = getAQI(owm_air_pollution);
-  aqi = 120;// debug
+  aqi = 288; // debug
   dataStr = String(aqi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
-  display.setFont(&FreeSans6pt7b);
+  display.setFont(&FreeSans7pt7b);
   dataStr = String(getAQIdesc(aqi));
-  int x = display.getCursorX() + 6; // debug
-  if (getStringWidth(dataStr) < 100)
+  max_w = 170 - (display.getCursorX() + sp);
+  if (getStringWidth(dataStr) <= max_w)
   { // Fits on a single line, draw along bottom
-    drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+    drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
                dataStr, LEFT);
   }
   else
-  { // Does not fit on a single line, draw higher to allow room for second line
-    drawMultiLnString(display.getCursorX() + 6,
-                      204 + 17 / 2 + (48 + 8) * 3 + 48 / 2 - 12, 
-                      dataStr, LEFT, 120, 2, 12);
+  { // use smaller font
+    display.setFont(&FreeSans5pt7b);
+    if (getStringWidth(dataStr) <= max_w)
+    { // Fits on a single line with smaller font, draw along bottom
+      drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+               dataStr, LEFT);
+    }
+    else
+    { // Does not fit on a single line, draw higher to allow room for 2nd line
+      drawMultiLnString(display.getCursorX() + sp,
+                        204 + 17 / 2 + (48 + 8) * 3 + 48 / 2 - 10, 
+                        dataStr, LEFT, max_w, 2, 10);
+    }
   }
-  display.drawLine(x + 120, 0, x + 120, DISP_HEIGHT - 1, GxEPD_BLACK);
 
   // indoor temperature
   display.setFont(&FreeSans12pt7b);
