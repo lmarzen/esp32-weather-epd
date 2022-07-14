@@ -1,6 +1,6 @@
 #!/bin/bash
 OUTPUT_PATH="./fonts/"
-SIZES=(6 7 8 9 10 11 12 14 16 18 20 22 24 26)
+SIZES=(4 5 6 7 8 9 10 11 12 14 16 18 20 22 24 26)
 TEMPERATURE_SIZES=(48)
 
 # ascii hexidecimal value of the character to remap degree symbol to
@@ -59,6 +59,9 @@ for SI in ${TEMPERATURE_SIZES[*]}
 done
 
 # clean up
+cd fontconvert
+make clean
+cd ../
 echo "rm $REMAP_OUT"
 rm $REMAP_OUT
 echo "rm $SUBSET_OUT"

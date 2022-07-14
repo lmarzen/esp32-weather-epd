@@ -1,6 +1,8 @@
 #include <GxEPD2_BW.h>
 
 // fonts (modified font files that have the degree symbol mapped to '`')
+#include "fonts/FreeSans4pt7b.h"
+#include "fonts/FreeSans5pt7b.h"
 #include "fonts/FreeSans6pt7b.h"
 #include "fonts/FreeSans7pt7b.h"
 #include "fonts/FreeSans8pt7b.h"
@@ -584,6 +586,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans6pt7b);
   dataStr = String(getAQIdesc(aqi));
+  int x = display.getCursorX() + 6; // debug
   if (getStringWidth(dataStr) < 100)
   { // Fits on a single line, draw along bottom
     drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
@@ -595,6 +598,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
                       204 + 17 / 2 + (48 + 8) * 3 + 48 / 2 - 12, 
                       dataStr, LEFT, 120, 2, 12);
   }
+  display.drawLine(x + 120, 0, x + 120, DISP_HEIGHT - 1, GxEPD_BLACK);
 
   // indoor temperature
   display.setFont(&FreeSans12pt7b);

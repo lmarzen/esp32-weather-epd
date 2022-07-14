@@ -15,8 +15,14 @@ Dependencies:
   freetype2
     dependency for fontconvert.
 
+How do I generate different sizes of fonts?
+  in ttf_to_adafruit_gfx.sh there is an array called SIZES which specifies what
+  size fonts should be generated.
+
 To run this script execute the following command:
   ./ttf_to_adafruit_gfx.sh /path/to/font.otf
+  To generate the font files used in this project, execute:
+  ./ttf_to_adafruit_gfx.sh FreeSans.otf
 
 What does this script do?
   This script converts ttf or otf (font) files to c-style arrays to be used by 
