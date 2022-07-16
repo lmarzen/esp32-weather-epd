@@ -614,5 +614,8 @@ void drawOutlookGraph(owm_hourly_t *const hourly)
  */
 void drawStatusBar(char *const statusStr, int wifiRSSI, double batteryVoltage)
 {
+
+display.drawInvertedBitmap(196, DISP_HEIGHT - 1 - 24, wi_refresh_32x32, 32, 32, GxEPD_BLACK);
+  
   return;
 } // end drawStatusBar
