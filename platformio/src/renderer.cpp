@@ -357,7 +357,6 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   // air quality index
   display.setFont(&FreeSans12pt7b);
   int aqi = getAQI(owm_air_pollution);
-  aqi = 288; // debug
   dataStr = String(aqi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans7pt7b);
