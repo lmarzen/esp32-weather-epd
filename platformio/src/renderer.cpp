@@ -22,6 +22,7 @@
 
 // icon header files
 #include "icons/icons_16x16.h"
+#include "icons/icons_24x24.h"
 #include "icons/icons_32x32.h"
 #include "icons/icons_48x48.h"
 #include "icons/icons_64x64.h"
@@ -213,18 +214,6 @@ void initDisplay()
   display.setFullWindow();
   display.setTextWrap(false);
 } // end initDisplay
-
-void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
-                        owm_resp_air_pollution_t &owm_air_pollution)
-{
-
-
-  display.drawInvertedBitmap(400, 400,
-                             getForecastBitmap64(owm_onecall.daily[1]),
-                             64, 64, GxEPD_BLACK);
-
-  // end debug
-}
 
 /* This function is responsible for drawing the current conditions and 
  * associated icons.
@@ -612,10 +601,21 @@ void drawOutlookGraph(owm_hourly_t *const hourly)
 /* This function is responsible for drawing the status bar along the bottom of
  * the display.
  */
-void drawStatusBar(char *const statusStr, int wifiRSSI, double batteryVoltage)
+void drawStatusBar(char *const statusStr, int wifiRSSI, double batVoltage)
 {
+  String dataStr;
 
-display.drawInvertedBitmap(196, DISP_HEIGHT - 1 - 24, wi_refresh_32x32, 32, 32, GxEPD_BLACK);
+  display.drawInvertedBitmap(DISP_WIDTH - 1 - 300, DISP_HEIGHT - 1 - 32, 
+                             wi_refresh_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(DISP_WIDTH - 1 - 200, DISP_HEIGHT - 1 - 21, 
+                             wifi_24x24, 24, 24, GxEPD_BLACK);
+  display.drawInvertedBitmap(DISP_WIDTH - 1 - 100, DISP_HEIGHT - 1 - 23, 
+                             battery_0_bar_90deg_32x32, 32, 32, GxEPD_BLACK);
+  display.setFont(&FreeSans8pt7b);
+  int batPercent = calcBatPercent(batVoltage);
+  dataStr = String(batPercent) + "% (" 
+            + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
+  drawString(DISP_WIDTH - 1 - 80, DISP_HEIGHT - 1 - 10, dataStr, LEFT);
   
   return;
 } // end drawStatusBar

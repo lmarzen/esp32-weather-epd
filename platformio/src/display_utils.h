@@ -33,6 +33,7 @@ enum alert_category {
   STRONG_WIND
 };
 
+int calcBatPercent(double v);
 void getDateStr(String &s, tm *timeInfo);
 void toTitleCase(String &text);
 void truncateExtraAlertInfo(String &text);

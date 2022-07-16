@@ -1,3 +1,4 @@
+#include <cmath>
 #include <vector>
 #include <Arduino.h>
 
@@ -13,6 +14,26 @@
 #include "icons/icons_48x48.h"
 #include "icons/icons_64x64.h"
 #include "icons/icons_196x196.h"
+
+/* Returns battery percentage, rounded to the nearest integer.
+ * Takes a voltage and uses a pre-calculated polynomial to find an approximation
+ * of the battery life percentage remaining.
+ */
+int calcBatPercent(double v)
+{
+  // this formula was calculated using samples collected from a lipo battery
+  double y = - 125.8413615096 * pow(v, 3)
+             + 1389.0860247930 * pow(v, 2)
+             - 4970.1339315306 * v
+             + 5802.31005866;
+
+  // enforce bounds, 0-100
+  y = max(y, 0.0);
+  y = min(y, 100.0);
+  
+  y = round(y);
+  return static_cast<int>(y);
+} // end calcBatPercent
 
 /* Gets string with the current date.
  */

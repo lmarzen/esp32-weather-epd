@@ -19,6 +19,9 @@
 static owm_resp_onecall_t       owm_onecall;
 static owm_resp_air_pollution_t owm_air_pollution;
 
+/* Put esp32 into ultra low-power deep-sleep (<11μA).
+ * Alligns wake time to the minute. Sleep times defined in config.cpp.
+ */
 void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
 {
   if (!getLocalTime(timeInfo))
@@ -36,6 +39,8 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   esp_deep_sleep_start();
 } // end beginDeepSleep
 
+/* Program entry point.
+ */
 void setup()
 {
   unsigned long startTime = millis();
@@ -43,7 +48,7 @@ void setup()
 
   // GET BATTERY VOLTAGE
   // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings 
-  // must be multiplied by 2. Readings are divided by 1000 to convert mV to V.
+  // are multiplied by 2. Readings are divided by 1000 to convert mV to V.
   double batteryVoltage = 
             static_cast<double>(analogRead(PIN_BAT_ADC)) / 1000.0 * (3.3 / 2.0);
   Serial.println("Battery voltage: " + String(batteryVoltage,2));
@@ -138,9 +143,7 @@ void setup()
     String dateStr;
     getDateStr(dateStr, &timeInfo);
 
-    initDisplay();
-    debugDisplayBuffer(owm_onecall, owm_air_pollution); // debug, remove later
-    
+    initDisplay(); 
     drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0], 
                           owm_air_pollution, inTemp, inHumidity);
     drawForecast(owm_onecall.daily, timeInfo);
@@ -161,13 +164,14 @@ void setup()
   }
 
   // DEEP-SLEEP
-  Serial.println("Min Free Mem: " + String(ESP.getMinFreeHeap()));
+  Serial.println("Min Free Heap: " + String(ESP.getMinFreeHeap()));
   Serial.println("Status: " + String(status));
   beginDeepSleep(startTime, &timeInfo);
   
 } // end setup
 
+/* This will never run
+ */
 void loop()
 {
-  // this will never run
 } // end loop
