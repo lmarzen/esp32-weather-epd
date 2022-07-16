@@ -1,0 +1,13 @@
+Simple script to rotate svg files in 90 deg increments.
+
+Usage:
+bash generate_rotated_90.sh battery_0_bar.svg
+bash generate_rotated_90.sh battery_1_bar.svg
+bash generate_rotated_90.sh battery_2_bar.svg
+bash generate_rotated_90.sh battery_3_bar.svg
+bash generate_rotated_90.sh battery_4_bar.svg
+bash generate_rotated_90.sh battery_5_bar.svg
+bash generate_rotated_90.sh battery_6_bar.svg
+bash generate_rotated_90.sh battery_alert.svg
+bash generate_rotated_90.sh battery_charging_full.svg
+bash generate_rotated_90.sh battery_full.svg

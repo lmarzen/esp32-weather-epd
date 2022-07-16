@@ -1,0 +1,5 @@
+Simple script to rotate svg files in 90 deg increments.
+
+Usage:
+bash generate_rotated_wind_direction_svg.sh wi-wind-.svg
+bash generate_rotated_wind_direction_svg.sh wind_direction_meteorological_.svg

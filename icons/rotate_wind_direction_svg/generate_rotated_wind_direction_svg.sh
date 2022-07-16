@@ -5,7 +5,7 @@ INPUT=$1
 for ((DEG=0;DEG<360;++DEG)); 
 do
 # meteorological wind is the direction wind is coming from so arrow must be rotated by 180 to indicate correct wind direction
-OUTPUT="./rotated/`basename $INPUT .svg``expr \( $DEG + 180 \) % 360`deg.svg"
+OUTPUT="./rotated/`basename $INPUT .svg`_`expr \( $DEG + 180 \) % 360`deg.svg"
 
 cp $INPUT $OUTPUT
 
@@ -19,7 +19,7 @@ do
 # remove trailing 0's
 DEG=$(echo $DEG | awk ' { if($0 ~ /\./) sub("\\.*0+$","");print} ')
 MET_DEG=`echo "($DEG + 180) % 360" | bc`
-OUTPUT="./rotated/`basename $INPUT .svg`${MET_DEG/./_}deg.svg"
+OUTPUT="./rotated/`basename $INPUT .svg`_${MET_DEG/./_}deg.svg"
 
 cp $INPUT $OUTPUT
 
