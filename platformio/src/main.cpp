@@ -135,15 +135,17 @@ void setup()
     }
 
     // RENDER FULL REFRESH
-    filterAlerts(owm_onecall.alerts);
+    String dateStr;
+    getDateStr(dateStr, &timeInfo);
+
     initDisplay();
     debugDisplayBuffer(owm_onecall, owm_air_pollution); // debug, remove later
     
     drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0], 
                           owm_air_pollution, inTemp, inHumidity);
     drawForecast(owm_onecall.daily, timeInfo);
-    drawAlerts(owm_onecall.alerts);
-    drawLocationDate(CITY_STRING, &timeInfo);
+    drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
+    drawLocationDate(CITY_STRING, dateStr);
     drawOutlookGraph(owm_onecall.hourly);
     drawStatusBar(status, wifiRSSI, batteryVoltage);
     display.display(false); // full display refresh

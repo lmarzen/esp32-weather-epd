@@ -14,6 +14,24 @@
 #include "icons/icons_64x64.h"
 #include "icons/icons_196x196.h"
 
+/* Gets string with the current date.
+ */
+void getDateStr(String &s, tm *timeInfo)
+{
+  char dateBuffer[48] = {};
+  strftime(dateBuffer, sizeof(dateBuffer), DATE_FORMAT, timeInfo);
+  s = dateBuffer;
+
+  // remove double spaces. %e will add an extra space, ie. " 1" instead of "1"
+  s.replace("  ", " ");
+  // alternatively...
+  // snprintf(dateBuffer, sizeof(dateBuffer), "%s, %s %d",
+  //          TXT_dddd[timeInfo->tm_wday],
+  //          TXT_MMMM[timeInfo->tm_mon],
+  //          timeInfo->tm_mday);
+  return;
+}
+
 /* Takes a String and capitalizes the first letter of every word.
  *
  * Ex:
@@ -58,9 +76,9 @@ void truncateExtraAlertInfo(String &text)
   int i = 1;
   int lastChar = i;
   while (i < text.length() 
-   && (text.charAt(i) != ',' 
-    || text.charAt(i) != '.' 
-    || text.charAt(i) != '('))
+    && text.charAt(i) != ',' 
+    && text.charAt(i) != '.' 
+    && text.charAt(i) != '(')
   {
     if (text.charAt(i) != ' ')
     {
@@ -70,7 +88,6 @@ void truncateExtraAlertInfo(String &text)
   }
 
   text = text.substring(0, lastChar);
-
   return;
 } // end truncateExtraAlertInfo
 
@@ -90,7 +107,7 @@ int eventUrgency(String &event)
   int urgency_lvl = -1;
   for (int i = 0; i < ALERT_URGENCY.size(); ++i)
   {
-    if (event.indexOf(ALERT_URGENCY[i]) > 0)
+    if (event.indexOf(ALERT_URGENCY[i]) >= 0)
     {
       urgency_lvl = i;
     }
@@ -837,7 +854,7 @@ bool containsTerminology(const String s, const std::vector<String> &terminology)
 {
   for (const String &term : terminology)
   {
-    if (s.indexOf(term) > 0)
+    if (s.indexOf(term) >= 0)
     {
       return true;
     }

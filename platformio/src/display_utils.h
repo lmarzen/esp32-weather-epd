@@ -1,6 +1,7 @@
 #ifndef __DISPLAY_UTILS_H__
 #define __DISPLAY_UTILS_H__
 
+#include <time.h>
 #include <vector>
 #include "api_response.h"
 
@@ -32,6 +33,7 @@ enum alert_category {
   STRONG_WIND
 };
 
+void getDateStr(String &s, tm *timeInfo);
 void toTitleCase(String &text);
 void truncateExtraAlertInfo(String &text);
 void filterAlerts(std::vector<owm_alerts_t> &resp);

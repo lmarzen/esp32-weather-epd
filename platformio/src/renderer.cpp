@@ -217,61 +217,7 @@ void initDisplay()
 void debugDisplayBuffer(owm_resp_onecall_t       &owm_onecall,
                         owm_resp_air_pollution_t &owm_air_pollution)
 {
-  // 1 Alert
-  // (fits on 1 line)
-  /*
-  display.drawInvertedBitmap(196, 8, wi_tornado_48x48, 48, 48, GxEPD_BLACK);
-  display.setFont(&FreeSans16pt7b);
-  drawString(196 + 48 + 4, 24 + 8 - 12 + 23, "Tornado Watch", LEFT);
-  */
-  // (fits on 1 line with smaller font)
-  /*
-  display.drawInvertedBitmap(196, 8, warning_icon_48x48, 48, 48, GxEPD_BLACK);
-  display.setFont(&FreeSans12pt7b);
-  drawString(196 + 48 + 4, 24 + 8 - 12 + 17, "Severe Thunderstorm Warning", LEFT);
-  */
-  // (needs 2 lines with smaller font)
-  /*
-  display.drawInvertedBitmap(196, 8, wi_tornado_48x48, 48, 48, GxEPD_BLACK);
-  display.setFont(&FreeSans12pt7b);
-  drawString(196 + 48 + 4, 24 + 8 - 22 - 4 - 2 + 17, "Crazy Severe Thunderstorm", LEFT);
-  drawString(196 + 48 + 4, 24 + 8 - 2 + 17, " Warning", LEFT);
-  */
-  // 2 Alerts
-  /*
-  display.drawInvertedBitmap(196, 0, wi_tornado_32x32, 32, 32, GxEPD_BLACK);
-  display.drawInvertedBitmap(196, 32, warning_icon_32x32, 32, 32, GxEPD_BLACK);
-  display.setFont(&FreeSans12pt7b);
-  drawString(196 + 32 + 3, 5 + 17, "Severe Thunderstorm Warning", LEFT);
-  drawString(196 + 32 + 3, 32 + 5 + 17, "Hurricane Force Wind Warning", LEFT);
-  */
 
-  // OLD IDEA TO DISPLAY HIGH AND LOW WITH CURRENT TEMP
-  // decided against this to because it is redundent with temperature graph
-  // and removing this from above the current temperture helps reduce clutter
-  // current weather (with alert)
-  // current weather icon
-  /*
-  display.drawInvertedBitmap(0, 0, wi_day_rain_wind_196x196, 196, 196, GxEPD_BLACK);
-  // current temp
-  display.setFont(&FreeSans48pt_temperature);
-  drawString(196 + 162 / 2 - 20, 98 - 69 / 2 + 30, "199", CENTER);
-  display.setFont(&FreeSans14pt7b);
-  drawString(display.getCursorX(), 98 - 69 / 2 + 30, "`F", LEFT);
-  // today's high | low
-  display.setFont(&FreeSans14pt7b);
-  drawString(196 + 162 / 2     , 98 - 69 / 2 - 6, "|", CENTER);
-  drawString(196 + 162 / 2 - 10, 98 - 69 / 2 + 4, "199`", RIGHT);
-  drawString(196 + 162 / 2 + 12, 98 - 69 / 2 + 4, "76`", LEFT);
-  // current feels like
-  display.setFont(&FreeSans12pt7b);
-  drawString(196 + 162 / 2 + 4, 98 + 69 / 2 + 40, "Like 86`", CENTER);
-  */
-
-
-  // if vector size...
-  //display.drawInvertedBitmap(400, 0, getAlertBitmap48(owm_onecall.alerts[0]), 48, 48, GxEPD_BLACK);
-  //display.drawInvertedBitmap(400, 0, getAlertBitmap32(owm_onecall.alerts[1]), 32, 32, GxEPD_BLACK);
 
   display.drawInvertedBitmap(400, 400,
                              getForecastBitmap64(owm_onecall.daily[1]),
@@ -396,8 +342,9 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
     display.setFont(&FreeSans5pt7b);
     if (getStringWidth(dataStr) <= max_w)
     { // Fits on a single line with smaller font, draw along bottom
-      drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
-               dataStr, LEFT);
+      drawString(display.getCursorX() + sp, 
+                 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+                 dataStr, LEFT);
     }
     else
     { // Does not fit on a single line, draw higher to allow room for 2nd line
@@ -426,8 +373,9 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
     display.setFont(&FreeSans5pt7b);
     if (getStringWidth(dataStr) <= max_w)
     { // Fits on a single line with smaller font, draw along bottom
-      drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
-               dataStr, LEFT);
+      drawString(display.getCursorX() + sp, 
+                 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+                 dataStr, LEFT);
     }
     else
     { // Does not fit on a single line, draw higher to allow room for 2nd line
@@ -569,33 +517,88 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 } // end drawForecast
 
 /* This function is responsible for drawing the current alerts if any.
+ * Up to 2 alerts can be drawn.
  */
-void drawAlerts(std::vector<owm_alerts_t> &alerts)
+void drawAlerts(std::vector<owm_alerts_t> &alerts, 
+                const String &city, const String &date)
 {
+  if (alerts.size() == 0)
+  { // no alerts to draw
+    return;
+  }
+
+  // Converts all event text and tags to lowercase, removes extra information,
+  // and filters out redundant alerts of lesser urgency.
+  filterAlerts(alerts);
+
+  // limit alert text width so that is does not run into the location or date
+  // strings
+  display.setFont(&FreeSans16pt7b);
+  int city_w = getStringWidth(city);
+  display.setFont(&FreeSans12pt7b);
+  int date_w = getStringWidth(date);
+  int max_w = DISP_WIDTH - 2 - max(city_w, date_w) - (196 + 4) - 4;
+
+  if (alerts.size() == 1)
+  { // 1 alert
+  // adjust max width to for 48x48 icons
+    max_w -= 48;
+
+    display.drawInvertedBitmap(196, 8, getAlertBitmap48(alerts[0]), 48, 48, 
+                               GxEPD_BLACK);
+    // must be called after getAlertBitmap
+    toTitleCase(alerts[0].event);
+
+    display.setFont(&FreeSans14pt7b);
+    if (getStringWidth(alerts[0].event) <= max_w)
+    { // Fits on a single line, draw along bottom
+      drawString(196 + 48 + 4, 24 + 8 - 12 + 23, alerts[0].event, LEFT);
+    }
+    else
+    { // use smaller font
+      display.setFont(&FreeSans12pt7b);
+      if (getStringWidth(alerts[0].event) <= max_w)
+      { // Fits on a single line with smaller font, draw along bottom
+        drawString(196 + 48 + 4, 24 + 8 - 12 + 17, alerts[0].event, LEFT);
+      }
+      else
+      { // Does not fit on a single line, draw higher to allow room for 2nd line
+        drawMultiLnString(196 + 48 + 4, 24 + 8 - 12 + 17 - 11, 
+                          alerts[0].event, LEFT, max_w, 2, 23);
+      }
+    }
+  } // end 1 alert
+  else
+  { // 2 alerts
+    // adjust max width to for 32x32 icons
+    max_w -= 32;
+
+    display.setFont(&FreeSans12pt7b);
+    for (int i = 0; i < 2; ++i)
+    {
+      display.drawInvertedBitmap(196, (i * 32), getAlertBitmap32(alerts[i]), 
+                                 32, 32, GxEPD_BLACK);
+      // must be called after getAlertBitmap
+      toTitleCase(alerts[i].event);
+      
+      drawMultiLnString(196 + 32 + 3, 5 + 17 + (i * 32), 
+                        alerts[i].event, LEFT, max_w, 1, 0);
+    } // end for-loop
+  } // end 2 alerts
+  
   return;
 } // end drawAlerts
 
 /* This function is responsible for drawing the city string and date 
  * information in the top right corner.
  */
-void drawLocationDate(const String &city, tm *timeInfo)
+void drawLocationDate(const String &city, const String &date)
 {
-  char dateBuffer[48] = {};
-  strftime(dateBuffer, sizeof(dateBuffer), DATE_FORMAT, timeInfo);
-  String dateStr = dateBuffer;
-  // remove double spaces. %e will add an extra space, ie. " 1" instead of "1"
-  dateStr.replace("  ", " ");
-  // alternatively...
-  // snprintf(dateBuffer, sizeof(dateBuffer), "%s, %s %d",
-  //          TXT_dddd[timeInfo->tm_wday],
-  //          TXT_MMMM[timeInfo->tm_mon],
-  //          timeInfo->tm_mday);
-
   // location, date
   display.setFont(&FreeSans16pt7b);
   drawString(DISP_WIDTH - 2, 23, city, RIGHT);
   display.setFont(&FreeSans12pt7b);
-  drawString(DISP_WIDTH - 2, 30 + 4 + 17, dateStr, RIGHT);
+  drawString(DISP_WIDTH - 2, 30 + 4 + 17, date, RIGHT);
   return;
 } // end drawLocationDate
 
