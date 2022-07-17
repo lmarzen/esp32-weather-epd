@@ -41,6 +41,16 @@ const char *TXT_UV_HIGH      = "High";
 const char *TXT_UV_VERY_HIGH = "Very High";
 const char *TXT_UV_EXTREME   = "Extreme";
 
+// WIFI
+const char *TXT_WIFI_EXCELLENT     = "Excellent";
+const char *TXT_WIFI_GOOD          = "Good";
+const char *TXT_WIFI_FAIR          = "Fair";
+const char *TXT_WIFI_WEAK          = "Weak";
+const char *TXT_WIFI_NO_CONNECTION = "No Connection";
+
+// LAST REFRESH
+const char *TXT_UNKNOWN = "Unknown";
+
 // ALERTS
 // The display can show up to 2 alerts, but alerts can be unpredictible in
 // severity and number. If more than 2 alerts are active, the esp32 will attempt
@@ -85,7 +95,7 @@ const std::vector<String> TERM_WINTER =
     {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain", 
      "wind chill", "freeze", "frost", "hail"};
 const std::vector<String> TERM_LIGHTNING =
-    {"thunderstorm", "storm cell", "pulse storm", "squall line", "supercells",
+    {"thunderstorm", "storm cell", "pulse storm", "squall line", "supercell",
      "lightning"};
 const std::vector<String> TERM_SANDSTORM =
     {"sandstorm", "blowing dust", "dust storm"};

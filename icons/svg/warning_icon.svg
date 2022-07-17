@@ -1,3 +1,37 @@
-<svg id="Flat" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-  <path d="M120,144V96a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm116.76758,67.981a23.75438,23.75438,0,0,1-20.791,12.01123H40.02344A23.99994,23.99994,0,0,1,19.252,187.96973L107.22852,35.97705a24.00024,24.00024,0,0,1,41.543,0l87.97657,151.99219A23.75354,23.75354,0,0,1,236.76758,211.981Zm-13.86719-15.99658L134.92383,43.99219a8.00025,8.00025,0,0,0-13.84766,0h0L33.09961,195.98438a8.00079,8.00079,0,0,0,6.92383,12.00781H215.97656a8.00079,8.00079,0,0,0,6.92383-12.00781ZM128,168a12,12,0,1,0,12,12A12.01343,12.01343,0,0,0,128,168Z"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Flat"
+   viewBox="0 0 256 256"
+   version="1.1"
+   sodipodi:docname="warning_icon.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs40" />
+  <sodipodi:namedview
+     id="namedview38"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="3.3359375"
+     inkscape:cx="102.51991"
+     inkscape:cy="104.01874"
+     inkscape:window-width="1920"
+     inkscape:window-height="1029"
+     inkscape:window-x="0"
+     inkscape:window-y="23"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Flat" />
+  <path
+     d="m 121.58425,144.00355 v -38.40143 a 6.4002371,6.4002371 0 0 1 12.80046,0 v 38.40143 a 6.4002371,6.4002371 0 0 1 -12.80046,0 z m 93.41752,54.38682 a 19.004208,19.004208 0 0 1 -16.63342,9.60933 H 57.600622 A 19.200664,19.200664 0 0 1 40.982856,179.18064 L 111.36668,57.581984 a 19.200903,19.200903 0 0 1 33.23563,0 l 70.38386,121.598266 a 19.003536,19.003536 0 0 1 0.0155,19.21012 z M 203.9076,185.59263 133.52374,63.994334 a 6.4004371,6.4004371 0 0 0 -11.07853,0 v 0 L 52.061353,185.59259 a 6.4008691,6.4008691 0 0 0 5.539269,9.60661 H 198.36834 a 6.4008691,6.4008691 0 0 0 5.53926,-9.60661 z m -75.92312,-22.38836 a 9.6003553,9.6003553 0 1 0 9.60036,9.60035 9.6110997,9.6110997 0 0 0 -9.60036,-9.60035 z"
+     id="path35"
+     style="stroke-width:0.80003" />
 </svg>

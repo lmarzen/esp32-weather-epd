@@ -70,7 +70,7 @@ void setup()
     esp_deep_sleep_start();
   }
 
-  char status[30] = {};
+  String statusStr;
 
   // START WIFI AND CONFIGURE TIME
   int wifiRSSI = 0; // “Received Signal Strength Indicator"
@@ -83,9 +83,11 @@ void setup()
     timeConfigured = setupTime(&timeInfo);
   }
   else
-  { // ensures last byte is '\0'
-    strncpy(status, "WiFi connection failed", sizeof(status) - 1);
+  {
+    statusStr = "WiFi connection failed";
   }
+  String refreshTimeStr;
+  getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
 
   // MAKE API REQUESTS, if wifi is connected and time is configured
   bool rxOWM = false;
@@ -95,15 +97,15 @@ void setup()
     rxOWM |= getOWMonecall(client, owm_onecall);
     rxOWM |= getOWMairpollution(client, owm_air_pollution);
     if (rxOWM == false)
-    {                                       // ensures last byte is '\0'
-      strncpy(status, "API call failed", sizeof(status) - 1);
+    {
+      statusStr = "API call failed";
     }
   }
   else
   {
     if (timeConfigured == false)
-    {                                         // ensures last byte is '\0'
-      strncpy(status, "Time setup failed", sizeof(status) - 1);
+    {
+      statusStr = "Time setup failed";
     }
   }
   killWiFi();
@@ -131,12 +133,12 @@ void setup()
       //       not a number (NAN) then an error occured, a dash '-' will be 
       //       displayed.
       if (isnan(inTemp) || isnan(inHumidity)) {
-        strncpy(status, "BME read failed", sizeof(status) - 1);
+        statusStr = "BME read failed";
       }
     }
     else
     {
-      strncpy(status, "BME not found", sizeof(status) - 1); // check wiring
+      statusStr = "BME not found"; // check wiring
     }
 
     // RENDER FULL REFRESH
@@ -150,7 +152,7 @@ void setup()
     drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
     drawLocationDate(CITY_STRING, dateStr);
     drawOutlookGraph(owm_onecall.hourly);
-    drawStatusBar(status, wifiRSSI, batteryVoltage);
+    drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
     display.display(false); // full display refresh
     display.powerOff();
   }
@@ -158,14 +160,14 @@ void setup()
   {
     // RENDER STATUS BAR PARTIAL REFRESH
     initDisplay();
-    drawStatusBar(status, wifiRSSI, batteryVoltage);
+    drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
     display.display(true); // partial display refresh
     display.powerOff();
   }
 
   // DEEP-SLEEP
   Serial.println("Min Free Heap: " + String(ESP.getMinFreeHeap()));
-  Serial.println("Status: " + String(status));
+  Serial.println("Status: " + statusStr);
   beginDeepSleep(startTime, &timeInfo);
   
 } // end setup

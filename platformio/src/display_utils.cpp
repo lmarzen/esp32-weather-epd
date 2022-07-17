@@ -9,6 +9,7 @@
 #include LANGUAGE_HEADER
 
 // icon header files
+#include "icons/icons_16x16.h"
 #include "icons/icons_24x24.h"
 #include "icons/icons_32x32.h"
 #include "icons/icons_48x48.h"
@@ -35,23 +36,80 @@ int calcBatPercent(double v)
   return static_cast<int>(y);
 } // end calcBatPercent
 
+/* Returns 24x24 bitmap incidcating battery status.
+ */
+const uint8_t *getBatBitmap24(int batPercent)
+{
+  if (batPercent >= 93)
+  {
+    return battery_full_90deg_24x24;
+  }
+  else if (batPercent >= 79)
+  {
+    return battery_6_bar_90deg_24x24;
+  }
+  else if (batPercent >= 65)
+  {
+    return battery_5_bar_90deg_24x24;
+  }
+  else if (batPercent >= 50)
+  {
+    return battery_4_bar_90deg_24x24;
+  }
+  else if (batPercent >= 36)
+  {
+    return battery_3_bar_90deg_24x24;
+  }
+  else if (batPercent >= 22)
+  {
+    return battery_2_bar_90deg_24x24;
+  }
+  else if (batPercent >= 8)
+  {
+    return battery_1_bar_90deg_24x24;
+  }
+  else
+  {  // batPercent < 8
+    return battery_0_bar_90deg_24x24;
+  }
+} // end getBatBitmap24
+
 /* Gets string with the current date.
  */
 void getDateStr(String &s, tm *timeInfo)
 {
-  char dateBuffer[48] = {};
-  strftime(dateBuffer, sizeof(dateBuffer), DATE_FORMAT, timeInfo);
-  s = dateBuffer;
+  char buf[48] = {};
+  strftime(buf, sizeof(buf), DATE_FORMAT, timeInfo);
+  s = buf;
 
   // remove double spaces. %e will add an extra space, ie. " 1" instead of "1"
   s.replace("  ", " ");
   // alternatively...
-  // snprintf(dateBuffer, sizeof(dateBuffer), "%s, %s %d",
+  // snprintf(buf, sizeof(buf), "%s, %s %d",
   //          TXT_dddd[timeInfo->tm_wday],
   //          TXT_MMMM[timeInfo->tm_mon],
   //          timeInfo->tm_mday);
   return;
-}
+} // end getDateStr
+
+/* Gets string with the current date and time of the current refresh attempt.
+ */
+void getRefreshTimeStr(String &s, bool timeSuccess, tm *timeInfo)
+{
+  if (timeSuccess == false)
+  {
+    s = TXT_UNKNOWN;
+    return;
+  }
+  
+  char buf[48] = {};
+  strftime(buf, sizeof(buf), REFRESH_TIME_FORMAT, timeInfo);
+  s = buf;
+
+  // remove double spaces.
+  s.replace("  ", " ");
+  return;
+} // end getRefreshTimeStr
 
 /* Takes a String and capitalizes the first letter of every word.
  *
@@ -413,6 +471,58 @@ const char *getAQIdesc(int aqi)
   return united_states_aqi_desc(  aqi);
 #endif // end UNITED_STATES_AQI
 } // end getAQIdesc
+
+/* Returns the wifi signal strength descriptor text for the given RSSI.
+ */
+const char *getWiFidesc(int rssi)
+{
+  if (rssi == 0)
+  {
+    return TXT_WIFI_NO_CONNECTION;
+  }
+  else if (rssi >= -50)
+  {
+    return TXT_WIFI_EXCELLENT;
+  }
+  else if (rssi >= -60)
+  {
+    return TXT_WIFI_GOOD;
+  }
+  else if (rssi >= -70)
+  {
+    return TXT_WIFI_FAIR;
+  }
+  else
+  {  // rssi < -70
+    return TXT_WIFI_WEAK;
+  }
+} // end getWiFidesc
+
+/* Returns 16x16 bitmap incidcating wifi status.
+ */
+const uint8_t *getWiFiBitmap16(int rssi)
+{
+  if (rssi == 0)
+  {
+    return wifi_off_16x16;
+  }
+  else if (rssi >= -50)
+  {
+    return wifi_16x16;
+  }
+  else if (rssi >= -60)
+  {
+    return wifi_3_bar_16x16;
+  }
+  else if (rssi >= -70)
+  {
+    return wifi_2_bar_16x16;
+  }
+  else
+  {  // rssi < -70
+    return wifi_1_bar_16x16;
+  }
+} // end getWiFiBitmap24
 
 /* Takes the daily weather forecast (from OpenWeatherMap API 
  * response) and returns a pointer to the icon's 64x64 bitmap.

@@ -21,18 +21,22 @@ extern const char *TXT_VISIBILITY;
 extern const char *TXT_INDOOR_TEMPERATURE;
 extern const char *TXT_INDOOR_HUMIDITY;
 
-// TIME/DATE
-extern const char *TXT_ddd[];
-extern const char *TXT_dddd[];
-extern const char *TXT_MMM[];
-extern const char *TXT_MMMM[];
-
 // UV INDEX
 extern const char *TXT_UV_LOW;
 extern const char *TXT_UV_MODERATE;
 extern const char *TXT_UV_HIGH;
 extern const char *TXT_UV_VERY_HIGH;
 extern const char *TXT_UV_EXTREME;
+
+// WIFI
+extern const char *TXT_WIFI_EXCELLENT;
+extern const char *TXT_WIFI_GOOD;
+extern const char *TXT_WIFI_FAIR;
+extern const char *TXT_WIFI_WEAK;
+extern const char *TXT_WIFI_NO_CONNECTION;
+
+// LAST REFRESH
+extern const char *TXT_UNKNOWN;
 
 // ALERTS
 extern const std::vector<String> ALERT_URGENCY;

@@ -77,6 +77,7 @@ extern const String CITY_STRING;
 extern const char *TIMEZONE;
 extern const char *TIME_FORMAT;
 extern const char *DATE_FORMAT;
+extern const char *REFRESH_TIME_FORMAT;
 extern const char *NTP_SERVER_1;
 extern const char *NTP_SERVER_2;
 extern const long SLEEP_DURATION;

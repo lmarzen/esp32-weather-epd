@@ -37,6 +37,7 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
                 const String &city, const String &date);
 void drawLocationDate(const String &city, const String &date);
 void drawOutlookGraph(owm_hourly_t *const hourly);
-void drawStatusBar(char *const statusStr, int wifiRSSI, double batVoltage);
+void drawStatusBar(String statusStr, String refreshTimeStr, int rssi, 
+                   double batVoltage);
 
 #endif

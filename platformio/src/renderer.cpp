@@ -387,7 +387,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   }
   else
   {
-    dataStr = "-`";
+    dataStr = "--`";
   }
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
 
@@ -462,7 +462,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   }
   else
   {
-    dataStr = "-";
+    dataStr = "--";
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans10pt7b);
@@ -525,7 +525,7 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
   int city_w = getStringWidth(city);
   display.setFont(&FreeSans12pt7b);
   int date_w = getStringWidth(date);
-  int max_w = DISP_WIDTH - 2 - max(city_w, date_w) - (196 + 4) - 4;
+  int max_w = DISP_WIDTH - 2 - max(city_w, date_w) - (196 + 4) - 8;
 
   if (alerts.size() == 1)
   { // 1 alert
@@ -601,21 +601,52 @@ void drawOutlookGraph(owm_hourly_t *const hourly)
 /* This function is responsible for drawing the status bar along the bottom of
  * the display.
  */
-void drawStatusBar(char *const statusStr, int wifiRSSI, double batVoltage)
+void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
+                   double batVoltage)
 {
   String dataStr;
+  display.setFont(&FreeSans6pt7b);
+  int pos = DISP_WIDTH - 2;
+  const int sp = 8;
 
-  display.drawInvertedBitmap(DISP_WIDTH - 1 - 300, DISP_HEIGHT - 1 - 32, 
-                             wi_refresh_48x48, 48, 48, GxEPD_BLACK);
-  display.drawInvertedBitmap(DISP_WIDTH - 1 - 200, DISP_HEIGHT - 1 - 21, 
-                             wifi_24x24, 24, 24, GxEPD_BLACK);
-  display.drawInvertedBitmap(DISP_WIDTH - 1 - 100, DISP_HEIGHT - 1 - 23, 
-                             battery_0_bar_90deg_32x32, 32, 32, GxEPD_BLACK);
-  display.setFont(&FreeSans8pt7b);
+  // battery
+  batVoltage = 4.2;
   int batPercent = calcBatPercent(batVoltage);
   dataStr = String(batPercent) + "% (" 
             + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
-  drawString(DISP_WIDTH - 1 - 80, DISP_HEIGHT - 1 - 10, dataStr, LEFT);
-  
+  drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT);
+  pos -= getStringWidth(dataStr) + 25;
+  display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 17,
+                             getBatBitmap24(batPercent), 24, 24, GxEPD_BLACK);
+  pos -= sp;
+
+  // wifi
+  dataStr = String(getWiFidesc(rssi));
+  if (rssi != 0)
+  {
+    dataStr += " (" + String(rssi) + "dBm)";
+  }
+  drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT);
+  pos -= getStringWidth(dataStr) + 19;
+  display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 13, getWiFiBitmap16(rssi),
+                             16, 16, GxEPD_BLACK);
+  pos -= sp;
+
+  // last refresh
+  drawString(pos, DISP_HEIGHT - 1 - 2, refreshTimeStr, RIGHT);
+  pos -= getStringWidth(refreshTimeStr) + 25;
+  display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 21, wi_refresh_32x32,
+                             32, 32, GxEPD_BLACK);
+  pos -= sp;
+
+  // status
+  if (!statusStr.isEmpty())
+  {
+    drawString(pos, DISP_HEIGHT - 1 - 2, statusStr, RIGHT);
+    pos -= getStringWidth(statusStr) + 25;
+    display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 18, warning_icon_24x24, 
+                               24, 24, GxEPD_BLACK);
+  }
+
   return;
 } // end drawStatusBar

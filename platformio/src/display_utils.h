@@ -34,7 +34,9 @@ enum alert_category {
 };
 
 int calcBatPercent(double v);
+const uint8_t *getBatBitmap24(int batPercent);
 void getDateStr(String &s, tm *timeInfo);
+void getRefreshTimeStr(String &s, bool timeSuccess, tm *timeInfo);
 void toTitleCase(String &text);
 void truncateExtraAlertInfo(String &text);
 void filterAlerts(std::vector<owm_alerts_t> &resp);
@@ -42,6 +44,8 @@ const char *getUVIdesc(unsigned int uvi);
 float getAvgConc(float pollutant[], int hours);
 int getAQI(owm_resp_air_pollution_t &p);
 const char *getAQIdesc(int aqi);
+const char *getWiFidesc(int rssi);
+const uint8_t *getWiFiBitmap16(int rssi);
 const uint8_t *getForecastBitmap64(owm_daily_t &daily);
 const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current, 
                                              owm_daily_t   &today);
