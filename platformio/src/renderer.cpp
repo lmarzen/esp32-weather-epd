@@ -593,8 +593,83 @@ void drawLocationDate(const String &city, const String &date)
 /* This function is responsible for drawing the outlook graph for the specified
  * number of hours(up to 47).
  */
-void drawOutlookGraph(owm_hourly_t *const hourly)
+void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 {
+  display.setFont(&FreeSans8pt7b);
+
+  const int xPos0 = 350;
+  const int xPos1 = DISP_WIDTH - 36;
+  const int yPos0 = 226;
+  const int yPos1 = DISP_HEIGHT - 46;
+
+  // x axis
+  display.drawLine(xPos0, yPos1    , xPos1, yPos1    , GxEPD_BLACK);
+  display.drawLine(xPos0, yPos1 - 1, xPos1, yPos1 - 1, GxEPD_BLACK);
+
+  // calculate y max/min and intervals
+  int yTempMaxTicks = 6;
+  int yTempMajorTicks = 5;
+  float yTempInterval = 0;
+  float yPopInterval = (yPos1 - yPos0 - 1) / 5.0;
+  float tempMin = hourly[0].temp;
+  float tempMax = hourly[0].temp;
+  for (int i = 1; i <= HOURLY_GRAPH_MAX; ++i)
+  {
+    tempMin = min(tempMin, hourly[i].temp);
+    tempMax = max(tempMax, hourly[i].temp);
+  }
+  int tempBoundMin = static_cast<int>(tempMin - 5) - (static_cast<int>(tempMin - 5) % yTempMajorTicks);
+  int tempBoundMax = static_cast<int>(tempMax + 5) + (yTempMajorTicks - (static_cast<int>(tempMax + 5) % yTempMajorTicks));
+  while ((tempBoundMax - tempBoundMin) / yTempMajorTicks > yTempMaxTicks)
+  {
+    yTempMajorTicks += 5;
+    tempBoundMin = static_cast<int>(tempMin - 5) - (static_cast<int>(tempMin - 5) % yTempMajorTicks);
+    tempBoundMax = static_cast<int>(tempMax + 5) + (yTempMajorTicks - (static_cast<int>(tempMax + 5) % yTempMajorTicks));
+  }
+  int numTempTicks = (tempBoundMax - tempBoundMin) / yTempMajorTicks;
+  yTempInterval = (yPos1 - yPos0 - 1) / static_cast<float>(numTempTicks);
+
+  for (int i = 0; i <= numTempTicks; ++i)
+  {
+    int yTempTick = static_cast<int>(yPos0 + (i * yTempInterval));
+    String dataStr = String(tempBoundMax - (i * yTempMajorTicks)) + "`";
+    drawString(xPos0 - 10, yTempTick - 6, dataStr, RIGHT);
+  }
+
+  int xMaxTicks = 8;
+  int hourInterval = static_cast<int>(ceil(HOURLY_GRAPH_MAX
+                                           / static_cast<float>(xMaxTicks)));
+  int numHourticks = HOURLY_GRAPH_MAX / hourInterval;
+  float xInterval = (xPos1 - xPos0 - 1) 
+                         / static_cast<float>(HOURLY_GRAPH_MAX);
+  for (int i = 0; i <= HOURLY_GRAPH_MAX; ++i)
+  {
+    int xTick = static_cast<int>(xPos0 + (i * xInterval));
+
+    if ((i % hourInterval) == 0)
+    {
+      // draw x tick marks
+      display.drawLine(xTick    , yPos1 + 1, xTick    , yPos1 + 4, GxEPD_BLACK);
+      display.drawLine(xTick + 1, yPos1 + 1, xTick + 1, yPos1 + 4, GxEPD_BLACK);
+      
+      char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
+      time_t ts = hourly[i].dt;
+      tm *timeInfo = localtime(&ts);
+      strftime(timeBuffer, sizeof(timeBuffer), HOUR_FORMAT, timeInfo);
+      drawString(xTick, yPos1 + 1 + 12 + 4 + 1, timeBuffer, CENTER);
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
   return;
 } // end drawOutlookGraph
 

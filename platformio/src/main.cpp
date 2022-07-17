@@ -151,7 +151,7 @@ void setup()
     drawForecast(owm_onecall.daily, timeInfo);
     drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
     drawLocationDate(CITY_STRING, dateStr);
-    drawOutlookGraph(owm_onecall.hourly);
+    drawOutlookGraph(owm_onecall.hourly, timeInfo);
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
     display.display(false); // full display refresh
     display.powerOff();
