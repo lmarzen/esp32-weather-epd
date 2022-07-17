@@ -540,14 +540,14 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
     display.setFont(&FreeSans14pt7b);
     if (getStringWidth(alerts[0].event) <= max_w)
     { // Fits on a single line, draw along bottom
-      drawString(196 + 48 + 4, 24 + 8 - 12 + 23, alerts[0].event, LEFT);
+      drawString(196 + 48 + 4, 24 + 8 - 12 + 20 + 1, alerts[0].event, LEFT);
     }
     else
     { // use smaller font
       display.setFont(&FreeSans12pt7b);
       if (getStringWidth(alerts[0].event) <= max_w)
       { // Fits on a single line with smaller font, draw along bottom
-        drawString(196 + 48 + 4, 24 + 8 - 12 + 17, alerts[0].event, LEFT);
+        drawString(196 + 48 + 4, 24 + 8 - 12 + 17 + 1, alerts[0].event, LEFT);
       }
       else
       { // Does not fit on a single line, draw higher to allow room for 2nd line
@@ -607,10 +607,9 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   String dataStr;
   display.setFont(&FreeSans6pt7b);
   int pos = DISP_WIDTH - 2;
-  const int sp = 8;
+  const int sp = 2;
 
   // battery
-  batVoltage = 4.2;
   int batPercent = calcBatPercent(batVoltage);
   dataStr = String(batPercent) + "% (" 
             + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
@@ -618,7 +617,7 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   pos -= getStringWidth(dataStr) + 25;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 17,
                              getBatBitmap24(batPercent), 24, 24, GxEPD_BLACK);
-  pos -= sp;
+  pos -= sp + 9;
 
   // wifi
   dataStr = String(getWiFidesc(rssi));
@@ -630,7 +629,7 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   pos -= getStringWidth(dataStr) + 19;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 13, getWiFiBitmap16(rssi),
                              16, 16, GxEPD_BLACK);
-  pos -= sp;
+  pos -= sp + 8;
 
   // last refresh
   drawString(pos, DISP_HEIGHT - 1 - 2, refreshTimeStr, RIGHT);
@@ -643,7 +642,7 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   if (!statusStr.isEmpty())
   {
     drawString(pos, DISP_HEIGHT - 1 - 2, statusStr, RIGHT);
-    pos -= getStringWidth(statusStr) + 25;
+    pos -= getStringWidth(statusStr) + 24;
     display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 18, warning_icon_24x24, 
                                24, 24, GxEPD_BLACK);
   }
