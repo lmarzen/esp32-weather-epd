@@ -644,7 +644,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   }
 
   // draw y axis
-  float yInterval = (yPos1 - yPos0 - 1) / static_cast<float>(yMajorTicks);
+  float yInterval = (yPos1 - yPos0) / static_cast<float>(yMajorTicks);
   for (int i = 0; i <= yMajorTicks; ++i)
   {
     String dataStr;
@@ -665,7 +665,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     {
       for (int x = xPos0; x <= xPos1 + 1; x += 3)
       {
-        display.writePixel(x, yTick, GxEPD_BLACK);
+        display.drawPixel(x, yTick + (yTick % 2), GxEPD_BLACK);
       }
     }
   }
@@ -675,16 +675,55 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
                                            / static_cast<float>(xMaxTicks)));
   float xInterval = (xPos1 - xPos0 - 1) / static_cast<float>(HOURLY_GRAPH_MAX);
   display.setFont(&FreeSans8pt7b);
-  for (int i = 0; i <= HOURLY_GRAPH_MAX; ++i)
+  for (int i = 0; i < HOURLY_GRAPH_MAX; ++i)
   {
     int xTick = static_cast<int>(xPos0 + (i * xInterval));
+    int x0_t, x1_t, y0_t, y1_t;
+    float yPxPerUnit;
+
+    if (i > 0)
+    {
+      // temperature
+      x0_t = static_cast<int>(round(xPos0 + ((i - 1) * xInterval) 
+                              + (0.5 * xInterval) ));
+      x1_t = static_cast<int>(round(xPos0 + (i * xInterval) 
+                              + (0.5 * xInterval) ));
+      yPxPerUnit = (yPos1 - yPos0) 
+                   / static_cast<float>(tempBoundMax - tempBoundMin);
+      y0_t = static_cast<int>(round(
+                yPos1 - (yPxPerUnit * ((hourly[i - 1].temp) - tempBoundMin)) ));
+      y1_t = static_cast<int>(round(
+                yPos1 - (yPxPerUnit * ((hourly[i    ].temp) - tempBoundMin)) ));
+
+      // graph temperature
+      display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , GxEPD_BLACK);
+      display.drawLine(x0_t    , y0_t + 1, x1_t    , y1_t + 1, GxEPD_BLACK);
+      display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , GxEPD_BLACK);
+    }
+
+    // pop
+    x0_t = static_cast<int>(round( xPos0 + 1 + (i * xInterval)));
+    x1_t = static_cast<int>(round( xPos0 + 1 + ((i + 1) * xInterval) ));
+    yPxPerUnit = (yPos1 - yPos0) / 100.0;
+    y0_t = static_cast<int>(round(
+                            yPos1 - (yPxPerUnit * (hourly[i    ].pop * 100)) ));
+    y1_t = yPos1;
+
+    // graph PoP
+    for (int y = y1_t - 1; y > y0_t; y -= 2)
+    {
+      for (int x = x0_t + (x0_t % 2); x < x1_t; x += 2)
+      {
+        display.drawPixel(x, y, GxEPD_BLACK);
+      }
+    }
 
     if ((i % hourInterval) == 0)
     {
       // draw x tick marks
       display.drawLine(xTick    , yPos1 + 1, xTick    , yPos1 + 4, GxEPD_BLACK);
       display.drawLine(xTick + 1, yPos1 + 1, xTick + 1, yPos1 + 4, GxEPD_BLACK);
-      
+      // draw x axis labels
       char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
       time_t ts = hourly[i].dt;
       tm *timeInfo = localtime(&ts);
@@ -694,14 +733,20 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 
   }
 
-
-
-
-
-
-
-
-
+  // draw the last tick mark
+  if ((HOURLY_GRAPH_MAX % hourInterval) == 0)
+  {
+    int xTick = static_cast<int>(round(xPos0 + (HOURLY_GRAPH_MAX * xInterval)));
+    // draw x tick marks
+    display.drawLine(xTick    , yPos1 + 1, xTick    , yPos1 + 4, GxEPD_BLACK);
+    display.drawLine(xTick + 1, yPos1 + 1, xTick + 1, yPos1 + 4, GxEPD_BLACK);
+    // draw x axis labels
+    char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
+    time_t ts = hourly[HOURLY_GRAPH_MAX - 1].dt + 3600;
+    tm *timeInfo = localtime(&ts);
+    strftime(timeBuffer, sizeof(timeBuffer), HOUR_FORMAT, timeInfo);
+    drawString(xTick, yPos1 + 1 + 12 + 4 + 3, timeBuffer, CENTER);
+  }
 
   return;
 } // end drawOutlookGraph

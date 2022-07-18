@@ -74,7 +74,8 @@ void killWiFi()
  */
 bool printLocalTime(tm *timeInfo)
 {
-  if (!getLocalTime(timeInfo))
+  int attempts = 0;
+  while (!getLocalTime(timeInfo) && attempts++ < 3)
   {
     Serial.println("Failed to obtain time");
     return false;
