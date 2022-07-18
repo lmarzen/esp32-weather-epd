@@ -103,7 +103,7 @@ void setup()
   }
   else
   {
-    if (timeConfigured == false)
+    if ((wifiStatus == WL_CONNECTED) && (timeConfigured == false))
     {
       statusStr = "Time setup failed";
     }
@@ -145,7 +145,7 @@ void setup()
     String dateStr;
     getDateStr(dateStr, &timeInfo);
 
-    initDisplay(); 
+    initDisplay();
     drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0], 
                           owm_air_pollution, inTemp, inHumidity);
     drawForecast(owm_onecall.daily, timeInfo);
@@ -161,7 +161,7 @@ void setup()
     // RENDER STATUS BAR PARTIAL REFRESH
     initDisplay();
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
-    display.display(true); // partial display refresh
+    display.display(false); // full display refresh
     display.powerOff();
   }
 
@@ -169,7 +169,6 @@ void setup()
   Serial.println("Min Free Heap: " + String(ESP.getMinFreeHeap()));
   Serial.println("Status: " + statusStr);
   beginDeepSleep(startTime, &timeInfo);
-  
 } // end setup
 
 /* This will never run

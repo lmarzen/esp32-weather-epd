@@ -201,7 +201,6 @@ void initDisplay()
 {
   display.init(115200, true, 2, false);
   // display.init(); for older Waveshare HAT's
-  SPI.end();
   SPI.begin(PIN_EPD_SCK,
             PIN_EPD_MISO,
             PIN_EPD_MOSI,
@@ -210,9 +209,9 @@ void initDisplay()
   display.setRotation(0);
   display.setTextSize(1);
   display.setTextColor(GxEPD_BLACK);
+  display.setTextWrap(false);
   display.fillScreen(GxEPD_WHITE);
   display.setFullWindow();
-  display.setTextWrap(false);
 } // end initDisplay
 
 /* This function is responsible for drawing the current conditions and 
