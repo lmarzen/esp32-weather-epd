@@ -305,7 +305,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 #ifdef UNITS_IMPERIAL
   unitStr = "mph";
 #endif // end UNITS_IMPERIAL
-  display.setFont(&FreeSans10pt7b);
+  display.setFont(&FreeSans8pt7b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, 
              unitStr, LEFT);
 
@@ -401,7 +401,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   // humidity
   dataStr = String(current.humidity);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
-  display.setFont(&FreeSans10pt7b);
+  display.setFont(&FreeSans8pt7b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, 
              "%", LEFT);
 
@@ -417,7 +417,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   unitStr = "in";
 #endif // end UNITS_IMPERIAL
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
-  display.setFont(&FreeSans10pt7b);
+  display.setFont(&FreeSans8pt7b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
              unitStr, LEFT);
 
@@ -450,7 +450,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
     dataStr = ">" + dataStr;
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
-  display.setFont(&FreeSans10pt7b);
+  display.setFont(&FreeSans8pt7b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
              unitStr, LEFT);
 
@@ -465,7 +465,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
     dataStr = "--";
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
-  display.setFont(&FreeSans10pt7b);
+  display.setFont(&FreeSans8pt7b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, 
              "%", LEFT);
 
@@ -595,10 +595,9 @@ void drawLocationDate(const String &city, const String &date)
  */
 void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 {
-  display.setFont(&FreeSans8pt7b);
 
   const int xPos0 = 350;
-  const int xPos1 = DISP_WIDTH - 36;
+  const int xPos1 = DISP_WIDTH - 46;
   const int yPos0 = 226;
   const int yPos1 = DISP_HEIGHT - 46;
 
@@ -607,10 +606,9 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   display.drawLine(xPos0, yPos1 - 1, xPos1, yPos1 - 1, GxEPD_BLACK);
 
   // calculate y max/min and intervals
-  int yTempMaxTicks = 6;
+  int yMajorTicks = 5;
+
   int yTempMajorTicks = 5;
-  float yTempInterval = 0;
-  float yPopInterval = (yPos1 - yPos0 - 1) / 5.0;
   float tempMin = hourly[0].temp;
   float tempMax = hourly[0].temp;
   for (int i = 1; i <= HOURLY_GRAPH_MAX; ++i)
@@ -618,30 +616,65 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     tempMin = min(tempMin, hourly[i].temp);
     tempMax = max(tempMax, hourly[i].temp);
   }
-  int tempBoundMin = static_cast<int>(tempMin - 5) - (static_cast<int>(tempMin - 5) % yTempMajorTicks);
-  int tempBoundMax = static_cast<int>(tempMax + 5) + (yTempMajorTicks - (static_cast<int>(tempMax + 5) % yTempMajorTicks));
-  while ((tempBoundMax - tempBoundMin) / yTempMajorTicks > yTempMaxTicks)
+  int tempBoundMin = static_cast<int>(tempMin - 5) 
+                     - (static_cast<int>(tempMin - 5) % yTempMajorTicks);
+  int tempBoundMax = static_cast<int>(tempMax + 5) 
+        + (yTempMajorTicks - (static_cast<int>(tempMax + 5) % yTempMajorTicks));
+  // while we have to many major ticks then increase the step
+  while ((tempBoundMax - tempBoundMin) / yTempMajorTicks > yMajorTicks)
   {
     yTempMajorTicks += 5;
-    tempBoundMin = static_cast<int>(tempMin - 5) - (static_cast<int>(tempMin - 5) % yTempMajorTicks);
-    tempBoundMax = static_cast<int>(tempMax + 5) + (yTempMajorTicks - (static_cast<int>(tempMax + 5) % yTempMajorTicks));
+    tempBoundMin = static_cast<int>(tempMin - 5) 
+                   - (static_cast<int>(tempMin - 5) % yTempMajorTicks);
+    tempBoundMax = static_cast<int>(tempMax + 5) 
+        + (yTempMajorTicks - (static_cast<int>(tempMax + 5) % yTempMajorTicks));
   }
-  int numTempTicks = (tempBoundMax - tempBoundMin) / yTempMajorTicks;
-  yTempInterval = (yPos1 - yPos0 - 1) / static_cast<float>(numTempTicks);
-
-  for (int i = 0; i <= numTempTicks; ++i)
+  // while we have not enough major ticks add to either bound
+  while ((tempBoundMax - tempBoundMin) / yTempMajorTicks < yMajorTicks)
   {
-    int yTempTick = static_cast<int>(yPos0 + (i * yTempInterval));
-    String dataStr = String(tempBoundMax - (i * yTempMajorTicks)) + "`";
-    drawString(xPos0 - 10, yTempTick - 6, dataStr, RIGHT);
+    // add to whatever bound is closer to the actual min/max
+    if (tempMin - tempBoundMin <= tempBoundMax - tempMax)
+    {
+      tempBoundMin -= yTempMajorTicks;
+    }
+    else
+    {
+      tempBoundMax += yTempMajorTicks;
+    }
+  }
+
+  // draw y axis
+  float yInterval = (yPos1 - yPos0 - 1) / static_cast<float>(yMajorTicks);
+  for (int i = 0; i <= yMajorTicks; ++i)
+  {
+    String dataStr;
+    int yTick = static_cast<int>(yPos0 + (i * yInterval));
+    display.setFont(&FreeSans8pt7b);
+    // Temperature
+    dataStr = String(tempBoundMax - (i * yTempMajorTicks)) + "`";
+    drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT);
+
+    // PoP
+    dataStr = String(100 - (i * 20));
+    drawString(xPos1 + 8, yTick + 4, dataStr, LEFT);
+    display.setFont(&FreeSans5pt7b);
+    drawString(display.getCursorX(), yTick + 4, "%", LEFT);
+
+    // draw dotted line
+    if (i < yMajorTicks)
+    {
+      for (int x = xPos0; x <= xPos1 + 1; x += 3)
+      {
+        display.writePixel(x, yTick, GxEPD_BLACK);
+      }
+    }
   }
 
   int xMaxTicks = 8;
   int hourInterval = static_cast<int>(ceil(HOURLY_GRAPH_MAX
                                            / static_cast<float>(xMaxTicks)));
-  int numHourticks = HOURLY_GRAPH_MAX / hourInterval;
-  float xInterval = (xPos1 - xPos0 - 1) 
-                         / static_cast<float>(HOURLY_GRAPH_MAX);
+  float xInterval = (xPos1 - xPos0 - 1) / static_cast<float>(HOURLY_GRAPH_MAX);
+  display.setFont(&FreeSans8pt7b);
   for (int i = 0; i <= HOURLY_GRAPH_MAX; ++i)
   {
     int xTick = static_cast<int>(xPos0 + (i * xInterval));
@@ -656,7 +689,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
       time_t ts = hourly[i].dt;
       tm *timeInfo = localtime(&ts);
       strftime(timeBuffer, sizeof(timeBuffer), HOUR_FORMAT, timeInfo);
-      drawString(xTick, yPos1 + 1 + 12 + 4 + 1, timeBuffer, CENTER);
+      drawString(xTick, yPos1 + 1 + 12 + 4 + 3, timeBuffer, CENTER);
     }
 
   }
