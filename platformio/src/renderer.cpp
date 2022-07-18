@@ -615,18 +615,18 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     tempMin = min(tempMin, hourly[i].temp);
     tempMax = max(tempMax, hourly[i].temp);
   }
-  int tempBoundMin = static_cast<int>(tempMin - 5) 
-                     - (static_cast<int>(tempMin - 5) % yTempMajorTicks);
-  int tempBoundMax = static_cast<int>(tempMax + 5) 
-        + (yTempMajorTicks - (static_cast<int>(tempMax + 5) % yTempMajorTicks));
+  int tempBoundMin = static_cast<int>(tempMin - 1) 
+                     - (static_cast<int>(tempMin - 1) % yTempMajorTicks);
+  int tempBoundMax = static_cast<int>(tempMax + 1) 
+        + (yTempMajorTicks - (static_cast<int>(tempMax + 1) % yTempMajorTicks));
   // while we have to many major ticks then increase the step
   while ((tempBoundMax - tempBoundMin) / yTempMajorTicks > yMajorTicks)
   {
     yTempMajorTicks += 5;
-    tempBoundMin = static_cast<int>(tempMin - 5) 
-                   - (static_cast<int>(tempMin - 5) % yTempMajorTicks);
-    tempBoundMax = static_cast<int>(tempMax + 5) 
-        + (yTempMajorTicks - (static_cast<int>(tempMax + 5) % yTempMajorTicks));
+    tempBoundMin = static_cast<int>(tempMin - 1) 
+                   - (static_cast<int>(tempMin - 1) % yTempMajorTicks);
+    tempBoundMax = static_cast<int>(tempMax + 1) 
+        + (yTempMajorTicks - (static_cast<int>(tempMax + 1) % yTempMajorTicks));
   }
   // while we have not enough major ticks add to either bound
   while ((tempBoundMax - tempBoundMin) / yTempMajorTicks < yMajorTicks)
