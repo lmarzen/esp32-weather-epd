@@ -248,7 +248,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, dataStr, CENTER);
 
   // line dividing top and bottom display areas
-  display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
+  // display.drawLine(0, 196, DISP_WIDTH - 1, 196, GxEPD_BLACK);
 
   // current weather data icons
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 0,
@@ -598,7 +598,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 
   const int xPos0 = 350;
   const int xPos1 = DISP_WIDTH - 46;
-  const int yPos0 = 226;
+  const int yPos0 = 216;
   const int yPos1 = DISP_HEIGHT - 46;
 
   // x axis
