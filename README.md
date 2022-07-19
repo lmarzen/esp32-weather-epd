@@ -71,6 +71,16 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 
 ### Wiring
 
+Pin connections can be defined in config.cpp. 
+
+If you are using the FireBeetle 2 ESP32-E you can use the connections I used or change them how you would like.
+
+The E-Paper Driver Hat has two physical switches that must be set correctly in order for the display to work.
+
+- Display Config: Set switch to position B.
+
+- Interface Config: Set switch to position 1.
+
 
 ### Configuration, Compilation, and Upload
 
