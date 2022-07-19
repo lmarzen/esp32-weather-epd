@@ -610,7 +610,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   int yTempMajorTicks = 5;
   float tempMin = hourly[0].temp;
   float tempMax = hourly[0].temp;
-  for (int i = 1; i <= HOURLY_GRAPH_MAX; ++i)
+  for (int i = 1; i < HOURLY_GRAPH_MAX; ++i)
   {
     tempMin = min(tempMin, hourly[i].temp);
     tempMax = max(tempMax, hourly[i].temp);
