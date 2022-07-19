@@ -68,3 +68,58 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 
 - WARNING: The polarity of JST-PH2.0 connectors is not standardized! You may need to swap order of the wires in the connector.
 
+
+### Wiring
+
+
+### Configuration, Compilation, and Upload
+
+PlatformIO for VSCode is used for managing dependencies, code compilation, and upload to ESP32.
+
+1. Clone this repository or download and extract the .zip.
+
+2. Install VSCode.
+
+3. Follow these instructions to install the PlatformIO extension for VSCode: https://platformio.org/install/ide?install=vscode
+
+4. Open the project in VSCode.
+
+   a. File > Open Folder...
+
+   b. Navigate to this project and select the folder called "platformio".
+
+5. Configure Options.
+
+   - Most configuration options are located in config.cpp with the a few in config.h. Language options can also be found in lang_en_us.cpp.
+
+   - Important settings to configure in config.cpp:
+
+     - WiFi credentials (ssid, password).
+
+     - Open Weather Map API key (sign up here to get an API key, its free. https://openweathermap.org/api).
+
+     - Latitude and longitude.
+
+     - Time and date formats.
+
+     - Sleep duration.
+
+     - Pin connections for E-Paper (SPI), BME280 (I2C), and battery voltage (ADC).
+
+   - Important settings to configure in config.h:
+
+     - Units (Metric or Imperial).
+
+   - Comments explain each option in detail.
+
+6. Build and Upload Code.
+
+   a. Connect ESP32 to Computer via USB.
+
+   b. Click the upload arrow along the bottom of the VSCode window. (Should say "PlatformIO: Upload" if you hover over it.) 
+
+      - PlatformIO will automatically download the required third-party libraries, then will compile and upload the code. :)
+     
+      - You will not see this if you don't have the PlatformIO extension installed.
+
+      - If you are getting errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
