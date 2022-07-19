@@ -71,7 +71,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 
 ### Wiring
 
-Pin connections can be defined in config.cpp. 
+Pin connections are defined in config.cpp. 
 
 If you are using the FireBeetle 2 ESP32-E you can use the connections I used or change them how you would like.
 
