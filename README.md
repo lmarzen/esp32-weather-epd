@@ -16,7 +16,7 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
 - Limitations of E-Paper: 
   - Colors - E-Paper has traditionally been limited to just black and white, but in recent years 3-color E-Paper screens are started to show up.
 
-  - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed to quickly. To avoid this to  E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times which can be distracting.  
+  - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed too quickly. To avoid this to  E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times which can be distracting.  
 
 
 - https://www.waveshare.com/product/7.5inch-e-paper-hat.htm
