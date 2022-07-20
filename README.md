@@ -1,11 +1,8 @@
 # ESP32 E-Paper Weather Display
 
-.
+This is a weather display powered by a wifi enabled ESP32 microcontroller and an E-Paper (aka E-ink) display. Current and forecasted weather data is obtained from the OpenWeatherMap API. A sensor provides the display with accurate indoor temperature and humidity.
 
-.
-
-.
-
+The project draws ~14μA when sleeping and an estimated average current draw of ~83mA during its 9-10s wake period. The display can be configured to update as frequenctly as desired, but with a refresh every 30 minutes the device can run for nearly a year on a single 3000mAh battery. The project displays accurate battery life as a percentage on screen and can be recharged via USB-C and a wall-socket or computer.
 
 ## Setup Guide
 
@@ -37,9 +34,9 @@ FireBeetle 2 ESP32-E Microcontroller
 
   - Small size, many small development boards available.
 
-- Why the FireBeetle 2 ESP32-E?
+- Why the FireBeetle 2 ESP32-E
 
-  - Drobot's FireBeetle ESP32 models is optimized for low-power consumption (https://diyi0t.com/reduce-the-esp32-power-consumption/). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Mirco-USB would work just fine too.
+  - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (https://diyi0t.com/reduce-the-esp32-power-consumption/). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Mirco-USB would work just fine too.
 
   - Firebeelte ESP32 models include onboard charging circuitry for lithium ion batteries.
 
@@ -60,7 +57,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 3.7V Lipo Battery w/ 2 Pin JST Connector 
 
 
-- Size is up to you. I used a 10000mah battery so that the device can operate on a single charge for 1.5-2 years.
+- Size is up to you. I used a 10000mah battery so that the device can operate on a single charge for >2 years.
 
 
 - The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
