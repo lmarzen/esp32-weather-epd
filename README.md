@@ -1,8 +1,8 @@
 # ESP32 E-Paper Weather Display
 
-This is a weather display powered by a wifi enabled ESP32 microcontroller and a 7.5in E-Paper (aka E-ink) display. Current and forecasted weather data is obtained from the OpenWeatherMap API. A sensor provides the display with accurate indoor temperature and humidity.
+This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 7.5in E-Paper (aka E-ink) display. Current and forecasted weather data is obtained from the OpenWeatherMap API. A sensor provides the display with accurate indoor temperature and humidity.
 
-The project draws ~14μA when sleeping and an estimated average of ~83mA during its 9-10s wake period. The display can be configured to update as frequenctly as desired, but with a refresh every 30 minutes the device can run for nearly a year on a single 3000mAh battery. The project displays accurate battery life as a percentage on screen and can be recharged via USB-C and a wall-socket or computer.
+The project draws ~14μA when sleeping and an estimated average of ~83mA during its 9-10s wake period. The display can be configured to update as frequently as desired, but with a refresh every 30 minutes the device can run for nearly a year on a single 3000mAh battery. The project displays accurate battery life as a percentage on screen and can be recharged via USB-C and a wall-adapter or computer.
 
 ## Setup Guide
 
@@ -14,9 +14,9 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
   - Ultra Low Power Consumption - E-Paper (or E-Ink) displays are ideal for low-power applications that do not require frequent display refreshes. E-Paper displays only draw power when refreshing the display and do not have a backlight. Images will remain on the screen even when power is removed.
 
 - Limitations of E-Paper: 
-  - Colors - E-Paper has traditionally been limited to just black and white, but in recent years 3-color E-Paper screens are started to show up.
+  - Colors - E-Paper has traditionally been limited to just black and white, but in recent years 3-color E-Paper screens have started showing up.
 
-  - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed too quickly. To avoid this to  E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times which can be distracting.  
+  - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed too quickly. To avoid this, E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times, which can be distracting.  
 
 
 - https://www.waveshare.com/product/7.5inch-e-paper-hat.htm
@@ -38,7 +38,7 @@ FireBeetle 2 ESP32-E Microcontroller
 
   - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (https://diyi0t.com/reduce-the-esp32-power-consumption/). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Mirco-USB would work just fine too.
 
-  - Firebeelte ESP32 models include onboard charging circuitry for lithium ion batteries.
+  - Firebeelte ESP32 models include onboard charging circuitry for a 3.7v lithium-ion(LiPo) battery.
 
   - FireBeetle ESP32 models include onboard circuitry to monitor battery voltage of a battery connected to its JST-PH2.0 connector.
 
@@ -51,7 +51,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 
 - Provides accurate indoor temperature and humidity.
 
-- Much faster than the DHT22 which requires a 2 second wait before reading temperature and humidity samples.
+- Much faster than the DHT22, which requires a 2-second wait before reading temperature and humidity samples.
 
 
 3.7V Lipo Battery w/ 2 Pin JST Connector 
@@ -70,9 +70,9 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 
 Pin connections are defined in config.cpp. 
 
-If you are using the FireBeetle 2 ESP32-E you can use the connections I used or change them how you would like.
+If you are using the FireBeetle 2 ESP32-E, you can use the connections I used or change them how you would like.
 
-The E-Paper Driver Hat has two physical switches that must be set correctly in order for the display to work.
+The E-Paper Driver Hat has two physical switches that must be set correctly for the display to work.
 
 - Display Config: Set switch to position B.
 
@@ -103,7 +103,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
      - WiFi credentials (ssid, password).
 
-     - Open Weather Map API key (sign up here to get an API key, its free. https://openweathermap.org/api).
+     - Open Weather Map API key (sign up here to get an API key, it's free. https://openweathermap.org/api).
 
      - Latitude and longitude.
 
@@ -121,11 +121,11 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
 6. Build and Upload Code.
 
-   a. Connect ESP32 to Computer via USB.
+   a. Connect ESP32 to your computer via USB.
 
    b. Click the upload arrow along the bottom of the VSCode window. (Should say "PlatformIO: Upload" if you hover over it.) 
 
-      - PlatformIO will automatically download the required third-party libraries, then will compile and upload the code. :)
+      - PlatformIO will automatically download the required third-party libraries, compile, and upload the code. :)
      
       - You will not see this if you don't have the PlatformIO extension installed.
 
