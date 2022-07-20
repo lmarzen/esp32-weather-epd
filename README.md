@@ -1,12 +1,12 @@
 # ESP32 E-Paper Weather Display
 
-This is a weather display powered by a wifi enabled ESP32 microcontroller and an E-Paper (aka E-ink) display. Current and forecasted weather data is obtained from the OpenWeatherMap API. A sensor provides the display with accurate indoor temperature and humidity.
+This is a weather display powered by a wifi enabled ESP32 microcontroller and a 7.5in E-Paper (aka E-ink) display. Current and forecasted weather data is obtained from the OpenWeatherMap API. A sensor provides the display with accurate indoor temperature and humidity.
 
 The project draws ~14μA when sleeping and an estimated average of ~83mA during its 9-10s wake period. The display can be configured to update as frequenctly as desired, but with a refresh every 30 minutes the device can run for nearly a year on a single 3000mAh battery. The project displays accurate battery life as a percentage on screen and can be recharged via USB-C and a wall-socket or computer.
 
 ## Setup Guide
 
-### Components
+### Hardware
 
 7.5inch (800×480) E-Ink Display w/ HAT for Raspberry Pi, SPI interface
 
