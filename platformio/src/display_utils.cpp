@@ -875,7 +875,7 @@ const uint8_t *getAlertBitmap32(owm_alerts_t &alert)
   case FIRE:
     return wi_fire_32x32;
   case HEAT:
-    return wi_fire_32x32;
+    return wi_thermometer_32x32;
   case WINTER:
     return wi_snowflake_cold_32x32;
   case LIGHTNING:
@@ -943,7 +943,7 @@ const uint8_t *getAlertBitmap48(owm_alerts_t &alert)
   case FIRE:
     return wi_fire_48x48;
   case HEAT:
-    return wi_fire_48x48;
+    return wi_thermometer_48x48;
   case WINTER:
     return wi_snowflake_cold_48x48;
   case LIGHTNING:
