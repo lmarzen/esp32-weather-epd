@@ -42,7 +42,7 @@
 // is there.
 //
 // DIRECTIONS                 #     ERROR  STORAGE  
-// Cardinal                   4  ±45.000°     288B  N
+// Cardinal                   4  ±45.000°     288B  E
 // Ordinal                    8  ±22.500°     576B  NE
 // Secondary Intercardinal   16  ±11.250°   1,152B  NNE
 // Tertiary Intercardinal    32   ±5.625°   2,304B  NbE
