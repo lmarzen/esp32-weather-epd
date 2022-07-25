@@ -4,6 +4,17 @@ This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 
 
 The project draws ~14μA when sleeping and an estimated average of ~83mA during its 9-10s wake period. The display can be configured to update as frequently as desired, but with a refresh every 30 minutes the device can run for nearly a year on a single 3000mAh battery. The project displays accurate battery life as a percentage on screen and can be recharged via USB-C and a wall-adapter or computer.
 
+There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
+
+The hourly outlook graph (bottom right) shows a line that indicates temperature and shaded bars that indicate probability of precipitation.
+
+Here are two examples:
+
+![new york](showcase/demo-new-york.jpg)
+
+![london](showcase/demo-london.jpg)
+
+
 ## Setup Guide
 
 ### Hardware
@@ -78,6 +89,7 @@ The E-Paper Driver Hat has two physical switches that must be set correctly for 
 
 - Interface Config: Set switch to position 1.
 
+![tucson](showcase/demo-tucson.jpg)
 
 ### Configuration, Compilation, and Upload
 
