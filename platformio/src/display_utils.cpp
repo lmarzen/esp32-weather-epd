@@ -644,7 +644,7 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
     return wi_tornado_64x64;
   // Group 800: Clear
   case 800: // Clear         clear sky                        01d 01n
-    if (windy) {return wi_windy_64x64;}
+    if (windy) {return wi_strong_wind_64x64;}
     return wi_day_sunny_64x64;
   // Group 80x: Clouds
   case 801: // Clouds        few clouds: 11-25%               02d 02n
@@ -810,13 +810,13 @@ const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current,
     return wi_tornado_196x196;
   // Group 800: Clear
   case 800: // Clear         clear sky                        01d 01n
-    if (windy)         {return wi_windy_196x196;}
+    if (windy)         {return wi_strong_wind_196x196;}
     if (!day && moon)  {return wi_night_clear_196x196;}
     if (!day && !moon) {return wi_stars_196x196;}
     return wi_day_sunny_196x196;
   // Group 80x: Clouds
   case 801: // Clouds        few clouds: 11-25%               02d 02n
-    if (windy)         {return wi_windy_196x196;}
+    if (windy)         {return wi_strong_wind_196x196;}
     if (!day && moon)  {return wi_night_alt_partly_cloudy_196x196;}
     if (!day && !moon) {return wi_stars_196x196;}
     return wi_day_sunny_overcast_196x196;
