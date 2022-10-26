@@ -625,6 +625,8 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
     return wi_smoke_64x64;
   case 721: // Haze          Haze                             50d
     return wi_day_haze_64x64;
+    if (!cloudy) {return wi_day_haze_196x196;}
+    return wi_dust_196x196;
   case 731: // Dust          sand/dust whirls                 50d
     return wi_sandstorm_64x64;
   case 741: // Fog           fog                              50d
@@ -788,7 +790,8 @@ const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current,
   case 711: // Smoke         Smoke                            50d
     return wi_smoke_196x196;
   case 721: // Haze          Haze                             50d
-    return wi_day_haze_196x196;
+    if (day && !cloudy) {return wi_day_haze_196x196;}
+    return wi_dust_196x196;
   case 731: // Dust          sand/dust whirls                 50d
     return wi_sandstorm_196x196;
   case 741: // Fog           fog                              50d
