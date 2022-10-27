@@ -700,7 +700,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
       display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , GxEPD_BLACK);
     }
 
-    // pop
+    // PoP
     x0_t = static_cast<int>(round( xPos0 + 1 + (i * xInterval)));
     x1_t = static_cast<int>(round( xPos0 + 1 + ((i + 1) * xInterval) ));
     yPxPerUnit = (yPos1 - yPos0) / 100.0;
