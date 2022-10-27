@@ -32,7 +32,7 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   unsigned long sleepDuration = (SLEEP_DURATION * 60
                               - ((timeInfo->tm_min % SLEEP_DURATION) * 60 
                                   + timeInfo->tm_sec)) + 2;
-  sleepDuration += (unsigned long) (sleepDuration * 0.0067);
+  sleepDuration = (unsigned long) (sleepDuration * 1.0067);
   esp_sleep_enable_timer_wakeup(sleepDuration * 1000000);
   Serial.println("Awake for " 
                  + String((millis() - startTime) / 1000.0, 3) + "s");
