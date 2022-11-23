@@ -68,7 +68,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 3.7V Lipo Battery w/ 2 Pin JST Connector 
 
 
-- Size is up to you. I used a 10000mah battery so that the device can operate on a single charge for >2 years.
+- Size is up to you. I used a 10000mah battery so that the device can operate on a single charge for >1 year.
 
 
 - The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
