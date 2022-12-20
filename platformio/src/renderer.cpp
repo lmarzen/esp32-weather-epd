@@ -133,7 +133,7 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
       if (current_line < max_lines - 1)
       {
         splitAt = max(subStr.lastIndexOf(" "), 
-                    subStr.lastIndexOf("-"));
+                      subStr.lastIndexOf("-"));
       }
       else
       {
@@ -314,7 +314,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // uv index
   display.setFont(&FreeSans12pt7b);
-  uint uvi = static_cast<uint>(max(round(current.uvi), 0.0));
+  uint uvi = static_cast<uint>(max(round(current.uvi), 0.0f));
   dataStr = String(uvi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans7pt7b);
