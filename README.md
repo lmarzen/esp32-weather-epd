@@ -87,7 +87,7 @@ The E-Paper Driver Hat has two physical switches that must be set correctly for 
 
 - Display Config: Set switch to position B.
 
-- Interface Config: Set switch to position 1.
+- Interface Config: Set switch to position 0.
 
 ![tucson](showcase/demo-tucson.jpg)
 
