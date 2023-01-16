@@ -2,7 +2,7 @@
 
 This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 7.5in E-Paper (aka E-ink) display. Current and forecasted weather data is obtained from the OpenWeatherMap API. A sensor provides the display with accurate indoor temperature and humidity.
 
-The project draws ~14μA when sleeping and an estimated average of ~83mA during its 9-10s wake period. The display can be configured to update as frequently as desired, but with a refresh every 30 minutes the device can run for nearly a 6 monthes on a single 3000mAh battery. The project displays accurate battery life as a percentage on screen and can be recharged via USB-C and a wall-adapter or computer.
+The project draws ~14μA when sleeping and an estimated average of ~83mA during its 9-10s wake period. The display can be configured to update as frequently as desired, but with a refresh every 30 minutes the device can run for nearly a 6 monthes on a single 5000mAh battery. The project displays accurate battery life as a percentage on screen and can be recharged via USB and a wall-adapter or computer.
 
 There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
 
@@ -33,7 +33,7 @@ Here are two examples:
 - https://www.waveshare.com/product/7.5inch-e-paper-hat.htm
 
 
-FireBeetle 2 ESP32-E Microcontroller
+FireBeetle ESP32 Microcontroller
 
 - Why the ESP32?
 
@@ -45,16 +45,16 @@ FireBeetle 2 ESP32-E Microcontroller
 
   - Small size, many small development boards available.
 
-- Why the FireBeetle 2 ESP32-E
+- Why the FireBeetle ESP32
 
-  - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (https://diyi0t.com/reduce-the-esp32-power-consumption/). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Mirco-USB would work just fine too.
+  - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (https://diyi0t.com/reduce-the-esp32-power-consumption/).
 
   - Firebeelte ESP32 models include onboard charging circuitry for a 3.7v lithium-ion(LiPo) battery.
 
   - FireBeetle ESP32 models include onboard circuitry to monitor battery voltage of a battery connected to its JST-PH2.0 connector.
 
 
-- https://www.dfrobot.com/product-2195.html
+- https://www.dfrobot.com/product-1590.html
 
 
 BME280 - Pressure, Temperature, and Humidity Sensor
@@ -81,7 +81,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 
 Pin connections are defined in config.cpp. 
 
-If you are using the FireBeetle 2 ESP32-E, you can use the connections I used or change them how you would like.
+If you are using the FireBeetle ESP32, you can use the connections I used or change them how you would like.
 
 The E-Paper Driver Hat has two physical switches that must be set correctly for the display to work.
 
