@@ -23,10 +23,10 @@
 int calcBatPercent(double v)
 {
   // this formula was calculated using samples collected from a lipo battery
-  double y = - 125.8413615096 * pow(v, 3)
-             + 1389.0860247930 * pow(v, 2)
-             - 4970.1339315306 * v
-             + 5802.31005866;
+  double y = -  144.9390 * v * v * v
+             + 1655.8629 * v * v
+             - 6158.8520 * v
+             + 7501.3202;
 
   // enforce bounds, 0-100
   y = max(y, 0.0);
