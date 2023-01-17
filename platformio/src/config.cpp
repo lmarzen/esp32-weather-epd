@@ -24,7 +24,7 @@ const char *WIFI_PASSWORD = "password";
 
 // OPENWEATHERMAP API
 // OpenWeatherMap API key, https://openweathermap.org/
-const String OWM_APIKEY   = "abcdefghijklmnopqrstuvwxyz012345";                          
+const String OWM_APIKEY   = "abcdefghijklmnopqrstuvwxyz012345";
 const String OWM_ENDPOINT = "api.openweathermap.org";
 
 // LOCATION
