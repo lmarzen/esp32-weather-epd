@@ -516,7 +516,8 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
 
   // Converts all event text and tags to lowercase, removes extra information,
   // and filters out redundant alerts of lesser urgency.
-  filterAlerts(alerts);
+  int ignore_list[alerts.size()] = {};
+  filterAlerts(alerts, ignore_list);
 
   // limit alert text width so that is does not run into the location or date
   // strings
@@ -526,32 +527,45 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
   int date_w = getStringWidth(date);
   int max_w = DISP_WIDTH - 2 - max(city_w, date_w) - (196 + 4) - 8;
 
-  if (alerts.size() == 1)
+  // find indicies of valid alerts
+  int alert_indices[alerts.size()] = {};
+  int num_valid_alerts = 0;
+  for (int i = 0; i < alerts.size(); ++i)
+  {
+    if (!ignore_list[i])
+    {
+      alert_indices[num_valid_alerts] = i;
+      ++num_valid_alerts;
+    }
+  }
+
+  if (num_valid_alerts == 1)
   { // 1 alert
-  // adjust max width to for 48x48 icons
+    // adjust max width to for 48x48 icons
     max_w -= 48;
 
-    display.drawInvertedBitmap(196, 8, getAlertBitmap48(alerts[0]), 48, 48, 
+    owm_alerts_t &cur_alert = alerts[alert_indices[0]];
+    display.drawInvertedBitmap(196, 8, getAlertBitmap48(cur_alert), 48, 48, 
                                GxEPD_BLACK);
     // must be called after getAlertBitmap
-    toTitleCase(alerts[0].event);
+    toTitleCase(cur_alert.event);
 
     display.setFont(&FreeSans14pt7b);
-    if (getStringWidth(alerts[0].event) <= max_w)
+    if (getStringWidth(cur_alert.event) <= max_w)
     { // Fits on a single line, draw along bottom
-      drawString(196 + 48 + 4, 24 + 8 - 12 + 20 + 1, alerts[0].event, LEFT);
+      drawString(196 + 48 + 4, 24 + 8 - 12 + 20 + 1, cur_alert.event, LEFT);
     }
-    else
+    else if (num_valid_alerts == 2)
     { // use smaller font
       display.setFont(&FreeSans12pt7b);
-      if (getStringWidth(alerts[0].event) <= max_w)
+      if (getStringWidth(cur_alert.event) <= max_w)
       { // Fits on a single line with smaller font, draw along bottom
-        drawString(196 + 48 + 4, 24 + 8 - 12 + 17 + 1, alerts[0].event, LEFT);
+        drawString(196 + 48 + 4, 24 + 8 - 12 + 17 + 1, cur_alert.event, LEFT);
       }
       else
       { // Does not fit on a single line, draw higher to allow room for 2nd line
         drawMultiLnString(196 + 48 + 4, 24 + 8 - 12 + 17 - 11, 
-                          alerts[0].event, LEFT, max_w, 2, 23);
+                          cur_alert.event, LEFT, max_w, 2, 23);
       }
     }
   } // end 1 alert
@@ -563,13 +577,15 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
     display.setFont(&FreeSans12pt7b);
     for (int i = 0; i < 2; ++i)
     {
-      display.drawInvertedBitmap(196, (i * 32), getAlertBitmap32(alerts[i]), 
+      owm_alerts_t &cur_alert = alerts[alert_indices[i]];
+
+      display.drawInvertedBitmap(196, (i * 32), getAlertBitmap32(cur_alert), 
                                  32, 32, GxEPD_BLACK);
       // must be called after getAlertBitmap
-      toTitleCase(alerts[i].event);
+      toTitleCase(cur_alert.event);
       
       drawMultiLnString(196 + 32 + 3, 5 + 17 + (i * 32), 
-                        alerts[i].event, LEFT, max_w, 1, 0);
+                        cur_alert.event, LEFT, max_w, 1, 0);
     } // end for-loop
   } // end 2 alerts
   

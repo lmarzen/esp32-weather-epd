@@ -39,7 +39,7 @@ void getDateStr(String &s, tm *timeInfo);
 void getRefreshTimeStr(String &s, bool timeSuccess, tm *timeInfo);
 void toTitleCase(String &text);
 void truncateExtraAlertInfo(String &text);
-void filterAlerts(std::vector<owm_alerts_t> &resp);
+void filterAlerts(std::vector<owm_alerts_t> &resp, int *ignore_list);
 const char *getUVIdesc(unsigned int uvi);
 float getAvgConc(float pollutant[], int hours);
 int getAQI(owm_resp_air_pollution_t &p);

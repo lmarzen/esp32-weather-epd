@@ -194,7 +194,8 @@ int eventUrgency(String &event)
   return urgency_lvl;
 } // end eventUrgency
 
-/* This algorithm filters alerts from the API responses to be displayed.
+/* This algorithm filters alerts from the API responses to be displayed by
+ * marking the corresponding index in the ignore list.
  *
  * Background:
  * The display layout is setup to show up to 2 alerts, but alerts can be 
@@ -227,7 +228,7 @@ int eventUrgency(String &event)
  * Truncate Extraneous Info (anything that follows a comma, period, or open
  *   parentheses)
  */
-void filterAlerts(std::vector<owm_alerts_t> &resp)
+void filterAlerts(std::vector<owm_alerts_t> &resp, int *ignore_list)
 {
   // Convert all event text and tags to lowercase.
   for (auto &alert : resp)
@@ -238,30 +239,42 @@ void filterAlerts(std::vector<owm_alerts_t> &resp)
 
   // Deduplicate alerts with the same first tag. Keeping only the most urgent
   // alerts of each tag and alerts who's urgency cannot be determined.
-  for (auto it_a = resp.begin(); it_a != resp.end(); ++it_a)
+  for (int i = 0; i < resp.size(); ++i)
   {
-    if (it_a->tags.isEmpty())
+    if (ignore_list[i] == 1)
+    {
+      continue;
+    }
+    if (resp[i].tags.isEmpty())
     {
       continue; // urgency can not be determined so it remains in the list
     }
 
-    for (auto it_b = resp.begin(); it_b != resp.end(); ++it_b)
+    for (int j = 0; j < resp.size(); ++j)
     {
-      if (it_a != it_b && it_a->tags == it_b->tags)
+      if (i != j && resp[i].tags == resp[j].tags)
       {
         // comparing alerts of the same tag, removing the less urgent alert
-        if (eventUrgency(it_a->event) >= eventUrgency(it_b->event))
+        if (eventUrgency(resp[i].event) >= eventUrgency(resp[j].event))
         {
-          resp.erase(it_b);
+          ignore_list[j] = 1;
         }
       }
     }
   }
 
   // Save only the 2 most recent alerts
-  while (resp.size() > 2)
+  int valid_cnt = 0;
+  for (int i = 0; i < resp.size(); ++i)
   {
-    resp.pop_back();
+    if (valid_cnt < 2 && !ignore_list[i])
+    {
+      ++valid_cnt;
+    }
+    else
+    {
+      ignore_list[i] = 1;
+    }
   }
 
   // Remove trailing/extraneous information
