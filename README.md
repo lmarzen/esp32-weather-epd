@@ -73,8 +73,8 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 
 - The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
 
-
-- WARNING: The polarity of JST-PH2.0 connectors is not standardized! You may need to swap order of the wires in the connector.
+  > **Warning**
+  > The polarity of JST-PH2.0 connectors is not standardized! You may need to swap order of the wires in the connector.
 
 
 ### Wiring
