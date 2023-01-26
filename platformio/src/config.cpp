@@ -26,6 +26,21 @@ const char *WIFI_PASSWORD = "password";
 // OpenWeatherMap API key, https://openweathermap.org/
 const String OWM_APIKEY   = "abcdefghijklmnopqrstuvwxyz012345";
 const String OWM_ENDPOINT = "api.openweathermap.org";
+// OpenWeatherMap One Call 2.5 API is deprecated for all new free users 
+// (accounts created after Summer 2022).
+//
+// Please note, that One Call API 3.0 is included in the "One Call by Call" 
+// subscription only. This separate subscription includes 1,000 calls/day for 
+// free and allows you to pay only for the number of API calls made to this 
+// product.
+//
+// Here’s how to subscribe and avoid any credit card changes:
+// - Go to https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30
+// - Follow the instructions to complete the subscription.
+// - Go to https://home.openweathermap.org/subscriptions and set the "Calls per
+//   day (no more than)" to 1,000. This ensures you will never overrun the free 
+//   calls.
+const String OWM_ONECALL_VERSION = "3.0";
 
 // LOCATION
 // Set your latitude and longitude.

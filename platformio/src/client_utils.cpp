@@ -117,7 +117,8 @@ bool getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
   const char unitsStr[] = "imperial";
 #endif // end UNITS_IMPERIAL
 
-  String uri = "/data/2.5/onecall?lat=" + LAT + "&lon=" + LON 
+  String uri = "/data/" + OWM_ONECALL_VERSION
+               + "/onecall?lat=" + LAT + "&lon=" + LON 
                + "&units=" + unitsStr + "&lang=" + LANG 
                + "&exclude=minutely&appid=" + OWM_APIKEY;
 

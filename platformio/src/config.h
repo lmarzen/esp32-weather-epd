@@ -71,6 +71,7 @@ extern const char *WIFI_SSID;
 extern const char *WIFI_PASSWORD;
 extern const String OWM_APIKEY;
 extern const String OWM_ENDPOINT;
+extern const String OWM_ONECALL_VERSION;
 extern const String LAT;
 extern const String LON;
 extern const String CITY_STRING;
