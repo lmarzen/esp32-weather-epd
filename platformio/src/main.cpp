@@ -93,15 +93,20 @@ void setup()
   getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
 
   // MAKE API REQUESTS, if wifi is connected and time is configured
-  bool rxOWM = false;
+  int rxOWM[2] = {};
   if ((wifiStatus == WL_CONNECTED) && timeConfigured)
   {
     WiFiClient client;
-    rxOWM |= getOWMonecall(client, owm_onecall);
-    rxOWM |= getOWMairpollution(client, owm_air_pollution);
-    if (rxOWM == false)
+    rxOWM[0] = getOWMonecall(client, owm_onecall);
+    if (rxOWM[0] != HTTP_CODE_OK)
     {
-      statusStr = "API call failed";
+      statusStr = "One Call " + OWM_ONECALL_VERSION + " API error: " 
+                 + String(rxOWM[0], DEC);
+    }
+    rxOWM[1] = getOWMairpollution(client, owm_air_pollution);
+    if (rxOWM[1] != HTTP_CODE_OK)
+    {
+      statusStr = "Air Pollution API error: " + String(rxOWM[1], DEC);
     }
   }
   else
@@ -113,7 +118,7 @@ void setup()
   }
   killWiFi();
 
-  if (rxOWM)
+  if (rxOWM[0] == HTTP_CODE_OK && rxOWM[1] == HTTP_CODE_OK)
   {
     // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
     float inTemp     = NAN;

@@ -103,10 +103,9 @@ bool setupTime(tm *timeInfo)
  * If data is recieved, it will be parsed and stored in the global variable
  * owm_onecall.
  *
- * Returns true if OK response is recieved and response is successfully parsed,
- * otherwise false.
+ * Returns the HTTP Status Code.
  */
-bool getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
+int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
 {
   int attempts = 0;
   bool rxSuccess = false;
@@ -122,36 +121,37 @@ bool getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
                + "&units=" + unitsStr + "&lang=" + LANG 
                + "&exclude=minutely&appid=" + OWM_APIKEY;
 
+  int httpResponse = 0;
   while (!rxSuccess && attempts < 3)
   {
     HTTPClient http;
     http.begin(client, OWM_ENDPOINT, 80, uri);
-    int httpResponse = http.GET();
+    httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK)
     {
       rxSuccess = deserializeOneCall(http.getStream(), r);
     }
     else
     {
-      Serial.println("OpenWeatherMap One Call API connection error: " 
-        + String(httpResponse, DEC) + " " + http.errorToString(httpResponse));
+      Serial.println("OpenWeatherMap One Call" + OWM_ONECALL_VERSION 
+        + " API error: " + String(httpResponse, DEC) + " " 
+        + http.errorToString(httpResponse));
     }
     client.stop();
     http.end();
     ++attempts;
   }
 
-  return rxSuccess;
+  return httpResponse;
 } // getOWMonecall
 
 /* Perform an HTTP GET request to OpenWeatherMap's "Air Pollution" API
  * If data is recieved, it will be parsed and stored in the global variable
  * owm_air_pollution.
  *
- * Returns true if OK response is recieved and response is successfully parsed,
- * otherwise false.
+ * Returns the HTTP Status Code.
  */
-bool getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
+int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
 {
   int attempts = 0;
   bool rxSuccess = false;
@@ -171,18 +171,19 @@ bool getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
                + "&start=" + startStr + "&end=" + endStr 
                + "&appid=" + OWM_APIKEY;
 
+  int httpResponse = 0;
   while (!rxSuccess && attempts < 3)
   {
     HTTPClient http;
     http.begin(client, OWM_ENDPOINT, 80, uri);
-    int httpResponse = http.GET();
+    httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK)
     {
       rxSuccess = deserializeAirQuality(http.getStream(), r);
     }
     else
     {
-      Serial.println("OpenWeatherMap Air Pollution API connection error: " 
+      Serial.println("OpenWeatherMap Air Pollution API error: " 
         + String(httpResponse, DEC) + " " + http.errorToString(httpResponse));
     }
     client.stop();
@@ -190,5 +191,5 @@ bool getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
     ++attempts;
   }
 
-  return rxSuccess;
+  return httpResponse;
 } // getOWMairpollution
