@@ -115,7 +115,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
      - WiFi credentials (ssid, password).
 
-     - Open Weather Map API key (sign up here to get an API key, it's free. https://openweathermap.org/api).
+     - Open Weather Map API key (it's free, see next section for important notes about obtaining an API key).
 
      - Latitude and longitude.
 
@@ -142,3 +142,21 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
       - You will not see this if you don't have the PlatformIO extension installed.
 
       - If you are getting errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
+
+### OpenWeatherMap API Key
+
+Sign up here to get an API key, it's free. https://openweathermap.org/api
+
+This project will make calls to 2 different APIs ("One Call" and "Air Pollution").
+
+> **Note**
+> OpenWeatherMap One Call 2.5 API has been deprecated for all new free users (accounts created after Summer 2022). Fortunately, you can make 1,000 calls/day to the One Call 3.0 API for free by following the steps below
+
+- If you have an account that was created before Summer 2022 you can simply use the One Call 2.5 API by changing `OWM_ONECALL_VERSION = "2.5";` in config.cpp.
+
+- Otherwise, the One Call API 3.0 is included in the "One Call by Call" subscription only. This separate subscription includes 1,000 calls/day for free and allows you to pay only for the number of API calls made to this product.
+
+Here’s how to subscribe and avoid any credit card changes:
+   - Go to https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30
+   - Follow the instructions to complete the subscription.
+   - Go to https://home.openweathermap.org/subscriptions and set the "Calls per day (no more than)" to 1,000. This ensures you will never overrun the free calls.
