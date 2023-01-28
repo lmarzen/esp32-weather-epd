@@ -29,10 +29,54 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
     Serial.print("Failed to obtain time before deep-sleep");
     Serial.println(", referencing older time.");
   }
-  unsigned long sleepDuration = (SLEEP_DURATION * 60
-                              - ((timeInfo->tm_min % SLEEP_DURATION) * 60 
-                                  + timeInfo->tm_sec)) + 2;
-  sleepDuration = (unsigned long) (sleepDuration * 1.0067);
+
+
+  Serial.print("timeInfo->tm_hour: ");
+  Serial.println(timeInfo->tm_hour);
+
+  int extraHoursUntilWake;
+  if (BED_TIME < WAKE_TIME && timeInfo->tm_hour >= BED_TIME && timeInfo->tm_hour < WAKE_TIME)
+  { // 0              B   v  W  24
+    // |--------------zzzzZzz---|
+    extraHoursUntilWake = WAKE_TIME - timeInfo->tm_hour;
+    Serial.print("Case A: ");
+    Serial.println(extraHoursUntilWake);
+  }
+  else if (BED_TIME > WAKE_TIME && timeInfo->tm_hour < WAKE_TIME)
+  { // 0 v W               B    24
+    // |zZz----------------zzzzz|
+    extraHoursUntilWake = WAKE_TIME - timeInfo->tm_hour;
+    Serial.print("Case B: ");
+    Serial.println(extraHoursUntilWake);
+  }
+  else if (BED_TIME > WAKE_TIME && timeInfo->tm_hour >= BED_TIME)
+  { // 0   W               B  v 24
+    // |zzz----------------zzzZz|
+    extraHoursUntilWake = WAKE_TIME - (timeInfo->tm_hour - 24);
+    Serial.print("Case C: ");
+    Serial.println(extraHoursUntilWake);
+  }
+  else // This feature is disabled (BED_TIME == WAKE_TIME)
+  {    // OR it is not past BED_TIME
+    extraHoursUntilWake = 0;
+  }
+
+  unsigned long sleepDuration;
+  if (extraHoursUntilWake == 0)
+  { // align wake time to nearest multiple of SLEEP_DURATION
+    sleepDuration = SLEEP_DURATION * 60UL 
+                    - ((timeInfo->tm_min % SLEEP_DURATION) * 60UL 
+                        + timeInfo->tm_sec);
+  }
+  else
+  { // align wake time to the hour
+    sleepDuration = extraHoursUntilWake * 3600UL
+                    - (timeInfo->tm_min * 60UL + timeInfo->tm_sec);
+  }
+  
+  // add extra delay to compensate for esp32's with fast RTCs.
+  sleepDuration = (unsigned long) (sleepDuration * 1.0067) + 2UL;
+
   esp_sleep_enable_timer_wakeup(sleepDuration * 1000000);
   Serial.println("Awake for " 
                  + String((millis() - startTime) / 1000.0, 3) + "s");
@@ -58,7 +102,7 @@ void setup()
   if (batteryVoltage <= CRIT_LOW_BATTERY_VOLTAGE)
   { // critically low battery, deep-sleep now
     esp_sleep_enable_timer_wakeup(CRIT_LOW_BATTERY_SLEEP_INTERVAL 
-                                  * 60 * 1000000);
+                                  * 60ULL * 1000000ULL);
     Serial.println("Critically low battery voltage!");
     Serial.println("Deep-sleep for " 
                    + String(CRIT_LOW_BATTERY_SLEEP_INTERVAL) + "min");
@@ -66,7 +110,8 @@ void setup()
   }
   else if (batteryVoltage <= LOW_BATTERY_VOLTAGE)
   { // low battery, deep-sleep now
-    esp_sleep_enable_timer_wakeup(LOW_BATTERY_SLEEP_INTERVAL * 60 * 1000000);
+    esp_sleep_enable_timer_wakeup(LOW_BATTERY_SLEEP_INTERVAL
+                                  * 60ULL * 1000000ULL);
     Serial.println("Low battery voltage!");
     Serial.println("Deep-sleep for " 
                    + String(LOW_BATTERY_SLEEP_INTERVAL) + "min");
@@ -137,8 +182,8 @@ void setup()
       Serial.println(inHumidity);
 
       // check if BME readings are valid
-      // note: readings are checked again before drawing to screen. If a reading is 
-      //       not a number (NAN) then an error occured, a dash '-' will be 
+      // note: readings are checked again before drawing to screen. If a reading
+      //       is not a number (NAN) then an error occured, a dash '-' will be
       //       displayed.
       if (isnan(inTemp) || isnan(inHumidity)) {
         statusStr = "BME read failed";
