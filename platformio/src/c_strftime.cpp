@@ -30,12 +30,10 @@
  * Note: No implementations for %z and %Z.
  */
 
-#define TZ_EXT 1           // Olson's timezone package
-#define VMS_EXT 1          // includes %v for VMS date format
-#define POSIX_2008 1       // flag and fw for C, F, G, Y formats
-#define GNU_EXT 1          // includes %P
-
-// #undef strchr // avoid AIX weirdness
+#define TZ_EXT     // Olson's timezone package
+#define VMS_EXT    // includes %v for VMS date format
+#define POSIX_2008 // flag and fw for C, F, G, Y formats
+#define GNU_EXT    // includes %P
 
 #define range(low, item, hi) max(low, min(item, hi))
 
