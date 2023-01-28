@@ -4,14 +4,14 @@ This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 
 
 The project draws ~14μA when sleeping and an estimated average of ~83mA during its 9-10s wake period. The display can be configured to update as frequently as desired, but with a refresh every 30 minutes the device can run for nearly a 6 monthes on a single 5000mAh battery. The project displays accurate battery life as a percentage on screen and can be recharged via USB-C and a wall-adapter or computer.
 
-
-<!-- ![assembled front](showcase/assembled-demo-raleigh-front.jpg) -->
 <p float="left">
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
   <img src="showcase/assembled-demo-raleigh-side.jpg" width="49.5%" />
   <img src="showcase/assembled-demo-raleigh-back.jpg" width="49.5%" /> 
 </p>
 
+
+I made a small stand for mine by hollowing out a piece of wood on the bottom. On the back I used a short USB extension cable so that I could charge the battery without needing to remove the components from the stand. I also wired a small reset button, so that I can refresh the display manually. Additionally, I 3d printed a cover for the bottom which is held on by magnets. The E-paper screen is actually so thin that I used a thin piece of acrylic to support it.
 
 There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
 
