@@ -4,6 +4,7 @@
 
 #include "api_response.h"
 #include "aqi.h"
+#include "c_strftime.h"
 #include "config.h"
 #include "display_utils.h"
 #include LANGUAGE_HEADER
@@ -79,16 +80,11 @@ const uint8_t *getBatBitmap24(int batPercent)
 void getDateStr(String &s, tm *timeInfo)
 {
   char buf[48] = {};
-  strftime(buf, sizeof(buf), DATE_FORMAT, timeInfo);
+  c_strftime(buf, sizeof(buf), DATE_FORMAT, timeInfo);
   s = buf;
 
   // remove double spaces. %e will add an extra space, ie. " 1" instead of "1"
   s.replace("  ", " ");
-  // alternatively...
-  // snprintf(buf, sizeof(buf), "%s, %s %d",
-  //          TXT_dddd[timeInfo->tm_wday],
-  //          TXT_MMMM[timeInfo->tm_mon],
-  //          timeInfo->tm_mday);
   return;
 } // end getDateStr
 
@@ -103,7 +99,7 @@ void getRefreshTimeStr(String &s, bool timeSuccess, tm *timeInfo)
   }
   
   char buf[48] = {};
-  strftime(buf, sizeof(buf), REFRESH_TIME_FORMAT, timeInfo);
+  c_strftime(buf, sizeof(buf), REFRESH_TIME_FORMAT, timeInfo);
   s = buf;
 
   // remove double spaces.

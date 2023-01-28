@@ -2,7 +2,24 @@
 #include <Arduino.h>
 #include "lang_en_us.h"
 
-// LANGUAGE
+// TIME/DATE (NL_LANGINFO)
+// locale-based information,
+// see https://man7.org/linux/man-pages/man3/nl_langinfo.3.html for more info.
+const char *LC_ABDAY[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+const char *LC_DAY[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", 
+                         "Thursday", "Friday", "Saturday"};
+const char *LC_ABMON[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+const char *LC_MON[12] = {"January",    "February", "March",    "April", 
+                           "May",       "June",     "July",     "August", 
+                           "September", "October",  "November", "December"};
+const char *LC_AM_PM[2] = {"AM", "PM"};
+const char *LC_D_T_FMT    = "%a %b %e %H:%M:%S %Y";
+const char *LC_D_FMT      = "%m/%d/%y";
+const char *LC_T_FMT      = "%H:%M:%S";
+const char *LC_T_FMT_AMPM = "%I:%M:%S %p";
+
+// OWM LANGUAGE
 // For full list of languages, see https://openweathermap.org/api/one-call-api#multi
 // Note: "[only] The contents of the 'description' field will be translated."
 const String LANG = "en";
@@ -19,20 +36,6 @@ const char *TXT_AIR_QUALITY_INDEX  = "Air Quality Index";
 const char *TXT_VISIBILITY         = "Visibility";
 const char *TXT_INDOOR_TEMPERATURE = "Temperature";
 const char *TXT_INDOOR_HUMIDITY    = "Humidity";
-
-// TIME/DATE
-// The abbreviated name of the day of the week.
-const char *TXT_ddd[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-// The full name of the day of the week.
-const char *TXT_dddd[] = {"Sunday", "Monday", "Tuesday", "Wednesday", 
-                          "Thursday", "Friday", "Saturday"};
-// The abbreviated name of the month.
-const char *TXT_MMM[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-// The full name of the month.
-const char *TXT_MMMM[] = {"January",   "February", "March",    "April", 
-                          "May",       "June",     "July",     "August", 
-                          "September", "October",  "November", "December"};
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Low";

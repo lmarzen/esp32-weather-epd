@@ -4,8 +4,18 @@
 #include <vector>
 #include <Arduino.h>
 
+// TIME/DATE (NL_LANGINFO)
+extern const char *LC_ABDAY[7];
+extern const char *LC_DAY[7];
+extern const char *LC_ABMON[12];
+extern const char *LC_MON[12];
+extern const char *LC_AM_PM[2];
+extern const char *LC_D_T_FMT;
+extern const char *LC_D_FMT;
+extern const char *LC_T_FMT;
+extern const char *LC_T_FMT_AMPM;
 
-// LANGUAGE
+// OWM LANGUAGE
 extern const String LANG;
 
 // CURRENT CONDITIONS

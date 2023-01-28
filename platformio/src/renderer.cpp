@@ -33,6 +33,7 @@
 
 // header files
 #include "api_response.h"
+#include "c_strftime.h"
 #include "config.h"
 #include "display_utils.h"
 #include "renderer.h"
@@ -289,7 +290,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
   time_t ts = current.sunrise;
   tm *timeInfo = localtime(&ts);
-  strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
+  c_strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
 
   // wind
@@ -394,7 +395,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   memset(timeBuffer, '\0', sizeof(timeBuffer));
   ts = current.sunset;
   timeInfo = localtime(&ts);
-  strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
+  c_strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
 
   // humidity
@@ -486,7 +487,7 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
     // day of week label
     display.setFont(&FreeSans11pt7b);
     char dayBuffer[8] = {};
-    strftime(dayBuffer, sizeof(dayBuffer), "%a", &timeInfo); // abbreviated day
+    c_strftime(dayBuffer, sizeof(dayBuffer), "%a", &timeInfo); // abbrv'd day
     drawString(x + 31 - 2, 98 + 69 / 2 - 32 - 26 - 6 + 16, dayBuffer, CENTER);
     timeInfo.tm_wday = (timeInfo.tm_wday + 1) % 7; // increment to next day
 
@@ -742,7 +743,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
       char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
       time_t ts = hourly[i].dt;
       tm *timeInfo = localtime(&ts);
-      strftime(timeBuffer, sizeof(timeBuffer), HOUR_FORMAT, timeInfo);
+      c_strftime(timeBuffer, sizeof(timeBuffer), HOUR_FORMAT, timeInfo);
       drawString(xTick, yPos1 + 1 + 12 + 4 + 3, timeBuffer, CENTER);
     }
 
@@ -759,7 +760,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     char timeBuffer[12] = {}; // big enough to accommodate "hh:mm:ss am"
     time_t ts = hourly[HOURLY_GRAPH_MAX - 1].dt + 3600;
     tm *timeInfo = localtime(&ts);
-    strftime(timeBuffer, sizeof(timeBuffer), HOUR_FORMAT, timeInfo);
+    c_strftime(timeBuffer, sizeof(timeBuffer), HOUR_FORMAT, timeInfo);
     drawString(xTick, yPos1 + 1 + 12 + 4 + 3, timeBuffer, CENTER);
   }
 
