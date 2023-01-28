@@ -467,7 +467,7 @@ size_t c_strftime(char *s, size_t maxsize, const char *format, const struct tm *
       i = 0;
       while(tbuf[i] != '\0' && i != sizeof(tbuf))
       {
-        tolower(tbuf[i]);
+        tbuf[i] = tolower(tbuf[i]);
         ++i;
       }
       break;
