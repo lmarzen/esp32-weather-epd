@@ -48,7 +48,7 @@ const String OWM_ONECALL_VERSION = "3.0";
 const String LAT = "40.7128";
 const String LON = "-74.0060";
 // City name that will be shown in the top-right corner of the display.
-const String CITY_STRING = "New York, New York";
+const String CITY_STRING = "\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8A\x8B\x8C\x8D\x8E\x8F\x90\x91\x92\x93\x94\x95\x96\xFF";
 
 // TIME
 // For list of time zones see 

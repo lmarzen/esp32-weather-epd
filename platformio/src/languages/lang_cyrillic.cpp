@@ -1,6 +1,6 @@
 #include <vector>
 #include <Arduino.h>
-#include "lang_en_us.h"
+#include "lang_cyrillic.h"
 
 // TIME/DATE (NL_LANGINFO)
 // locale-based information,

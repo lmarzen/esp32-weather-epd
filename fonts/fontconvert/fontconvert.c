@@ -51,7 +51,7 @@ void enbit(uint8_t value) {
 }
 
 int main(int argc, char *argv[]) {
-  int i, j, err, size, first = ' ', last = '~', bitmapOffset = 0, x, y, byte;
+  int i, j, err, size, first = ' ', last = 255, bitmapOffset = 0, x, y, byte;
   char *fontName, c, *ptr;
   FT_Library library;
   FT_Face face;

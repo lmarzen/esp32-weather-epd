@@ -7,7 +7,7 @@
 
 // LANGUAGE
 // language header to use
-#define LANGUAGE_HEADER "languages/lang_en_us.h"
+#define LANGUAGE_HEADER "languages/lang_cyrillic.h"
 
 // UNITS
 // Select either metric or imperial units

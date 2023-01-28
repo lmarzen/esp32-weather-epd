@@ -25,6 +25,15 @@ ttx ${1}
 REMAP_TTX="${1%%.*}_remap.ttx"
 mv "${1%%.*}.ttx" $REMAP_TTX
 sed -i "s/0xb0/${REMAP_CH}/g" $REMAP_TTX
+UNICODE_INDEX=$((16#400))
+for INDEX in {128..255}
+do
+  CYRILLIC_UNICODE=$(printf '0x%x\n' $UNICODE_INDEX)
+  CYRILLIC_REMAP=$(printf '0x%x\n' $INDEX)
+  echo "$CYRILLIC_UNICODE -> $CYRILLIC_REMAP"
+  sed -i "s/${CYRILLIC_UNICODE}/${CYRILLIC_REMAP}/g" $REMAP_TTX
+  UNICODE_INDEX=$(($UNICODE_INDEX+1))
+done
 ttx -b $REMAP_TTX
 rm $REMAP_TTX
 
@@ -48,14 +57,14 @@ for SI in ${SIZES[*]}
   OUTFILE=$OUTPUT_PATH$FONT$SI"pt7b.h"
   echo "fontconvert $REMAP_OUT $SI > $OUTFILE"
   ./fontconvert/fontconvert $REMAP_OUT $SI > $OUTFILE
-  sed -i "s/_remap${SI}pt7b/${SI}pt7b/g" $OUTFILE
+  sed -i "s/_remap${SI}pt8b/${SI}pt7b/g" $OUTFILE
 done
 for SI in ${TEMPERATURE_SIZES[*]}
   do
   OUTFILE=$OUTPUT_PATH$FONT$SI"pt_temperature.h"
   echo "fontconvert $SUBSET_OUT $SI > $OUTFILE"
   ./fontconvert/fontconvert $SUBSET_OUT $SI > $OUTFILE
-  sed -i "s/_temperature_set${SI}pt7b/${SI}pt_temperature/g" $OUTFILE
+  sed -i "s/_temperature_set${SI}pt8b/${SI}pt_temperature/g" $OUTFILE
 done
 
 # clean up
