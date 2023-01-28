@@ -17,7 +17,7 @@ There are configuration options for everything from location, time/date formats,
 
 The hourly outlook graph (bottom right) shows a line that indicates temperature and shaded bars that indicate probability of precipitation.
 
-Here are two other examples utilizing various different configuration options:
+Here are two examples utilizing various different configuration options:
 
 <p float="left">
   <img src="showcase/demo-new-york.jpg" width="49.5%" />
