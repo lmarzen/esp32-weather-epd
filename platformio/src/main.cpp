@@ -30,10 +30,6 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
     Serial.println(", referencing older time.");
   }
 
-
-  Serial.print("timeInfo->tm_hour: ");
-  Serial.println(timeInfo->tm_hour);
-
   int extraHoursUntilWake;
   if (BED_TIME < WAKE_TIME && timeInfo->tm_hour >= BED_TIME && timeInfo->tm_hour < WAKE_TIME)
   { // 0              B   v  W  24
