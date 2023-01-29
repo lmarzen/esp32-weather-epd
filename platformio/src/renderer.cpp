@@ -230,7 +230,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // current temp
   display.setFont(&FreeSans48pt_temperature);
-  dataStr = String(round(current.temp), 0);
+  dataStr = String(static_cast<int>(round(current.temp)));
   drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, dataStr, CENTER);
   display.setFont(&FreeSans14pt7b);
 #ifdef UNITS_METRIC
@@ -244,7 +244,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   // current feels like
   display.setFont(&FreeSans12pt7b);
   dataStr = String(TXT_FEELS_LIKE) + ' ' 
-            + String(round(current.feels_like), 0) + '`';
+            + String(static_cast<int>(round(current.feels_like))) + '`';
   drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, dataStr, CENTER);
 
   // line dividing top and bottom display areas
@@ -297,7 +297,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1, 
                              getWindBitmap24(current.wind_deg), 
                              24, 24, GxEPD_BLACK);
-  dataStr =  String(round(current.wind_speed), 0);
+  dataStr =  String(static_cast<int>(round(current.wind_speed)));
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
   #ifdef UNITS_METRIC
   unitStr = "m/s";
@@ -378,11 +378,11 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   if (!isnan(inTemp))
   {
 #ifdef UNITS_METRIC
-    dataStr = String(round(inTemp), 0) + "`";
+    dataStr = String(static_cast<int>(round(inTemp))) + "`";
 #endif // end UNITS_METRIC
 #ifdef UNITS_IMPERIAL
     // C to F
-    dataStr = String(round((inTemp * 9.0 / 5.0) + 32 ), 0) + "`";
+    dataStr = String(static_cast<int>(round((inTemp * 9.0 / 5.0) + 32 ))) + "`";
 #endif // end UNITS_IMPERIAL
   }
   else
@@ -439,7 +439,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   }
   else
   {
-    dataStr = String(round(vis), 0);
+    dataStr = String(static_cast<int>(round(vis)));
   }
 #ifdef UNITS_METRIC
   if (vis >= 10) {
@@ -447,7 +447,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 #ifdef UNITS_IMPERIAL
   if (vis >= 6) {
 #endif // end UNITS_IMPERIAL
-    dataStr = ">" + dataStr;
+    dataStr = "> " + dataStr;
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
   display.setFont(&FreeSans8pt7b);
@@ -458,7 +458,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   display.setFont(&FreeSans12pt7b);
   if (!isnan(inHumidity))
   {
-    dataStr = String(round(inHumidity), 0);
+    dataStr = String(static_cast<int>(round(inHumidity)));
   }
   else
   {
