@@ -50,7 +50,7 @@ FireBeetle 2 ESP32-E Microcontroller
 
   - Onboard WiFi.
 
-  - 520kB of RAM and 4MB of FLASH. Enough to store lots icons and fonts.
+  - 520kB of RAM and 4MB of FLASH. Enough to store lots of icons and fonts.
 
   - Low power consumption.
 
