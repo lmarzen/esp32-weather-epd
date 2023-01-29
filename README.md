@@ -6,10 +6,10 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
 
 <p float="left">
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
-  <img src="showcase/assembled-demo-raleigh-side.jpg" width="49.5%" />
-  <img src="showcase/assembled-demo-raleigh-back.jpg" width="49.5%" /> 
-  <img src="showcase/assembled-demo-bottom-cover.jpg" width="49.5%" />
-  <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49.5%" /> 
+  <img src="showcase/assembled-demo-raleigh-side.jpg" width="49%" />
+  <img src="showcase/assembled-demo-raleigh-back.jpg" width="49%" /> 
+  <img src="showcase/assembled-demo-bottom-cover.jpg" width="49%" />
+  <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49%" /> 
 </p>
 
 
@@ -22,8 +22,8 @@ The hourly outlook graph (bottom right) shows a line that indicates temperature 
 Here are two examples utilizing various different configuration options:
 
 <p float="left">
-  <img src="showcase/demo-new-york.jpg" width="49.5%" />
-  <img src="showcase/demo-london.jpg" width="49.5%" /> 
+  <img src="showcase/demo-new-york.jpg" width="49%" />
+  <img src="showcase/demo-london.jpg" width="49%" /> 
 </p>
 
 ## Setup Guide
