@@ -8,6 +8,8 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
   <img src="showcase/assembled-demo-raleigh-side.jpg" width="49.5%" />
   <img src="showcase/assembled-demo-raleigh-back.jpg" width="49.5%" /> 
+  <img src="showcase/assembled-demo-bottom-cover.jpg" width="49.5%" />
+  <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49.5%" /> 
 </p>
 
 
