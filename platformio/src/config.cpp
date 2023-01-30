@@ -73,7 +73,7 @@ const char *DATE_FORMAT = "%A, %B %e"; // Saturday, January 1
 // For more information about formatting see
 // https://man7.org/linux/man-pages/man3/strftime.3.html
 const char *REFRESH_TIME_FORMAT = "%x %H:%M";
-// ntp_server1 is the primary time server, while ntp_server2 is a fallback.
+// NTP_SERVER_1 is the primary time server, while NTP_SERVER_2 is a fallback.
 // In most cases it's best to use pool.ntp.org to find an NTP server
 // The system will try finding the closest available servers for you.
 const char *NTP_SERVER_1 = "us.pool.ntp.org";
@@ -96,8 +96,8 @@ const int HOURLY_GRAPH_MAX = 24;
 // update until battery is charged again. The ESP32 will hibernate (consuming 
 // < 11μA), waking briefly check the voltage at the corresponding interval (in 
 // minutes).
-const float LOW_BATTERY_VOLTAGE      = 3.20;  // volts
-const float CRIT_LOW_BATTERY_VOLTAGE = 3.10;  // volts
+const float LOW_BATTERY_VOLTAGE      = 3.20;  // (volts)
+const float CRIT_LOW_BATTERY_VOLTAGE = 3.10;  // (volts)
 const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 10; // (minutes)
 const unsigned long CRIT_LOW_BATTERY_SLEEP_INTERVAL = 60; // (minutes)
 
