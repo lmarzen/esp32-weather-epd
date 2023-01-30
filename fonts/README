@@ -10,7 +10,9 @@ Dependencies:
     Adafruit provides a tool as part of their Adafruit GFX Library that converts
     font files to c-style arrays that can be used by the before-mentioned 
     library. The necessary components have been included as part of this 
-    repository.
+    repository AND REMAIN LICENSED UNDER ITS ORIGINAL LICENSE AGREEMENT. A COPY
+    OF THIS LICENSE IS PROVIDED ALONGSIDE THE SOURCE IN THE 'fontconvert'
+    SUB-DIRECTORY OF THIS FOLDER.
     https://github.com/adafruit/Adafruit-GFX-Library/tree/master/fontconvert
   freetype2
     dependency for fontconvert.
