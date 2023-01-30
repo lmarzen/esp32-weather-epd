@@ -161,7 +161,7 @@ Sign up here to get an API key, it's free. https://openweathermap.org/api
 This project will make calls to 2 different APIs ("One Call" and "Air Pollution").
 
 > **Note**
-> OpenWeatherMap One Call 2.5 API has been deprecated for all new free users (accounts created after Summer 2022). Fortunately, you can make 1,000 calls/day to the One Call 3.0 API for free by following the steps below
+> OpenWeatherMap One Call 2.5 API has been deprecated for all new free users (accounts created after Summer 2022). Fortunately, you can make 1,000 calls/day to the One Call 3.0 API for free by following the steps below.
 
 - If you have an account that was created before Summer 2022 you can simply use the One Call 2.5 API by changing `OWM_ONECALL_VERSION = "2.5";` in config.cpp.
 
