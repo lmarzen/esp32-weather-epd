@@ -15,6 +15,7 @@ Dependencies:
 To regenerate all icons execute the following command:
 bash svg_to_headers.sh 16 & bash svg_to_headers.sh 24 & bash svg_to_headers.sh 32 & bash svg_to_headers.sh 48 & bash svg_to_headers.sh 64 & bash svg_to_headers.sh 96 & bash svg_to_headers.sh 128 & bash svg_to_headers.sh 160 & bash svg_to_headers.sh 196
 
+THE ICONS IN THE SUB-FOLDER ENTITLED 'svg' REMAIN LICENSED UNDER THIER ORIGINAL LICENSE AGREEMENTS.
 
 Sources:
 
