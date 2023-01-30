@@ -35,6 +35,6 @@ What does this script do?
     2. Numbers (0-9), decimal point (.), dash (-), and the degree symbol (°)
 
   This is done to conserve EEPROM space. 
-  (only need 0-9/./° for the large primary temperature display)
+  (only need 0..9/./-/° for the large primary temperature display)
 
 The fonts used for this project could be swapped out relatively easily if desired.
