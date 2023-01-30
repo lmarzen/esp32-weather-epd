@@ -171,3 +171,14 @@ Here’s how to subscribe and avoid any credit card changes:
    - Go to https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30
    - Follow the instructions to complete the subscription.
    - Go to https://home.openweathermap.org/subscriptions and set the "Calls per day (no more than)" to 1,000. This ensures you will never overrun the free calls.
+
+## License
+
+My work is licensed under the [GNU General Public License v3.0](LICENSE) with tools/fonts/icons whose licenses are as follows:
+
+| Name                                                                                                          | License                                                                               | Notes                                                                              |
+|---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| [GNU FreeFont: FreeSans](https://www.gnu.org/software/freefont/)                                              | [GNU General Public License v3.0](https://www.gnu.org/software/freefont/license.html) | OpenType Font (.otf)                                                               |
+| [Adafruit-GFX-Library: fontconvert](https://github.com/adafruit/Adafruit-GFX-Library/tree/master/fontconvert) | [BSD License](fonts/fontconvert/license.txt)                                          | CLI tool for preprocessing fonts to be used with the Adafruit_GFX Arduino library. |
+| [Weather Icons](https://github.com/erikflowers/weather-icons) ('wi-**.svg')                                   | [SIL OFL 1.1](http://scripts.sil.org/OFL)                                             | The vast majority of the icons used in this project.                               |
+| Other Icons (.svg)                                                                                            | Varies, please see [icons/README](icons/README)                                       | Other icons were collected from many different sources (too many to list here)     |
