@@ -1,23 +1,24 @@
-// arduino/esp32 libraries
 #include <Arduino.h>
-#include <time.h>
-#include <WiFi.h>
-
-// external library
 #include <Adafruit_BME280.h>
 #include <Adafruit_Sensor.h>
+#include <Preferences.h>
+#include <time.h>
+#include <WiFi.h>
 #include <Wire.h>
 
-// header files
 #include "api_response.h"
 #include "client_utils.h"
 #include "config.h"
 #include "display_utils.h"
 #include "renderer.h"
 
+#include "icons/icons_196x196.h"
+
 // too large to allocate locally on stack
 static owm_resp_onecall_t       owm_onecall;
 static owm_resp_air_pollution_t owm_air_pollution;
+
+Preferences prefs;
 
 /* Put esp32 into ultra low-power deep-sleep (<11μA).
  * Alligns wake time to the minute. Sleep times defined in config.cpp.
@@ -95,23 +96,50 @@ void setup()
             // use / 1000.0 * (3.3 / 2.0) multiplier above for firebeetle esp32
             // use / 1000.0 * (3.5 / 2.0) for firebeetle esp32-E
   Serial.println("Battery voltage: " + String(batteryVoltage,2));
-  if (batteryVoltage <= CRIT_LOW_BATTERY_VOLTAGE)
-  { // critically low battery, deep-sleep now
-    esp_sleep_enable_timer_wakeup(CRIT_LOW_BATTERY_SLEEP_INTERVAL 
-                                  * 60ULL * 1000000ULL);
-    Serial.println("Critically low battery voltage!");
-    Serial.println("Deep-sleep for " 
-                   + String(CRIT_LOW_BATTERY_SLEEP_INTERVAL) + "min");
+
+  // When the battery is low, the display should be updated to reflect that, but
+  // only the first time we detect low voltage. The next time the display will
+  // refresh is when voltage is no longer low. To keep track of that we will 
+  // make use of non-volatile storage.
+  // Open namespace for read/write to non-volatile storage
+  prefs.begin("lowBat", false);
+  bool lowBat = prefs.getBool("lowBat", false);
+
+  // low battery, deep-sleep now
+  if (batteryVoltage <= LOW_BATTERY_VOLTAGE)
+  {
+    // if (lowBat == false)
+    // { // battery is now low for the first time
+      prefs.putBool("lowBat", true);
+      initDisplay();
+      drawError("Low Battery", battery_alert_0deg_196x196);
+      display.display(false); // full display refresh
+      display.powerOff();
+    // }
+
+    if (batteryVoltage <= CRIT_LOW_BATTERY_VOLTAGE)
+    { // critically low battery
+      esp_sleep_enable_timer_wakeup(CRIT_LOW_BATTERY_SLEEP_INTERVAL 
+                                    * 60ULL * 1000000ULL);
+      Serial.println("Critically low battery voltage!");
+      Serial.println("Deep-sleep for " 
+                     + String(CRIT_LOW_BATTERY_SLEEP_INTERVAL) + "min");
+    }
+    else
+    { // low battery
+      esp_sleep_enable_timer_wakeup(LOW_BATTERY_SLEEP_INTERVAL
+                                    * 60ULL * 1000000ULL);
+      Serial.println("Low battery voltage!");
+      Serial.println("Deep-sleep for " 
+                    + String(LOW_BATTERY_SLEEP_INTERVAL) + "min");
+    }
     esp_deep_sleep_start();
   }
-  else if (batteryVoltage <= LOW_BATTERY_VOLTAGE)
-  { // low battery, deep-sleep now
-    esp_sleep_enable_timer_wakeup(LOW_BATTERY_SLEEP_INTERVAL
-                                  * 60ULL * 1000000ULL);
-    Serial.println("Low battery voltage!");
-    Serial.println("Deep-sleep for " 
-                   + String(LOW_BATTERY_SLEEP_INTERVAL) + "min");
-    esp_deep_sleep_start();
+
+  // battery is no longer low, reset variable in non-volatile storage
+  if (lowBat == true)
+  {
+    prefs.putBool("lowBat", false);
   }
 
   String statusStr;
