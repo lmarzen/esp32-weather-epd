@@ -606,6 +606,17 @@ void drawLocationDate(const String &city, const String &date)
   return;
 } // end drawLocationDate
 
+/* The % operator in C++ is not a true modulo operator but it instead a
+ * remainder operator. The remainder operator and modulo operator are equivalent
+ * for positive numbers, but not for negatives. The follow implementation of the
+ * modulo operator works for +/-a and +b.
+ */
+inline int modulo(int a, int b)
+{
+  const int result = a % b;
+  return result >= 0 ? result : result + b;
+}
+
 /* This function is responsible for drawing the outlook graph for the specified
  * number of hours(up to 47).
  */
@@ -633,17 +644,18 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     tempMax = max(tempMax, hourly[i].temp);
   }
   int tempBoundMin = static_cast<int>(tempMin - 1) 
-                     - (static_cast<int>(tempMin - 1) % yTempMajorTicks);
+                      - modulo(static_cast<int>(tempMin - 1), yTempMajorTicks);
   int tempBoundMax = static_cast<int>(tempMax + 1) 
-        + (yTempMajorTicks - (static_cast<int>(tempMax + 1) % yTempMajorTicks));
+   + (yTempMajorTicks - modulo(static_cast<int>(tempMax + 1), yTempMajorTicks));
+
   // while we have to many major ticks then increase the step
   while ((tempBoundMax - tempBoundMin) / yTempMajorTicks > yMajorTicks)
   {
     yTempMajorTicks += 5;
     tempBoundMin = static_cast<int>(tempMin - 1) 
-                   - (static_cast<int>(tempMin - 1) % yTempMajorTicks);
-    tempBoundMax = static_cast<int>(tempMax + 1) 
-        + (yTempMajorTicks - (static_cast<int>(tempMax + 1) % yTempMajorTicks));
+                      - modulo(static_cast<int>(tempMin - 1), yTempMajorTicks);
+    tempBoundMax = static_cast<int>(tempMax + 1) + (yTempMajorTicks 
+                      - modulo(static_cast<int>(tempMax + 1), yTempMajorTicks));
   }
   // while we have not enough major ticks add to either bound
   while ((tempBoundMax - tempBoundMin) / yTempMajorTicks < yMajorTicks)
@@ -701,9 +713,9 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     {
       // temperature
       x0_t = static_cast<int>(round(xPos0 + ((i - 1) * xInterval) 
-                              + (0.5 * xInterval) ));
+                                    + (0.5 * xInterval) ));
       x1_t = static_cast<int>(round(xPos0 + (i * xInterval) 
-                              + (0.5 * xInterval) ));
+                                    + (0.5 * xInterval) ));
       yPxPerUnit = (yPos1 - yPos0) 
                    / static_cast<float>(tempBoundMax - tempBoundMin);
       y0_t = static_cast<int>(round(
