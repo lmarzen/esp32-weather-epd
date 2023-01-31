@@ -216,9 +216,6 @@ void setup()
     inTemp     = bme.readTemperature(); // Celsius
     inHumidity = bme.readHumidity();    // %
 
-    Serial.println(inTemp);
-    Serial.println(inHumidity);
-
     // check if BME readings are valid
     // note: readings are checked again before drawing to screen. If a reading
     //       is not a number (NAN) then an error occured, a dash '-' will be
