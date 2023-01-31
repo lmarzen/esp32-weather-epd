@@ -141,7 +141,8 @@ void setup()
     prefs.putBool("lowBat", false);
   }
 
-  String statusStr;
+  String statusStr = {};
+  String tmpStr = {};
   tm timeInfo = {};
 
   // START WIFI
@@ -150,25 +151,25 @@ void setup()
   if (wifiStatus != WL_CONNECTED)
   { // WiFi Connection Failed
     Serial.println("WiFi Connection Failed");
+    killWiFi();
     initDisplay();
     drawError(wifi_off_196x196, "WiFi Connection", "Failed");
     display.display(false); // full display refresh
     display.powerOff();
-    killWiFi();
     beginDeepSleep(startTime, &timeInfo);
   }
   
   // FETCH TIME
   bool timeConfigured = false;
   timeConfigured = setupTime(&timeInfo);
-  if (!timeConfigured || 1)
+  if (!timeConfigured)
   { // Failed To Fetch The Time
     Serial.println("Failed To Fetch The Time");
+    killWiFi();
     initDisplay();
     drawError(wi_time_4_196x196, "Failed To Fetch", "The Time");
     display.display(false); // full display refresh
     display.powerOff();
-    killWiFi();
     beginDeepSleep(startTime, &timeInfo);
   }
   String refreshTimeStr;
@@ -180,72 +181,71 @@ void setup()
   rxOWM[0] = getOWMonecall(client, owm_onecall);
   if (rxOWM[0] != HTTP_CODE_OK)
   {
-    statusStr = "One Call " + OWM_ONECALL_VERSION + " API error: " 
-                + String(rxOWM[0], DEC);
-    // Serial.println(statusStr);
-  }
-  rxOWM[1] = getOWMairpollution(client, owm_air_pollution);
-  if (rxOWM[1] != HTTP_CODE_OK)
-  {
-    statusStr = "Air Pollution API error: " + String(rxOWM[1], DEC);
-    // Serial.println(statusStr);
-  }
-  killWiFi();
-
-  if (rxOWM[0] == HTTP_CODE_OK && rxOWM[1] == HTTP_CODE_OK)
-  {
-    // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
-    float inTemp     = NAN;
-    float inHumidity = NAN;
-
-    TwoWire I2C_bme = TwoWire(0);
-    Adafruit_BME280 bme;
-
-    I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
-    if(bme.begin(BME_ADDRESS, &I2C_bme))
-    { 
-      inTemp     = bme.readTemperature(); // Celsius
-      inHumidity = bme.readHumidity();    // %
-
-      Serial.println(inTemp);
-      Serial.println(inHumidity);
-
-      // check if BME readings are valid
-      // note: readings are checked again before drawing to screen. If a reading
-      //       is not a number (NAN) then an error occured, a dash '-' will be
-      //       displayed.
-      if (isnan(inTemp) || isnan(inHumidity)) {
-        statusStr = "BME read failed";
-      }
-    }
-    else
-    {
-      statusStr = "BME not found"; // check wiring
-    }
-
-    // RENDER FULL REFRESH
-    String dateStr;
-    getDateStr(dateStr, &timeInfo);
-
+    statusStr = "One Call " + OWM_ONECALL_VERSION + " API";
+    tmpStr = String(rxOWM[0], DEC) + ": " + getHttpResponsePhrase(rxOWM[0]);
+    killWiFi();
     initDisplay();
-    drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0], 
-                          owm_air_pollution, inTemp, inHumidity);
-    drawForecast(owm_onecall.daily, timeInfo);
-    drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
-    drawLocationDate(CITY_STRING, dateStr);
-    drawOutlookGraph(owm_onecall.hourly, timeInfo);
-    drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
+    drawError(wi_cloud_down_196x196, statusStr, tmpStr);
     display.display(false); // full display refresh
     display.powerOff();
+    beginDeepSleep(startTime, &timeInfo);
+  }
+  rxOWM[1] = getOWMairpollution(client, owm_air_pollution);
+  killWiFi(); // wifi no longer needed
+  if (rxOWM[1] != HTTP_CODE_OK)
+  {
+    statusStr = "Air Pollution API";
+    tmpStr = String(rxOWM[1], DEC) + ": " + getHttpResponsePhrase(rxOWM[1]);
+    initDisplay();
+    drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+    display.display(false); // full display refresh
+    display.powerOff();
+    beginDeepSleep(startTime, &timeInfo);
+  }
+
+  // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
+  float inTemp     = NAN;
+  float inHumidity = NAN;
+
+  TwoWire I2C_bme = TwoWire(0);
+  Adafruit_BME280 bme;
+
+  I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
+  if(bme.begin(BME_ADDRESS, &I2C_bme))
+  { 
+    inTemp     = bme.readTemperature(); // Celsius
+    inHumidity = bme.readHumidity();    // %
+
+    Serial.println(inTemp);
+    Serial.println(inHumidity);
+
+    // check if BME readings are valid
+    // note: readings are checked again before drawing to screen. If a reading
+    //       is not a number (NAN) then an error occured, a dash '-' will be
+    //       displayed.
+    if (isnan(inTemp) || isnan(inHumidity)) {
+      statusStr = "BME read failed";
+    }
   }
   else
   {
-    // RENDER STATUS BAR PARTIAL REFRESH
-    initDisplay();
-    drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
-    display.display(false); // full display refresh
-    display.powerOff();
+    statusStr = "BME not found"; // check wiring
   }
+
+  // RENDER FULL REFRESH
+  String dateStr;
+  getDateStr(dateStr, &timeInfo);
+
+  initDisplay();
+  drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0], 
+                        owm_air_pollution, inTemp, inHumidity);
+  drawForecast(owm_onecall.daily, timeInfo);
+  drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
+  drawLocationDate(CITY_STRING, dateStr);
+  drawOutlookGraph(owm_onecall.hourly, timeInfo);
+  drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
+  display.display(false); // full display refresh
+  display.powerOff();
 
   // DEEP-SLEEP
   Serial.println("Status: " + statusStr);

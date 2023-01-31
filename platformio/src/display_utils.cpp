@@ -865,59 +865,37 @@ const uint8_t *getAlertBitmap32(owm_alerts_t &alert)
   enum alert_category c = getAlertCategory(alert);
   switch (c)
   {
-  case NOT_FOUND:
-    // this is the default if an alert wasn't associated with a catagory
-    return warning_icon_32x32;
-  case SMOG:
-    return wi_smog_32x32;
-  case SMOKE:
-    return wi_smoke_32x32;
-  case FOG:
-    return wi_fog_32x32;
-  case METEOR:
-    return wi_meteor_32x32;
-  case NUCLEAR:
-    return ionizing_radiation_symbol_32x32;
-  case BIOHAZARD:
-    return biological_hazard_symbol_32x32;
-  case EARTHQUAKE:
-    return wi_earthquake_32x32;
-  case TSUNAMI:
-    return wi_tsunami_32x32;
-  case FIRE:
-    return wi_fire_32x32;
-  case HEAT:
-    return wi_thermometer_32x32;
-  case WINTER:
-    return wi_snowflake_cold_32x32;
-  case LIGHTNING:
-    return wi_lightning_32x32;
-  case SANDSTORM:
-    return wi_sandstorm_32x32;
-  case FLOOD:
-    return wi_flood_32x32;
-  case VOLCANO:
-    return wi_volcano_32x32;
-  case AIR_QUALITY:
-    return wi_dust_32x32;
-  case TORNADO:
-    return wi_tornado_32x32;
-  case SMALL_CRAFT_ADVISORY:
-    return wi_small_craft_advisory_32x32;
-  case GALE_WARNING:
-    return wi_gale_warning_32x32;
-  case STORM_WARNING:
-    return wi_storm_warning_32x32;
-  case HURRICANE_WARNING:
-    return wi_hurricane_warning_32x32;
-  case HURRICANE:
-    return wi_hurricane_32x32;
-  case DUST:
-    return wi_dust_32x32;
-  case STRONG_WIND:
-    return wi_strong_wind_32x32;
+  // this is the default if an alert wasn't associated with a catagory
+  case NOT_FOUND:            return warning_icon_32x32;
+
+  case SMOG:                 return wi_smog_32x32;
+  case SMOKE:                return wi_smoke_32x32;
+  case FOG:                  return wi_fog_32x32;
+  case METEOR:               return wi_meteor_32x32;
+  case NUCLEAR:              return ionizing_radiation_symbol_32x32;
+  case BIOHAZARD:            return biological_hazard_symbol_32x32;
+  case EARTHQUAKE:           return wi_earthquake_32x32;
+  case TSUNAMI:              return wi_tsunami_32x32;
+  case FIRE:                 return wi_fire_32x32;
+  case HEAT:                 return wi_thermometer_32x32;
+  case WINTER:               return wi_snowflake_cold_32x32;
+  case LIGHTNING:            return wi_lightning_32x32;
+  case SANDSTORM:            return wi_sandstorm_32x32;
+  case FLOOD:                return wi_flood_32x32;
+  case VOLCANO:              return wi_volcano_32x32;
+  case AIR_QUALITY:          return wi_dust_32x32;
+  case TORNADO:              return wi_tornado_32x32;
+  case SMALL_CRAFT_ADVISORY: return wi_small_craft_advisory_32x32;
+  case GALE_WARNING:         return wi_gale_warning_32x32;
+  case STORM_WARNING:        return wi_storm_warning_32x32;
+  case HURRICANE_WARNING:    return wi_hurricane_warning_32x32;
+  case HURRICANE:            return wi_hurricane_32x32;
+  case DUST:                 return wi_dust_32x32;
+  case STRONG_WIND:          return wi_strong_wind_32x32;
+
+  // this code will never be reached
+  default:                   return wi_na_48x48; 
   }
-  return NULL; // this return should never be reached
 } // end getAlertBitmap32
 
 /* Returns a 48x48 bitmap for a given alert.
@@ -933,59 +911,37 @@ const uint8_t *getAlertBitmap48(owm_alerts_t &alert)
   enum alert_category c = getAlertCategory(alert);
   switch (c)
   {
-  case NOT_FOUND:
-    // this is the default if an alert wasn't associated with a catagory
-    return warning_icon_48x48;
-  case SMOG:
-    return wi_smog_48x48;
-  case SMOKE:
-    return wi_smoke_48x48;
-  case FOG:
-    return wi_fog_48x48;
-  case METEOR:
-    return wi_meteor_48x48;
-  case NUCLEAR:
-    return ionizing_radiation_symbol_48x48;
-  case BIOHAZARD:
-    return biological_hazard_symbol_48x48;
-  case EARTHQUAKE:
-    return wi_earthquake_48x48;
-  case TSUNAMI:
-    return wi_tsunami_48x48;
-  case FIRE:
-    return wi_fire_48x48;
-  case HEAT:
-    return wi_thermometer_48x48;
-  case WINTER:
-    return wi_snowflake_cold_48x48;
-  case LIGHTNING:
-    return wi_lightning_48x48;
-  case SANDSTORM:
-    return wi_sandstorm_48x48;
-  case FLOOD:
-    return wi_flood_48x48;
-  case VOLCANO:
-    return wi_volcano_48x48;
-  case AIR_QUALITY:
-    return wi_dust_48x48;
-  case TORNADO:
-    return wi_tornado_48x48;
-  case SMALL_CRAFT_ADVISORY:
-    return wi_small_craft_advisory_48x48;
-  case GALE_WARNING:
-    return wi_gale_warning_48x48;
-  case STORM_WARNING:
-    return wi_storm_warning_48x48;
-  case HURRICANE_WARNING:
-    return wi_hurricane_warning_48x48;
-  case HURRICANE:
-    return wi_hurricane_48x48;
-  case DUST:
-    return wi_dust_48x48;
-  case STRONG_WIND:
-    return wi_strong_wind_48x48;
+  // this is the default if an alert wasn't associated with a catagory
+  case NOT_FOUND:            return warning_icon_48x48;
+
+  case SMOG:                 return wi_smog_48x48;
+  case SMOKE:                return wi_smoke_48x48;
+  case FOG:                  return wi_fog_48x48;
+  case METEOR:               return wi_meteor_48x48;
+  case NUCLEAR:              return ionizing_radiation_symbol_48x48;
+  case BIOHAZARD:            return biological_hazard_symbol_48x48;
+  case EARTHQUAKE:           return wi_earthquake_48x48;
+  case TSUNAMI:              return wi_tsunami_48x48;
+  case FIRE:                 return wi_fire_48x48;
+  case HEAT:                 return wi_thermometer_48x48;
+  case WINTER:               return wi_snowflake_cold_48x48;
+  case LIGHTNING:            return wi_lightning_48x48;
+  case SANDSTORM:            return wi_sandstorm_48x48;
+  case FLOOD:                return wi_flood_48x48;
+  case VOLCANO:              return wi_volcano_48x48;
+  case AIR_QUALITY:          return wi_dust_48x48;
+  case TORNADO:              return wi_tornado_48x48;
+  case SMALL_CRAFT_ADVISORY: return wi_small_craft_advisory_48x48;
+  case GALE_WARNING:         return wi_gale_warning_48x48;
+  case STORM_WARNING:        return wi_storm_warning_48x48;
+  case HURRICANE_WARNING:    return wi_hurricane_warning_48x48;
+  case HURRICANE:            return wi_hurricane_48x48;
+  case DUST:                 return wi_dust_48x48;
+  case STRONG_WIND:          return wi_strong_wind_48x48;
+
+  // this code will never be reached
+  default:                   return wi_na_48x48; 
   }
-  return NULL; // this code return never be reached 
 } // end getAlertBitmap48
 
 /* Returns true of a String, s, contains any of the strings in the terminology 
@@ -1561,3 +1517,107 @@ const uint8_t *getWindBitmap24(int windDeg)
 
   return wind_direction_icon_arr[arr_offset];
 } // end getWindBitmap24
+
+
+/* This function returns a pointer to a string representing the meaning for a
+ * HTTP response status code or an arduino client error code.
+ *
+ * HTTP response status codes
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+ * 
+ * HTTP client errors
+ * https://github.com/espressif/arduino-esp32/blob/master/libraries/HTTPClient/src/HTTPClient.h
+ */
+const char *getHttpResponsePhrase(int code)
+{
+	switch (code)
+	{
+  // HTTP client errors
+  case HTTPC_ERROR_CONNECTION_REFUSED:  return "connection refused";
+  case HTTPC_ERROR_SEND_HEADER_FAILED:  return "send header failed";
+  case HTTPC_ERROR_SEND_PAYLOAD_FAILED: return "send payload failed";
+  case HTTPC_ERROR_NOT_CONNECTED:       return "not connected";
+  case HTTPC_ERROR_CONNECTION_LOST:     return "connection lost";
+  case HTTPC_ERROR_NO_STREAM:           return "no stream";
+  case HTTPC_ERROR_NO_HTTP_SERVER:      return "no HTTP server";
+  case HTTPC_ERROR_TOO_LESS_RAM:        return "too less ram";
+  case HTTPC_ERROR_ENCODING:            return "Transfer-Encoding not supported";
+  case HTTPC_ERROR_STREAM_WRITE:        return "Stream write error";
+  case HTTPC_ERROR_READ_TIMEOUT:        return "read Timeout";
+
+	// 1xx - Informational Responses
+	case 100: return "Continue";
+	case 101: return "Switching Protocols";
+	case 102: return "Processing";
+	case 103: return "Early Hints";
+
+	// 2xx - Successful Responses
+	case 200: return "OK";
+	case 201: return "Created";
+	case 202: return "Accepted";
+	case 203: return "Non-Authoritative Information";
+	case 204: return "No Content";
+	case 205: return "Reset Content";
+	case 206: return "Partial Content";
+	case 207: return "Multi-Status";
+	case 208: return "Already Reported";
+	case 226: return "IM Used";
+
+	// 3xx - Redirection Responses
+	case 300: return "Multiple Choices";
+	case 301: return "Moved Permanently";
+	case 302: return "Found";
+	case 303: return "See Other";
+	case 304: return "Not Modified";
+	case 305: return "Use Proxy";
+	case 307: return "Temporary Redirect";
+	case 308: return "Permanent Redirect";
+
+	// 4xx - Client Error Responses
+	case 400: return "Bad Request";
+	case 401: return "Unauthorized";
+	case 402: return "Payment Required";
+	case 403: return "Forbidden";
+	case 404: return "Not Found";
+	case 405: return "Method Not Allowed";
+	case 406: return "Not Acceptable";
+	case 407: return "Proxy Authentication Required";
+	case 408: return "Request Timeout";
+	case 409: return "Conflict";
+	case 410: return "Gone";
+	case 411: return "Length Required";
+	case 412: return "Precondition Failed";
+	case 413: return "Content Too Large";
+	case 414: return "URI Too Long";
+	case 415: return "Unsupported Media Type";
+	case 416: return "Range Not Satisfiable";
+	case 417: return "Expectation Failed";
+	case 418: return "I'm a teapot";
+	case 421: return "Misdirected Request";
+	case 422: return "Unprocessable Content";
+	case 423: return "Locked";
+	case 424: return "Failed Dependency";
+	case 425: return "Too Early";
+	case 426: return "Upgrade Required";
+	case 428: return "Precondition Required";
+	case 429: return "Too Many Requests";
+	case 431: return "Request Header Fields Too Large";
+	case 451: return "Unavailable For Legal Reasons";
+
+	// 5xx - Server Error Responses
+	case 500: return "Internal Server Error";
+	case 501: return "Not Implemented";
+	case 502: return "Bad Gateway";
+	case 503: return "Service Unavailable";
+	case 504: return "Gateway Timeout";
+	case 505: return "HTTP Version Not Supported";
+	case 506: return "Variant Also Negotiates";
+	case 507: return "Insufficient Storage";
+	case 508: return "Loop Detected";
+	case 510: return "Not Extended";
+	case 511: return "Network Authentication Required";
+
+	default:  return "";
+	}
+} // end getHttpResponsePhrase
+
