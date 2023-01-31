@@ -96,8 +96,8 @@ const int HOURLY_GRAPH_MAX = 24;
 // update until battery is charged again. The ESP32 will hibernate (consuming 
 // < 11μA), waking briefly check the voltage at the corresponding interval (in 
 // minutes).
-const float LOW_BATTERY_VOLTAGE      = 3.20;  // (volts)
-const float CRIT_LOW_BATTERY_VOLTAGE = 3.10;  // (volts)
+const float LOW_BATTERY_VOLTAGE      = 3.20; // (volts)
+const float CRIT_LOW_BATTERY_VOLTAGE = 3.10; // (volts)
 const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 10; // (minutes)
 const unsigned long CRIT_LOW_BATTERY_SLEEP_INTERVAL = 60; // (minutes)
 
