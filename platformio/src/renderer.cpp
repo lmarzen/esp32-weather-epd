@@ -834,18 +834,18 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
 /* This function is responsible for drawing prominent error messages to the
  * screen.
  */
-void drawError(String errorMsg, const uint8_t *bitmap_196x196)
+void drawError(const uint8_t *bitmap_196x196, 
+               const String &errMsgLn1, const String &errMsgLn2)
 {
-  const int bmWidth = 196;
-  const int bmHeight = 196;
-
   display.setFont(&FreeSans26pt7b);
-  const int strHeight = getStringHeight(errorMsg);
-
-  drawString(DISP_WIDTH / 2, DISP_HEIGHT / 2 + bmHeight / 2 + strHeight / 2 + 2, 
-             errorMsg, CENTER);
-  display.drawInvertedBitmap(DISP_WIDTH / 2 - bmWidth / 2, 
-                             DISP_HEIGHT / 2 - bmHeight / 2 - strHeight / 2 - 2,
-                             bitmap_196x196, bmWidth, bmHeight, GxEPD_BLACK);
+  drawString(DISP_WIDTH / 2, 
+             DISP_HEIGHT / 2 + 196 / 2 + 21, 
+             errMsgLn1, CENTER);
+  drawString(DISP_WIDTH / 2, 
+             DISP_HEIGHT / 2 + 196 / 2 + 76, 
+             errMsgLn2, CENTER);
+  display.drawInvertedBitmap(DISP_WIDTH / 2 - 196 / 2, 
+                             DISP_HEIGHT / 2 - 196 / 2 - 21,
+                             bitmap_196x196, 196, 196, GxEPD_BLACK);
   return;
 } // end drawError

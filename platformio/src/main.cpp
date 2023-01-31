@@ -108,14 +108,14 @@ void setup()
   // low battery, deep-sleep now
   if (batteryVoltage <= LOW_BATTERY_VOLTAGE)
   {
-    // if (lowBat == false)
-    // { // battery is now low for the first time
+    if (lowBat == false)
+    { // battery is now low for the first time
       prefs.putBool("lowBat", true);
       initDisplay();
-      drawError("Low Battery", battery_alert_0deg_196x196);
+      drawError(battery_alert_0deg_196x196, "Low Battery", "");
       display.display(false); // full display refresh
       display.powerOff();
-    // }
+    }
 
     if (batteryVoltage <= CRIT_LOW_BATTERY_VOLTAGE)
     { // critically low battery
@@ -135,7 +135,6 @@ void setup()
     }
     esp_deep_sleep_start();
   }
-
   // battery is no longer low, reset variable in non-volatile storage
   if (lowBat == true)
   {
@@ -143,47 +142,53 @@ void setup()
   }
 
   String statusStr;
+  tm timeInfo = {};
 
-  // START WIFI AND CONFIGURE TIME
+  // START WIFI
   int wifiRSSI = 0; // “Received Signal Strength Indicator"
   wl_status_t wifiStatus = startWiFi(wifiRSSI);
-
-  bool timeConfigured = false;
-  tm timeInfo = {};
-  if (wifiStatus == WL_CONNECTED)
-  {
-    timeConfigured = setupTime(&timeInfo);
+  if (wifiStatus != WL_CONNECTED)
+  { // WiFi Connection Failed
+    Serial.println("WiFi Connection Failed");
+    initDisplay();
+    drawError(wifi_off_196x196, "WiFi Connection", "Failed");
+    display.display(false); // full display refresh
+    display.powerOff();
+    killWiFi();
+    beginDeepSleep(startTime, &timeInfo);
   }
-  else
-  {
-    statusStr = "WiFi connection failed";
+  
+  // FETCH TIME
+  bool timeConfigured = false;
+  timeConfigured = setupTime(&timeInfo);
+  if (!timeConfigured || 1)
+  { // Failed To Fetch The Time
+    Serial.println("Failed To Fetch The Time");
+    initDisplay();
+    drawError(wi_time_4_196x196, "Failed To Fetch", "The Time");
+    display.display(false); // full display refresh
+    display.powerOff();
+    killWiFi();
+    beginDeepSleep(startTime, &timeInfo);
   }
   String refreshTimeStr;
   getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
 
-  // MAKE API REQUESTS, if wifi is connected and time is configured
+  // MAKE API REQUESTS
   int rxOWM[2] = {};
-  if ((wifiStatus == WL_CONNECTED) && timeConfigured)
+  WiFiClient client;
+  rxOWM[0] = getOWMonecall(client, owm_onecall);
+  if (rxOWM[0] != HTTP_CODE_OK)
   {
-    WiFiClient client;
-    rxOWM[0] = getOWMonecall(client, owm_onecall);
-    if (rxOWM[0] != HTTP_CODE_OK)
-    {
-      statusStr = "One Call " + OWM_ONECALL_VERSION + " API error: " 
-                 + String(rxOWM[0], DEC);
-    }
-    rxOWM[1] = getOWMairpollution(client, owm_air_pollution);
-    if (rxOWM[1] != HTTP_CODE_OK)
-    {
-      statusStr = "Air Pollution API error: " + String(rxOWM[1], DEC);
-    }
+    statusStr = "One Call " + OWM_ONECALL_VERSION + " API error: " 
+                + String(rxOWM[0], DEC);
+    // Serial.println(statusStr);
   }
-  else
+  rxOWM[1] = getOWMairpollution(client, owm_air_pollution);
+  if (rxOWM[1] != HTTP_CODE_OK)
   {
-    if ((wifiStatus == WL_CONNECTED) && (timeConfigured == false))
-    {
-      statusStr = "Time setup failed";
-    }
+    statusStr = "Air Pollution API error: " + String(rxOWM[1], DEC);
+    // Serial.println(statusStr);
   }
   killWiFi();
 
@@ -243,7 +248,6 @@ void setup()
   }
 
   // DEEP-SLEEP
-  Serial.println("Min Free Heap: " + String(ESP.getMinFreeHeap()));
   Serial.println("Status: " + statusStr);
   beginDeepSleep(startTime, &timeInfo);
 } // end setup

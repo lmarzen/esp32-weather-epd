@@ -39,6 +39,7 @@ void drawLocationDate(const String &city, const String &date);
 void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo);
 void drawStatusBar(String statusStr, String refreshTimeStr, int rssi, 
                    double batVoltage);
-void drawError(String errorMsg, const uint8_t *bitmap_196x196);
+void drawError(const uint8_t *bitmap_196x196, 
+               const String &errMsgLn1, const String &errMsgLn2);
 
 #endif
