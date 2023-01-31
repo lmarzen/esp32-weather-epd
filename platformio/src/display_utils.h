@@ -1,8 +1,8 @@
 #ifndef __DISPLAY_UTILS_H__
 #define __DISPLAY_UTILS_H__
 
-#include <time.h>
 #include <vector>
+#include <time.h>
 #include "api_response.h"
 
 enum alert_category {
