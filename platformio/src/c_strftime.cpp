@@ -42,7 +42,7 @@
 static int isleap(long year)
 {
   return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
-} // end isleap()
+} // end isleap
 
 /* Compute week number.
  */
@@ -62,7 +62,7 @@ static int weeknumber(const struct tm *timeptr, int firstweekday)
   if (ret < 0)
     ret = 0;
   return ret;
-} // end weeknumber()
+} // end weeknumber
 
 /* Compute week number according to ISO 8601.
  */
@@ -160,7 +160,7 @@ static int iso8601wknum(const struct tm *timeptr)
   }
 
   return weeknum;
-} // end iso8601wknum()
+} // end iso8601wknum
 
 #ifdef POSIX_2008
 /* Format a year per ISO 8601:2000 as in 1003.1
@@ -608,4 +608,5 @@ out:
   }
   else
     return 0;
-} // end c_strftime()
+} // end c_strftime
+
