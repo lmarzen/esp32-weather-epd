@@ -88,8 +88,9 @@ extern const int WAKE_TIME;
 extern const char UNITS;
 extern const int HOURLY_GRAPH_MAX;
 extern const float LOW_BATTERY_VOLTAGE;
+extern const float VERY_LOW_BATTERY_VOLTAGE;
 extern const float CRIT_LOW_BATTERY_VOLTAGE;
 extern const unsigned long LOW_BATTERY_SLEEP_INTERVAL;
-extern const unsigned long CRIT_LOW_BATTERY_SLEEP_INTERVAL;
+extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 
 #endif

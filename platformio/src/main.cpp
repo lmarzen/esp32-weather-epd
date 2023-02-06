@@ -119,11 +119,18 @@ void setup()
 
     if (batteryVoltage <= CRIT_LOW_BATTERY_VOLTAGE)
     { // critically low battery
-      esp_sleep_enable_timer_wakeup(CRIT_LOW_BATTERY_SLEEP_INTERVAL 
-                                    * 60ULL * 1000000ULL);
+      // don't set esp_sleep_enable_timer_wakeup();
+      // We won't wake up again until someone manually presses the RST button.
       Serial.println("Critically low battery voltage!");
+      Serial.println("Hibernating without wake time!");
+    }
+    else if (batteryVoltage <= VERY_LOW_BATTERY_VOLTAGE)
+    { // very low battery
+      esp_sleep_enable_timer_wakeup(VERY_LOW_BATTERY_SLEEP_INTERVAL 
+                                    * 60ULL * 1000000ULL);
+      Serial.println("Very low battery voltage!");
       Serial.println("Deep-sleep for " 
-                     + String(CRIT_LOW_BATTERY_SLEEP_INTERVAL) + "min");
+                     + String(VERY_LOW_BATTERY_SLEEP_INTERVAL) + "min");
     }
     else
     { // low battery

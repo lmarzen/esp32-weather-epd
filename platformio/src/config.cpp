@@ -92,14 +92,17 @@ const int WAKE_TIME = 06; // Hour of first update after BED_TIME, 06:00.
 const int HOURLY_GRAPH_MAX = 24;
 
 // BATTERY
-// To protect the battery upon low battery voltage, the display will cease to 
-// update until battery is charged again. The ESP32 will hibernate (consuming 
-// < 11μA), waking briefly check the voltage at the corresponding interval (in 
-// minutes).
+// To protect the battery upon LOW_BATTERY_VOLTAGE, the display will cease to
+// update until battery is charged again. The ESP32 will deep-sleep (consuming
+// < 11μA), waking briefly check the voltage at the corresponding interval (in
+// minutes). Once the battery voltage has fallen to CRIT_LOW_BATTERY_VOLTAGE,
+// the esp32 will hibernate and a manual press of the reset (RST) button to
+// begin operating again.
 const float LOW_BATTERY_VOLTAGE      = 3.20; // (volts)
-const float CRIT_LOW_BATTERY_VOLTAGE = 3.10; // (volts)
-const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 30; // (minutes)
-const unsigned long CRIT_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
+const float VERY_LOW_BATTERY_VOLTAGE = 3.10; // (volts)
+const float CRIT_LOW_BATTERY_VOLTAGE = 3.00; // (volts)
+const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 30;  // (minutes)
+const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
 
 // LANGUAGE
 // see config.h
