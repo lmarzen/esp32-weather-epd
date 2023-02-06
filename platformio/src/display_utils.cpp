@@ -657,14 +657,14 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
     return wi_day_sunny_64x64;
   // Group 80x: Clouds
   case 801: // Clouds        few clouds: 11-25%               02d 02n
-    if (windy) {return wi_day_cloudy_windy_64x64;}
+    if (windy) {return wi_day_cloudy_gusts_64x64;}
     return wi_day_sunny_overcast_64x64;
   case 802: // Clouds        scattered clouds: 25-50%         03d 03n
   case 803: // Clouds        broken clouds: 51-84%            04d 04n
-    if (windy) {return wi_day_cloudy_windy_64x64;}
+    if (windy) {return wi_day_cloudy_gusts_64x64;}
     return wi_day_cloudy_64x64;
   case 804: // Clouds        overcast clouds: 85-100%         04d 04n
-    if (windy) {return wi_cloudy_windy_64x64;}
+    if (windy) {return wi_cloudy_gusts_64x64;}
     return wi_cloudy_64x64;
   default:
     // OpenWeatherMap maybe this is a new icon in one of the existing groups
@@ -831,14 +831,14 @@ const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current,
     return wi_day_sunny_overcast_196x196;
   case 802: // Clouds        scattered clouds: 25-50%         03d 03n
   case 803: // Clouds        broken clouds: 51-84%            04d 04n
-    if (windy && day)           {return wi_day_cloudy_windy_196x196;}
-    if (windy && !day && moon)  {return wi_night_alt_cloudy_windy_196x196;}
-    if (windy && !day && !moon) {return wi_cloudy_windy_196x196;}
+    if (windy && day)           {return wi_day_cloudy_gusts_196x196;}
+    if (windy && !day && moon)  {return wi_night_alt_cloudy_gusts_196x196;}
+    if (windy && !day && !moon) {return wi_cloudy_gusts_196x196;}
     if (!day && moon)           {return wi_night_alt_cloudy_196x196;}
     if (!day && !moon)          {return wi_cloud_196x196;}
     return wi_day_cloudy_196x196;
   case 804: // Clouds        overcast clouds: 85-100%         04d 04n
-    if (windy) {return wi_cloudy_windy_196x196;}
+    if (windy) {return wi_cloudy_gusts_196x196;}
     return wi_cloudy_196x196;
   default:
     // maybe this is a new icon in one of the existing groups
