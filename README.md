@@ -194,7 +194,7 @@ This error screen appears once the battery voltage has fallen below LOW_BATTERY_
 
 #### WiFi Connection
 <img src="showcase/demo-error-wifi.jpg" align="left" width="25%" />
-This error screen appears...
+This error screen appears when the ESP32 fails to connect to WiFi. If the message shows "Connection Failed" this might indicate an incorrect password. If the message shows "No SSID Available" this might indicate that the you mistyped the SSID or that the esp32 is out of the range of the access point.
 
 <br clear="left"/>
 
