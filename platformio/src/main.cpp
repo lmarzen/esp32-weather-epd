@@ -157,10 +157,11 @@ void setup()
   wl_status_t wifiStatus = startWiFi(wifiRSSI);
   if (wifiStatus != WL_CONNECTED)
   { // WiFi Connection Failed
-    Serial.println("WiFi Connection Failed");
+    const String wifiStatusPhrase = getWifiStatusPhrase(wifiStatus);
+    Serial.println("WiFi Error: " + wifiStatusPhrase);
     killWiFi();
     initDisplay();
-    drawError(wifi_off_196x196, "WiFi Connection", "Failed");
+    drawError(wifi_off_196x196, wifiStatusPhrase, "");
     display.display(false); // full display refresh
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
