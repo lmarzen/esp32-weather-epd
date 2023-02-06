@@ -72,7 +72,7 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   }
   
   // add extra delay to compensate for esp32's with fast RTCs.
-  sleepDuration = (unsigned long) (sleepDuration * 1.0067) + 2UL;
+  sleepDuration = (unsigned long) (sleepDuration * 1.0067) + 5UL;
 
   esp_sleep_enable_timer_wakeup(sleepDuration * 1000000);
   Serial.println("Awake for " 
