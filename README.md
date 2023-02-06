@@ -4,6 +4,11 @@ This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 
 
 The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired.  When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to wall-adapter or computer.
 
+
+There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
+
+The hourly outlook graph (bottom right) shows a line that indicates temperature and shaded bars that indicate probability of precipitation.
+
 <p float="left">
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
   <img src="showcase/assembled-demo-raleigh-side.jpg" width="49%" />
@@ -14,10 +19,6 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
 
 
 I made a small stand by hollowing out a piece of wood from the bottom. On the back I used a short USB extension cable so that I could charge the battery without needing to remove the components from the stand. I also wired a small reset button, so that I can refresh the display manually. Additionally, I 3d printed a cover for the bottom which is held on by magnets. The E-paper screen is very thin so I decided to use a thin piece of acrylic to support it.
-
-There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
-
-The hourly outlook graph (bottom right) shows a line that indicates temperature and shaded bars that indicate probability of precipitation.
 
 Here are two examples utilizing various different configuration options:
 
@@ -182,6 +183,32 @@ Here’s how to subscribe and avoid any credit card changes:
    - Go to https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30
    - Follow the instructions to complete the subscription.
    - Go to https://home.openweathermap.org/subscriptions and set the "Calls per day (no more than)" to 1,000. This ensures you will never overrun the free calls.
+
+## Error Messages and Troubleshooting
+
+#### Low Battery
+<img src="showcase/demo-error-low-battery.jpg" align="left" width="25%" />
+This error screen appears once the battery voltage has fallen below LOW_BATTERY_VOLTAGE (default = 3.20v). The display will not refresh again until it detects battery voltage above LOW_BATTERY_VOLTAGE. When battery voltage is between LOW_BATTERY_VOLTAGE and VERY_LOW_BATTERY_VOLTAGE (default = 3.10v) the esp32 will deep-sleep for periods of LOW_BATTERY_SLEEP_INTERVAL (default = 30min) before checking battery voltage again. If the battery voltage falls below CRIT_LOW_BATTERY_VOLTAGE then the display will deep-sleep for periods VERY_LOW_BATTERY_SLEEP_INTERVAL (default = 120min). If battery voltage falls to CRIT_LOW_BATTERY_VOLTAGE (default = 3.00v) then the esp32 will enter hibernate-mode and will require a manual push of the reset (RST) button to begin updating again.
+
+<br clear="left"/>
+
+#### WiFi Connection
+<img src="showcase/demo-error-wifi.jpg" align="left" width="25%" />
+This error screen appears...
+
+<br clear="left"/>
+
+#### API Error
+<img src="showcase/demo-error-api.jpg" align="left" width="25%" />
+This error screen appears...
+
+<br clear="left"/>
+
+#### Time Server Error
+<img src="showcase/demo-error-time.jpg" align="left" width="25%" />
+This error screen appears...
+
+<br clear="left"/>
 
 ## License
 
