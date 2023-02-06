@@ -186,19 +186,19 @@ Here’s how to subscribe and avoid any credit card changes:
 
 ## Error Messages and Troubleshooting
 
-#### Low Battery
+### Low Battery
 <img src="showcase/demo-error-low-battery.jpg" align="left" width="25%" />
 This error screen appears once the battery voltage has fallen below LOW_BATTERY_VOLTAGE (default = 3.20v). The display will not refresh again until it detects battery voltage above LOW_BATTERY_VOLTAGE. When battery voltage is between LOW_BATTERY_VOLTAGE and VERY_LOW_BATTERY_VOLTAGE (default = 3.10v) the esp32 will deep-sleep for periods of LOW_BATTERY_SLEEP_INTERVAL (default = 30min) before checking battery voltage again. If the battery voltage falls below CRIT_LOW_BATTERY_VOLTAGE then the display will deep-sleep for periods VERY_LOW_BATTERY_SLEEP_INTERVAL (default = 120min). If battery voltage falls to CRIT_LOW_BATTERY_VOLTAGE (default = 3.00v) then the esp32 will enter hibernate-mode and will require a manual push of the reset (RST) button to begin updating again.
 
 <br clear="left"/>
 
-#### WiFi Connection
+### WiFi Connection
 <img src="showcase/demo-error-wifi.jpg" align="left" width="25%" />
 This error screen appears when the ESP32 fails to connect to WiFi. If the message shows "Connection Failed" this might indicate an incorrect password. If the message shows "No SSID Available" this might indicate that the you mistyped the SSID or that the esp32 is out of the range of the access point. The esp32 will retry once every SLEEP_DURATION (default = 30min).
 
 <br clear="left"/>
 
-#### API Error
+### API Error
 <img src="showcase/demo-error-api.jpg" align="left" width="25%" />
 This error screen appears if there was an error (client or server) that occured when making API an request to OpenWeatherMap. The second line will give the error code followed by a descriptor phrase. Positve error codes correspond to HTTP response status codes while error codes <= 0 indicate a client(esp32) error. The esp32 will retry once every SLEEP_DURATION (default = 30min).
 <br/><br/>
@@ -206,7 +206,7 @@ In the example shown to the left, "401: Unauthorized" may be the result of an in
 
 <br clear="left"/>
 
-#### Time Server Error
+### Time Server Error
 <img src="showcase/demo-error-time.jpg" align="left" width="25%" />
 This error screen appears when the esp32 fails to fetch the time from NTP_SERVER_1/NTP_SERVER_2. This error sometimes occurs immediately after uploading to the esp32, in this case just hit the reset button or wait SLEEP_DURATION (default = 30min) for the esp32 to automatically retry.
 
