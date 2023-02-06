@@ -54,5 +54,6 @@ const uint8_t *getAlertBitmap48(owm_alerts_t &alert);
 enum alert_category getAlertCategory(owm_alerts_t &alert);
 const uint8_t *getWindBitmap24(int windDeg);
 const char *getHttpResponsePhrase(int code);
+const char *getWifiStatusPhrase(wl_status_t status);
 
 #endif

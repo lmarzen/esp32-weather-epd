@@ -1621,3 +1621,26 @@ const char *getHttpResponsePhrase(int code)
 	}
 } // end getHttpResponsePhrase
 
+
+/* This function returns a pointer to a string representing the meaning for a
+ * WiFi status (wl_status_t).
+ *
+ * wl_status_t type definition
+ * https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/src/WiFiType.h
+ */
+const char *getWifiStatusPhrase(wl_status_t status)
+{
+	switch (status)
+	{
+  case WL_NO_SHIELD:       return "No Shield";
+  case WL_IDLE_STATUS:     return "Idle";
+  case WL_NO_SSID_AVAIL:   return "No SSID Available";
+  case WL_SCAN_COMPLETED:  return "Scan Complete";
+  case WL_CONNECTED:       return "Connected";
+  case WL_CONNECT_FAILED:  return "Connection Failed";
+  case WL_CONNECTION_LOST: return "Connection Lost";
+  case WL_DISCONNECTED:    return "Disconnected";
+
+  default:  return "";
+	}
+} // end getWifiStatusPhrase
