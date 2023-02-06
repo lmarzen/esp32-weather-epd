@@ -194,13 +194,13 @@ This error screen appears once the battery voltage has fallen below LOW_BATTERY_
 
 #### WiFi Connection
 <img src="showcase/demo-error-wifi.jpg" align="left" width="25%" />
-This error screen appears when the ESP32 fails to connect to WiFi. If the message shows "Connection Failed" this might indicate an incorrect password. If the message shows "No SSID Available" this might indicate that the you mistyped the SSID or that the esp32 is out of the range of the access point.
+This error screen appears when the ESP32 fails to connect to WiFi. If the message shows "Connection Failed" this might indicate an incorrect password. If the message shows "No SSID Available" this might indicate that the you mistyped the SSID or that the esp32 is out of the range of the access point. The esp32 will retry once every SLEEP_DURATION (default = 30min).
 
 <br clear="left"/>
 
 #### API Error
 <img src="showcase/demo-error-api.jpg" align="left" width="25%" />
-This error screen appears if there was an error (client or server) that occured when making API an request to OpenWeatherMap. The second line will give the error code followed by a descriptor phrase. Positve error codes correspond to HTTP response status codes while error codes <= 0 indicate a client(esp32) error.
+This error screen appears if there was an error (client or server) that occured when making API an request to OpenWeatherMap. The second line will give the error code followed by a descriptor phrase. Positve error codes correspond to HTTP response status codes while error codes <= 0 indicate a client(esp32) error. The esp32 will retry once every SLEEP_DURATION (default = 30min).
 <br/><br/>
 In the example shown to the left, "401: Unauthorized" may be the result of an incorrect API key or that you are attempting to using the One Call v3 API without the proper account setup.
 
@@ -208,7 +208,7 @@ In the example shown to the left, "401: Unauthorized" may be the result of an in
 
 #### Time Server Error
 <img src="showcase/demo-error-time.jpg" align="left" width="25%" />
-This error screen appears...
+This error screen appears when the esp32 fails to fetch the time from NTP_SERVER_1/NTP_SERVER_2. This error sometimes occurs immediately after uploading to the esp32, in this case just hit the reset button or wait SLEEP_DURATION (default = 30min) for the esp32 to automatically retry.
 
 <br clear="left"/>
 
