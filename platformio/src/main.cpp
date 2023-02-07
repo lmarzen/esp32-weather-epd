@@ -157,11 +157,18 @@ void setup()
   wl_status_t wifiStatus = startWiFi(wifiRSSI);
   if (wifiStatus != WL_CONNECTED)
   { // WiFi Connection Failed
-    const String wifiStatusPhrase = getWifiStatusPhrase(wifiStatus);
-    Serial.println("WiFi Error: " + wifiStatusPhrase);
     killWiFi();
     initDisplay();
-    drawError(wifi_off_196x196, wifiStatusPhrase, "");
+    if (wifiStatus == WL_NO_SSID_AVAIL)
+    {
+      Serial.println("SSID Not Available");
+      drawError(wifi_off_196x196, "SSID Not Available", "");
+    }
+    else
+    {
+      Serial.println("WiFi Connection Failed");
+      drawError(wifi_off_196x196, "WiFi Connection", "Failed");
+    }
     display.display(false); // full display refresh
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
