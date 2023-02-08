@@ -214,7 +214,7 @@ This error screen appears when the esp32 fails to fetch the time from NTP_SERVER
 
 ## License
 
-My work is licensed under the [GNU General Public License v3.0](LICENSE) with tools/fonts/icons whose licenses are as follows:
+My work is licensed under the [GNU General Public License v3.0](LICENSE) with tools, fonts, and icons whose licenses are as follows:
 
 | Name                                                                                                          | License                                                                               | Notes                                                                              |
 |---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
