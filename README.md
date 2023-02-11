@@ -2,12 +2,12 @@
 
 This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 7.5in E-Paper (aka E-ink) display. Current and forecasted weather data is obtained from the OpenWeatherMap API. A sensor provides the display with accurate indoor temperature and humidity.
 
-The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired.  When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to wall-adapter or computer.
+The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
 
 
 There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
 
-The hourly outlook graph (bottom right) shows a line that indicates temperature and shaded bars that indicate probability of precipitation.
+The hourly outlook graph (bottom right) shows a line indicating temperature and shaded bars indicating probability of precipitation.
 
 <p float="left">
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
@@ -18,9 +18,9 @@ The hourly outlook graph (bottom right) shows a line that indicates temperature 
 </p>
 
 
-I made a small stand by hollowing out a piece of wood from the bottom. On the back I used a short USB extension cable so that I could charge the battery without needing to remove the components from the stand. I also wired a small reset button, so that I can refresh the display manually. Additionally, I 3d printed a cover for the bottom which is held on by magnets. The E-paper screen is very thin so I decided to use a thin piece of acrylic to support it.
+I made a small stand by hollowing out a piece of wood from the bottom. On the back, I used a short USB extension cable so that I can charge the battery without needing to remove the components from the stand. I also wired a small reset button to refresh the display manually. Additionally, I 3d printed a cover for the bottom, which is held on by magnets. The E-paper screen is very thin, so I used a thin piece of acrylic to support it.
 
-Here are two examples utilizing various different configuration options:
+Here are two examples utilizing various configuration options:
 
 <p float="left">
   <img src="showcase/demo-new-york.jpg" width="49%" />
@@ -51,7 +51,7 @@ FireBeetle 2 ESP32-E Microcontroller
 
   - Onboard WiFi.
 
-  - 520kB of RAM and 4MB of FLASH. Enough to store lots of icons and fonts.
+  - 520kB of RAM and 4MB of FLASH, enough to store lots of icons and fonts.
 
   - Low power consumption.
 
@@ -59,7 +59,7 @@ FireBeetle 2 ESP32-E Microcontroller
 
 - Why the FireBeetle 2 ESP32-E
 
-  - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (https://diyi0t.com/reduce-the-esp32-power-consumption/). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Mirco-USB would work just fine too.
+  - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (https://diyi0t.com/reduce-the-esp32-power-consumption/). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Mirco-USB would work fine too.
 
   - Firebeelte ESP32 models include onboard charging circuitry for a 3.7v lithium-ion(LiPo) battery.
 
@@ -86,7 +86,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 - The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
 
   > **Warning**
-  > The polarity of JST-PH2.0 connectors is not standardized! You may need to swap order of the wires in the connector.
+  > The polarity of JST-PH2.0 connectors is not standardized! You may need to swap the order of the wires in the connector.
 
 
 ### Wiring
@@ -116,7 +116,7 @@ Cut the low power pad for even longer battery life.
 
 ### Configuration, Compilation, and Upload
 
-PlatformIO for VSCode is used for managing dependencies, code compilation, and upload to ESP32.
+PlatformIO for VSCode is used for managing dependencies, code compilation, and uploading to ESP32.
 
 1. Clone this repository or download and extract the .zip.
 
@@ -132,7 +132,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
 5. Configure Options.
 
-   - Most configuration options are located in config.cpp with the a few in config.h. Language options can also be found in lang_en_us.cpp.
+   - Most configuration options are located in config.cpp, with a few  in config.h. Language options can also be found in lang_en_us.cpp.
 
    - Important settings to configure in config.cpp:
 
@@ -162,24 +162,24 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
       - PlatformIO will automatically download the required third-party libraries, compile, and upload the code. :)
      
-      - You will not see this if you don't have the PlatformIO extension installed.
+      - You will only see this if you have the PlatformIO extension installed.
 
       - If you are getting errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
 
 ### OpenWeatherMap API Key
 
-Sign up here to get an API key, it's free. https://openweathermap.org/api
+Sign up here to get an API key; it's free. https://openweathermap.org/api
 
 This project will make calls to 2 different APIs ("One Call" and "Air Pollution").
 
 > **Note**
 > OpenWeatherMap One Call 2.5 API has been deprecated for all new free users (accounts created after Summer 2022). Fortunately, you can make 1,000 calls/day to the One Call 3.0 API for free by following the steps below.
 
-- If you have an account that was created before Summer 2022 you can simply use the One Call 2.5 API by changing `OWM_ONECALL_VERSION = "2.5";` in config.cpp.
+- If you have an account created before Summer 2022, you can simply use the One Call 2.5 API by changing `OWM_ONECALL_VERSION = "2.5";` in config.cpp.
 
-- Otherwise, the One Call API 3.0 is included in the "One Call by Call" subscription only. This separate subscription includes 1,000 calls/day for free and allows you to pay only for the number of API calls made to this product.
+- Otherwise, the One Call API 3.0 is only included in the "One Call by Call" subscription. This separate subscription includes 1,000 calls/day for free and allows you to pay only for the number of API calls made to this product.
 
-Here’s how to subscribe and avoid any credit card changes:
+Here's how to subscribe and avoid any credit card changes:
    - Go to https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30
    - Follow the instructions to complete the subscription.
    - Go to https://home.openweathermap.org/subscriptions and set the "Calls per day (no more than)" to 1,000. This ensures you will never overrun the free calls.
@@ -188,33 +188,33 @@ Here’s how to subscribe and avoid any credit card changes:
 
 ### Low Battery
 <img src="showcase/demo-error-low-battery.jpg" align="left" width="25%" />
-This error screen appears once the battery voltage has fallen below LOW_BATTERY_VOLTAGE (default = 3.20v). The display will not refresh again until it detects battery voltage above LOW_BATTERY_VOLTAGE. When battery voltage is between LOW_BATTERY_VOLTAGE and VERY_LOW_BATTERY_VOLTAGE (default = 3.10v) the esp32 will deep-sleep for periods of LOW_BATTERY_SLEEP_INTERVAL (default = 30min) before checking battery voltage again. If the battery voltage falls below CRIT_LOW_BATTERY_VOLTAGE then the display will deep-sleep for periods VERY_LOW_BATTERY_SLEEP_INTERVAL (default = 120min). If battery voltage falls to CRIT_LOW_BATTERY_VOLTAGE (default = 3.00v) then the esp32 will enter hibernate-mode and will require a manual push of the reset (RST) button to begin updating again.
+This error screen appears once the battery voltage has fallen below LOW_BATTERY_VOLTAGE (default = 3.20v). The display will not refresh again until it detects battery voltage above LOW_BATTERY_VOLTAGE. When battery voltage is between LOW_BATTERY_VOLTAGE and VERY_LOW_BATTERY_VOLTAGE (default = 3.10v) the esp32 will deep-sleep for periods of LOW_BATTERY_SLEEP_INTERVAL (default = 30min) before checking battery voltage again. If the battery voltage falls below CRIT_LOW_BATTERY_VOLTAGE then the display will deep-sleep for periods VERY_LOW_BATTERY_SLEEP_INTERVAL (default = 120min). If battery voltage falls to CRIT_LOW_BATTERY_VOLTAGE (default = 3.00v) then the esp32 will enter hibernate mode and will require a manual push of the reset (RST) button to begin updating again.
 
 <br clear="left"/>
 
 ### WiFi Connection
 <img src="showcase/demo-error-wifi.jpg" align="left" width="25%" />
-This error screen appears when the ESP32 fails to connect to WiFi. If the message reads "WiFi Connection Failed" this might indicate an incorrect password. If the message reads "SSID Not Available" this might indicate that the you mistyped the SSID or that the esp32 is out of the range of the access point. The esp32 will retry once every SLEEP_DURATION (default = 30min).
+This error screen appears when the ESP32 fails to connect to WiFi. If the message reads "WiFi Connection Failed" this might indicate an incorrect password. If the message reads "SSID Not Available" this might indicate that you mistyped the SSID or that the esp32 is out of the range of the access point. The esp32 will retry once every SLEEP_DURATION (default = 30min).
 
 <br clear="left"/>
 
 ### API Error
 <img src="showcase/demo-error-api.jpg" align="left" width="25%" />
-This error screen appears if there was an error (client or server) that occured when making API an request to OpenWeatherMap. The second line will give the error code followed by a descriptor phrase. Positve error codes correspond to HTTP response status codes while error codes <= 0 indicate a client(esp32) error. The esp32 will retry once every SLEEP_DURATION (default = 30min).
+This error screen appears if an error (client or server) occurs when making an API request to OpenWeatherMap. The second line will give the error code followed by a descriptor phrase. Positive error codes correspond to HTTP response status codes, while error codes <= 0 indicate a client(esp32) error. The esp32 will retry once every SLEEP_DURATION (default = 30min).
 <br/><br/>
-In the example shown to the left, "401: Unauthorized" may be the result of an incorrect API key or that you are attempting to using the One Call v3 API without the proper account setup.
+In the example shown to the left, "401: Unauthorized" may be the result of an incorrect API key or that you are attempting to use the One Call v3 API without the proper account setup.
 
 <br clear="left"/>
 
 ### Time Server Error
 <img src="showcase/demo-error-time.jpg" align="left" width="25%" />
-This error screen appears when the esp32 fails to fetch the time from NTP_SERVER_1/NTP_SERVER_2. This error sometimes occurs immediately after uploading to the esp32, in this case just hit the reset button or wait SLEEP_DURATION (default = 30min) for the esp32 to automatically retry.
+This error screen appears when the esp32 fails to fetch the time from NTP_SERVER_1/NTP_SERVER_2. This error sometimes occurs immediately after uploading to the esp32; in this case, just hit the reset button or wait for SLEEP_DURATION (default = 30min) and the esp32 to automatically retry.
 
 <br clear="left"/>
 
 ## License
 
-My work is licensed under the [GNU General Public License v3.0](LICENSE) with tools/fonts/icons whose licenses are as follows:
+My work is licensed under the [GNU General Public License v3.0](LICENSE) with tools, fonts, and icons whose licenses are as follows:
 
 | Name                                                                                                          | License                                                                               | Notes                                                                              |
 |---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
