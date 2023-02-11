@@ -36,22 +36,16 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   { // 0              B   v  W  24
     // |--------------zzzzZzz---|
     extraHoursUntilWake = WAKE_TIME - timeInfo->tm_hour;
-    Serial.print("Case A: ");
-    Serial.println(extraHoursUntilWake);
   }
   else if (BED_TIME > WAKE_TIME && timeInfo->tm_hour < WAKE_TIME)
   { // 0 v W               B    24
     // |zZz----------------zzzzz|
     extraHoursUntilWake = WAKE_TIME - timeInfo->tm_hour;
-    Serial.print("Case B: ");
-    Serial.println(extraHoursUntilWake);
   }
   else if (BED_TIME > WAKE_TIME && timeInfo->tm_hour >= BED_TIME)
   { // 0   W               B  v 24
     // |zzz----------------zzzZz|
     extraHoursUntilWake = WAKE_TIME - (timeInfo->tm_hour - 24);
-    Serial.print("Case C: ");
-    Serial.println(extraHoursUntilWake);
   }
   else // This feature is disabled (BED_TIME == WAKE_TIME)
   {    // OR it is not past BED_TIME
