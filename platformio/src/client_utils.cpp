@@ -109,7 +109,7 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
 {
   int attempts = 0;
   bool rxSuccess = false;
-  DeserializationError jsonErr;
+  DeserializationError jsonErr = {};
 #ifdef UNITS_METRIC
   const char unitsStr[] = "metric";
 #endif // end UNITS_METRIC
@@ -131,21 +131,22 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
     if (httpResponse == HTTP_CODE_OK)
     {
       jsonErr = deserializeOneCall(http.getStream(), r);
-      rxSuccess = !jsonErr
+      rxSuccess = !jsonErr;
     }
     else
     {
-      Serial.println("OpenWeatherMap One Call" + OWM_ONECALL_VERSION 
+      Serial.println("OpenWeatherMap One Call " + OWM_ONECALL_VERSION 
         + " API error: " + String(httpResponse, DEC) + " " 
-        + http.errorToString(httpResponse));
+        + getHttpResponsePhrase(httpResponse));
     }
     client.stop();
     http.end();
     ++attempts;
   }
 
-  if (jsonErr)
+  if (httpResponse == HTTP_CODE_OK && jsonErr)
   { // indicates client json DeserializationError
+    // given a -100 offset to distiguish these errors from http client errors
     return -100 - static_cast<int>(jsonErr.code());
   }
   return httpResponse;
@@ -161,10 +162,10 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
 {
   int attempts = 0;
   bool rxSuccess = false;
-  DeserializationError jsonErr;
+  DeserializationError jsonErr = {};
 
   // set start and end to approriate values so that the last 24 hours of air
-  // pollution history is returned. Unix, UTC. Us
+  // pollution history is returned. Unix, UTC.
   time_t now;
   int64_t end = time(&now);
   // minus 1 is important here, otherwise we could get an extra hour of history
@@ -192,15 +193,17 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
     else
     {
       Serial.println("OpenWeatherMap Air Pollution API error: " 
-        + String(httpResponse, DEC) + " " + http.errorToString(httpResponse));
+        + String(httpResponse, DEC) + " " 
+        + getHttpResponsePhrase(httpResponse));
     }
     client.stop();
     http.end();
     ++attempts;
   }
 
-  if (jsonErr)
+  if (httpResponse == HTTP_CODE_OK && jsonErr)
   { // indicates client json DeserializationError
+    // given a -100 offset to distiguish these errors from http client errors
     return -100 - static_cast<int>(jsonErr.code());
   }
   return httpResponse;

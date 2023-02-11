@@ -1521,14 +1521,16 @@ const uint8_t *getWindBitmap24(int windDeg)
 
 /* This function returns a pointer to a string representing the meaning for a
  * HTTP response status code or an arduino client error code.
+ * ArduinoJson DeserializationError codes are also included here and are given a
+ * negative 100 offset to distinguish them from other client error codes.
  *
- * HTTP response status codes
+ * HTTP response status codes (100 to 511)
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
  * 
- * HTTP client errors
+ * HTTP client errors (-1 to -11)
  * https://github.com/espressif/arduino-esp32/blob/master/libraries/HTTPClient/src/HTTPClient.h
  *
- * ArduinoJson DeserializationError codes (given a negative 100 offset)
+ * ArduinoJson DeserializationError codes (-100 to -105)
  * https://arduinojson.org/v6/api/misc/deserializationerror/
  */
 const char *getHttpResponsePhrase(int code)
@@ -1621,12 +1623,12 @@ const char *getHttpResponsePhrase(int code)
   case 511: return "Network Authentication Required";
 
   // ArduinoJson DeserializationError codes
-  case -100 - (DeserializationError::Code::Ok):              return "DeserializationError OK";
-  case -101 - (DeserializationError::Code::EmptyInput):      return "DeserializationError EmptyInput";
-  case -102 - (DeserializationError::Code::IncompleteInput): return "DeserializationError IncompleteInput";
-  case -103 - (DeserializationError::Code::InvalidInput):    return "DeserializationError InvalidInput";
-  case -104 - (DeserializationError::Code::NoMemory):        return "DeserializationError NoMemory";
-  case -105 - (DeserializationError::Code::TooDeep):         return "DeserializationError TooDeep";
+  case -100 - (DeserializationError::Code::Ok):              return "Deserialization OK";
+  case -100 - (DeserializationError::Code::EmptyInput):      return "Deserialization EmptyInput";
+  case -100 - (DeserializationError::Code::IncompleteInput): return "Deserialization IncompleteInput";
+  case -100 - (DeserializationError::Code::InvalidInput):    return "Deserialization InvalidInput";
+  case -100 - (DeserializationError::Code::NoMemory):        return "Deserialization NoMemory";
+  case -100 - (DeserializationError::Code::TooDeep):         return "Deserialization TooDeep";
 
   default:  return "";
   }
