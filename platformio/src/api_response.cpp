@@ -74,7 +74,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   filter_alerts_7["description"] = false;
   filter_alerts_7["tags"]        = true;
 
-  DynamicJsonDocument doc(32 * 1024);
+  DynamicJsonDocument doc(48 * 1024);
 
   DeserializationError error = deserializeJson(doc, json, 
                                          DeserializationOption::Filter(filter));
