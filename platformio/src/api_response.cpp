@@ -2,7 +2,8 @@
 #include <ArduinoJson.h>
 #include "api_response.h"
 
-bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t &r) 
+DeserializationError deserializeOneCall(WiFiClient &json, 
+                                        owm_resp_onecall_t &r) 
 {
   int i;
 
@@ -81,7 +82,7 @@ bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t &r)
   if (error) {
     Serial.print("One Call deserializeJson() failed: ");
     Serial.println(error.c_str());
-    return false;
+    return error;
   }
 
   r.lat             = doc["lat"]            .as<float>();
@@ -222,10 +223,11 @@ bool deserializeOneCall(WiFiClient &json, owm_resp_onecall_t &r)
     ++i;
   }
 
-  return true;
+  return error;
 } // end deserializeOneCall
 
-bool deserializeAirQuality(WiFiClient& json, owm_resp_air_pollution_t &r) 
+DeserializationError deserializeAirQuality(WiFiClient& json, 
+                                           owm_resp_air_pollution_t &r) 
 {
   int i = 0;
 
@@ -236,7 +238,7 @@ bool deserializeAirQuality(WiFiClient& json, owm_resp_air_pollution_t &r)
   if (error) {
     Serial.print("Air Pollution deserializeJson() failed: ");
     Serial.println(error.c_str());
-    return false;
+    return error;
   }
 
   r.coord.lat = doc["coord"]["lat"].as<float>();
@@ -266,5 +268,5 @@ bool deserializeAirQuality(WiFiClient& json, owm_resp_air_pollution_t &r)
     ++i;
   }
 
-  return true;
+  return error;
 } // end deserializeAirQuality

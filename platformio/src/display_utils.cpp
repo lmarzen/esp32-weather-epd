@@ -1527,11 +1527,14 @@ const uint8_t *getWindBitmap24(int windDeg)
  * 
  * HTTP client errors
  * https://github.com/espressif/arduino-esp32/blob/master/libraries/HTTPClient/src/HTTPClient.h
+ *
+ * ArduinoJson DeserializationError codes (given a negative 100 offset)
+ * https://arduinojson.org/v6/api/misc/deserializationerror/
  */
 const char *getHttpResponsePhrase(int code)
 {
-	switch (code)
-	{
+  switch (code)
+  {
   // HTTP client errors
   case HTTPC_ERROR_CONNECTION_REFUSED:  return "connection refused";
   case HTTPC_ERROR_SEND_HEADER_FAILED:  return "send header failed";
@@ -1545,80 +1548,88 @@ const char *getHttpResponsePhrase(int code)
   case HTTPC_ERROR_STREAM_WRITE:        return "Stream write error";
   case HTTPC_ERROR_READ_TIMEOUT:        return "read Timeout";
 
-	// 1xx - Informational Responses
-	case 100: return "Continue";
-	case 101: return "Switching Protocols";
-	case 102: return "Processing";
-	case 103: return "Early Hints";
+  // 1xx - Informational Responses
+  case 100: return "Continue";
+  case 101: return "Switching Protocols";
+  case 102: return "Processing";
+  case 103: return "Early Hints";
 
-	// 2xx - Successful Responses
-	case 200: return "OK";
-	case 201: return "Created";
-	case 202: return "Accepted";
-	case 203: return "Non-Authoritative Information";
-	case 204: return "No Content";
-	case 205: return "Reset Content";
-	case 206: return "Partial Content";
-	case 207: return "Multi-Status";
-	case 208: return "Already Reported";
-	case 226: return "IM Used";
+  // 2xx - Successful Responses
+  case 200: return "OK";
+  case 201: return "Created";
+  case 202: return "Accepted";
+  case 203: return "Non-Authoritative Information";
+  case 204: return "No Content";
+  case 205: return "Reset Content";
+  case 206: return "Partial Content";
+  case 207: return "Multi-Status";
+  case 208: return "Already Reported";
+  case 226: return "IM Used";
 
-	// 3xx - Redirection Responses
-	case 300: return "Multiple Choices";
-	case 301: return "Moved Permanently";
-	case 302: return "Found";
-	case 303: return "See Other";
-	case 304: return "Not Modified";
-	case 305: return "Use Proxy";
-	case 307: return "Temporary Redirect";
-	case 308: return "Permanent Redirect";
+  // 3xx - Redirection Responses
+  case 300: return "Multiple Choices";
+  case 301: return "Moved Permanently";
+  case 302: return "Found";
+  case 303: return "See Other";
+  case 304: return "Not Modified";
+  case 305: return "Use Proxy";
+  case 307: return "Temporary Redirect";
+  case 308: return "Permanent Redirect";
 
-	// 4xx - Client Error Responses
-	case 400: return "Bad Request";
-	case 401: return "Unauthorized";
-	case 402: return "Payment Required";
-	case 403: return "Forbidden";
-	case 404: return "Not Found";
-	case 405: return "Method Not Allowed";
-	case 406: return "Not Acceptable";
-	case 407: return "Proxy Authentication Required";
-	case 408: return "Request Timeout";
-	case 409: return "Conflict";
-	case 410: return "Gone";
-	case 411: return "Length Required";
-	case 412: return "Precondition Failed";
-	case 413: return "Content Too Large";
-	case 414: return "URI Too Long";
-	case 415: return "Unsupported Media Type";
-	case 416: return "Range Not Satisfiable";
-	case 417: return "Expectation Failed";
-	case 418: return "I'm a teapot";
-	case 421: return "Misdirected Request";
-	case 422: return "Unprocessable Content";
-	case 423: return "Locked";
-	case 424: return "Failed Dependency";
-	case 425: return "Too Early";
-	case 426: return "Upgrade Required";
-	case 428: return "Precondition Required";
-	case 429: return "Too Many Requests";
-	case 431: return "Request Header Fields Too Large";
-	case 451: return "Unavailable For Legal Reasons";
+  // 4xx - Client Error Responses
+  case 400: return "Bad Request";
+  case 401: return "Unauthorized";
+  case 402: return "Payment Required";
+  case 403: return "Forbidden";
+  case 404: return "Not Found";
+  case 405: return "Method Not Allowed";
+  case 406: return "Not Acceptable";
+  case 407: return "Proxy Authentication Required";
+  case 408: return "Request Timeout";
+  case 409: return "Conflict";
+  case 410: return "Gone";
+  case 411: return "Length Required";
+  case 412: return "Precondition Failed";
+  case 413: return "Content Too Large";
+  case 414: return "URI Too Long";
+  case 415: return "Unsupported Media Type";
+  case 416: return "Range Not Satisfiable";
+  case 417: return "Expectation Failed";
+  case 418: return "I'm a teapot";
+  case 421: return "Misdirected Request";
+  case 422: return "Unprocessable Content";
+  case 423: return "Locked";
+  case 424: return "Failed Dependency";
+  case 425: return "Too Early";
+  case 426: return "Upgrade Required";
+  case 428: return "Precondition Required";
+  case 429: return "Too Many Requests";
+  case 431: return "Request Header Fields Too Large";
+  case 451: return "Unavailable For Legal Reasons";
 
-	// 5xx - Server Error Responses
-	case 500: return "Internal Server Error";
-	case 501: return "Not Implemented";
-	case 502: return "Bad Gateway";
-	case 503: return "Service Unavailable";
-	case 504: return "Gateway Timeout";
-	case 505: return "HTTP Version Not Supported";
-	case 506: return "Variant Also Negotiates";
-	case 507: return "Insufficient Storage";
-	case 508: return "Loop Detected";
-	case 510: return "Not Extended";
-	case 511: return "Network Authentication Required";
+  // 5xx - Server Error Responses
+  case 500: return "Internal Server Error";
+  case 501: return "Not Implemented";
+  case 502: return "Bad Gateway";
+  case 503: return "Service Unavailable";
+  case 504: return "Gateway Timeout";
+  case 505: return "HTTP Version Not Supported";
+  case 506: return "Variant Also Negotiates";
+  case 507: return "Insufficient Storage";
+  case 508: return "Loop Detected";
+  case 510: return "Not Extended";
+  case 511: return "Network Authentication Required";
 
-	default:  return "";
-	}
+  // ArduinoJson DeserializationError codes
+  case -100 - (DeserializationError::Code::Ok):              return "DeserializationError OK";
+  case -101 - (DeserializationError::Code::EmptyInput):      return "DeserializationError EmptyInput";
+  case -102 - (DeserializationError::Code::IncompleteInput): return "DeserializationError IncompleteInput";
+  case -103 - (DeserializationError::Code::InvalidInput):    return "DeserializationError InvalidInput";
+  case -104 - (DeserializationError::Code::NoMemory):        return "DeserializationError NoMemory";
+  case -105 - (DeserializationError::Code::TooDeep):         return "DeserializationError TooDeep";
+
+  default:  return "";
+  }
 } // end getHttpResponsePhrase
 
 
@@ -1630,8 +1641,8 @@ const char *getHttpResponsePhrase(int code)
  */
 const char *getWifiStatusPhrase(wl_status_t status)
 {
-	switch (status)
-	{
+  switch (status)
+  {
   case WL_NO_SHIELD:       return "No Shield";
   case WL_IDLE_STATUS:     return "Idle";
   case WL_NO_SSID_AVAIL:   return "No SSID Available";
@@ -1642,5 +1653,5 @@ const char *getWifiStatusPhrase(wl_status_t status)
   case WL_DISCONNECTED:    return "Disconnected";
 
   default:  return "";
-	}
+  }
 } // end getWifiStatusPhrase

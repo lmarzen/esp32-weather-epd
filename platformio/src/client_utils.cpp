@@ -109,6 +109,7 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
 {
   int attempts = 0;
   bool rxSuccess = false;
+  DeserializationError jsonErr;
 #ifdef UNITS_METRIC
   const char unitsStr[] = "metric";
 #endif // end UNITS_METRIC
@@ -129,7 +130,8 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
     httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK)
     {
-      rxSuccess = deserializeOneCall(http.getStream(), r);
+      jsonErr = deserializeOneCall(http.getStream(), r);
+      rxSuccess = !jsonErr
     }
     else
     {
@@ -142,6 +144,10 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
     ++attempts;
   }
 
+  if (jsonErr)
+  { // indicates client json DeserializationError
+    return -100 - static_cast<int>(jsonErr.code());
+  }
   return httpResponse;
 } // getOWMonecall
 
@@ -155,6 +161,7 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
 {
   int attempts = 0;
   bool rxSuccess = false;
+  DeserializationError jsonErr;
 
   // set start and end to approriate values so that the last 24 hours of air
   // pollution history is returned. Unix, UTC. Us
@@ -179,7 +186,8 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
     httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK)
     {
-      rxSuccess = deserializeAirQuality(http.getStream(), r);
+      jsonErr = deserializeAirQuality(http.getStream(), r);
+      rxSuccess = !jsonErr;
     }
     else
     {
@@ -191,5 +199,9 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
     ++attempts;
   }
 
+  if (jsonErr)
+  { // indicates client json DeserializationError
+    return -100 - static_cast<int>(jsonErr.code());
+  }
   return httpResponse;
 } // getOWMairpollution
