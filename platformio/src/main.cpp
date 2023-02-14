@@ -32,17 +32,20 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   }
 
   int extraHoursUntilWake;
-  if (BED_TIME < WAKE_TIME && timeInfo->tm_hour >= BED_TIME && timeInfo->tm_hour < WAKE_TIME)
+  if (BED_TIME < WAKE_TIME 
+   && timeInfo->tm_hour >= BED_TIME && timeInfo->tm_hour < WAKE_TIME)
   { // 0              B   v  W  24
     // |--------------zzzzZzz---|
     extraHoursUntilWake = WAKE_TIME - timeInfo->tm_hour;
   }
-  else if (BED_TIME > WAKE_TIME && timeInfo->tm_hour < WAKE_TIME)
+  else if (BED_TIME > WAKE_TIME 
+   && timeInfo->tm_hour < WAKE_TIME)
   { // 0 v W               B    24
     // |zZz----------------zzzzz|
     extraHoursUntilWake = WAKE_TIME - timeInfo->tm_hour;
   }
-  else if (BED_TIME > WAKE_TIME && timeInfo->tm_hour >= BED_TIME)
+  else if (BED_TIME > WAKE_TIME 
+   && timeInfo->tm_hour >= BED_TIME)
   { // 0   W               B  v 24
     // |zzz----------------zzzZz|
     extraHoursUntilWake = WAKE_TIME - (timeInfo->tm_hour - 24);
@@ -63,6 +66,12 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   { // align wake time to the hour
     sleepDuration = extraHoursUntilWake * 3600UL
                     - (timeInfo->tm_min * 60UL + timeInfo->tm_sec);
+  }
+
+  // if we are within 2 minutes of the next alignment.
+  if (sleepDuration <= 120UL)
+  {
+    sleepDuration += SLEEP_DURATION * 60UL;
   }
   
   // add extra delay to compensate for esp32's with fast RTCs.
