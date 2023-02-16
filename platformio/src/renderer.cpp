@@ -556,7 +556,7 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
     { // Fits on a single line, draw along bottom
       drawString(196 + 48 + 4, 24 + 8 - 12 + 20 + 1, cur_alert.event, LEFT);
     }
-    else if (num_valid_alerts == 2)
+    else
     { // use smaller font
       display.setFont(&FreeSans12pt7b);
       if (getStringWidth(cur_alert.event) <= max_w)
