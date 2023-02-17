@@ -12,7 +12,6 @@
 // additional libraries
 #include <Adafruit_BusIO_Register.h>
 #include <ArduinoJson.h>
-#include <GxEPD2_BW.h>
 
 // header files
 #include "api_response.h"

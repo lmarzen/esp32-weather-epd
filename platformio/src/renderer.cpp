@@ -1,4 +1,8 @@
-#include <GxEPD2_BW.h>
+#include "renderer.h"
+#include "api_response.h"
+#include "c_strftime.h"
+#include "config.h"
+#include "display_utils.h"
 
 // fonts (modified font files that have the degree symbol mapped to '`')
 #include "fonts/FreeSans4pt7b.h"
@@ -31,28 +35,23 @@
 #include "icons/icons_160x160.h"
 #include "icons/icons_196x196.h"
 
-// header files
-#include "api_response.h"
-#include "c_strftime.h"
-#include "config.h"
-#include "display_utils.h"
-#include "renderer.h"
-
 // language
 #include LANGUAGE_HEADER
 
-// B/W display
+#ifdef DISPLAY_BW
 GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
   GxEPD2_750_T7(PIN_EPD_CS,
                 PIN_EPD_DC,
                 PIN_EPD_RST,
-                PIN_EPD_BUSY));
-// 3-colour displays
-// GxEPD2_3C<GxEPD2_750c, GxEPD2_750c::HEIGHT> display(
-//   GxEPD2_750(PIN_EPD_CS,
-//              PIN_EPD_DC,
-//              PIN_EPD_RST,
-//              PIN_EPD_BUSY));
+                PIN_EPD_BUSY));    
+#endif
+#ifdef DISPLAY_3C
+GxEPD2_3C<GxEPD2_750c_Z08, GxEPD2_750c_Z08::HEIGHT> display(
+  GxEPD2_750c_Z08(PIN_EPD_CS,
+                  PIN_EPD_DC,
+                  PIN_EPD_RST,
+                  PIN_EPD_BUSY));
+#endif
 
 extern owm_resp_onecall_t owm_onecall;
 extern owm_resp_air_pollution_t owm_air_pollution;
