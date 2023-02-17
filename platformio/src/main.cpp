@@ -115,8 +115,10 @@ void setup()
     { // battery is now low for the first time
       prefs.putBool("lowBat", true);
       initDisplay();
-      drawError(battery_alert_0deg_196x196, "Low Battery", "");
-      display.display(false); // full display refresh
+      do
+      {
+        drawError(battery_alert_0deg_196x196, "Low Battery", "");
+      } while (display.nextPage());
       display.powerOff();
     }
 
@@ -165,14 +167,19 @@ void setup()
     if (wifiStatus == WL_NO_SSID_AVAIL)
     {
       Serial.println("SSID Not Available");
-      drawError(wifi_off_196x196, "SSID Not Available", "");
+      do
+      {
+        drawError(wifi_off_196x196, "SSID Not Available", "");
+      } while (display.nextPage());
     }
     else
     {
       Serial.println("WiFi Connection Failed");
-      drawError(wifi_off_196x196, "WiFi Connection", "Failed");
+      do
+      {
+        drawError(wifi_off_196x196, "WiFi Connection", "Failed");
+      } while (display.nextPage());
     }
-    display.display(false); // full display refresh
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
   }
@@ -185,8 +192,10 @@ void setup()
     Serial.println("Failed To Fetch The Time");
     killWiFi();
     initDisplay();
-    drawError(wi_time_4_196x196, "Failed To Fetch", "The Time");
-    display.display(false); // full display refresh
+    do
+    {
+      drawError(wi_time_4_196x196, "Failed To Fetch", "The Time");
+    } while (display.nextPage());
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
   }
@@ -203,8 +212,10 @@ void setup()
     tmpStr = String(rxOWM[0], DEC) + ": " + getHttpResponsePhrase(rxOWM[0]);
     killWiFi();
     initDisplay();
-    drawError(wi_cloud_down_196x196, statusStr, tmpStr);
-    display.display(false); // full display refresh
+    do
+    {
+      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+    } while (display.nextPage());
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
   }
@@ -215,8 +226,10 @@ void setup()
     statusStr = "Air Pollution API";
     tmpStr = String(rxOWM[1], DEC) + ": " + getHttpResponsePhrase(rxOWM[1]);
     initDisplay();
-    drawError(wi_cloud_down_196x196, statusStr, tmpStr);
-    display.display(false); // full display refresh
+    do
+    {
+      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+    } while (display.nextPage());
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
   }
@@ -252,14 +265,16 @@ void setup()
   getDateStr(dateStr, &timeInfo);
 
   initDisplay();
-  drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0], 
-                        owm_air_pollution, inTemp, inHumidity);
-  drawForecast(owm_onecall.daily, timeInfo);
-  drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
-  drawLocationDate(CITY_STRING, dateStr);
-  drawOutlookGraph(owm_onecall.hourly, timeInfo);
-  drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
-  display.display(false); // full display refresh
+  do
+  {
+    drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0],
+                          owm_air_pollution, inTemp, inHumidity);
+    drawForecast(owm_onecall.daily, timeInfo);
+    drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
+    drawLocationDate(CITY_STRING, dateStr);
+    drawOutlookGraph(owm_onecall.hourly, timeInfo);
+    drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
+  } while (display.nextPage());
   display.powerOff();
 
   // DEEP-SLEEP
