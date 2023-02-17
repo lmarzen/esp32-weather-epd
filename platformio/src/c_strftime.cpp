@@ -80,7 +80,7 @@ static int iso8601wknum(const struct tm *timeptr)
   // XPG4 erroneously included POSIX.2 rationale text in the main body of the
   // standard. Thus it requires week 53.
 
-  int weeknum, jan1day, diff;
+  int weeknum, jan1day;
 
   // get week number, Monday as first day of the week
   weeknum = weeknumber(timeptr, 1);
@@ -202,7 +202,6 @@ size_t c_strftime(char *s, size_t maxsize, const char *format, const struct tm *
   char *endp = s + maxsize;
   char *start = s;
   char tbuf[100];
-  long off;
   int i, w;
   long y;
 
@@ -318,7 +317,6 @@ size_t c_strftime(char *s, size_t maxsize, const char *format, const struct tm *
       }
       else
 #endif // POSIX_2008
-      century:
         sprintf(tbuf, "%02ld", (timeptr->tm_year + 1900L) / 100);
       break;
 
@@ -501,7 +499,6 @@ size_t c_strftime(char *s, size_t maxsize, const char *format, const struct tm *
       break;
 
     case 'T': // time as %H:%M:%S
-    the_time:
       c_strftime(tbuf, sizeof(tbuf), "%H:%M:%S", timeptr);
       break;
 
