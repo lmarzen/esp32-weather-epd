@@ -10,9 +10,9 @@
 #define DISP_HEIGHT 480
 
 // B/W display
-#define DISPLAY_BW
+// #define DISPLAY_BW
 // 3-color display
-// #define DISPLAY_3C
+#define DISPLAY_3C
 
 #ifdef DISPLAY_BW
 #include <GxEPD2_BW.h>
@@ -20,7 +20,7 @@ extern GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display;
 #endif
 #ifdef DISPLAY_3C
 #include <GxEPD2_3C.h>
-extern GxEPD2_3C<GxEPD2_750c_Z08, GxEPD2_750c_Z08::HEIGHT> display;
+extern GxEPD2_3C<GxEPD2_750c_Z08, GxEPD2_750c_Z08::HEIGHT / 2> display;
 #endif
 
 typedef enum alignment
