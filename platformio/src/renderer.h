@@ -10,9 +10,9 @@
 #define DISP_HEIGHT 480
 
 // B/W display
-// #define DISPLAY_BW
+#define DISPLAY_BW
 // 3-color display
-#define DISPLAY_3C
+// #define DISPLAY_3C
 
 #ifdef DISPLAY_BW
 #include <GxEPD2_BW.h>
