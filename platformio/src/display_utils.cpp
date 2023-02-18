@@ -2,8 +2,9 @@
 #include <vector>
 #include <Arduino.h>
 
+#include <aqi.h>
+
 #include "api_response.h"
-#include "aqi.h"
 #include "c_strftime.h"
 #include "config.h"
 #include "display_utils.h"
