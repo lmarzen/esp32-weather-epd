@@ -5,6 +5,18 @@
 #include <vector>
 #include <Arduino.h>
 
+// E-PAPER PANEL
+// This project currently supports the following E-Paper panels:
+//   DISP_BW - WaveShare 800x480, 7.5inch E-Ink display, Black/White
+//             https://www.waveshare.com/product/7.5inch-e-paper-hat.htm
+//   DISP_3C - Waveshare 800x480, 7.5inch E-Ink display, Red/Black/White
+//             https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm
+//   Note: Although this 3-color panel is supported, this program only draws
+//         black/white to the screen. (i.e. no red icons/text)
+// Uncomment the macro that identifies your panel. (exactly 1 must be defined)
+#define DISP_BW
+// #define DISP_3C
+
 // LANGUAGE
 // language header to use
 #define LANGUAGE_HEADER "languages/lang_en_us.h"
@@ -55,7 +67,7 @@
 // #define WIND_DIRECTIONS_TERTIARY_INTERCARDINAL
 // #define WIND_DIRECTIONS_360
 
-// Set the below variables in "config.cpp"
+// Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;
 extern const uint8_t PIN_EPD_BUSY;
 extern const uint8_t PIN_EPD_CS;

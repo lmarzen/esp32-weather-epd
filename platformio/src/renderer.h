@@ -5,20 +5,16 @@
 #include <Arduino.h>
 #include <time.h>
 #include "api_response.h"
+#include "config.h"
 
 #define DISP_WIDTH  800
 #define DISP_HEIGHT 480
 
-// B/W display
-#define DISPLAY_BW
-// 3-color display
-// #define DISPLAY_3C
-
-#ifdef DISPLAY_BW
+#ifdef DISP_BW
 #include <GxEPD2_BW.h>
 extern GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display;
 #endif
-#ifdef DISPLAY_3C
+#ifdef DISP_3C
 #include <GxEPD2_3C.h>
 extern GxEPD2_3C<GxEPD2_750c_Z08, GxEPD2_750c_Z08::HEIGHT / 2> display;
 #endif
