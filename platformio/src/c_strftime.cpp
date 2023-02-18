@@ -1,20 +1,11 @@
-#include <cctype>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
-#include "c_strftime.h"
-#include "_locale.h"
-
 /* A modified implementation of ISO C library routine, strftime.
+ *
+ * This is modified version of a public domain strftime implementation that
+ * was retrieved from https://github.com/arnoldrobbins/strftime/.
  *
  * This implementation has been modified to use locale info from _locale.h 
  * instead of nl_langinfo.
- *
- * This is modified version of a public domain strftime implementation that was
- * retrieved from https://github.com/arnoldrobbins/strftime/.
- *
+ * 
  * The C99 standard now specifies just about all of the formats that were
  * additional in the earlier versions of this file.
  *
@@ -28,6 +19,15 @@
  * 
  * Note: No implementations for %z and %Z.
  */
+
+#include <cctype>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+#include "_locale.h"
+#include "c_strftime.h"
 
 #define TZ_EXT     // Olson's timezone package
 #define VMS_EXT    // includes %v for VMS date format
