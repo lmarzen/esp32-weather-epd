@@ -1,5 +1,5 @@
-#ifndef __LANG_EN_US_H__
-#define __LANG_EN_US_H__
+#ifndef ___LOCALE_H__
+#define ___LOCALE_H__
 
 #include <vector>
 #include <Arduino.h>
@@ -16,7 +16,7 @@ extern const char *LC_T_FMT;
 extern const char *LC_T_FMT_AMPM;
 
 // OWM LANGUAGE
-extern const String LANG;
+extern const String OWM_LANG;
 
 // CURRENT CONDITIONS
 extern const char *TXT_FEELS_LIKE;

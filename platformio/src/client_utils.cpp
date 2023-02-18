@@ -19,10 +19,8 @@
 #include "client_utils.h"
 #include "config.h"
 #include "display_utils.h"
+#include "_locale.h"
 #include "renderer.h"
-
-// language
-#include LANGUAGE_HEADER
 
 /* Power-on and connect wifi.
  * Takes int parameter to store wifi RSSI, or “Received Signal Strength 
@@ -117,8 +115,8 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
 #endif // end UNITS_IMPERIAL
 
   String uri = "/data/" + OWM_ONECALL_VERSION
-               + "/onecall?lat=" + LAT + "&lon=" + LON 
-               + "&units=" + unitsStr + "&lang=" + LANG 
+               + "/onecall?lat=" + LAT + "&lon=" + LON
+               + "&units=" + unitsStr + "&lang=" + OWM_LANG
                + "&exclude=minutely&appid=" + OWM_APIKEY;
 
   int httpResponse = 0;
@@ -174,8 +172,8 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
   sprintf(endStr, "%lld", end);
   sprintf(startStr, "%lld", start);
 
-  String uri = "/data/2.5/air_pollution/history?lat=" + LAT + "&lon=" + LON 
-               + "&start=" + startStr + "&end=" + endStr 
+  String uri = "/data/2.5/air_pollution/history?lat=" + LAT + "&lon=" + LON
+               + "&start=" + startStr + "&end=" + endStr
                + "&appid=" + OWM_APIKEY;
 
   int httpResponse = 0;

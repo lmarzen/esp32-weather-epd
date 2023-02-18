@@ -17,9 +17,13 @@
 #define DISP_BW
 // #define DISP_3C
 
-// LANGUAGE
-// language header to use
-#define LANGUAGE_HEADER "languages/lang_en_us.h"
+// LOCALE
+// If your locale is not here, you can add it by copying and modifying one of
+// the files in src/locales. Feel free to create a pull request to add
+// official support for your locale.
+// Uncomment your preferred locale. (exactly 1 must be defined)
+// #define LOCALE_EN_GB
+#define LOCALE_EN_US
 
 // UNITS
 // Select either metric or imperial units

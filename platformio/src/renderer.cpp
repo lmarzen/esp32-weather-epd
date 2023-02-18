@@ -3,6 +3,7 @@
 #include "c_strftime.h"
 #include "config.h"
 #include "display_utils.h"
+#include "_locale.h"
 
 // fonts (modified font files that have the degree symbol mapped to '`')
 #include "fonts/FreeSans4pt7b.h"
@@ -34,9 +35,6 @@
 #include "icons/icons_128x128.h"
 #include "icons/icons_160x160.h"
 #include "icons/icons_196x196.h"
-
-// language
-#include LANGUAGE_HEADER
 
 #ifdef DISP_BW
 GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(

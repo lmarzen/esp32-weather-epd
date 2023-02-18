@@ -1,6 +1,10 @@
+#include "config.h"
+
+#ifdef LOCALE_EN_US
+
 #include <vector>
 #include <Arduino.h>
-#include "lang_en_us.h"
+#include "_locale.h"
 
 // TIME/DATE (NL_LANGINFO)
 // locale-based information,
@@ -22,7 +26,7 @@ const char *LC_T_FMT_AMPM = "%I:%M:%S %p";
 // OWM LANGUAGE
 // For full list of languages, see https://openweathermap.org/api/one-call-api#multi
 // Note: "[only] The contents of the 'description' field will be translated."
-const String LANG = "en";
+const String OWM_LANG = "en";
 
 // CURRENT CONDITIONS
 const char *TXT_FEELS_LIKE         = "Feels Like";
@@ -125,3 +129,5 @@ const std::vector<String> TERM_DUST =
     {"dust", "sand"};
 const std::vector<String> TERM_STRONG_WIND =
     {"wind"};
+
+#endif

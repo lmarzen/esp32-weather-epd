@@ -104,7 +104,10 @@ const float CRIT_LOW_BATTERY_VOLTAGE = 3.00; // (volts)
 const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 30;  // (minutes)
 const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
 
-// LANGUAGE
+// E-PAPER PANEL
+// see config.h
+
+// LOCALE
 // see config.h
 
 // UNITS

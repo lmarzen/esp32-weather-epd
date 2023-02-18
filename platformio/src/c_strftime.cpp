@@ -5,13 +5,12 @@
 #include <cstring>
 
 #include "c_strftime.h"
-#include "config.h"
-#include LANGUAGE_HEADER
+#include "_locale.h"
 
 /* A modified implementation of ISO C library routine, strftime.
  *
- * This implementation has been modified to use language info from
- * LANGUAGE_HEADER instead of nl_langinfo.
+ * This implementation has been modified to use locale info from _locale.h 
+ * instead of nl_langinfo.
  *
  * This is modified version of a public domain strftime implementation that was
  * retrieved from https://github.com/arnoldrobbins/strftime/.

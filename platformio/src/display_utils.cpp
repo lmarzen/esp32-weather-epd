@@ -7,7 +7,7 @@
 #include "c_strftime.h"
 #include "config.h"
 #include "display_utils.h"
-#include LANGUAGE_HEADER
+#include "_locale.h"
 
 // icon header files
 #include "icons/icons_16x16.h"
@@ -856,7 +856,7 @@ const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current,
  *
  * The purpose of this function is to return a relevant bitmap for an alert.
  * This is done by searching the event text for key terminology defined in the 
- * included language header.
+ * included locale header.
  * If a relevant category can not be determined, the default alert bitmap will 
  * be returned. (warning triangle icon)
  */
@@ -902,7 +902,7 @@ const uint8_t *getAlertBitmap32(owm_alerts_t &alert)
  *
  * The purpose of this function is to return a relevant bitmap for an alert.
  * This is done by searching the event text for key terminology defined in the 
- * included language header.
+ * included locale header.
  * If a relevant category can not be determined, the default alert bitmap will 
  * be returned. (warning triangle icon)
  */
@@ -964,7 +964,7 @@ bool containsTerminology(const String s, const std::vector<String> &terminology)
 /* Returns the category of an alert based on the terminology found in the event 
  * name.
  *
- * Weather alert terminology is defined in the included language header.
+ * Weather alert terminology is defined in the included locale header.
  */
 enum alert_category getAlertCategory(owm_alerts_t &alert)
 {
