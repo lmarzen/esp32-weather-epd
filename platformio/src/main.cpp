@@ -72,29 +72,29 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
     extraHoursUntilWake = 0;
   }
 
-  unsigned long sleepDuration;
+  uint64_t sleepDuration;
   if (extraHoursUntilWake == 0)
   { // align wake time to nearest multiple of SLEEP_DURATION
-    sleepDuration = SLEEP_DURATION * 60UL 
-                    - ((timeInfo->tm_min % SLEEP_DURATION) * 60UL 
+    sleepDuration = SLEEP_DURATION * 60ULL 
+                    - ((timeInfo->tm_min % SLEEP_DURATION) * 60ULL
                         + timeInfo->tm_sec);
   }
   else
   { // align wake time to the hour
-    sleepDuration = extraHoursUntilWake * 3600UL
-                    - (timeInfo->tm_min * 60UL + timeInfo->tm_sec);
+    sleepDuration = extraHoursUntilWake * 3600ULL
+                    - (timeInfo->tm_min * 60ULL + timeInfo->tm_sec);
   }
 
   // if we are within 2 minutes of the next alignment.
-  if (sleepDuration <= 120UL)
+  if (sleepDuration <= 120ULL)
   {
-    sleepDuration += SLEEP_DURATION * 60UL;
+    sleepDuration += SLEEP_DURATION * 60ULL;
   }
   
   // add extra delay to compensate for esp32's with fast RTCs.
-  sleepDuration = (unsigned long) (sleepDuration * 1.0067) + 5UL;
+  sleepDuration = (uint64_t) (sleepDuration * 1.0067) + 5ULL;
 
-  esp_sleep_enable_timer_wakeup(sleepDuration * 1000000);
+  esp_sleep_enable_timer_wakeup(sleepDuration * 1000000ULL);
   Serial.println("Awake for " 
                  + String((millis() - startTime) / 1000.0, 3) + "s");
   Serial.println("Deep-sleep for " + String(sleepDuration) + "s");
