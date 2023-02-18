@@ -42,7 +42,9 @@ Here are two examples utilizing various configuration options:
   - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed too quickly. To avoid this, E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times, which can be distracting.  
 
 
-- https://www.waveshare.com/product/7.5inch-e-paper-hat.htm
+- https://www.waveshare.com/product/7.5inch-e-paper-hat.htm (800x480, 7.5inch E-Ink display, Black/White)
+
+- Note that this project also now supports this 3-color panel as well, though the program will only draw black/white to the screen. https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm (800x480, 7.5inch E-Ink display, Red/Black/White) 
 
 
 FireBeetle 2 ESP32-E Microcontroller
@@ -66,7 +68,7 @@ FireBeetle 2 ESP32-E Microcontroller
   - FireBeetle ESP32 models include onboard circuitry to monitor battery voltage of a battery connected to its JST-PH2.0 connector.
 
 
-- https://www.dfrobot.com/product-2195.html
+- https://www.dfrobot.com/product-2195.html 
 
 
 BME280 - Pressure, Temperature, and Humidity Sensor
