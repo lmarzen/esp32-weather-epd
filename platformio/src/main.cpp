@@ -48,31 +48,37 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
     Serial.println(", referencing older time.");
   }
 
-  int extraHoursUntilWake;
-  if (BED_TIME < WAKE_TIME 
-   && timeInfo->tm_hour >= BED_TIME && timeInfo->tm_hour < WAKE_TIME)
+  uint64_t sleepDuration = 0;
+  int extraHoursUntilWake = 0;
+  int curHour = timeInfo->tm_hour;
+  
+  if (timeInfo->tm_min >= 58)
+  { // if we are within 2 minutes of the next hour, then round up for the
+    // purposes of bed time
+    curHour = (curHour + 1) % 24;
+    extraHoursUntilWake += 1;
+  }
+
+  if (BED_TIME < WAKE_TIME && curHour >= BED_TIME && curHour < WAKE_TIME)
   { // 0              B   v  W  24
     // |--------------zzzzZzz---|
-    extraHoursUntilWake = WAKE_TIME - timeInfo->tm_hour;
+    extraHoursUntilWake += WAKE_TIME - curHour;
   }
-  else if (BED_TIME > WAKE_TIME 
-   && timeInfo->tm_hour < WAKE_TIME)
+  else if (BED_TIME > WAKE_TIME && curHour < WAKE_TIME)
   { // 0 v W               B    24
     // |zZz----------------zzzzz|
-    extraHoursUntilWake = WAKE_TIME - timeInfo->tm_hour;
+    extraHoursUntilWake += WAKE_TIME - curHour;
   }
-  else if (BED_TIME > WAKE_TIME 
-   && timeInfo->tm_hour >= BED_TIME)
+  else if (BED_TIME > WAKE_TIME && curHour >= BED_TIME)
   { // 0   W               B  v 24
     // |zzz----------------zzzZz|
-    extraHoursUntilWake = WAKE_TIME - (timeInfo->tm_hour - 24);
+    extraHoursUntilWake += WAKE_TIME - (curHour - 24);
   }
   else // This feature is disabled (BED_TIME == WAKE_TIME)
   {    // OR it is not past BED_TIME
     extraHoursUntilWake = 0;
   }
 
-  uint64_t sleepDuration;
   if (extraHoursUntilWake == 0)
   { // align wake time to nearest multiple of SLEEP_DURATION
     sleepDuration = SLEEP_DURATION * 60ULL 
@@ -92,7 +98,7 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   }
   
   // add extra delay to compensate for esp32's with fast RTCs.
-  sleepDuration = (uint64_t) (sleepDuration * 1.0067) + 5ULL;
+  sleepDuration += 10ULL;
 
   esp_sleep_enable_timer_wakeup(sleepDuration * 1000000ULL);
   Serial.println("Awake for " 

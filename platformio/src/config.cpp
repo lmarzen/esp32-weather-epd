@@ -97,9 +97,10 @@ const char *NTP_SERVER_1 = "us.pool.ntp.org";
 const char *NTP_SERVER_2 = "time.nist.gov";
 // Sleep duration in minutes. (aka how often esp32 will wake for an update)
 // Aligned to the nearest minute boundary, so if 30 will always update at 00 or 
-// 30 past the hour.
+// 30 past the hour. (range: 0-59)
 const long SLEEP_DURATION = 30;
 // If BED_TIME == WAKE_TIME, then this battery saving feature will be disabled.
+// (range: 0-23)
 const int BED_TIME  = 00; // Last update at 00:00 (midnight) until WAKE_TIME.
 const int WAKE_TIME = 06; // Hour of first update after BED_TIME, 06:00.
 
