@@ -1,4 +1,4 @@
-/* Declarations for AQI library for pollutant-concentration-to-aqi.
+/* AQI library declarations for pollutant-concentration-to-aqi.
  * Copyright (C) 2022-2023  Luke Marzen
  *
  * This library is free software; you can redistribute it and/or
