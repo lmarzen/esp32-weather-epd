@@ -1,4 +1,4 @@
-/* Declarations for configuration options for esp32-weather-epd.
+/* Configuration option declarations for esp32-weather-epd.
  * Copyright (C) 2022-2023  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify

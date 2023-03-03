@@ -1,4 +1,4 @@
-/* Declarations for custom strftime for esp32-weather-epd.
+/* Custom strftime declaration for esp32-weather-epd.
  * Copyright (C) 2023  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify

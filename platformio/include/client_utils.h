@@ -1,4 +1,4 @@
-/* Declarations for client side utilities for esp32-weather-epd.
+/* Client side utility declarations for esp32-weather-epd.
  * Copyright (C) 2022-2023  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
