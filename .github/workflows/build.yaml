@@ -8,7 +8,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        locations: [platformio]
 
     steps:
       - uses: actions/checkout@v3
@@ -25,4 +30,4 @@ jobs:
         run: pip install --upgrade platformio
 
       - name: Build PlatformIO Project
-        run: pio run
+        run: pio run -d ${{ matrix.locations }}
