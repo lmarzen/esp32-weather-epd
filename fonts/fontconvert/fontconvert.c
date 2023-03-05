@@ -51,7 +51,7 @@ void enbit(uint8_t value) {
 }
 
 int main(int argc, char *argv[]) {
-  int i, j, err, size, first = ' ', last = '~', bitmapOffset = 0, x, y, byte;
+  int i, j, err, size, first = ' ', last = 255, bitmapOffset = 0, x, y, byte;
   char *fontName, c, *ptr;
   FT_Library library;
   FT_Face face;
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
   //   fontconvert [filename] [size] [last char]
   //   fontconvert [filename] [size] [first char] [last char]
   // Unless overridden, default first and last chars are
-  // ' ' (space) and '~', respectively
+  // ' ' (space) and 255, respectively
 
   if (argc < 3) {
     fprintf(stderr, "Usage: %s fontfile size [first] [last]\n", argv[0]);
@@ -214,14 +214,14 @@ int main(int argc, char *argv[]) {
            table[j].yOffset);
     if (i < last) {
       printf(",   // 0x%02X", i);
-      if ((i >= ' ') && (i <= '~')) {
+      if ((i >= ' ') && (i <= 255)) {
         printf(" '%c'", i);
       }
       putchar('\n');
     }
   }
   printf(" }; // 0x%02X", last);
-  if ((last >= ' ') && (last <= '~'))
+  if ((last >= ' ') && (last <= 255))
     printf(" '%c'", last);
   printf("\n\n");
 

@@ -62,17 +62,17 @@ cd ../
 FONT=$(basename ${1%%.*})
 for SI in ${SIZES[*]}
   do
-  OUTFILE=$OUTPUT_PATH$FONT$SI"pt7b.h"
+  OUTFILE=$OUTPUT_PATH$FONT$SI"pt8b.h"
   echo "fontconvert $REMAP_OUT $SI > $OUTFILE"
   ./fontconvert/fontconvert $REMAP_OUT $SI > $OUTFILE
-  sed -i "s/_remap${SI}pt7b/${SI}pt7b/g" $OUTFILE
+  sed -i "s/_remap${SI}pt8b/${SI}pt8b/g" $OUTFILE
 done
 for SI in ${TEMPERATURE_SIZES[*]}
   do
   OUTFILE=$OUTPUT_PATH$FONT$SI"pt_temperature.h"
   echo "fontconvert $SUBSET_OUT $SI > $OUTFILE"
   ./fontconvert/fontconvert $SUBSET_OUT $SI > $OUTFILE
-  sed -i "s/_temperature_set${SI}pt7b/${SI}pt_temperature/g" $OUTFILE
+  sed -i "s/_temperature_set${SI}pt8b/${SI}pt_temperature/g" $OUTFILE
 done
 
 # clean up

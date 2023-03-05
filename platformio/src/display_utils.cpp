@@ -22,8 +22,8 @@
 #include <aqi.h>
 
 #include "_locale.h"
+#include "_strftime.h"
 #include "api_response.h"
-#include "c_strftime.h"
 #include "config.h"
 #include "display_utils.h"
 
@@ -98,7 +98,7 @@ const uint8_t *getBatBitmap24(int batPercent)
 void getDateStr(String &s, tm *timeInfo)
 {
   char buf[48] = {};
-  c_strftime(buf, sizeof(buf), DATE_FORMAT, timeInfo);
+  _strftime(buf, sizeof(buf), DATE_FORMAT, timeInfo);
   s = buf;
 
   // remove double spaces. %e will add an extra space, ie. " 1" instead of "1"
@@ -117,7 +117,7 @@ void getRefreshTimeStr(String &s, bool timeSuccess, tm *timeInfo)
   }
   
   char buf[48] = {};
-  c_strftime(buf, sizeof(buf), REFRESH_TIME_FORMAT, timeInfo);
+  _strftime(buf, sizeof(buf), REFRESH_TIME_FORMAT, timeInfo);
   s = buf;
 
   // remove double spaces.
