@@ -4,11 +4,6 @@ This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 
 
 The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
 
-
-There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
-
-The hourly outlook graph (bottom right) shows a line indicating temperature and shaded bars indicating probability of precipitation.
-
 <p float="left">
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
   <img src="showcase/assembled-demo-raleigh-side.jpg" width="49%" />
@@ -17,8 +12,11 @@ The hourly outlook graph (bottom right) shows a line indicating temperature and 
   <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49%" /> 
 </p>
 
-
 I made a small stand by hollowing out a piece of wood from the bottom. On the back, I used a short USB extension cable so that I can charge the battery without needing to remove the components from the stand. I also wired a small reset button to refresh the display manually. Additionally, I 3d printed a cover for the bottom, which is held on by magnets. The E-paper screen is very thin, so I used a thin piece of acrylic to support it.
+
+There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
+
+The hourly outlook graph (bottom right) shows a line indicating temperature and shaded bars indicating probability of precipitation.
 
 Here are two examples utilizing various configuration options:
 
