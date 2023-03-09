@@ -107,10 +107,9 @@ Cut the low power pad for even longer battery life.
 
   > Low Power Pad: This pad is specially designed for low power consumption. It is connected by default. You can cut off the thin wire in the middle with a knife to disconnect it. After disconnection, the static power consumption can be reduced by 500 μA. The power consumption can be reduced to 13 μA after controlling the maincontroller enter the sleep mode through the program. Note: when the pad is disconnected, you can only drive RGB LED light via the USB Power supply. 
 
-![Wiring Diagram](showcase/wiring_diagram.png)
-
 <p float="left">
-  <img src="showcase/demo-tucson.jpg" width="49%" />
+  <img src="showcase/wiring_diagram.png" width="66%" />
+  <img src="showcase/demo-tucson.jpg" width="32%" />
 </p>
 
 
