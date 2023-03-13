@@ -215,7 +215,7 @@ This error screen appears when the esp32 fails to fetch the time from NTP_SERVER
 
 esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENSE) with tools, fonts, and icons whose licenses are as follows:
 
-| Name                                                                                                          | License                                                                               | Notes                                                                              |
+| Name                                                                                                          | License                                                                               | Description                                                                        |
 |---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
 | [GNU FreeFont: FreeSans](https://www.gnu.org/software/freefont/)                                              | [GNU General Public License v3.0](https://www.gnu.org/software/freefont/license.html) | OpenType Font (.otf)                                                               |
 | [Adafruit-GFX-Library: fontconvert](https://github.com/adafruit/Adafruit-GFX-Library/tree/master/fontconvert) | [BSD License](fonts/fontconvert/license.txt)                                          | CLI tool for preprocessing fonts to be used with the Adafruit_GFX Arduino library. |
