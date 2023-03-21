@@ -48,7 +48,7 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
     Serial.println(", referencing older time.");
   }
 
-  uint64_t sleepDuration = 0;
+  unsigned long long sleepDuration = 0;
   int extraHoursUntilWake = 0;
   int curHour = timeInfo->tm_hour;
   
