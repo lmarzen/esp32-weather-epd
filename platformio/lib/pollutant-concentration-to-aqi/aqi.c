@@ -2291,27 +2291,27 @@ const char *australia_aqi_desc(int aqi)
 {
   if (aqi <= 33)
   {
-    return "Very Good";
+    return AUSTRALIA_AQI_TXT[0];
   }
   else if (aqi <= 66)
   {
-    return "Good";
+    return AUSTRALIA_AQI_TXT[1];
   }
   else if (aqi <= 99)
   {
-    return "Fair";
+    return AUSTRALIA_AQI_TXT[2];
   }
   else if (aqi <= 149)
   {
-    return "Poor";
+    return AUSTRALIA_AQI_TXT[3];
   }
   else if (aqi <= 200)
   {
-    return "Very Poor";
+    return AUSTRALIA_AQI_TXT[4];
   }
   else
   {
-    return "Hazardous";
+    return AUSTRALIA_AQI_TXT[5];
   }
 } // end australia_aqi_desc
 
@@ -2322,19 +2322,19 @@ const char *canada_aqhi_desc(int aqhi)
 {
   if (aqhi <= 4)
   {
-    return "Low";
+    return CANADA_AQHI_TXT[0];
   }
   else if (aqhi <= 6)
   {
-    return "Moderate";
+    return CANADA_AQHI_TXT[1];
   }
   else if (aqhi <= 10)
   {
-    return "High";
+    return CANADA_AQHI_TXT[2];
   }
   else
   {
-    return "Very High";
+    return CANADA_AQHI_TXT[3];
   }
 } // end canada_aqhi_desc
 
@@ -2345,23 +2345,23 @@ const char *europe_caqi_desc(int caqi)
 {
   if (caqi <= 25)
   {
-    return "Very Low";
+    return EUROPE_CAQI_TXT[0];
   }
   else if (caqi <= 50)
   {
-    return "Low";
+    return EUROPE_CAQI_TXT[1];
   }
   else if (caqi <= 75)
   {
-    return "Medium";
+    return EUROPE_CAQI_TXT[2];
   }
   else if (caqi <= 100)
   {
-    return "High";
+    return EUROPE_CAQI_TXT[3];
   }
   else
   {
-    return "Very High";
+    return EUROPE_CAQI_TXT[4];
   }
 } // end europe_caqi_desc
 
@@ -2372,23 +2372,23 @@ const char *hong_kong_aqhi_desc(int aqhi)
 {
   if (aqhi <= 3)
   {
-    return "Low";
+    return HONG_KONG_AQHI_TXT[0];
   }
   else if (aqhi <= 6)
   {
-    return "Moderate";
+    return HONG_KONG_AQHI_TXT[1];
   }
   else if (aqhi <= 7)
   {
-    return "High";
+    return HONG_KONG_AQHI_TXT[2];
   }
   else if (aqhi <= 10)
   {
-    return "Very High";
+    return HONG_KONG_AQHI_TXT[3];
   }
   else
   {
-    return "Hazardous";
+    return HONG_KONG_AQHI_TXT[4];
   }
 } // end hong_kong_aqhi_desc
 
@@ -2399,27 +2399,27 @@ const char *india_aqi_desc(int aqi)
 {
   if (aqi <= 50)
   {
-    return "Good";
+    return INDIA_AQI_TXT[0];
   }
   else if (aqi <= 100)
   {
-    return "Satisfactory";
+    return INDIA_AQI_TXT[1];
   }
   else if (aqi <= 200)
   {
-    return "Moderate";
+    return INDIA_AQI_TXT[2];
   }
   else if (aqi <= 300)
   {
-    return "Poor";
+    return INDIA_AQI_TXT[3];
   }
   else if (aqi <= 400)
   {
-    return "Very Poor";
+    return INDIA_AQI_TXT[4];
   }
   else
   {
-    return "Severe";
+    return INDIA_AQI_TXT[5];
   }
 } // end india_aqi_desc
 
@@ -2430,27 +2430,27 @@ const char *mainland_china_aqi_desc(int aqi)
 {
   if (aqi <= 50)
   {
-    return "Excellent";
+    return MAINLAND_CHINA_AQI_TXT[0];
   }
   else if (aqi <= 100)
   {
-    return "Good";
+    return MAINLAND_CHINA_AQI_TXT[1];
   }
   else if (aqi <= 150)
   {
-    return "Lightly Polluted";
+    return MAINLAND_CHINA_AQI_TXT[2];
   }
   else if (aqi <= 200)
   {
-    return "Moderately Polluted";
+    return MAINLAND_CHINA_AQI_TXT[3];
   }
   else if (aqi <= 300)
   {
-    return "Heavily Polluted";
+    return MAINLAND_CHINA_AQI_TXT[4];
   }
   else
   {
-    return "Severely Polluted";
+    return MAINLAND_CHINA_AQI_TXT[5];
   }
 } // end mainland_china_aqi_desc
 
@@ -2461,23 +2461,23 @@ const char *singapore_psi_desc(int psi)
 {
   if (psi <= 50)
   {
-    return "Good";
+    return SINGAPORE_PSI_TXT[0];
   }
   else if (psi <= 100)
   {
-    return "Moderate";
+    return SINGAPORE_PSI_TXT[1];
   }
   else if (psi <= 200)
   {
-    return "Unhealthy";
+    return SINGAPORE_PSI_TXT[2];
   }
   else if (psi <= 300)
   {
-    return "Very Unhealthy";
+    return SINGAPORE_PSI_TXT[3];
   }
   else
   {
-    return "Hazardous";
+    return SINGAPORE_PSI_TXT[4];
   }
 } // end singapore_psi_desc
 
@@ -2488,19 +2488,19 @@ const char *south_korea_cai_desc(int cai)
 {
   if (cai <= 50)
   {
-    return "Good";
+    return SOUTH_KOREA_CAI_TXT[0];
   }
   else if (cai <= 100)
   {
-    return "Medium";
+    return SOUTH_KOREA_CAI_TXT[1];
   }
   else if (cai <= 250)
   {
-    return "Unhealthy";
+    return SOUTH_KOREA_CAI_TXT[2];
   }
   else
   {
-    return "Very Unhealthy";
+    return SOUTH_KOREA_CAI_TXT[3];
   }
 } // end south_korea_cai_desc
 
@@ -2511,19 +2511,19 @@ const char *united_kingdom_daqi_desc(int daqi)
 {
   if (daqi <= 3)
   {
-    return "Low";
+    return UNITED_KINGDOM_DAQI_TXT[0];
   }
   else if (daqi <= 6)
   {
-    return "Moderate";
+    return UNITED_KINGDOM_DAQI_TXT[1];
   }
   else if (daqi <= 9)
   {
-    return "High";
+    return UNITED_KINGDOM_DAQI_TXT[2];
   }
   else
   {
-    return "Very High";
+    return UNITED_KINGDOM_DAQI_TXT[3];
   }
 } // end united_kingdom_daqi_desc
 
@@ -2534,26 +2534,26 @@ const char *united_states_aqi_desc(int aqi)
 {
   if (aqi <= 50)
   {
-    return "Good";
+    return UNITED_STATES_AQI_TXT[0];
   }
   else if (aqi <= 100)
   {
-    return "Moderate";
+    return UNITED_STATES_AQI_TXT[1];
   }
   else if (aqi <= 150)
   {
-    return "Unhealthy for Sensitive Groups";
+    return UNITED_STATES_AQI_TXT[2];
   }
   else if (aqi <= 200)
   {
-    return "Unhealthy";
+    return UNITED_STATES_AQI_TXT[3];
   }
   else if (aqi <= 300)
   {
-    return "Very Unhealthy";
+    return UNITED_STATES_AQI_TXT[4];
   }
   else
   {
-    return "Hazardous";
+    return UNITED_STATES_AQI_TXT[5];
   }
 } // end united_states_aqi_desc

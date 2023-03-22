@@ -147,4 +147,89 @@ const std::vector<String> TERM_DUST =
 const std::vector<String> TERM_STRONG_WIND =
     {"wind"};
 
+// AIR QUALITY INDEX
+extern "C" {
+const char *AUSTRALIA_AQI_TXT[6] =
+{
+  "Very Good",
+  "Good",
+  "Fair",
+  "Poor",
+  "Very Poor",
+  "Hazardous",
+};
+const char *CANADA_AQHI_TXT[4] = 
+{
+  "Low",
+  "Moderate",
+  "High",
+  "Very High",
+};
+const char *EUROPE_CAQI_TXT[5] = 
+{
+  "Very Low",
+  "Low",
+  "Medium",
+  "High",
+  "Very High",
+};
+const char *HONG_KONG_AQHI_TXT[5] = 
+{
+  "Low",
+  "Moderate",
+  "High",
+  "Very High",
+  "Hazardous",
+};
+const char *INDIA_AQI_TXT[6] = 
+{
+  "Good",
+  "Satisfactory",
+  "Moderate",
+  "Poor",
+  "Very Poor",
+  "Severe",
+};
+const char *MAINLAND_CHINA_AQI_TXT[6] = 
+{
+  "Excellent",
+  "Good",
+  "Lightly Polluted",
+  "Moderately Polluted",
+  "Heavily Polluted",
+  "Severely Polluted",
+};
+const char *SINGAPORE_PSI_TXT[5] = 
+{
+  "Good",
+  "Moderate",
+  "Unhealthy",
+  "Very Unhealthy",
+  "Hazardous",
+};
+const char *SOUTH_KOREA_CAI_TXT[4] = 
+{
+  "Good",
+  "Medium",
+  "Unhealthy",
+  "Very Unhealthy",
+};
+const char *UNITED_KINGDOM_DAQI_TXT[4] = 
+{
+  "Low",
+  "Moderate",
+  "High",
+  "Very High",
+};
+const char *UNITED_STATES_AQI_TXT[6] = 
+{
+  "Good",
+  "Moderate",
+  "Unhealthy for Sensitive Groups",
+  "Unhealthy",
+  "Very Unhealthy",
+  "Hazardous",
+};
+} // end extern "C"
+
 #endif
