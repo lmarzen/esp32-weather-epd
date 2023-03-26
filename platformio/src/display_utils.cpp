@@ -567,7 +567,7 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
 {
   int id = daily.weather.id;
   // always using the day icon for weather forecast
-  // bool day = daily.weather.icon.charAt(daily.weather.icon.length() - 1) == 'd';
+  // bool day = current.weather.icon.endsWith("d");
   bool cloudy = daily.clouds > 60.25; // partly cloudy / partly sunny
 #ifdef UNITS_METRIC
   bool windy = (daily.wind_speed >= 32.2 || daily.wind_gust >= 40.2);
@@ -716,8 +716,7 @@ const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current,
 {
   int id = current.weather.id;
   // OpenWeatherMap indicates sun is up with d otherwise n for night
-  bool day = current.weather.icon.charAt(
-                                      current.weather.icon.length() - 1) == 'd';
+  bool day = current.weather.icon.endsWith("d");
   // moon is out if current time is after moonrise but before moonset
   // OR if moonrises after moonset and the current time is after moonrise
   bool moon = (current.dt >= today.moonrise && current.dt < today.moonset)
