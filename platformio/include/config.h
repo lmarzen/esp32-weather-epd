@@ -66,7 +66,7 @@
 // #define UNITED_KINGDOM_DAQI
 #define UNITED_STATES_AQI
 
-// WIND
+// WIND ICON PRECISION
 // The wind direction icon shown to the left of the wind speed can indicate wind
 // direction with a minimum error of ±0.5°. This uses more flash storage because
 // 360 24x24 wind direction icons must be stored, totaling ~25kB. For either
@@ -87,6 +87,16 @@
 #define WIND_DIRECTIONS_SECONDARY_INTERCARDINAL
 // #define WIND_DIRECTIONS_TERTIARY_INTERCARDINAL
 // #define WIND_DIRECTIONS_360
+
+/* DISABLE ALERTS
+ * The handling of alerts is complex. Each country has a unique national alert
+ * system that recieves alerts from many different government agencies. This 
+ * results is huge variance in the formatting of alerts. OpenWeatherMap provides
+ * alerts in English only. Any combination of these factors may make it
+ * undesirable to display alerts in some regions.
+ * Disable alerts by uncommenting the ALERTS_DISABLED macro.
+ */
+// define ALERTS_DISABLED
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;

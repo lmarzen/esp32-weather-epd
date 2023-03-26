@@ -293,9 +293,11 @@ void setup()
     drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0],
                           owm_air_pollution, inTemp, inHumidity);
     drawForecast(owm_onecall.daily, timeInfo);
-    drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
     drawLocationDate(CITY_STRING, dateStr);
     drawOutlookGraph(owm_onecall.hourly, timeInfo);
+#ifndef ALERTS_DISABLED
+    drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
+#endif // end ALERTS_DISABLED
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
   } while (display.nextPage());
   display.powerOff();

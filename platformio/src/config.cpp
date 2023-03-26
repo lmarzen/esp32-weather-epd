@@ -122,17 +122,11 @@ const float CRIT_LOW_BATTERY_VOLTAGE = 3.00; // (volts)
 const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 30;  // (minutes)
 const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
 
+// See config.h for the below options
 // E-PAPER PANEL
-// see config.h
-
 // LOCALE
-// see config.h
-
 // UNITS
-// see config.h
-
 // AIR QUALITY INDEX
-// see config.h
+// WIND ICON PRECISION
+// DISABLE ALERTS
 
-// WIND
-// see config.h
