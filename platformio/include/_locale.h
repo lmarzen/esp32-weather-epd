@@ -62,6 +62,30 @@ extern const char *TXT_WIFI_FAIR;
 extern const char *TXT_WIFI_WEAK;
 extern const char *TXT_WIFI_NO_CONNECTION;
 
+// UNIT SYMBOLS - TEMPERATURE
+extern const char *TXT_UNITS_TEMP_KELVIN;
+extern const char *TXT_UNITS_TEMP_CELSIUS;
+extern const char *TXT_UNITS_TEMP_FAHRENHEIT;
+// UNIT SYMBOLS - WIND SPEED
+extern const char *TXT_UNITS_SPEED_METERSPERSECOND;
+extern const char *TXT_UNITS_SPEED_FEETPERSECOND;
+extern const char *TXT_UNITS_SPEED_KILOMETERSPERHOUR;
+extern const char *TXT_UNITS_SPEED_MILESPERHOUR;
+extern const char *TXT_UNITS_SPEED_KNOTS;
+extern const char *TXT_UNITS_SPEED_BEAUFORT;
+// UNIT SYMBOLS - PRESSURE
+extern const char *TXT_UNITS_PRES_HECTOPASCALS;
+extern const char *TXT_UNITS_PRES_PASCALS;
+extern const char *TXT_UNITS_PRES_MILLIMETERSOFMERCURY;
+extern const char *TXT_UNITS_PRES_INCHESOFMERCURY;
+extern const char *TXT_UNITS_PRES_MILLIBARS;
+extern const char *TXT_UNITS_PRES_ATMOSPHERES;
+extern const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER;
+extern const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH;
+// UNITS - VISIBILITY DISTANCE
+extern const char *TXT_UNITS_DIST_KILOMETERS_METERS[2];
+extern const char *TXT_UNITS_DIST_MILES_FEET[2];
+
 // LAST REFRESH
 extern const char *TXT_UNKNOWN;
 

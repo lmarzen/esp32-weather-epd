@@ -72,6 +72,30 @@ const char *TXT_WIFI_FAIR          = "Fair";
 const char *TXT_WIFI_WEAK          = "Weak";
 const char *TXT_WIFI_NO_CONNECTION = "No Connection";
 
+// UNIT SYMBOLS - TEMPERATURE
+const char *TXT_UNITS_TEMP_KELVIN     = "K";
+const char *TXT_UNITS_TEMP_CELSIUS    = "C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "F";
+// UNIT SYMBOLS - WIND SPEED
+const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
+const char *TXT_UNITS_SPEED_FEETPERSECOND     = "ft/s";
+const char *TXT_UNITS_SPEED_KILOMETERSPERHOUR = "km/h";
+const char *TXT_UNITS_SPEED_MILESPERHOUR      = "mph";
+const char *TXT_UNITS_SPEED_KNOTS             = "kt";
+const char *TXT_UNITS_SPEED_BEAUFORT          = "";
+// UNIT SYMBOLS - PRESSURE
+const char *TXT_UNITS_PRES_HECTOPASCALS             = "hPa";
+const char *TXT_UNITS_PRES_PASCALS                  = "Pa";
+const char *TXT_UNITS_PRES_MILLIMETERSOFMERCURY     = "mmHg";
+const char *TXT_UNITS_PRES_INCHESOFMERCURY          = "inHg";
+const char *TXT_UNITS_PRES_MILLIBARS                = "mbar";
+const char *TXT_UNITS_PRES_ATMOSPHERES              = "atm";
+const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "gm/sq cm";
+const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/sq in";
+// UNITS - VISIBILITY DISTANCE
+const char *TXT_UNITS_DIST_KILOMETERS_METERS[2] = {"km", "m"};
+const char *TXT_UNITS_DIST_MILES_FEET[2]        = {"mi", "ft"};
+
 // LAST REFRESH
 const char *TXT_UNKNOWN = "Unknown";
 

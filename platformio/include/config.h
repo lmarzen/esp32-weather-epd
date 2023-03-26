@@ -36,18 +36,49 @@
 
 // LOCALE
 // If your locale is not here, you can add it by copying and modifying one of
-// the files in src/locales. Feel free to create a pull request to add
+// the files in src/locales. Please feel free to create a pull request to add
 // official support for your locale.
 // Uncomment your preferred locale. (exactly 1 must be defined)
 // #define LOCALE_EN_GB
 #define LOCALE_EN_US
 
 // UNITS
-// Select either metric or imperial units
-// https://openweathermap.org/api/one-call-api#data
-// Uncomment your preferred units. (exactly 1 must be defined)
-// #define UNITS_METRIC
-#define UNITS_IMPERIAL
+// Define exactly one macro for each unit below.
+
+// UNITS - TEMPERATURE
+//   Metric   : Celsius
+//   Imperial : Fahrenheit
+// #define UNITS_TEMP_KELVIN
+// #define UNITS_TEMP_CELSIUS
+#define UNITS_TEMP_FAHRENHEIT
+
+// UNITS - WIND SPEED
+//   Metric   : Kilometers per Hour
+//   Imperial : Miles per Hour
+// #define UNITS_SPEED_METERSPERSECOND
+// #define UNITS_SPEED_FEETPERSECOND
+// #define UNITS_SPEED_KILOMETERSPERHOUR
+#define UNITS_SPEED_MILESPERHOUR
+// #define UNITS_SPEED_KNOTS
+// #define UNITS_SPEED_BEAUFORT
+
+// UNITS - PRESSURE
+//   Metric   : Millibar
+//   Imperial : Inches of Mercury
+// #define UNITS_PRES_HECTOPASCALS
+// #define UNITS_PRES_PASCALS
+// #define UNITS_PRES_MILLIMETERSOFMERCURY
+#define UNITS_PRES_INCHESOFMERCURY
+// #define UNITS_PRES_MILLIBARS
+// #define UNITS_PRES_ATMOSPHERES
+// #define UNITS_PRES_GRAMSPERSQUARECENTIMETER
+// #define UNITS_PRES_POUNDSPERSQUAREINCH
+
+// UNITS - VISIBILITY DISTANCE
+//   Metric   : Kilometers & Meters
+//   Imperial : Miles & Feet
+// #define UNITS_DIST_KILOMETERS_METERS
+#define UNITS_DIST_MILES_FEET
 
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).

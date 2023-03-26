@@ -124,17 +124,9 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
   int attempts = 0;
   bool rxSuccess = false;
   DeserializationError jsonErr = {};
-#ifdef UNITS_METRIC
-  const char unitsStr[] = "metric";
-#endif // end UNITS_METRIC
-#ifdef UNITS_IMPERIAL
-  const char unitsStr[] = "imperial";
-#endif // end UNITS_IMPERIAL
-
   String uri = "/data/" + OWM_ONECALL_VERSION
-               + "/onecall?lat=" + LAT + "&lon=" + LON
-               + "&units=" + unitsStr + "&lang=" + OWM_LANG
-               + "&exclude=minutely&appid=" + OWM_APIKEY;
+               + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG 
+               + "&units=standard&exclude=minutely&appid=" + OWM_APIKEY;
 
   int httpResponse = 0;
   while (!rxSuccess && attempts < 3)
@@ -188,7 +180,6 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
   char startStr[22];
   sprintf(endStr, "%lld", end);
   sprintf(startStr, "%lld", start);
-
   String uri = "/data/2.5/air_pollution/history?lat=" + LAT + "&lon=" + LON
                + "&start=" + startStr + "&end=" + endStr
                + "&appid=" + OWM_APIKEY;
