@@ -297,7 +297,7 @@ void setup()
     drawOutlookGraph(owm_onecall.hourly, timeInfo);
 #ifndef ALERTS_DISABLED
     drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
-#endif // end ALERTS_DISABLED
+#endif
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
   } while (display.nextPage());
   display.powerOff();

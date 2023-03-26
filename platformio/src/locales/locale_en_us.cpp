@@ -73,9 +73,9 @@ const char *TXT_WIFI_WEAK          = "Weak";
 const char *TXT_WIFI_NO_CONNECTION = "No Connection";
 
 // UNIT SYMBOLS - TEMPERATURE
-const char *TXT_UNITS_TEMP_KELVIN     = "K";
-const char *TXT_UNITS_TEMP_CELSIUS    = "C";
-const char *TXT_UNITS_TEMP_FAHRENHEIT = "F";
+const char *TXT_UNITS_TEMP_KELVIN     = "`K";
+const char *TXT_UNITS_TEMP_CELSIUS    = "`C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "`F";
 // UNIT SYMBOLS - WIND SPEED
 const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
 const char *TXT_UNITS_SPEED_FEETPERSECOND     = "ft/s";
@@ -90,11 +90,11 @@ const char *TXT_UNITS_PRES_MILLIMETERSOFMERCURY     = "mmHg";
 const char *TXT_UNITS_PRES_INCHESOFMERCURY          = "inHg";
 const char *TXT_UNITS_PRES_MILLIBARS                = "mbar";
 const char *TXT_UNITS_PRES_ATMOSPHERES              = "atm";
-const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "gm/sq cm";
-const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/sq in";
+const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "g/cm\xB2";
+const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/in\xB2";
 // UNITS - VISIBILITY DISTANCE
-const char *TXT_UNITS_DIST_KILOMETERS_METERS[2] = {"km", "m"};
-const char *TXT_UNITS_DIST_MILES_FEET[2]        = {"mi", "ft"};
+const char *TXT_UNITS_DIST_KILOMETERS = "km";
+const char *TXT_UNITS_DIST_MILES      = "mi";
 
 // LAST REFRESH
 const char *TXT_UNKNOWN = "Unknown";

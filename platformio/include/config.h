@@ -63,7 +63,7 @@
 // #define UNITS_SPEED_BEAUFORT
 
 // UNITS - PRESSURE
-//   Metric   : Millibar
+//   Metric   : Millibars
 //   Imperial : Inches of Mercury
 // #define UNITS_PRES_HECTOPASCALS
 // #define UNITS_PRES_PASCALS
@@ -75,10 +75,10 @@
 // #define UNITS_PRES_POUNDSPERSQUAREINCH
 
 // UNITS - VISIBILITY DISTANCE
-//   Metric   : Kilometers & Meters
-//   Imperial : Miles & Feet
-// #define UNITS_DIST_KILOMETERS_METERS
-#define UNITS_DIST_MILES_FEET
+//   Metric   : Kilometers
+//   Imperial : Miles
+// #define UNITS_DIST_KILOMETERS
+#define UNITS_DIST_MILES
 
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).

@@ -18,25 +18,27 @@
 #ifndef __CONVERSIONS_H__
 #define __CONVERSIONS_H__
 
-inline float kelvin_to_celsius(float kelvin);
-inline float kelvin_to_fahrenheit(float kelvin);
+float kelvin_to_celsius(float kelvin);
+float kelvin_to_fahrenheit(float kelvin);
+float celsius_to_kelvin(float celsius);
+float celsius_to_fahrenheit(float celsius);
 
-inline float meterspersecond_to_feetpersecond(float meterspersecond);
-inline float meterspersecond_to_kilometersperhour(float meterspersecond);
-inline float meterspersecond_to_milesperhour(float meterspersecond);
-inline float meterspersecond_to_knots(float meterspersecond);
-inline int meterspersecond_to_beaufort(float meterspersecond);
+float meterspersecond_to_feetpersecond(float meterspersecond);
+float meterspersecond_to_kilometersperhour(float meterspersecond);
+float meterspersecond_to_milesperhour(float meterspersecond);
+float meterspersecond_to_knots(float meterspersecond);
+int meterspersecond_to_beaufort(float meterspersecond);
 
-inline float hectopascals_to_pascals(float hectopascals);
-inline float hectopascals_to_millimetersofmercury(float hectopascals);
-inline float hectopascals_to_inchesofmercury(float hectopascals);
-inline float hectopascals_to_millibars(float hectopascals);
-inline float hectopascals_to_atmospheres(float hectopascals);
-inline float hectopascals_to_gramspersquarecentimeter(float hectopascals);
-inline float hectopascals_to_poundspersquareinch(float hectopascals);
+float hectopascals_to_pascals(float hectopascals);
+float hectopascals_to_millimetersofmercury(float hectopascals);
+float hectopascals_to_inchesofmercury(float hectopascals);
+float hectopascals_to_millibars(float hectopascals);
+float hectopascals_to_atmospheres(float hectopascals);
+float hectopascals_to_gramspersquarecentimeter(float hectopascals);
+float hectopascals_to_poundspersquareinch(float hectopascals);
 
-inline float kilometers_to_meters(float kilometers);
-inline float kilometers_to_miles(float kilometers);
-inline float kilometers_to_feet(float kilometers);
+float meters_to_kilometers(float meters);
+float meters_to_miles(float meters);
+float meters_to_feet(float meters);
 
 #endif

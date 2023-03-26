@@ -19,89 +19,100 @@
 
 #include <cmath>
 
-inline float kelvin_to_celsius(float kelvin)
+float kelvin_to_celsius(float kelvin)
 {
-  return kelvin - 272.2f;
+  return kelvin - 273.15f;
 } // end kelvin_to_celsius
 
-inline float kelvin_to_fahrenheit(float kelvin)
+float kelvin_to_fahrenheit(float kelvin)
 {
-  return (kelvin - 273.15f) * (9.f / 5.f);
+  return kelvin * (9.f / 5.f) - 459.67f;
 } // end kelvin_to_fahrenheit
 
-inline float meterspersecond_to_feetpersecond(float meterspersecond)
+float celsius_to_kelvin(float celsius)
+{
+  return celsius + 273.15f;
+} // end celsius_to_kelvin
+
+float celsius_to_fahrenheit(float celsius)
+{
+  return celsius * (9.f / 5.f) + 32.f;
+} // end celsius_to_fahrenheit
+
+float meterspersecond_to_feetpersecond(float meterspersecond)
 {
   return meterspersecond * 3.281f;
 } // end meterspersecond_to_feetpersecond
 
-inline float meterspersecond_to_kilometersperhour(float meterspersecond)
+float meterspersecond_to_kilometersperhour(float meterspersecond)
 {
   return meterspersecond * 3.6f;
 } // end meterspersecond_to_kilometersperhour
 
-inline float meterspersecond_to_milesperhour(float meterspersecond)
+float meterspersecond_to_milesperhour(float meterspersecond)
 {
   return meterspersecond * 2.237f;
 } // end meterspersecond_to_milesperhour
 
-inline float meterspersecond_to_knots(float meterspersecond)
+float meterspersecond_to_knots(float meterspersecond)
 {
   return meterspersecond * 1.944f;
 } // end meterspersecond_to_knots
 
-inline int meterspersecond_to_beaufort(float meterspersecond)
+int meterspersecond_to_beaufort(float meterspersecond)
 {
-  int beaufort = (int) ((powf(0.836f, 2.f/3.f) * powf(meterspersecond, 2.f/3.f)) 
+  int beaufort = (int) ((powf( 1 / 0.836f, 2.f/3.f) 
+                         * powf(meterspersecond, 2.f/3.f))
                         + .5f);
   return beaufort > 12 ? 12 : beaufort;
 } // end meterspersecond_to_beaufort
 
-inline float hectopascals_to_pascals(float hectopascals)
+float hectopascals_to_pascals(float hectopascals)
 {
   return hectopascals * 100.f;
 } // end hectopascals_to_pascals
 
-inline float hectopascals_to_millimetersofmercury(float hectopascals)
+float hectopascals_to_millimetersofmercury(float hectopascals)
 {
   return hectopascals * 0.7501f;
 } // end hectopascals_to_millimetersofmercury
 
-inline float hectopascals_to_inchesofmercury(float hectopascals)
+float hectopascals_to_inchesofmercury(float hectopascals)
 {
   return hectopascals * 0.02953f;
 } // end hectopascals_to_inchesofmercury
 
-inline float hectopascals_to_millibars(float hectopascals)
+float hectopascals_to_millibars(float hectopascals)
 {
   return hectopascals * 1.f;
 } // end hectopascals_to_millibars
 
-inline float hectopascals_to_atmospheres(float hectopascals)
+float hectopascals_to_atmospheres(float hectopascals)
 {
   return hectopascals * 9.869e-4f;
 } // end hectopascals_to_atmospheres
 
-inline float hectopascals_to_gramspersquarecentimeter(float hectopascals)
+float hectopascals_to_gramspersquarecentimeter(float hectopascals)
 {
   return hectopascals * 1.02f;
 } // end hectopascals_to_gramspersquarecentimeter
 
-inline float hectopascals_to_poundspersquareinch(float hectopascals)
+float hectopascals_to_poundspersquareinch(float hectopascals)
 {
   return hectopascals * 0.0145f;
 } // end hectopascals_to_poundspersquareinch
 
-inline float kilometers_to_meters(float kilometers)
+float meters_to_kilometers(float meters)
 {
-  return kilometers * 1000.f;
-} // end kilometers_to_meters
+  return meters * 0.001f;
+} // end meters_to_kilometers
 
-inline float kilometers_to_miles(float kilometers)
+float meters_to_miles(float meters)
 {
-  return kilometers * 0.6214f;
-} // end kilometers_to_miles
+  return meters * 6.214e-4f;
+} // end meters_to_miles
 
-inline float kilometers_to_feet(float kilometers)
+float meters_to_feet(float meters)
 {
-  return kilometers * 3280.84f;
-} // end kilometers_to_feet
+  return meters * 3.281f;
+} // end meters_to_feet

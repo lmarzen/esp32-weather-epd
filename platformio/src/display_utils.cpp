@@ -569,8 +569,8 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
   // always using the day icon for weather forecast
   // bool day = current.weather.icon.endsWith("d");
   bool cloudy = daily.clouds > 60.25; // partly cloudy / partly sunny
-  bool windy = (current.wind_speed >= 32.2 /*m/s*/
-             || current.wind_gust  >= 40.2 /*m/s*/);
+  bool windy = (daily.wind_speed >= 32.2 /*m/s*/
+             || daily.wind_gust  >= 40.2 /*m/s*/);
 
   switch (id)
   {
