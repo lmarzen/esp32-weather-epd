@@ -264,7 +264,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   // current feels like
 #ifdef UNITS_TEMP_KELVIN
   dataStr = String(TXT_FEELS_LIKE) + ' ' 
-            + String(static_cast<int>(round(current.feels_like))) + '`';
+            + String(static_cast<int>(round(current.feels_like)));
 #endif
 #ifdef UNITS_TEMP_CELSIUS
   dataStr = String(TXT_FEELS_LIKE) + ' ' 
@@ -433,20 +433,22 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   if (!isnan(inTemp))
   {
 #ifdef UNITS_TEMP_KELVIN
-    dataStr = String(static_cast<int>(round(celsius_to_kelvin(inTemp)))) + "`";
+    dataStr = String(static_cast<int>(round(celsius_to_kelvin(inTemp))));
 #endif
 #ifdef UNITS_TEMP_CELSIUS
-    dataStr = String(static_cast<int>(round(inTemp))) + "`";
+    dataStr = String(static_cast<int>(round(inTemp)));
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
-    dataStr = String(static_cast<int>(round(celsius_to_fahrenheit(inTemp)))) 
-              + "`";
+    dataStr = String(static_cast<int>(round(celsius_to_fahrenheit(inTemp))));
 #endif
   }
   else
   {
-    dataStr = "--`";
+    dataStr = "--";
   }
+#if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
+  dataStr += "`";
+#endif
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
 
   // sunset
@@ -588,8 +590,8 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
     display.setFont(&FreeSans8pt8b);
     drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
 #ifdef UNITS_TEMP_KELVIN
-  hiStr = String(static_cast<int>(round(daily[i].temp.max))) + "`";
-  loStr = String(static_cast<int>(round(daily[i].temp.min))) + "`";
+  hiStr = String(static_cast<int>(round(daily[i].temp.max)));
+  loStr = String(static_cast<int>(round(daily[i].temp.min)));
 #endif
 #ifdef UNITS_TEMP_CELSIUS
   hiStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.max)
@@ -802,7 +804,10 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     int yTick = static_cast<int>(yPos0 + (i * yInterval));
     display.setFont(&FreeSans8pt8b);
     // Temperature
-    dataStr = String(tempBoundMax - (i * yTempMajorTicks)) + "`";
+    dataStr = String(tempBoundMax - (i * yTempMajorTicks));
+#if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
+    dataStr += "`";
+#endif
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT);
 
     // PoP

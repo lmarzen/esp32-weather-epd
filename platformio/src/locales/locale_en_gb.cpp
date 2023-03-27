@@ -73,7 +73,7 @@ const char *TXT_WIFI_WEAK          = "Weak";
 const char *TXT_WIFI_NO_CONNECTION = "No Connection";
 
 // UNIT SYMBOLS - TEMPERATURE
-const char *TXT_UNITS_TEMP_KELVIN     = "`K";
+const char *TXT_UNITS_TEMP_KELVIN     = "K";
 const char *TXT_UNITS_TEMP_CELSIUS    = "`C";
 const char *TXT_UNITS_TEMP_FAHRENHEIT = "`F";
 // UNIT SYMBOLS - WIND SPEED
