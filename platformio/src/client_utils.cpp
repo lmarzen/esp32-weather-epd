@@ -51,7 +51,8 @@ wl_status_t startWiFi(int &wifiRSSI)
   Serial.printf("Connecting to '%s'", WIFI_SSID);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-  unsigned long timeout = millis() + 10000; // timeout if wifi does not connect in 10s from now
+  // timeout if wifi does not connect in 10s from now
+  unsigned long timeout = millis() + 10000;
   wl_status_t connection_status = WiFi.status();
 
   while ((connection_status != WL_CONNECTED) && (millis() < timeout))
@@ -64,7 +65,8 @@ wl_status_t startWiFi(int &wifiRSSI)
 
   if (connection_status == WL_CONNECTED)
   {
-    wifiRSSI = WiFi.RSSI(); // get Wifi signal strength now, because the WiFi will be turned off to save power!
+    wifiRSSI = WiFi.RSSI(); // get Wifi signal strength now, because the WiFi
+                            // will be turned off to save power!
     Serial.println("IP: " + WiFi.localIP().toString());
   }
   else
@@ -107,7 +109,9 @@ bool printLocalTime(tm *timeInfo)
  */
 bool setupTime(tm *timeInfo)
 {
-  configTime(0, 0, NTP_SERVER_1, NTP_SERVER_2); // We will pass 0 for gmtOffset_sec and daylightOffset_sec and use setenv() for timezone offsets
+  // passing 0 for gmtOffset_sec and daylightOffset_sec and instead use setenv()
+  // for timezone offsets
+  configTime(0, 0, NTP_SERVER_1, NTP_SERVER_2);
   setenv("TZ", TIMEZONE, 1);
   tzset();
   return printLocalTime(timeInfo);
@@ -127,7 +131,14 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
   String uri = "/data/" + OWM_ONECALL_VERSION
                + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG 
                + "&units=standard&exclude=minutely&appid=" + OWM_APIKEY;
+  // This string is printed to terminal to help with debugging. The API key is
+  // censored to reduce the risk of users exposing thier key.
+  String sanitizedUri = OWM_ENDPOINT
+               + "/data/" + OWM_ONECALL_VERSION
+               + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG 
+               + "&units=standard&exclude=minutely&appid={API key}";
 
+  Serial.println("Attempting HTTP Request: " + sanitizedUri);
   int httpResponse = 0;
   while (!rxSuccess && attempts < 3)
   {
@@ -137,24 +148,21 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
     if (httpResponse == HTTP_CODE_OK)
     {
       jsonErr = deserializeOneCall(http.getStream(), r);
+      if (jsonErr)
+      {
+        rxSuccess = false;
+        // given a -100 offset to distiguish these errors from httpClient errors
+        httpResponse = -100 - static_cast<int>(jsonErr.code());
+      }
       rxSuccess = !jsonErr;
-    }
-    else
-    {
-      Serial.println("OpenWeatherMap One Call " + OWM_ONECALL_VERSION 
-        + " API error: " + String(httpResponse, DEC) + " " 
-        + getHttpResponsePhrase(httpResponse));
     }
     client.stop();
     http.end();
+    Serial.println("|-- " + String(httpResponse, DEC) + " "
+                   + getHttpResponsePhrase(httpResponse));
     ++attempts;
   }
 
-  if (httpResponse == HTTP_CODE_OK && jsonErr)
-  { // indicates client json DeserializationError
-    // given a -100 offset to distiguish these errors from http client errors
-    return -100 - static_cast<int>(jsonErr.code());
-  }
   return httpResponse;
 } // getOWMonecall
 
@@ -183,7 +191,14 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
   String uri = "/data/2.5/air_pollution/history?lat=" + LAT + "&lon=" + LON
                + "&start=" + startStr + "&end=" + endStr
                + "&appid=" + OWM_APIKEY;
+  // This string is printed to terminal to help with debugging. The API key is
+  // censored to reduce the risk of users exposing thier key.
+  String sanitizedUri = OWM_ENDPOINT +
+               "/data/2.5/air_pollution/history?lat=" + LAT + "&lon=" + LON
+               + "&start=" + startStr + "&end=" + endStr
+               + "&appid={API key}";
 
+  Serial.println("Attempting HTTP Request: " + sanitizedUri);
   int httpResponse = 0;
   while (!rxSuccess && attempts < 3)
   {
@@ -193,23 +208,19 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
     if (httpResponse == HTTP_CODE_OK)
     {
       jsonErr = deserializeAirQuality(http.getStream(), r);
+      if (jsonErr)
+      {
+        // given a -100 offset to distiguish these errors from httpClient errors
+        httpResponse = -100 - static_cast<int>(jsonErr.code());
+      }
       rxSuccess = !jsonErr;
-    }
-    else
-    {
-      Serial.println("OpenWeatherMap Air Pollution API error: " 
-        + String(httpResponse, DEC) + " " 
-        + getHttpResponsePhrase(httpResponse));
     }
     client.stop();
     http.end();
+    Serial.println("|-- " + String(httpResponse, DEC) + " "
+                   + getHttpResponsePhrase(httpResponse));
     ++attempts;
   }
 
-  if (httpResponse == HTTP_CODE_OK && jsonErr)
-  { // indicates client json DeserializationError
-    // given a -100 offset to distiguish these errors from http client errors
-    return -100 - static_cast<int>(jsonErr.code());
-  }
   return httpResponse;
 } // getOWMairpollution

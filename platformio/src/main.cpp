@@ -260,7 +260,7 @@ void setup()
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
   float inTemp     = NAN;
   float inHumidity = NAN;
-
+  Serial.print("Reading from BME280... ");
   TwoWire I2C_bme = TwoWire(0);
   Adafruit_BME280 bme;
 
@@ -276,11 +276,17 @@ void setup()
     //       displayed.
     if (isnan(inTemp) || isnan(inHumidity)) {
       statusStr = "BME read failed";
+      Serial.println(statusStr);
+    }
+    else
+    {
+      Serial.println("Success");
     }
   }
   else
   {
     statusStr = "BME not found"; // check wiring
+    Serial.println(statusStr);
   }
 
   // RENDER FULL REFRESH
@@ -312,3 +318,4 @@ void setup()
 void loop()
 {
 } // end loop
+
