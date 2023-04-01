@@ -41,6 +41,7 @@
 // Uncomment your preferred locale. (exactly 1 must be defined)
 // #define LOCALE_EN_GB
 #define LOCALE_EN_US
+// #define LOCALE_NL_BE
 
 // UNITS
 // Define exactly one macro for each unit below.
