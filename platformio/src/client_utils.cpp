@@ -158,7 +158,7 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
     }
     client.stop();
     http.end();
-    Serial.println("|-- " + String(httpResponse, DEC) + " "
+    Serial.println("  " + String(httpResponse, DEC) + " "
                    + getHttpResponsePhrase(httpResponse));
     ++attempts;
   }
@@ -217,7 +217,7 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
     }
     client.stop();
     http.end();
-    Serial.println("|-- " + String(httpResponse, DEC) + " "
+    Serial.println("  " + String(httpResponse, DEC) + " "
                    + getHttpResponsePhrase(httpResponse));
     ++attempts;
   }
