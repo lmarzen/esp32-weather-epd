@@ -1,4 +1,4 @@
-/* Locale settings declarations for esp32-weather-epd.
+/* Locale data declarations for esp32-weather-epd.
  * Copyright (C) 2022-2023  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,16 +21,21 @@
 #include <vector>
 #include <Arduino.h>
 
-// TIME/DATE (NL_LANGINFO)
-extern const char *LC_ABDAY[7];
-extern const char *LC_DAY[7];
-extern const char *LC_ABMON[12];
-extern const char *LC_MON[12];
-extern const char *LC_AM_PM[2];
+// LC_TIME
 extern const char *LC_D_T_FMT;
 extern const char *LC_D_FMT;
 extern const char *LC_T_FMT;
 extern const char *LC_T_FMT_AMPM;
+extern const char *LC_AM_STR;
+extern const char *LC_PM_STR;
+extern const char *LC_DAY[7];
+extern const char *LC_ABDAY[7];
+extern const char *LC_MON[12];
+extern const char *LC_ABMON[12];
+extern const char *LC_ERA;
+extern const char *LC_ERA_D_FMT;
+extern const char *LC_ERA_D_T_FMT;
+extern const char *LC_ERA_T_FMT;
 
 // OWM LANGUAGE
 extern const String OWM_LANG;
@@ -117,6 +122,7 @@ extern const std::vector<String> TERM_HURRICANE;
 extern const std::vector<String> TERM_DUST;
 extern const std::vector<String> TERM_STRONG_WIND;
 
+// AIR QUALITY INDEX
 extern "C" {
 extern const char *AUSTRALIA_AQI_TXT[6];
 extern const char *CANADA_AQHI_TXT[4]; 

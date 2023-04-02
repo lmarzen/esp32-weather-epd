@@ -39,9 +39,9 @@
 // the files in src/locales. Please feel free to create a pull request to add
 // official support for your locale.
 // Uncomment your preferred locale. (exactly 1 must be defined)
-// #define LOCALE_EN_GB
-#define LOCALE_EN_US
-// #define LOCALE_NL_BE
+// #define LOCALE_EN_GB  // British English
+#define LOCALE_EN_US     // American English
+// #define LOCALE_NL_BE  // Belgian Dutch
 
 // UNITS
 // Define exactly one macro for each unit below.
@@ -126,9 +126,9 @@
  * results is huge variance in the formatting of alerts. OpenWeatherMap provides
  * alerts in English only. Any combination of these factors may make it
  * undesirable to display alerts in some regions.
- * Disable alerts by uncommenting the ALERTS_DISABLED macro.
+ * Disable alerts by uncommenting the DISABLE_ALERTS macro.
  */
-// define ALERTS_DISABLED
+#define DISABLE_ALERTS
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;

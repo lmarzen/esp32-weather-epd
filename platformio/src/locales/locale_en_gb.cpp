@@ -1,4 +1,4 @@
-/* British English locale settings for esp32-weather-epd.
+/* British English locale data for esp32-weather-epd.
  * Copyright (C) 2022-2023  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,25 +23,53 @@
 #include <Arduino.h>
 #include "_locale.h"
 
-// TIME/DATE (NL_LANGINFO)
+// LC_TIME
 // locale-based information,
 // see https://man7.org/linux/man-pages/man3/nl_langinfo.3.html for more info.
-const char *LC_ABDAY[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-const char *LC_DAY[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", 
-                         "Thursday", "Friday", "Saturday"};
-const char *LC_ABMON[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-const char *LC_MON[12] = {"January",    "February", "March",    "April", 
-                           "May",       "June",     "July",     "August", 
-                           "September", "October",  "November", "December"};
-const char *LC_AM_PM[2] = {"AM", "PM"};
-const char *LC_D_T_FMT    = "%a %d %b %Y %T";
-const char *LC_D_FMT      = "%d/%m/%y";
-const char *LC_T_FMT      = "%H:%M:%S";
-const char *LC_T_FMT_AMPM = "%I:%M:%S %P";
+// Note to Translators:
+//   The LC_TIME definitions are included in the localedata/locales directory of
+//   the glibc source tree, in files named after the locale codes and encoding
+//   schemes. For example, the en_US locale data is stored in the
+//   localedata/locales/en_US file, which contains the definitions for date and
+//   time formats, month and day names, and other time-related settings for the
+//   LC_TIME category.
+//   https://www.gnu.org/software/libc/sources.html
+// D_T_FMT                 string for formatting date and time
+const char *LC_D_T_FMT     = "%a %d %b %Y %T %Z";
+// LC_D_FMT                date format string
+const char *LC_D_FMT       = "%d/%m/%y";
+// T_FMT                   time format string
+const char *LC_T_FMT       = "%T";
+// T_FMT_AMPM              a.m. or p.m. time format string
+const char *LC_T_FMT_AMPM  = "%l:%M:%S %P %Z";
+// AM_STR                  Ante Meridian affix
+const char *LC_AM_STR      = "am";
+// PM_STR                  Post Meridian affix
+const char *LC_PM_STR      = "pm";
+// DAY_{1-7}               name of the n-th day of the week
+const char *LC_DAY[7]      = {"Sunday", "Monday", "Tuesday", "Wednesday", 
+                              "Thursday", "Friday", "Saturday"};
+// ABDAY_{1-7}             abbreviated ame of the n-th day of the week
+const char *LC_ABDAY[7]    = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+// MON_{1-12}              name of the n-th month of the year
+const char *LC_MON[12]     = {"January",    "February", "March",    "April", 
+                               "May",       "June",     "July",     "August", 
+                               "September", "October",  "November", "December"};
+// ABMON_{1-12}            abbreviated name of the n-th month of the year
+const char *LC_ABMON[12]   = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+// ERA                     era description segments
+const char *LC_ERA         = "";
+// ERA_D_FMT               era date format string
+const char *LC_ERA_D_FMT   = "";
+// ERA_D_T_FMT             era date and time format string
+const char *LC_ERA_D_T_FMT = "";
+// ERA_T_FMT               era time format string
+const char *LC_ERA_T_FMT   = "";
 
 // OWM LANGUAGE
-// For full list of languages, see https://openweathermap.org/api/one-call-api#multi
+// For full list of languages, see 
+// https://openweathermap.org/api/one-call-api#multi
 // Note: "[only] The contents of the 'description' field will be translated."
 const String OWM_LANG = "en";
 
@@ -102,13 +130,20 @@ const char *TXT_UNKNOWN = "Unknown";
 // ALERTS
 // The display can show up to 2 alerts, but alerts can be unpredictible in
 // severity and number. If more than 2 alerts are active, the esp32 will attempt
-// to interpret the urgency of each alert and prefer to display the most urgent 
-// and recently issued alerts of each event type. Depending on your region 
+// to interpret the urgency of each alert and prefer to display the most urgent
+// and recently issued alerts of each event type. Depending on your region
 // different keywords are used to convey the level of urgency.
 //
 // A vector array is used to store these keywords. Urgency is ranked from low to
-// high where the first index of the vector is the least urgent keyword and the 
+// high where the first index of the vector is the least urgent keyword and the
 // last index is the most urgent keyword. Expected as all lowercase.
+//
+// Note to Translators:
+//   OpenWeatherMap returns alerts in English regardless of the OWM LANGUAGE
+//   option or territory. For this reason it is preferred that you do not
+//   translate text related to Alerts. Understandably, it may be undesirable to
+//   see English alerts in territories where English is uncommon. To satisify
+//   this, users should uncomment the DISABLE_ALERTS macro in config.h. 
 //
 // Here are a few examples, uncomment the array for your region (or create your 
 // own).

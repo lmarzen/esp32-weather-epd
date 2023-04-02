@@ -1,10 +1,27 @@
-/* A modified implementation of ISO C library routine, strftime.
+/* Custom strftime ISO C library routine for esp32-weather-epd.
+ * Copyright (C) 2023  Luke Marzen
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* An implementation of ISO C library routine, strftime.
+ *
+ * This implementation uses locale info from _locale.h rather than depending on
+ * system locale files.
  *
  * This is modified version of a public domain strftime implementation that
  * was retrieved from https://github.com/arnoldrobbins/strftime/.
- *
- * This implementation has been modified to use locale info from _locale.h 
- * instead of nl_langinfo.
  * 
  * The C99 standard now specifies just about all of the formats that were
  * additional in the earlier versions of this file.
@@ -14,7 +31,6 @@
  * For extensions from GNU, add GNU_EXT.
  *
  * The code for %X follows the C99 specification for the "C" locale.
- *
  * The code for %c, and %x follows the C11 specification for the "C" locale.
  * 
  * Note: No implementations for %z and %Z.
@@ -452,18 +468,18 @@ size_t _strftime(char *s, size_t maxsize, const char *format,
     case 'p': // am or pm based on 12-hour clock
       i = range(0, timeptr->tm_hour, 23);
       if (i < 12)
-        strcpy(tbuf, LC_AM_PM[0]);
+        strcpy(tbuf, LC_AM_STR);
       else
-        strcpy(tbuf, LC_AM_PM[1]);
+        strcpy(tbuf, LC_PM_STR);
       break;
 
 #ifdef GNU_EXT
     case 'P': // Like %p but in lowercase: "am" or "pm"
       i = range(0, timeptr->tm_hour, 23);
       if (i < 12)
-        strcpy(tbuf, LC_AM_PM[0]);
+        strcpy(tbuf, LC_AM_STR);
       else
-        strcpy(tbuf, LC_AM_PM[1]);
+        strcpy(tbuf, LC_PM_STR);
       i = 0;
       while(tbuf[i] != '\0' && i != sizeof(tbuf))
       {
