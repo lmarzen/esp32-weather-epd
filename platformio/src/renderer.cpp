@@ -23,7 +23,7 @@
 #include "conversions.h"
 #include "display_utils.h"
 
-// fonts (modified font files that have the degree symbol mapped to '`')
+// fonts
 #include "fonts/FreeSans4pt8b.h"
 #include "fonts/FreeSans5pt8b.h"
 #include "fonts/FreeSans6pt8b.h"
@@ -40,7 +40,7 @@
 #include "fonts/FreeSans22pt8b.h"
 #include "fonts/FreeSans24pt8b.h"
 #include "fonts/FreeSans26pt8b.h"
-// only has character set used for displaying temperature (0123456789.-`)
+// only has character set used for displaying temperature (0123456789.-\xB0)
 #include "fonts/FreeSans48pt_temperature.h"
 
 // icon header files
@@ -270,13 +270,13 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   dataStr = String(TXT_FEELS_LIKE) + ' ' 
             + String(static_cast<int>(round(
                      kelvin_to_celsius(current.feels_like))))
-            + '`';
+            + '\xB0';
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
   dataStr = String(TXT_FEELS_LIKE) + ' ' 
             + String(static_cast<int>(round(
                      kelvin_to_fahrenheit(current.feels_like))))
-            + '`';
+            + '\xB0';
 #endif
   display.setFont(&FreeSans12pt8b);
   drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, dataStr, CENTER);
@@ -447,7 +447,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
     dataStr = "--";
   }
 #if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
-  dataStr += "`";
+  dataStr += "\xB0";
 #endif
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
 
@@ -595,15 +595,15 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 #endif
 #ifdef UNITS_TEMP_CELSIUS
   hiStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.max)
-                 ))) + "`";
+                 ))) + "\xB0";
   loStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.min)
-                 ))) + "`";
+                 ))) + "\xB0";
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
   hiStr = String(static_cast<int>(round(kelvin_to_fahrenheit(daily[i].temp.max)
-                 ))) + "`";
+                 ))) + "\xB0";
   loStr = String(static_cast<int>(round(kelvin_to_fahrenheit(daily[i].temp.min)
-                 ))) + "`";
+                 ))) + "\xB0";
 #endif
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
     drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
@@ -806,7 +806,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     // Temperature
     dataStr = String(tempBoundMax - (i * yTempMajorTicks));
 #if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
-    dataStr += "`";
+    dataStr += "\xB0";
 #endif
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT);
 

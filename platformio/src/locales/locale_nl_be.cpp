@@ -108,8 +108,8 @@ const char *TXT_WIFI_NO_CONNECTION = "Geen Verbinding";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
-const char *TXT_UNITS_TEMP_CELSIUS    = "`C";
-const char *TXT_UNITS_TEMP_FAHRENHEIT = "`F";
+const char *TXT_UNITS_TEMP_CELSIUS    = "\xB0" "C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "\xB0" "F";
 // UNIT SYMBOLS - WIND SPEED
 const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
 const char *TXT_UNITS_SPEED_FEETPERSECOND     = "ft/s";

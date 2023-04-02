@@ -21,13 +21,13 @@ SIZES=(4 5 6 7 8 9 10 11 12 14 16 18 20 22 24 26)
 TEMPERATURE_SIZES=(48)
 
 # ascii hexidecimal value of the character to remap degree symbol to
-REMAP_CH="0x60"
+# REMAP_CH="0x60"
 
 # clean fonts output 
 echo "Cleaning $OUTPUT_PATH"
 rm $OUTPUT_PATH**.h
 
-REMAP_OUT="${1%%.*}_remap.${1##*.}"
+# REMAP_OUT="${1%%.*}_remap.${1##*.}"
 SUBSET_OUT="${1%%.*}_temperature_set.${1##*.}"
 # generate temperature display subset version of the font
 pyftsubset ${1} \
@@ -38,19 +38,19 @@ pyftsubset ${1} \
 # remap ` to degree symbol
 echo "Remapping degree symbol..."
 
-ttx ${1}
-REMAP_TTX="${1%%.*}_remap.ttx"
-mv "${1%%.*}.ttx" $REMAP_TTX
-sed -i "s/0xb0/${REMAP_CH}/g" $REMAP_TTX
-ttx -b $REMAP_TTX
-rm $REMAP_TTX
+# ttx ${1}
+# REMAP_TTX="${1%%.*}_remap.ttx"
+# mv "${1%%.*}.ttx" $REMAP_TTX
+# sed -i "s/0xb0/${REMAP_CH}/g" $REMAP_TTX
+# ttx -b $REMAP_TTX
+# rm $REMAP_TTX
 
-ttx $SUBSET_OUT
-rm $SUBSET_OUT
-SUBSET_TTX="${SUBSET_OUT%%.*}.ttx"
-sed -i "s/0xb0/${REMAP_CH}/g" $SUBSET_TTX
-ttx -b $SUBSET_TTX
-rm $SUBSET_TTX
+# ttx $SUBSET_OUT
+# rm $SUBSET_OUT
+# SUBSET_TTX="${SUBSET_OUT%%.*}.ttx"
+# sed -i "s/0xb0/${REMAP_CH}/g" $SUBSET_TTX
+# ttx -b $SUBSET_TTX
+# rm $SUBSET_TTX
 
 # build fontconvert
 cd fontconvert
@@ -63,9 +63,9 @@ FONT=$(basename ${1%%.*})
 for SI in ${SIZES[*]}
   do
   OUTFILE=$OUTPUT_PATH$FONT$SI"pt8b.h"
-  echo "fontconvert $REMAP_OUT $SI > $OUTFILE"
-  ./fontconvert/fontconvert $REMAP_OUT $SI > $OUTFILE
-  sed -i "s/_remap${SI}pt8b/${SI}pt8b/g" $OUTFILE
+  echo "fontconvert ${1} $SI > $OUTFILE"
+  ./fontconvert/fontconvert ${1} $SI > $OUTFILE
+  # sed -i "s/_remap${SI}pt8b/${SI}pt8b/g" $OUTFILE
 done
 for SI in ${TEMPERATURE_SIZES[*]}
   do
@@ -79,7 +79,7 @@ done
 cd fontconvert
 make clean
 cd ../
-echo "rm $REMAP_OUT"
-rm $REMAP_OUT
+# echo "rm $REMAP_OUT"
+# rm $REMAP_OUT
 echo "rm $SUBSET_OUT"
 rm $SUBSET_OUT

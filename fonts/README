@@ -31,7 +31,7 @@ What does this script do?
   the Adafruit GFX Library.
 
   2 font subsets will be generated:
-    1. ASCII
+    1. Extended ASCII (ISO-8859-1)
     2. Numbers (0-9), decimal point (.), dash (-), and the degree symbol (°)
 
   This is done to conserve EEPROM space. 
