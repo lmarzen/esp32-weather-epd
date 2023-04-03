@@ -17,7 +17,7 @@
 
 #include "config.h"
 
-#ifdef LOCALE_EN_GB
+#ifdef LOCALE_en_GB
 
 #include <vector>
 #include <Arduino.h>

@@ -23,7 +23,7 @@
 
 #include "config.h"
 
-#ifdef LOCALE_NL_BE
+#ifdef LOCALE_nl_BE
 
 #include <vector>
 #include <Arduino.h>
