@@ -15,42 +15,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-OUTPUT_PATH="./fonts/"
+SRC_FILES=src/*
+OUTPUT_PATH="./fonts"
 SIZES=(4 5 6 7 8 9 10 11 12 14 16 18 20 22 24 26)
 TEMPERATURE_SIZES=(48)
 
-# ascii hexidecimal value of the character to remap degree symbol to
-# REMAP_CH="0x60"
-
 # clean fonts output 
 echo "Cleaning $OUTPUT_PATH"
-rm $OUTPUT_PATH**.h
-
-# REMAP_OUT="${1%%.*}_remap.${1##*.}"
-SUBSET_OUT="${1%%.*}_temperature_set.${1##*.}"
-# generate temperature display subset version of the font
-pyftsubset ${1} \
-  --text="0123456789.-" \
-  --unicodes=U+00B0 \
-  --output-file=$SUBSET_OUT \
-
-# remap ` to degree symbol
-echo "Remapping degree symbol..."
-
-# ttx ${1}
-# REMAP_TTX="${1%%.*}_remap.ttx"
-# mv "${1%%.*}.ttx" $REMAP_TTX
-# sed -i "s/0xb0/${REMAP_CH}/g" $REMAP_TTX
-# ttx -b $REMAP_TTX
-# rm $REMAP_TTX
-
-# ttx $SUBSET_OUT
-# rm $SUBSET_OUT
-# SUBSET_TTX="${SUBSET_OUT%%.*}.ttx"
-# sed -i "s/0xb0/${REMAP_CH}/g" $SUBSET_TTX
-# ttx -b $SUBSET_TTX
-# rm $SUBSET_TTX
+rm -r $OUTPUT_PATH/*
 
 # build fontconvert
 cd fontconvert
@@ -58,28 +30,83 @@ make clean
 make
 cd ../
 
-# convert .otf/.ttf files to c-style arrays
-FONT=$(basename ${1%%.*})
-for SI in ${SIZES[*]}
+for fontfile in $SRC_FILES
   do
-  OUTFILE=$OUTPUT_PATH$FONT$SI"pt8b.h"
-  echo "fontconvert ${1} $SI > $OUTFILE"
-  ./fontconvert/fontconvert ${1} $SI > $OUTFILE
-  # sed -i "s/_remap${SI}pt8b/${SI}pt8b/g" $OUTFILE
-done
-for SI in ${TEMPERATURE_SIZES[*]}
-  do
-  OUTFILE=$OUTPUT_PATH$FONT$SI"pt_temperature.h"
-  echo "fontconvert $SUBSET_OUT $SI > $OUTFILE"
-  ./fontconvert/fontconvert $SUBSET_OUT $SI > $OUTFILE
-  sed -i "s/_temperature_set${SI}pt8b/${SI}pt_temperature/g" $OUTFILE
+  echo "$fontfile"
+
+  # ascii hexidecimal value of the character to remap degree symbol to
+  # REMAP_CH="0x60"
+
+  # REMAP_OUT="${fontfile%%.*}_remap.${fontfile##*.}"
+  SUBSET_OUT="${fontfile%%.*}_temperature_set.${fontfile##*.}"
+  # generate temperature display subset version of the font
+  pyftsubset ${fontfile} \
+    --text="0123456789.-" \
+    --unicodes=U+00B0 \
+    --output-file=$SUBSET_OUT \
+
+  # remap ` to degree symbol
+  # echo "Remapping degree symbol..."
+
+  # ttx ${fontfile}
+  # REMAP_TTX="${fontfile%%.*}_remap.ttx"
+  # mv "${fontfile%%.*}.ttx" $REMAP_TTX
+  # sed -i "s/0xb0/${REMAP_CH}/g" $REMAP_TTX
+  # ttx -b $REMAP_TTX
+  # rm $REMAP_TTX
+
+  # ttx $SUBSET_OUT
+  # rm $SUBSET_OUT
+  # SUBSET_TTX="${SUBSET_OUT%%.*}.ttx"
+  # sed -i "s/0xb0/${REMAP_CH}/g" $SUBSET_TTX
+  # ttx -b $SUBSET_TTX
+  # rm $SUBSET_TTX
+
+  # convert .otf/.ttf files to c-style arrays
+  FONT=$(basename ${fontfile%%.*})
+  mkdir $OUTPUT_PATH/$FONT
+  for SI in ${SIZES[*]}
+    do
+    OUTFILE=$OUTPUT_PATH/$FONT/$FONT"_"$SI"pt8b.h"
+    echo "fontconvert ${fontfile} $SI > $OUTFILE"
+    ./fontconvert/fontconvert ${fontfile} $SI > $OUTFILE
+    sed -i "s/${SI}pt8b/_${SI}pt8b/g" $OUTFILE
+    # sed -i "s/_remap${SI}pt8b/${SI}pt8b/g" $OUTFILE
+  done
+  for SI in ${TEMPERATURE_SIZES[*]}
+    do
+    OUTFILE=$OUTPUT_PATH/$FONT/$FONT"_"$SI"pt8b_temperature.h"
+    echo "fontconvert $SUBSET_OUT $SI > $OUTFILE"
+    ./fontconvert/fontconvert $SUBSET_OUT $SI > $OUTFILE
+    sed -i "s/_temperature_set${SI}pt8b/_${SI}pt8b_temperature/g" $OUTFILE
+  done
+
+  # clean up
+  echo "rm $SUBSET_OUT"
+  rm $SUBSET_OUT
+  # echo "rm $REMAP_OUT"
+  # rm $REMAP_OUT
+
+  # create header file (this will make fonts way easier to include)
+  HEADER_FILE=$OUTPUT_PATH/$FONT".h"
+  echo "#ifndef __FONTS_"${FONT^^}"_H__" >> $HEADER_FILE
+  echo "#define __FONTS_"${FONT^^}"_H__" >> $HEADER_FILE
+  for FILE in $OUTPUT_PATH/$FONT/*
+    do
+    echo "#include \"$FONT/`basename $FILE`\"" >> $HEADER_FILE
+  done
+  echo "" >> $HEADER_FILE
+  for FILE in $OUTPUT_PATH/$FONT/*
+    do
+    FONT_SUFFIX=$(echo "`basename $FILE .h`" | grep -oP '(?<=_)\w+')
+    echo "#define FONT_"$FONT_SUFFIX" `basename $FILE .h`" >> $HEADER_FILE
+  done
+  echo "#endif" >> $HEADER_FILE
+
 done
 
 # clean up
 cd fontconvert
 make clean
 cd ../
-# echo "rm $REMAP_OUT"
-# rm $REMAP_OUT
-echo "rm $SUBSET_OUT"
-rm $SUBSET_OUT
+

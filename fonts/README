@@ -21,10 +21,11 @@ How do I generate different sizes of fonts?
   in ttf_to_adafruit_gfx.sh there is an array called SIZES which specifies what
   size fonts should be generated.
 
+How do I add a generate files for a new font?
+  add the .ttf or .otf file to the ./src directory then run the script.
+
 To run this script execute the following command:
-  ./ttf_to_adafruit_gfx.sh /path/to/font.otf
-  To generate the font files used in this project, execute:
-  ./ttf_to_adafruit_gfx.sh FreeSans.otf
+  bash ttf_to_adafruit_gfx.sh
 
 What does this script do?
   This script converts ttf or otf (font) files to c-style arrays to be used by 

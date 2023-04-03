@@ -120,6 +120,36 @@
 // #define WIND_DIRECTIONS_TERTIARY_INTERCARDINAL
 // #define WIND_DIRECTIONS_360
 
+// FONTS
+// Change the font by selecting its corresponding header file.
+//
+// FONT                 HEADER FILE
+// FreeMono             "fonts/FreeMono.h"
+// FreeMonoBold         "fonts/FreeMonoBold.h"
+// FreeMonoBoldOblique  "fonts/FreeMonoBoldOblique.h"
+// FreeMonoOblique      "fonts/FreeMonoOblique.h"
+// FreeSans             "fonts/FreeSans.h"
+// FreeSansBold         "fonts/FreeSansBold.h"
+// FreeSansBoldOblique  "fonts/FreeSansBoldOblique.h"
+// FreeSansOblique      "fonts/FreeSansOblique.h"
+// FreeSerif            "fonts/FreeSerif.h"
+// FreeSerifBold        "fonts/FreeSerifBold.h"
+// FreeSerifBoldItalic  "fonts/FreeSerifBoldItalic.h"
+// FreeSerifItalic      "fonts/FreeSerifItalic.h"
+//
+// The fonts included in this project are from the GNU FreeFont family. 
+// GNU FreeFonts are licensed under the GNU General Public License v3.
+// https://www.gnu.org/software/freefont/
+//
+// Adding new fonts is relatively straightforward, see
+// esp32-weather-epd/fonts/README.
+//
+// Note:
+//   The layout of the display was designed around spacing and size of the GNU
+//   FreeSans font, but this project supports many more fonts. Using a font
+//   other than FreeSans may result in undesired spacing or artifacts.
+#define FONT_HEADER "fonts/FreeSans.h"
+
 /* DISABLE ALERTS
  * The handling of alerts is complex. Each country has a unique national alert
  * system that recieves alerts from many different government agencies. This 
