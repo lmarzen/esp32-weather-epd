@@ -121,43 +121,43 @@
 // #define WIND_DIRECTIONS_360
 
 // FONTS
-// Change the font by selecting its corresponding header file.
+// A handful of popular Open Source typefaces have been included with this
+// project for your convenience. Change the font by selecting its corresponding
+// header file.
 //
-// FONT                 HEADER FILE
-// FreeMono             "fonts/FreeMono.h"
-// FreeMonoBold         "fonts/FreeMonoBold.h"
-// FreeMonoBoldOblique  "fonts/FreeMonoBoldOblique.h"
-// FreeMonoOblique      "fonts/FreeMonoOblique.h"
-// FreeSans             "fonts/FreeSans.h"
-// FreeSansBold         "fonts/FreeSansBold.h"
-// FreeSansBoldOblique  "fonts/FreeSansBoldOblique.h"
-// FreeSansOblique      "fonts/FreeSansOblique.h"
-// FreeSerif            "fonts/FreeSerif.h"
-// FreeSerifBold        "fonts/FreeSerifBold.h"
-// FreeSerifBoldItalic  "fonts/FreeSerifBoldItalic.h"
-// FreeSerifItalic      "fonts/FreeSerifItalic.h"
-//
-// The fonts included in this project are from the GNU FreeFont family. 
-// GNU FreeFonts are licensed under the GNU General Public License v3.
-// https://www.gnu.org/software/freefont/
+// FONT           HEADER FILE                     FAMILY          LICENSE
+// FreeMono       "fonts/FreeMono.h"              GNU FreeFont    GNU GPL v3.0
+// FreeSans       "fonts/FreeSans.h"              GNU FreeFont    GNU GPL v3.0
+// FreeSerif      "fonts/FreeSerif.h"             GNU FreeFont    GPL v3.0
+// Lato           "fonts/Lato_Regular.h           Lato            SIL OFL 1.1
+// Montserrat     "fonts/Montserrat_Regular.h     Montserrat      SIL OFL 1.1
+// Open Sans      "fonts/OpenSans_Regular.h       Open Sans       SIL OFL 1.1
+// Poppins        "fonts/Poppins_Regular.h        Poppins         SIL OFL 1.1
+// Quicksand      "fonts/Quicksand_Regular.h      Quicksand       SIL OFL 1.1
+// Raleway        "fonts/Raleway_Regular.h        Raleway         SIL OFL 1.1
+// Roboto         "fonts/Roboto_Regular.h         Roboto          Apache v2.0
+// Roboto Mono    "fonts/RobotoMono_Regular.h     Roboto Mono     Apache v2.0
+// Roboto Slab    "fonts/RobotoSlab_Regular.h     Roboto Slab     Apache v2.0
+// Ubuntu         "fonts/Ubuntu_R.h               Ubuntu font     UFL v1.0
+// Ubuntu Mono    "fonts/UbuntuMono_R.h           Ubuntu font     UFL v1.0
 //
 // Adding new fonts is relatively straightforward, see
 // esp32-weather-epd/fonts/README.
 //
 // Note:
 //   The layout of the display was designed around spacing and size of the GNU
-//   FreeSans font, but this project supports many more fonts. Using a font
-//   other than FreeSans may result in undesired spacing or artifacts.
+//   FreeSans font, but this project supports the ability to modularly swap 
+//   fonts. Using a font other than FreeSans may result in undesired spacing or
+//   artifacts.
 #define FONT_HEADER "fonts/FreeSans.h"
 
-/* DISABLE ALERTS
- * The handling of alerts is complex. Each country has a unique national alert
- * system that recieves alerts from many different government agencies. This 
- * results is huge variance in the formatting of alerts. OpenWeatherMap provides
- * alerts in English only. Any combination of these factors may make it
- * undesirable to display alerts in some regions.
- * Disable alerts by uncommenting the DISABLE_ALERTS macro.
- */
+// DISABLE ALERTS
+// The handling of alerts is complex. Each country has a unique national alert
+// system that recieves alerts from many different government agencies. This 
+// results is huge variance in the formatting of alerts. OpenWeatherMap provides
+// alerts in English only. Any combination of these factors may make it
+// undesirable to display alerts in some regions.
+// Disable alerts by uncommenting the DISABLE_ALERTS macro.
 #define DISABLE_ALERTS
 
 // Set the below constants in "config.cpp"

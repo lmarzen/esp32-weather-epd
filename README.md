@@ -215,10 +215,19 @@ This error screen appears when the esp32 fails to fetch the time from NTP_SERVER
 
 esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENSE) with tools, fonts, and icons whose licenses are as follows:
 
-| Name                                                                                                          | License                                                                               | Description                                                                        |
+| Name | License | Description |
 |---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| [Adafruit-GFX-Library: fontconvert](https://github.com/adafruit/Adafruit-GFX-Library/tree/master/fontconvert) | [BSD License](fonts/fontconvert/license.txt)                                          | CLI tool for preprocessing fonts to be used with the Adafruit_GFX Arduino library. |
-| [GNU FreeFont](https://www.gnu.org/software/freefont/)                                              | [GNU General Public License v3.0](https://www.gnu.org/software/freefont/license.html) | OpenType Fonts (*.otf)                                                               |
-| [pollutant-concentration-to-aqi](https://github.com/lmarzen/pollutant-concentration-to-aqi)                   | [GNU Lesser General Public License v2.1](platformio/lib/pollutant-concentration-to-aqi/LICENSE)                                             |  C library that converts pollutant concentrations to Air Quality Index(AQI).                              |
-| [Weather Icons](https://github.com/erikflowers/weather-icons) (wi-**.svg)                                   | [SIL OFL 1.1](http://scripts.sil.org/OFL)                                             | The vast majority of the icons used in this project.                               |
-| Other Icons (.svg)                                                                                            | Varies, please see [icons/README](icons/README)                                       | Other icons were collected from many different sources (too many to list here)     |
+| [Adafruit-GFX-Library: fontconvert](https://github.com/adafruit/Adafruit-GFX-Library/tree/master/fontconvert) | [BSD License](fonts/fontconvert/license.txt) | CLI tool for preprocessing fonts to be used with the Adafruit_GFX Arduino library. |
+| [pollutant-concentration-to-aqi](https://github.com/lmarzen/pollutant-concentration-to-aqi) | [GNU Lesser General Public License v2.1](platformio/lib/pollutant-concentration-to-aqi/LICENSE) | C library that converts pollutant concentrations to Air Quality Index(AQI). |
+| [GNU FreeFont](https://www.gnu.org/software/freefont/) | [GNU General Public License v3.0](https://www.gnu.org/software/freefont/license.html) | Font Family |
+| [Open Sans](https://fonts.google.com/specimen/Open+Sans) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Roboto](https://fonts.google.com/specimen/Roboto) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | Font Family |
+| [Roboto Slab](https://fonts.google.com/specimen/Roboto+Slab) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | Font Family |
+| [Ubuntu font](https://design.ubuntu.com/font) | [Ubuntu Font Licence v1.0](https://ubuntu.com/legal/font-licence) | Font Family |
+| [Montserrat](https://fonts.google.com/specimen/Montserrat) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Lato](https://fonts.google.com/specimen/Lato) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Poppins](https://fonts.google.com/specimen/Poppins) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Quicksand](https://fonts.google.com/specimen/Quicksand) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Raleway](https://fonts.google.com/specimen/Raleway) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Lukas Bischoff/Erik Flowers Weather Themed Icons](https://github.com/erikflowers/weather-icons) (wi-**.svg) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | The vast majority of the icons used in this project. |
+| Other Icons (.svg) | Varies, please see [icons/README](icons/README) | Other icons were collected from many different sources (too many to list here) |

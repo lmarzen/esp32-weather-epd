@@ -16,6 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+mkdir -p icons
+mkdir -p png
+
 SVG_FILES="./svg/*.svg"
 PNG_PATH="./png/${1}x${1}"
 PNG_FILES="${PNG_PATH}/*.png"

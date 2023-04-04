@@ -15,14 +15,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-SRC_FILES=src/*
+TTF_FILES=ttf/*
 OUTPUT_PATH="./fonts"
 SIZES=(4 5 6 7 8 9 10 11 12 14 16 18 20 22 24 26)
 TEMPERATURE_SIZES=(48)
 
 # clean fonts output 
 echo "Cleaning $OUTPUT_PATH"
-rm -r $OUTPUT_PATH/*
+rm -r $OUTPUT_PATH
+mkdir $OUTPUT_PATH
 
 # build fontconvert
 cd fontconvert
@@ -30,10 +31,9 @@ make clean
 make
 cd ../
 
-for fontfile in $SRC_FILES
-  do
-  echo "$fontfile"
 
+for fontfile in $TTF_FILES
+  do
   # ascii hexidecimal value of the character to remap degree symbol to
   # REMAP_CH="0x60"
 
@@ -63,7 +63,8 @@ for fontfile in $SRC_FILES
   # rm $SUBSET_TTX
 
   # convert .otf/.ttf files to c-style arrays
-  FONT=$(basename ${fontfile%%.*})
+  FONT=`basename ${fontfile%%.*} | tr '-' '_'`
+  echo $FONT
   mkdir $OUTPUT_PATH/$FONT
   for SI in ${SIZES[*]}
     do
@@ -98,8 +99,10 @@ for fontfile in $SRC_FILES
   echo "" >> $HEADER_FILE
   for FILE in $OUTPUT_PATH/$FONT/*
     do
-    FONT_SUFFIX=$(echo "`basename $FILE .h`" | grep -oP '(?<=_)\w+')
-    echo "#define FONT_"$FONT_SUFFIX" `basename $FILE .h`" >> $HEADER_FILE
+    FONT_SUFFIX=$(echo "`basename $FILE .h`" | grep -oP '(?<=pt8b)\w+')
+    FONT_SIZE=$(echo "`basename $FILE .h`" | grep -oP '\d+(?=pt8b)')
+
+    echo "#define FONT_"$FONT_SIZE"pt8b"$FONT_SUFFIX" `basename $FILE .h`" >> $HEADER_FILE
   done
   echo "#endif" >> $HEADER_FILE
 

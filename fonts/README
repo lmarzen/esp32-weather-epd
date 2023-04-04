@@ -18,11 +18,12 @@ Dependencies:
     dependency for fontconvert.
 
 How do I generate different sizes of fonts?
-  in ttf_to_adafruit_gfx.sh there is an array called SIZES which specifies what
+  In ttf_to_adafruit_gfx.sh there is an array called SIZES which specifies what
   size fonts should be generated.
 
 How do I add a generate files for a new font?
-  add the .ttf or .otf file to the ./src directory then run the script.
+  Add the .ttf or .otf file to the ./ttf directory then run the script.
+  The script will generate a new subdirectory, ./fonts.
 
 To run this script execute the following command:
   bash ttf_to_adafruit_gfx.sh

@@ -2,6 +2,8 @@
 
 INPUT=$1
 
+mkdir -p rotated
+
 for ((DEG=0;DEG<360;++DEG)); 
 do
 # meteorological wind is the direction wind is coming from so arrow must be rotated by 180 to indicate correct wind direction
