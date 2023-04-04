@@ -237,6 +237,6 @@ esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENS
 | [Visibility Icon](https://www.iconfinder.com/icons/352209/visibility_icon) | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | (visibility_icon.svg) Visibility icon. |
 | [House Icon](https://seekicon.com/free-icon/house_16) | [MIT License](http://opensource.org/licenses/mit-license.html) | (house.svg) House icon. |
 | [Warning Alert Icon](https://icon-icons.com/icon/warning/172115) | [MIT License](http://opensource.org/licenses/mit-license.html) | (warning_icon.svg) Warning alert icon. |
-| [Indoor Temerature/Humidity Icons] | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (house_temperature.svg, house_humidity.svg) Indoor temerature/humidity icons. |
+| [Indoor Temerature/Humidity Icons](icons/svg) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (house_temperature.svg, house_humidity.svg) Indoor temerature/humidity icons. |
 | [Ionizing Radiation Symbol](https://svgsilh.com/image/309911.html) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) | (ionizing_radiation_symbol.svg) Ionizing radiation icons. |
 | [Biological Hazard Symbol](https://commons.wikimedia.org/wiki/File:Biohazard_symbol.svg) | [Public Domain](https://en.wikipedia.org/wiki/Public_domain) | (biological_hazard_symbol.svg) Biohazard icon. |
