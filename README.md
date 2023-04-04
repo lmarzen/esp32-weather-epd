@@ -233,7 +233,7 @@ esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENS
 | [Lukas Bischoff/Erik Flowers Weather Themed Icons](https://github.com/erikflowers/weather-icons) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (wi-**.svg) Weather icons. |
 | [Google Icons](https://fonts.google.com/icons) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (battery**.svg) Battery icons. |
 | [WiFi Icons](https://www.iconbolt.com/iconsets/remix-icon-line/wifi) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (wifi**.svg) WiFi icons. |
-| [Alt Wind Icon](https://www.svgrepo.com/svg/61395/wind-sign) | [CC0 License](https://www.svgrepo.com/page/licensing#CC0) | (wind-sign.svg) Alternative wind icon. |
+| [Wind Icon](https://www.svgrepo.com/svg/61395/wind-sign) | [CC0 License](https://www.svgrepo.com/page/licensing#CC0) | (wind-sign.svg) Alternative wind icon. |
 | [Visibility Icon](https://www.iconfinder.com/icons/352209/visibility_icon) | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | (visibility_icon.svg) Visibility icon. |
 | [House Icon](https://seekicon.com/free-icon/house_16) | [MIT License](http://opensource.org/licenses/mit-license.html) | (house.svg) House icon. |
 | [Warning Alert Icon](https://icon-icons.com/icon/warning/172115) | [MIT License](http://opensource.org/licenses/mit-license.html) | (warning_icon.svg) Warning alert icon. |
