@@ -211,7 +211,7 @@ This error screen appears when the esp32 fails to fetch the time from NTP_SERVER
 
 <br clear="left"/>
 
-## License
+## Licensing
 
 esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENSE) with tools, fonts, and icons whose licenses are as follows:
 
