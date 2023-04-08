@@ -230,7 +230,7 @@ esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENS
 | [Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | Font Family |
 | [Roboto Slab](https://fonts.google.com/specimen/Roboto+Slab) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | Font Family |
 | [Ubuntu font](https://design.ubuntu.com/font) | [Ubuntu Font Licence v1.0](https://ubuntu.com/legal/font-licence) | Font Family |
-| [Lukas Bischoff/Erik Flowers Weather Themed Icons](https://github.com/erikflowers/weather-icons) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (wi-**.svg) Weather icons. |
+| [Weather Themed Icons](https://github.com/erikflowers/weather-icons) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (wi-**.svg) Weather icon family by Lukas Bischoff/Erik Flowers. |
 | [Google Icons](https://fonts.google.com/icons) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (battery**.svg, visibility_icon.svg) Battery and visibility icons from Google Icons. |
 | [Biological Hazard Symbol](https://commons.wikimedia.org/wiki/File:Biohazard_symbol.svg) | [Public Domain](https://en.wikipedia.org/wiki/Public_domain) | (biological_hazard_symbol.svg) Biohazard icon. |
 | [House Icon](https://seekicon.com/free-icon/house_16) | [MIT License](http://opensource.org/licenses/mit-license.html) | (house.svg) House icon. |
