@@ -237,7 +237,7 @@ esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENS
 | [Indoor Temerature/Humidity Icons](icons/svg) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (house_temperature.svg, house_humidity.svg) Indoor temerature/humidity icons. |
 | [Ionizing Radiation Symbol](https://svgsilh.com/image/309911.html) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) | (ionizing_radiation_symbol.svg) Ionizing radiation icons. |
 | [Warning Alert Icon](https://icon-icons.com/icon/warning/172115) | [MIT License](http://opensource.org/licenses/mit-license.html) | (warning_icon.svg) Warning alert icon. |
-| [WiFi Icons](https://www.iconbolt.com/iconsets/remix-icon-line/wifi) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (wifi**.svg) WiFi icons. |
+| [WiFi Icons](https://github.com/Remix-Design/RemixIcon) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (wifi**.svg) WiFi icons from Remix Icon. |
 | [Wind Direction Icons](https://www.onlinewebfonts.com/icon/251550) | [CC BY 3.0](http://creativecommons.org/licenses/by/3.0) | (meteorological_wind_direction_**deg.svg) Meteorological wind direction icons. |
 | [Wind Icon](https://www.svgrepo.com/svg/61395/wind-sign) | [CC0 1.0](https://www.svgrepo.com/page/licensing#CC0) | (wind-sign.svg) Alternative wind icon. |
 
