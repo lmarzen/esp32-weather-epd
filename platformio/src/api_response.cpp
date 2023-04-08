@@ -95,16 +95,13 @@ DeserializationError deserializeOneCall(WiFiClient &json,
 
   DeserializationError error = deserializeJson(doc, json, 
                                          DeserializationOption::Filter(filter));
-
   if (error) {
-    Serial.print("One Call deserializeJson() failed: ");
-    Serial.println(error.c_str());
     return error;
   }
 
   r.lat             = doc["lat"]            .as<float>();
   r.lon             = doc["lon"]            .as<float>();
-  r.timezone        = doc["timezone"]       .as<const char*>();
+  r.timezone        = doc["timezone"]       .as<const char *>();
   r.timezone_offset = doc["timezone_offset"].as<int>();
 
   JsonObject current = doc["current"];
@@ -126,9 +123,9 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   r.current.snow_1h    = current["snow"]["1h"].as<float>();
   JsonObject current_weather = current["weather"][0];
   r.current.weather.id          = current_weather["id"]         .as<int>();
-  r.current.weather.main        = current_weather["main"]       .as<const char*>();
-  r.current.weather.description = current_weather["description"].as<const char*>();
-  r.current.weather.icon        = current_weather["icon"]       .as<const char*>();
+  r.current.weather.main        = current_weather["main"]       .as<const char *>();
+  r.current.weather.description = current_weather["description"].as<const char *>();
+  r.current.weather.icon        = current_weather["icon"]       .as<const char *>();
 
   // minutely forecast is currently unused
   // i = 0;
@@ -164,9 +161,9 @@ DeserializationError deserializeOneCall(WiFiClient &json,
     r.hourly[i].snow_1h    = hourly["snow"]["1h"].as<float>();
     // JsonObject hourly_weather = hourly["weather"][0];
     // r.hourly[i].weather.id          = hourly_weather["id"]         .as<int>();
-    // r.hourly[i].weather.main        = hourly_weather["main"]       .as<const char*>();
-    // r.hourly[i].weather.description = hourly_weather["description"].as<const char*>();
-    // r.hourly[i].weather.icon        = hourly_weather["icon"]       .as<const char*>();
+    // r.hourly[i].weather.main        = hourly_weather["main"]       .as<const char *>();
+    // r.hourly[i].weather.description = hourly_weather["description"].as<const char *>();
+    // r.hourly[i].weather.icon        = hourly_weather["icon"]       .as<const char *>();
 
     if (i == OWM_NUM_HOURLY - 1) 
     {
@@ -210,9 +207,9 @@ DeserializationError deserializeOneCall(WiFiClient &json,
     r.daily[i].snow       = daily["snow"]      .as<float>();
     JsonObject daily_weather = daily["weather"][0];
     r.daily[i].weather.id          = daily_weather["id"]         .as<int>();
-    r.daily[i].weather.main        = daily_weather["main"]       .as<const char*>();
-    r.daily[i].weather.description = daily_weather["description"].as<const char*>();
-    r.daily[i].weather.icon        = daily_weather["icon"]       .as<const char*>();
+    r.daily[i].weather.main        = daily_weather["main"]       .as<const char *>();
+    r.daily[i].weather.description = daily_weather["description"].as<const char *>();
+    r.daily[i].weather.icon        = daily_weather["icon"]       .as<const char *>();
 
     if (i == OWM_NUM_DAILY - 1) 
     {
@@ -225,12 +222,12 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   for (JsonObject alerts : doc["alerts"].as<JsonArray>()) 
   {
     owm_alerts_t new_alert = {};
-    // new_alert.sender_name = alerts["sender_name"].as<const char*>();
-    new_alert.event       = alerts["event"]      .as<const char*>();
+    // new_alert.sender_name = alerts["sender_name"].as<const char *>();
+    new_alert.event       = alerts["event"]      .as<const char *>();
     new_alert.start       = alerts["start"]      .as<int64_t>();
     new_alert.end         = alerts["end"]        .as<int64_t>();
-    // new_alert.description = alerts["description"].as<const char*>();
-    new_alert.tags        = alerts["tags"][0]    .as<const char*>();
+    // new_alert.description = alerts["description"].as<const char *>();
+    new_alert.tags        = alerts["tags"][0]    .as<const char *>();
     r.alerts.push_back(new_alert);
 
     if (i == OWM_NUM_ALERTS - 1) 
@@ -251,10 +248,7 @@ DeserializationError deserializeAirQuality(WiFiClient& json,
   DynamicJsonDocument doc(8 * 1024);
 
   DeserializationError error = deserializeJson(doc, json);
-
   if (error) {
-    Serial.print("Air Pollution deserializeJson() failed: ");
-    Serial.println(error.c_str());
     return error;
   }
 
