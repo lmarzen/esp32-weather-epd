@@ -128,7 +128,7 @@
 // FONT           HEADER FILE                     FAMILY          LICENSE
 // FreeMono       "fonts/FreeMono.h"              GNU FreeFont    GNU GPL v3.0
 // FreeSans       "fonts/FreeSans.h"              GNU FreeFont    GNU GPL v3.0
-// FreeSerif      "fonts/FreeSerif.h"             GNU FreeFont    GPL v3.0
+// FreeSerif      "fonts/FreeSerif.h"             GNU FreeFont    GNU GPL v3.0
 // Lato           "fonts/Lato_Regular.h           Lato            SIL OFL 1.1
 // Montserrat     "fonts/Montserrat_Regular.h     Montserrat      SIL OFL 1.1
 // Open Sans      "fonts/OpenSans_Regular.h       Open Sans       SIL OFL 1.1
