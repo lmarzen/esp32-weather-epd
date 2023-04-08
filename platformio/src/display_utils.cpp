@@ -1522,7 +1522,8 @@ const uint8_t *getWindBitmap24(int windDeg)
   // number of directions
   int n = sizeof(wind_direction_icon_arr)
           / sizeof(wind_direction_icon_arr[0]); 
-  int arr_offset = ( (windDeg + (360 / n / 2)) % 360 ) / ( 360 / n );
+  int arr_offset = (int) ( (windDeg + (360 / n / 2)) % 360 ) 
+                         / ( 360 / (float) n );
 
   return wind_direction_icon_arr[arr_offset];
 } // end getWindBitmap24
