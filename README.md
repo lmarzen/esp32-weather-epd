@@ -234,7 +234,7 @@ esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENS
 | [Google Icons](https://fonts.google.com/icons) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (battery**.svg, visibility_icon.svg) Battery and visibility icons from Google Icons. |
 | [Biological Hazard Symbol](https://commons.wikimedia.org/wiki/File:Biohazard_symbol.svg) | [Public Domain](https://en.wikipedia.org/wiki/Public_domain) | (biological_hazard_symbol.svg) Biohazard icon. |
 | [House Icon](https://seekicon.com/free-icon/house_16) | [MIT License](http://opensource.org/licenses/mit-license.html) | (house.svg) House icon. |
-| [Indoor Temerature/Humidity Icons](icons/svg) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (house_temperature.svg, house_humidity.svg) Indoor temerature/humidity icons. |
+| [Indoor Temerature/Humidity Icons](icons/svg) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (house_**.svg) Indoor temerature/humidity icons. |
 | [Ionizing Radiation Symbol](https://svgsilh.com/image/309911.html) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) | (ionizing_radiation_symbol.svg) Ionizing radiation icons. |
 | [Phosphor Icons](https://github.com/phosphor-icons/homepage) | [MIT License](http://opensource.org/licenses/mit-license.html) | (warning_icon.svg) Warning alert icon from Phosphor Icons. |
 | [Remix Icon](https://github.com/Remix-Design/RemixIcon) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (wifi**.svg) WiFi icons from Remix Icon. |

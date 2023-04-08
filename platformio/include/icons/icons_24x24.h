@@ -44,6 +44,7 @@
 #include "24x24/biological_hazard_symbol_24x24.h"
 #include "24x24/house_24x24.h"
 #include "24x24/house_humidity_24x24.h"
+#include "24x24/house_raindrops_24x24.h"
 #include "24x24/house_thermometer_24x24.h"
 #include "24x24/ionizing_radiation_symbol_24x24.h"
 #include "24x24/visibility_icon_24x24.h"

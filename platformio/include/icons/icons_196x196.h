@@ -44,6 +44,7 @@
 #include "196x196/biological_hazard_symbol_196x196.h"
 #include "196x196/house_196x196.h"
 #include "196x196/house_humidity_196x196.h"
+#include "196x196/house_raindrops_196x196.h"
 #include "196x196/house_thermometer_196x196.h"
 #include "196x196/ionizing_radiation_symbol_196x196.h"
 #include "196x196/visibility_icon_196x196.h"

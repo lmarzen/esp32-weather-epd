@@ -44,6 +44,7 @@
 #include "32x32/biological_hazard_symbol_32x32.h"
 #include "32x32/house_32x32.h"
 #include "32x32/house_humidity_32x32.h"
+#include "32x32/house_raindrops_32x32.h"
 #include "32x32/house_thermometer_32x32.h"
 #include "32x32/ionizing_radiation_symbol_32x32.h"
 #include "32x32/visibility_icon_32x32.h"
