@@ -238,6 +238,6 @@ esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENS
 | [Ionizing Radiation Symbol](https://svgsilh.com/image/309911.html) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) | (ionizing_radiation_symbol.svg) Ionizing radiation icons. |
 | [Phosphor Icons](https://github.com/phosphor-icons/homepage) | [MIT License](http://opensource.org/licenses/mit-license.html) | (warning_icon.svg) Warning alert icon from Phosphor Icons. |
 | [Remix Icon](https://github.com/Remix-Design/RemixIcon) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (wifi**.svg) WiFi icons from Remix Icon. |
-| [Wind Direction Icons](https://www.onlinewebfonts.com/icon/251550) | [CC BY 3.0](http://creativecommons.org/licenses/by/3.0) | (meteorological_wind_direction_**deg.svg) Meteorological wind direction icons. |
+| [Wind Direction Icon](https://www.onlinewebfonts.com/icon/251550) | [CC BY 3.0](http://creativecommons.org/licenses/by/3.0) | (meteorological_wind_direction_**deg.svg) Meteorological wind direction icon from Online Web Fonts. |
 | [Wind Icon](https://www.svgrepo.com/svg/61395/wind-sign) | [CC0 1.0](https://www.svgrepo.com/page/licensing#CC0) | (wind-sign.svg) Alternative wind icon. |
 
