@@ -232,12 +232,10 @@ esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENS
 | [Ubuntu font](https://design.ubuntu.com/font) | [Ubuntu Font Licence v1.0](https://ubuntu.com/legal/font-licence) | Font Family |
 | [Weather Themed Icons](https://github.com/erikflowers/weather-icons) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (wi-**.svg) Weather icon family by Lukas Bischoff/Erik Flowers. |
 | [Google Icons](https://fonts.google.com/icons) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (battery**.svg, visibility_icon.svg) Battery and visibility icons from Google Icons. |
-| [Biological Hazard Symbol](https://commons.wikimedia.org/wiki/File:Biohazard_symbol.svg) | [Public Domain](https://en.wikipedia.org/wiki/Public_domain) | (biological_hazard_symbol.svg) Biohazard icon. |
+| [Biological Hazard Symbol](https://svgsilh.com/image/37775.html) | [CC0 1.0](https://en.wikipedia.org/wiki/Public_domain) | (biological_hazard_symbol.svg) Biohazard icon. |
 | [House Icon](https://seekicon.com/free-icon/house_16) | [MIT License](http://opensource.org/licenses/mit-license.html) | (house.svg) House icon. |
 | [Indoor Temerature/Humidity Icons](icons/svg) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (house_**.svg) Indoor temerature/humidity icons. |
 | [Ionizing Radiation Symbol](https://svgsilh.com/image/309911.html) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) | (ionizing_radiation_symbol.svg) Ionizing radiation icons. |
-| [Phosphor Icons](https://github.com/phosphor-icons/homepage) | [MIT License](http://opensource.org/licenses/mit-license.html) | (warning_icon.svg) Warning alert icon from Phosphor Icons. |
-| [Remix Icon](https://github.com/Remix-Design/RemixIcon) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (wifi**.svg) WiFi icons from Remix Icon. |
+| [Phosphor Icons](https://github.com/phosphor-icons/homepage) | [MIT License](http://opensource.org/licenses/mit-license.html) | (wifi**.svg, warning_icon.svg, error_icon.svg) WiFi, Warning, and Error icons from Phosphor Icons. |
 | [Wind Direction Icon](https://www.onlinewebfonts.com/icon/251550) | [CC BY 3.0](http://creativecommons.org/licenses/by/3.0) | (meteorological_wind_direction_**deg.svg) Meteorological wind direction icon from Online Web Fonts. |
-| [Wind Icon](https://www.svgrepo.com/svg/61395/wind-sign) | [CC0 1.0](https://www.svgrepo.com/page/licensing#CC0) | (wind-sign.svg) Alternative wind icon. |
 

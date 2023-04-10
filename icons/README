@@ -36,25 +36,15 @@ Visibility Icon 'visibility_icon.svg' in the sub-directory 'svg'
 ********************************************************************************
 
 ********************************************************************************
-.svg files prefixed with 'wifi' (wifi**.svg) in the sub-directory 'svg'
-  Retrieved from: https://github.com/Remix-Design/RemixIcon
-  Licensed under Apache License, Version 2.0: https://www.apache.org/licenses/LICENSE-2.0.html
-********************************************************************************
-
-********************************************************************************
-Wind Icon 'wind-sign.svg' in the sub-directory 'svg'
-  Retrieved from: https://www.svgrepo.com/svg/61395/wind-sign
-  Licensed under CC0 License: https://www.svgrepo.com/page/licensing#CC0
-********************************************************************************
-
-********************************************************************************
 House Icon 'house.svg' in the sub-directory 'svg'
   Retrieved from: https://seekicon.com/free-icon/house_16
   Licensed under MIT License: http://opensource.org/licenses/mit-license.html
 ********************************************************************************
 
 ********************************************************************************
+.svg files prefixed with 'wifi' (wifi**.svg) in the sub-directory 'svg'
 Warning Alert Icon 'warning_icon.svg' in the sub-directory 'svg'
+Warning Alert Icon 'error_icon.svg' in the sub-directory 'svg'
   Retrieved from: https://github.com/phosphor-icons/homepage
   Licensed under MIT License: http://opensource.org/licenses/mit-license.html
 ********************************************************************************
@@ -78,8 +68,8 @@ with 'house.svg' and as such are
 
 ********************************************************************************
 'biological_hazard_symbol.svg' in the sub-directory 'svg'
-  Retrieved from: https://commons.wikimedia.org/wiki/File:Biohazard_symbol.svg
-  Public Domain: https://en.wikipedia.org/wiki/Public_domain
+  Retrieved from: https://svgsilh.com/image/37775.html
+  Public Domain: https://creativecommons.org/publicdomain/zero/1.0/
 ********************************************************************************
 
 ********************************************************************************

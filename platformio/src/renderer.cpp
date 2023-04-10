@@ -955,7 +955,7 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   {
     drawString(pos, DISP_HEIGHT - 1 - 2, statusStr, RIGHT);
     pos -= getStringWidth(statusStr) + 24;
-    display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 18, warning_icon_24x24, 
+    display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 18, error_icon_24x24, 
                                24, 24, GxEPD_BLACK);
   }
 

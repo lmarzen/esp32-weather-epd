@@ -192,7 +192,7 @@ void setup()
       Serial.println("SSID Not Available");
       do
       {
-        drawError(wifi_off_196x196, "SSID Not Available", "");
+        drawError(wifi_x_196x196, "SSID Not Available", "");
       } while (display.nextPage());
     }
     else
@@ -200,7 +200,7 @@ void setup()
       Serial.println("WiFi Connection Failed");
       do
       {
-        drawError(wifi_off_196x196, "WiFi Connection", "Failed");
+        drawError(wifi_x_196x196, "WiFi Connection", "Failed");
       } while (display.nextPage());
     }
     display.powerOff();
@@ -289,10 +289,10 @@ void setup()
     Serial.println(statusStr);
   }
 
-  // RENDER FULL REFRESH
   String dateStr;
   getDateStr(dateStr, &timeInfo);
 
+  // RENDER FULL REFRESH
   initDisplay();
   do
   {
@@ -309,7 +309,6 @@ void setup()
   display.powerOff();
 
   // DEEP-SLEEP
-  Serial.println("Status: " + statusStr);
   beginDeepSleep(startTime, &timeInfo);
 } // end setup
 

@@ -531,7 +531,7 @@ const uint8_t *getWiFiBitmap16(int rssi)
 {
   if (rssi == 0)
   {
-    return wifi_off_16x16;
+    return wifi_x_16x16;
   }
   else if (rssi >= -50)
   {
