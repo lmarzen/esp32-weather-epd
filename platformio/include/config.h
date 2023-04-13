@@ -19,7 +19,6 @@
 #define __CONFIG_H__
 
 #include <cstdint>
-#include <vector>
 #include <Arduino.h>
 
 // E-PAPER PANEL
