@@ -15,6 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/* Special thanks to Matthias Deimbacher (deimi) for contributing this 
+ * translation.
+ *
+ * If you have any feedback or suggestions, please open an issue on this
+ * project's github page: <https://github.com/lmarzen/esp32-weather-epd/issues>
+ */
+
 #include "config.h"
 
 #ifdef LOCALE_de_DE
@@ -36,7 +43,6 @@
 //   https://www.gnu.org/software/libc/sources.html
 // D_T_FMT                 string for formatting date and time
 const char *LC_D_T_FMT     = "%a %d %b %Y %T %Z";
-
 // LC_D_FMT                date format string
 const char *LC_D_FMT       = "%d.%m.%y";
 // T_FMT                   time format string
@@ -53,12 +59,12 @@ const char *LC_DAY[7]      = {"Sonntag", "Montag", "Dienstag", "Mittwoch",
 // ABDAY_{1-7}             abbreviated ame of the n-th day of the week
 const char *LC_ABDAY[7]    = {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = { "Januar",    "Februar",  "M\xE4rz",     "April", 
+const char *LC_MON[12]     = { "Januar",    "Februar",  "M\xE4rz",  "April", 
                                "Mai",       "Juni",     "Juli",     "August", 
                                "September", "Oktober",  "November", "Dezember"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
 const char *LC_ABMON[12]   = {"Jan", "Feb", "M\xE4r", "Apr", "Mai", "Jun", 
-                              "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"};
+                              "Jul", "Aug", "Sep",    "Okt", "Nov", "Dez"};
 // ERA                     era description segments
 const char *LC_ERA         = "";
 // ERA_D_FMT               era date format string
