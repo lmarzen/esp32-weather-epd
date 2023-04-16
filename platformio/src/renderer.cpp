@@ -284,13 +284,13 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 0,
                              wi_sunset_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 1,
-                             wi_raindrops_48x48, 48, 48, GxEPD_BLACK);
+                             wi_humidity_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 2,
                              wi_barometer_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 3,
                              visibility_icon_48x48, 48, 48, GxEPD_BLACK);
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 4,
-                             house_raindrops_48x48, 48, 48, GxEPD_BLACK);
+                             house_humidity_48x48, 48, 48, GxEPD_BLACK);
 
   // current weather data labels
   display.setFont(&FONT_7pt8b);
