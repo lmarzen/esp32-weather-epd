@@ -525,6 +525,20 @@ const char *getWiFidesc(int rssi)
   }
 } // end getWiFidesc
 
+/* Returns the wifi signal strength color for the given RSSI.
+ */
+const uint16_t getWiFiColor(int rssi, uint16_t good, uint16_t poor)
+{
+  if (rssi >= -70)
+  {
+    return good;
+  }
+  else
+  {  // rssi < -70
+    return poor;
+  }
+} // end getWiFiColor
+
 /* Returns 16x16 bitmap incidcating wifi status.
  */
 const uint8_t *getWiFiBitmap16(int rssi)
