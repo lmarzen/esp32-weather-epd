@@ -42,7 +42,7 @@ Here are two examples utilizing various configuration options:
 
 - https://www.waveshare.com/product/7.5inch-e-paper-hat.htm (800x480, 7.5inch E-Ink display, Black/White)
 
-- Note that this project also now supports this 3-color panel as well, though the program will only draw black/white to the screen. https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm (800x480, 7.5inch E-Ink display, Red/Black/White) 
+- Note that this project also now supports this 3-color panel as well. Some elements will be drawn with an accent color, at the cost of a longer refresh sequence. https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm (800x480, 7.5inch E-Ink display, Red/Black/White) 
 
 
 FireBeetle 2 ESP32-E Microcontroller
