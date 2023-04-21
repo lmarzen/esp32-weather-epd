@@ -77,10 +77,11 @@ uint16_t getStringHeight(String text)
 
 /* Draws a string with alignment
  */
-void drawString(int16_t x, int16_t y, String text, alignment_t alignment)
+void drawString(int16_t x, int16_t y, String text, alignment_t alignment, uint16_t color)
 {
   int16_t x1, y1;
   uint16_t w, h;
+  display.setTextColor(color);
   display.getTextBounds(text, x, y, &x1, &y1, &w, &h);
   if (alignment == RIGHT)
     x = x - w;
@@ -101,7 +102,7 @@ void drawString(int16_t x, int16_t y, String text, alignment_t alignment)
  */
 void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment, 
                        uint16_t max_width, uint16_t max_lines, 
-                       int16_t line_spacing)
+                       int16_t line_spacing, uint16_t color)
 {
   
   uint16_t current_line = 0;
@@ -182,7 +183,7 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
       } // end if (splitAt != -1)
     } // end inner while
     
-    drawString(x, y + (current_line * line_spacing), subStr, alignment);
+    drawString(x, y + (current_line * line_spacing), subStr, alignment, color);
 
     // update textRemaining to no longer include what was printed
     // +1 for exclusive bounds, +1 to get passed space/dash 
@@ -640,7 +641,7 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
 
     owm_alerts_t &cur_alert = alerts[alert_indices[0]];
     display.drawInvertedBitmap(196, 8, getAlertBitmap48(cur_alert), 48, 48, 
-                               GxEPD_BLACK);
+                               ACCENT_COLOR);
     // must be called after getAlertBitmap
     toTitleCase(cur_alert.event);
 
@@ -674,7 +675,7 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
       owm_alerts_t &cur_alert = alerts[alert_indices[i]];
 
       display.drawInvertedBitmap(196, (i * 32), getAlertBitmap32(cur_alert), 
-                                 32, 32, GxEPD_BLACK);
+                                 32, 32, ACCENT_COLOR);
       // must be called after getAlertBitmap
       toTitleCase(cur_alert.event);
       
@@ -693,7 +694,7 @@ void drawLocationDate(const String &city, const String &date)
 {
   // location, date
   display.setFont(&FONT_16pt8b);
-  drawString(DISP_WIDTH - 2, 23, city, RIGHT);
+  drawString(DISP_WIDTH - 2, 23, city, RIGHT, ACCENT_COLOR);
   display.setFont(&FONT_12pt8b);
   drawString(DISP_WIDTH - 2, 30 + 4 + 17, date, RIGHT);
   return;
@@ -793,7 +794,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
     dataStr += "\xB0";
 #endif
-    drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT);
+    drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT, ACCENT_COLOR);
 
     // PoP
     dataStr = String(100 - (i * 20));
@@ -855,9 +856,9 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #endif
 
       // graph temperature
-      display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , GxEPD_BLACK);
-      display.drawLine(x0_t    , y0_t + 1, x1_t    , y1_t + 1, GxEPD_BLACK);
-      display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , GxEPD_BLACK);
+      display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , ACCENT_COLOR);
+      display.drawLine(x0_t    , y0_t + 1, x1_t    , y1_t + 1, ACCENT_COLOR);
+      display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , ACCENT_COLOR);
     }
 
     // PoP
@@ -917,46 +918,53 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
                    double batVoltage)
 {
   String dataStr;
+  uint16_t dataColor = GxEPD_BLACK;
   display.setFont(&FONT_6pt8b);
   int pos = DISP_WIDTH - 2;
   const int sp = 2;
 
   // battery
   int batPercent = calcBatPercent(batVoltage);
+  if (batVoltage < BATTERY_WARN_VOLTAGE) {
+    dataColor = ACCENT_COLOR;
+  }
   dataStr = String(batPercent) + "% (" 
             + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
-  drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT);
+  drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 25;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 17,
-                             getBatBitmap24(batPercent), 24, 24, GxEPD_BLACK);
+                             getBatBitmap24(batPercent), 24, 24, dataColor);
   pos -= sp + 9;
 
   // wifi
   dataStr = String(getWiFidesc(rssi));
+  dataColor = rssi >= -70 ? GxEPD_BLACK : ACCENT_COLOR;
   if (rssi != 0)
   {
     dataStr += " (" + String(rssi) + "dBm)";
   }
-  drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT);
+  drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 19;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 13, getWiFiBitmap16(rssi),
-                             16, 16, GxEPD_BLACK);
+                             16, 16, dataColor);
   pos -= sp + 8;
 
   // last refresh
-  drawString(pos, DISP_HEIGHT - 1 - 2, refreshTimeStr, RIGHT);
+  dataColor = GxEPD_BLACK;
+  drawString(pos, DISP_HEIGHT - 1 - 2, refreshTimeStr, RIGHT, dataColor);
   pos -= getStringWidth(refreshTimeStr) + 25;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 21, wi_refresh_32x32,
-                             32, 32, GxEPD_BLACK);
+                             32, 32, dataColor);
   pos -= sp;
 
   // status
+  dataColor = ACCENT_COLOR;
   if (!statusStr.isEmpty())
   {
-    drawString(pos, DISP_HEIGHT - 1 - 2, statusStr, RIGHT);
+    drawString(pos, DISP_HEIGHT - 1 - 2, statusStr, RIGHT, dataColor);
     pos -= getStringWidth(statusStr) + 24;
     display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 18, error_icon_24x24, 
-                               24, 24, GxEPD_BLACK);
+                               24, 24, dataColor);
   }
 
   return;
@@ -977,6 +985,6 @@ void drawError(const uint8_t *bitmap_196x196,
              errMsgLn2, CENTER);
   display.drawInvertedBitmap(DISP_WIDTH / 2 - 196 / 2, 
                              DISP_HEIGHT / 2 - 196 / 2 - 21,
-                             bitmap_196x196, 196, 196, GxEPD_BLACK);
+                             bitmap_196x196, 196, 196, ACCENT_COLOR);
   return;
 } // end drawError

@@ -115,6 +115,7 @@ const int HOURLY_GRAPH_MAX = 24;
 // minutes). Once the battery voltage has fallen to CRIT_LOW_BATTERY_VOLTAGE,
 // the esp32 will hibernate and a manual press of the reset (RST) button to
 // begin operating again.
+const float BATTERY_WARN_VOLTAGE     = 3.40; // (volts) ~ 10%
 const float LOW_BATTERY_VOLTAGE      = 3.20; // (volts)
 const float VERY_LOW_BATTERY_VOLTAGE = 3.10; // (volts)
 const float CRIT_LOW_BATTERY_VOLTAGE = 3.00; // (volts)
