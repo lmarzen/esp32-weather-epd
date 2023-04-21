@@ -925,7 +925,7 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
 
   // battery
   int batPercent = calcBatPercent(batVoltage);
-  if (batPercent < calcBatPercent(BATTERY_WARN_VOLTAGE)) {
+  if (batVoltage < BATTERY_WARN_VOLTAGE) {
     dataColor = ACCENT_COLOR;
   }
   dataStr = String(batPercent) + "% (" 
@@ -938,7 +938,7 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
 
   // wifi
   dataStr = String(getWiFidesc(rssi));
-  dataColor = getWiFiColor(rssi, GxEPD_BLACK, ACCENT_COLOR);
+  dataColor = rssi >= -70 ? GxEPD_BLACK : ACCENT_COLOR;
   if (rssi != 0)
   {
     dataStr += " (" + String(rssi) + "dBm)";

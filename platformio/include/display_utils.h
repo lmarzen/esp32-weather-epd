@@ -62,7 +62,6 @@ float getAvgConc(float pollutant[], int hours);
 int getAQI(owm_resp_air_pollution_t &p);
 const char *getAQIdesc(int aqi);
 const char *getWiFidesc(int rssi);
-const uint16_t getWiFiColor(int rssi, uint16_t good, uint16_t poor);
 const uint8_t *getWiFiBitmap16(int rssi);
 const uint8_t *getForecastBitmap64(owm_daily_t &daily);
 const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current, 
