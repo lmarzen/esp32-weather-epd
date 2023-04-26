@@ -77,7 +77,8 @@ uint16_t getStringHeight(String text)
 
 /* Draws a string with alignment
  */
-void drawString(int16_t x, int16_t y, String text, alignment_t alignment, uint16_t color)
+void drawString(int16_t x, int16_t y, String text, alignment_t alignment,
+                uint16_t color)
 {
   int16_t x1, y1;
   uint16_t w, h;
@@ -640,7 +641,7 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
     max_w -= 48;
 
     owm_alerts_t &cur_alert = alerts[alert_indices[0]];
-    display.drawInvertedBitmap(196, 8, getAlertBitmap48(cur_alert), 48, 48, 
+    display.drawInvertedBitmap(196, 8, getAlertBitmap48(cur_alert), 48, 48,
                                ACCENT_COLOR);
     // must be called after getAlertBitmap
     toTitleCase(cur_alert.event);
@@ -674,7 +675,7 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
     {
       owm_alerts_t &cur_alert = alerts[alert_indices[i]];
 
-      display.drawInvertedBitmap(196, (i * 32), getAlertBitmap32(cur_alert), 
+      display.drawInvertedBitmap(196, (i * 32), getAlertBitmap32(cur_alert),
                                  32, 32, ACCENT_COLOR);
       // must be called after getAlertBitmap
       toTitleCase(cur_alert.event);

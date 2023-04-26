@@ -29,14 +29,14 @@
 //             https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm
 // Uncomment the macro that identifies your panel. (exactly 1 must be defined)
 #define DISP_BW
-//#define DISP_3C
+// #define DISP_3C
 
-// 3 Color E-Ink display
+// 3 Color E-Ink Display
 // Defines the 3rd color to be used when a 3 color display is selected.
 #ifdef DISP_3C
-    #define ACCENT_COLOR GxEPD_RED
+  #define ACCENT_COLOR GxEPD_RED
 #else
-    #define ACCENT_COLOR GxEPD_BLACK
+  #define ACCENT_COLOR GxEPD_BLACK
 #endif
 
 // LOCALE
