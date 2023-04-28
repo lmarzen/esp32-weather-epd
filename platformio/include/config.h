@@ -31,12 +31,11 @@
 #define DISP_BW
 // #define DISP_3C
 
-// 3 Color E-Ink Display
+// 3 COLOR E-INK ACCENT COLOR
 // Defines the 3rd color to be used when a 3 color display is selected.
 #ifdef DISP_3C
+  // #define ACCENT_COLOR GxEPD_BLACK
   #define ACCENT_COLOR GxEPD_RED
-#else
-  #define ACCENT_COLOR GxEPD_BLACK
 #endif
 
 // LOCALE
@@ -154,7 +153,7 @@
 //   The layout of the display was designed around spacing and size of the GNU
 //   FreeSans font, but this project supports the ability to modularly swap 
 //   fonts. Using a font other than FreeSans may result in undesired spacing or
-//   artifacts.
+//   other artifacts.
 #define FONT_HEADER "fonts/FreeSans.h"
 
 // DISABLE ALERTS
@@ -163,8 +162,8 @@
 // results is huge variance in the formatting of alerts. OpenWeatherMap provides
 // alerts in English only. Any combination of these factors may make it
 // undesirable to display alerts in some regions.
-// Disable alerts by uncommenting the DISABLE_ALERTS macro.
-#define DISABLE_ALERTS
+// Disable alerts by defining the DISABLE_ALERTS macro.
+// #define DISABLE_ALERTS
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;

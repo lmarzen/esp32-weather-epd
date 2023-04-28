@@ -52,6 +52,10 @@ GxEPD2_3C<GxEPD2_750c_Z08, GxEPD2_750c_Z08::HEIGHT / 2> display(
                   PIN_EPD_BUSY));
 #endif
 
+#ifndef ACCENT_COLOR
+  #define ACCENT_COLOR GxEPD_BLACK
+#endif
+
 extern owm_resp_onecall_t owm_onecall;
 extern owm_resp_air_pollution_t owm_air_pollution;
 
