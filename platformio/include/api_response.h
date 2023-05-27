@@ -129,7 +129,7 @@ typedef struct owm_daily
   int64_t sunset;           // Sunset time, Unix, UTC
   int64_t moonrise;         // The time of when the moon rises for this day, Unix, UTC
   int64_t moonset;          // The time of when the moon sets for this day, Unix, UTC
-  float   moon_phase;       // Moon phase. 0 and 1 are 'new moon', 0.25 is 'first quarter moon', 0.5 is 'full moon' and 0.75 is 'last quarter moon'. The periods in between are called 'waxing crescent', 'waxing gibous', 'waning gibous', and 'waning crescent', respectively. 
+  float   moon_phase;       // Moon phase. 0 and 1 are 'new moon', 0.25 is 'first quarter moon', 0.5 is 'full moon' and 0.75 is 'last quarter moon'. The periods in between are called 'waxing crescent', 'waxing gibous', 'waning gibous', and 'waning crescent', respectively.
   owm_temp_t            temp;
   owm_owm_feels_like_t  feels_like;
   int     pressure;         // Atmospheric pressure on the sea level, hPa
@@ -160,9 +160,9 @@ typedef struct owm_alerts
   String  tags;             // Type of severe weather
 } owm_alerts_t;
 
-/* 
+/*
  * Response from OpenWeatherMap's OneCall API
- * 
+ *
  * https://openweathermap.org/api/one-call-api
  */
 typedef struct owm_resp_onecall
@@ -173,7 +173,7 @@ typedef struct owm_resp_onecall
   int     timezone_offset;  // Shift in seconds from UTC
   owm_current_t   current;
   // owm_minutely_t  minutely[OWM_NUM_MINUTELY];
-  
+
   owm_hourly_t    hourly[OWM_NUM_HOURLY];
   owm_daily_t     daily[OWM_NUM_DAILY];
   std::vector<owm_alerts_t> alerts;
@@ -200,7 +200,7 @@ typedef struct owm_components
   float   nh3[OWM_NUM_AIR_POLLUTION];   // Сoncentration of NH3 (Ammonia), μg/m^3
 } owm_components_t;
 
-/* 
+/*
  * Response from OpenWeatherMap's Air Pollution API
  */
 typedef struct owm_resp_air_pollution
@@ -211,10 +211,11 @@ typedef struct owm_resp_air_pollution
   int64_t          dt[OWM_NUM_AIR_POLLUTION];         // Date and time, Unix, UTC;
 } owm_resp_air_pollution_t;
 
-DeserializationError deserializeOneCall(WiFiClient &json, 
+DeserializationError deserializeOneCall(WiFiClient &json,
                                         owm_resp_onecall_t &r);
-DeserializationError deserializeAirQuality(WiFiClient &json, 
+DeserializationError deserializeAirQuality(WiFiClient &json,
                                            owm_resp_air_pollution_t &r);
 
 
 #endif
+

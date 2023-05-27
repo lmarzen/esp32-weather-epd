@@ -19,8 +19,8 @@
 #include <ArduinoJson.h>
 #include "api_response.h"
 
-DeserializationError deserializeOneCall(WiFiClient &json, 
-                                        owm_resp_onecall_t &r) 
+DeserializationError deserializeOneCall(WiFiClient &json,
+                                        owm_resp_onecall_t &r)
 {
   int i;
 
@@ -93,7 +93,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
 
   DynamicJsonDocument doc(48 * 1024);
 
-  DeserializationError error = deserializeJson(doc, json, 
+  DeserializationError error = deserializeJson(doc, json,
                                          DeserializationOption::Filter(filter));
   if (error) {
     return error;
@@ -129,12 +129,12 @@ DeserializationError deserializeOneCall(WiFiClient &json,
 
   // minutely forecast is currently unused
   // i = 0;
-  // for (JsonObject minutely : doc["minutely"].as<JsonArray>()) 
+  // for (JsonObject minutely : doc["minutely"].as<JsonArray>())
   // {
   //   r.minutely[i].dt            = minutely["dt"]           .as<int64_t>();
   //   r.minutely[i].precipitation = minutely["precipitation"].as<float>();
-  
-  //   if (i == OWM_NUM_MINUTELY - 1) 
+
+  //   if (i == OWM_NUM_MINUTELY - 1)
   //   {
   //     break;
   //   }
@@ -142,7 +142,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   // }
 
   i = 0;
-  for (JsonObject hourly : doc["hourly"].as<JsonArray>()) 
+  for (JsonObject hourly : doc["hourly"].as<JsonArray>())
   {
     r.hourly[i].dt         = hourly["dt"]        .as<int64_t>();
     r.hourly[i].temp       = hourly["temp"]      .as<float>();
@@ -165,7 +165,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
     // r.hourly[i].weather.description = hourly_weather["description"].as<const char *>();
     // r.hourly[i].weather.icon        = hourly_weather["icon"]       .as<const char *>();
 
-    if (i == OWM_NUM_HOURLY - 1) 
+    if (i == OWM_NUM_HOURLY - 1)
     {
       break;
     }
@@ -173,7 +173,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   }
 
   i = 0;
-  for (JsonObject daily : doc["daily"].as<JsonArray>()) 
+  for (JsonObject daily : doc["daily"].as<JsonArray>())
   {
     r.daily[i].dt         = daily["dt"]        .as<int64_t>();
     r.daily[i].sunrise    = daily["sunrise"]   .as<int64_t>();
@@ -211,7 +211,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
     r.daily[i].weather.description = daily_weather["description"].as<const char *>();
     r.daily[i].weather.icon        = daily_weather["icon"]       .as<const char *>();
 
-    if (i == OWM_NUM_DAILY - 1) 
+    if (i == OWM_NUM_DAILY - 1)
     {
       break;
     }
@@ -219,7 +219,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   }
 
   i = 0;
-  for (JsonObject alerts : doc["alerts"].as<JsonArray>()) 
+  for (JsonObject alerts : doc["alerts"].as<JsonArray>())
   {
     owm_alerts_t new_alert = {};
     // new_alert.sender_name = alerts["sender_name"].as<const char *>();
@@ -230,7 +230,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
     new_alert.tags        = alerts["tags"][0]    .as<const char *>();
     r.alerts.push_back(new_alert);
 
-    if (i == OWM_NUM_ALERTS - 1) 
+    if (i == OWM_NUM_ALERTS - 1)
     {
       break;
     }
@@ -240,8 +240,8 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   return error;
 } // end deserializeOneCall
 
-DeserializationError deserializeAirQuality(WiFiClient& json, 
-                                           owm_resp_air_pollution_t &r) 
+DeserializationError deserializeAirQuality(WiFiClient& json,
+                                           owm_resp_air_pollution_t &r)
 {
   int i = 0;
 
@@ -255,7 +255,7 @@ DeserializationError deserializeAirQuality(WiFiClient& json,
   r.coord.lat = doc["coord"]["lat"].as<float>();
   r.coord.lon = doc["coord"]["lon"].as<float>();
 
-  for (JsonObject list : doc["list"].as<JsonArray>()) 
+  for (JsonObject list : doc["list"].as<JsonArray>())
   {
 
     r.main_aqi[i] = list["main"]["aqi"].as<int>();
@@ -272,7 +272,7 @@ DeserializationError deserializeAirQuality(WiFiClient& json,
 
     r.dt[i] = list["dt"].as<int64_t>();
 
-    if (i == OWM_NUM_AIR_POLLUTION - 1) 
+    if (i == OWM_NUM_AIR_POLLUTION - 1)
     {
       break;
     }
@@ -281,3 +281,4 @@ DeserializationError deserializeAirQuality(WiFiClient& json,
 
   return error;
 } // end deserializeAirQuality
+

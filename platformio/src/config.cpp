@@ -54,7 +54,7 @@ const String OWM_ENDPOINT = "api.openweathermap.org";
 // - Go to https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30
 // - Follow the instructions to complete the subscription.
 // - Go to https://home.openweathermap.org/subscriptions and set the "Calls per
-//   day (no more than)" to 1,000. This ensures you will never overrun the free 
+//   day (no more than)" to 1,000. This ensures you will never overrun the free
 //   calls.
 const String OWM_ONECALL_VERSION = "3.0";
 

@@ -143,9 +143,9 @@ const char *TXT_UNKNOWN = "Unknown";
 //   option or territory. For this reason it is preferred that you do not
 //   translate text related to Alerts. Understandably, it may be undesirable to
 //   see English alerts in territories where English is uncommon. To satisify
-//   this, users should uncomment the DISABLE_ALERTS macro in config.h. 
+//   this, users should uncomment the DISABLE_ALERTS macro in config.h.
 //
-// Here are a few examples, uncomment the array for your region (or create your 
+// Here are a few examples, uncomment the array for your region (or create your
 // own).
 const std::vector<String> ALERT_URGENCY = {"statement", "watch", "advisory", "warning", "emergency"}; // US National Weather Service
 // const std::vector<String> ALERT_URGENCY = {"yellow", "amber", "red"};                 // United Kingdom's national weather service (MET Office)
@@ -217,14 +217,14 @@ const char *AUSTRALIA_AQI_TXT[6] =
   "Very Poor",
   "Hazardous",
 };
-const char *CANADA_AQHI_TXT[4] = 
+const char *CANADA_AQHI_TXT[4] =
 {
   "Low",
   "Moderate",
   "High",
   "Very High",
 };
-const char *EUROPE_CAQI_TXT[5] = 
+const char *EUROPE_CAQI_TXT[5] =
 {
   "Very Low",
   "Low",
@@ -232,7 +232,7 @@ const char *EUROPE_CAQI_TXT[5] =
   "High",
   "Very High",
 };
-const char *HONG_KONG_AQHI_TXT[5] = 
+const char *HONG_KONG_AQHI_TXT[5] =
 {
   "Low",
   "Moderate",
@@ -240,7 +240,7 @@ const char *HONG_KONG_AQHI_TXT[5] =
   "Very High",
   "Hazardous",
 };
-const char *INDIA_AQI_TXT[6] = 
+const char *INDIA_AQI_TXT[6] =
 {
   "Good",
   "Satisfactory",
@@ -249,7 +249,7 @@ const char *INDIA_AQI_TXT[6] =
   "Very Poor",
   "Severe",
 };
-const char *MAINLAND_CHINA_AQI_TXT[6] = 
+const char *MAINLAND_CHINA_AQI_TXT[6] =
 {
   "Excellent",
   "Good",
@@ -258,7 +258,7 @@ const char *MAINLAND_CHINA_AQI_TXT[6] =
   "Heavily Polluted",
   "Severely Polluted",
 };
-const char *SINGAPORE_PSI_TXT[5] = 
+const char *SINGAPORE_PSI_TXT[5] =
 {
   "Good",
   "Moderate",
@@ -266,21 +266,21 @@ const char *SINGAPORE_PSI_TXT[5] =
   "Very Unhealthy",
   "Hazardous",
 };
-const char *SOUTH_KOREA_CAI_TXT[4] = 
+const char *SOUTH_KOREA_CAI_TXT[4] =
 {
   "Good",
   "Medium",
   "Unhealthy",
   "Very Unhealthy",
 };
-const char *UNITED_KINGDOM_DAQI_TXT[4] = 
+const char *UNITED_KINGDOM_DAQI_TXT[4] =
 {
   "Low",
   "Moderate",
   "High",
   "Very High",
 };
-const char *UNITED_STATES_AQI_TXT[6] = 
+const char *UNITED_STATES_AQI_TXT[6] =
 {
   "Good",
   "Moderate",
@@ -292,3 +292,4 @@ const char *UNITED_STATES_AQI_TXT[6] =
 } // end extern "C"
 
 #endif
+

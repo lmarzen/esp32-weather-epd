@@ -28,3 +28,4 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r);
 int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r);
 
 #endif
+

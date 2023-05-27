@@ -38,7 +38,7 @@ static owm_resp_air_pollution_t owm_air_pollution;
 Preferences prefs;
 
 /* Put esp32 into ultra low-power deep-sleep (<11μA).
- * Alligns wake time to the minute. Sleep times defined in config.cpp.
+ * Aligns wake time to the minute. Sleep times defined in config.cpp.
  */
 void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
 {
@@ -51,7 +51,7 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   uint64_t sleepDuration = 0;
   int extraHoursUntilWake = 0;
   int curHour = timeInfo->tm_hour;
-  
+
   if (timeInfo->tm_min >= 58)
   { // if we are within 2 minutes of the next hour, then round up for the
     // purposes of bed time
@@ -206,7 +206,7 @@ void setup()
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
   }
-  
+
   // FETCH TIME
   bool timeConfigured = false;
   timeConfigured = setupTime(&timeInfo);
@@ -243,7 +243,7 @@ void setup()
     beginDeepSleep(startTime, &timeInfo);
   }
   rxOWM[1] = getOWMairpollution(client, owm_air_pollution);
-  killWiFi(); // wifi no longer needed
+  killWiFi(); // WiFi no longer needed
   if (rxOWM[1] != HTTP_CODE_OK)
   {
     statusStr = "Air Pollution API";
@@ -266,13 +266,13 @@ void setup()
 
   I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
   if(bme.begin(BME_ADDRESS, &I2C_bme))
-  { 
+  {
     inTemp     = bme.readTemperature(); // Celsius
     inHumidity = bme.readHumidity();    // %
 
     // check if BME readings are valid
     // note: readings are checked again before drawing to screen. If a reading
-    //       is not a number (NAN) then an error occured, a dash '-' will be
+    //       is not a number (NAN) then an error occurred, a dash '-' will be
     //       displayed.
     if (isnan(inTemp) || isnan(inHumidity)) {
       statusStr = "BME read failed";

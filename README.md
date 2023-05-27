@@ -22,7 +22,7 @@ Here are two examples utilizing various configuration options:
 
 <p float="left">
   <img src="showcase/demo-new-york.jpg" width="49%" />
-  <img src="showcase/demo-london.jpg" width="49%" /> 
+  <img src="showcase/demo-london.jpg" width="49%" />
 </p>
 
 ## Setup Guide
@@ -37,7 +37,7 @@ Here are two examples utilizing various configuration options:
 - Limitations of E-Paper: 
   - Colors - E-Paper has traditionally been limited to just black and white, but in recent years 3-color E-Paper screens have started showing up.
 
-  - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed too quickly. To avoid this, E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times, which can be distracting.  
+  - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed too quickly. To avoid this, E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times, which can be distracting.
 
 
 - https://www.waveshare.com/product/7.5inch-e-paper-hat.htm (800x480, 7.5inch E-Ink display, Black/White)
@@ -105,7 +105,7 @@ Cut the low power pad for even longer battery life.
 
 - From https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654
 
-  > Low Power Pad: This pad is specially designed for low power consumption. It is connected by default. You can cut off the thin wire in the middle with a knife to disconnect it. After disconnection, the static power consumption can be reduced by 500 μA. The power consumption can be reduced to 13 μA after controlling the maincontroller enter the sleep mode through the program. Note: when the pad is disconnected, you can only drive RGB LED light via the USB Power supply. 
+  > Low Power Pad: This pad is specially designed for low power consumption. It is connected by default. You can cut off the thin wire in the middle with a knife to disconnect it. After disconnection, the static power consumption can be reduced by 500 μA. The power consumption can be reduced to 13 μA after controlling the maincontroller enter the sleep mode through the program. Note: when the pad is disconnected, you can only drive RGB LED light via the USB Power supply.
 
 <p float="left">
   <img src="showcase/wiring_diagram.png" width="66%" />
@@ -157,7 +157,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
    a. Connect ESP32 to your computer via USB.
 
-   b. Click the upload arrow along the bottom of the VSCode window. (Should say "PlatformIO: Upload" if you hover over it.) 
+   b. Click the upload arrow along the bottom of the VSCode window. (Should say "PlatformIO: Upload" if you hover over it.)
 
       - PlatformIO will automatically download the required third-party libraries, compile, and upload the code. :)
      

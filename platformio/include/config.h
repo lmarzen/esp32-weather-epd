@@ -107,7 +107,7 @@
 // The wind direction icon shown to the left of the wind speed can indicate wind
 // direction with a minimum error of ±0.5°. This uses more flash storage because
 // 360 24x24 wind direction icons must be stored, totaling ~25kB. For either
-// preference or incase flash space becomes a concern there are a handful of
+// preference or in case flash space becomes a concern there are a handful of
 // selectable options listed below. 360 points seems excessive, but the option
 // is there.
 //
@@ -158,7 +158,7 @@
 
 // DISABLE ALERTS
 // The handling of alerts is complex. Each country has a unique national alert
-// system that recieves alerts from many different government agencies. This 
+// system that receives alerts from many different government agencies. This 
 // results is huge variance in the formatting of alerts. OpenWeatherMap provides
 // alerts in English only. Any combination of these factors may make it
 // undesirable to display alerts in some regions.
@@ -205,3 +205,4 @@ extern const unsigned long LOW_BATTERY_SLEEP_INTERVAL;
 extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 
 #endif
+

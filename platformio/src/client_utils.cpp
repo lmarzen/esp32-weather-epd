@@ -39,11 +39,11 @@
 #include "display_utils.h"
 #include "renderer.h"
 
-/* Power-on and connect wifi.
- * Takes int parameter to store wifi RSSI, or “Received Signal Strength 
+/* Power-on and connect WiFi.
+ * Takes int parameter to store WiFi RSSI, or “Received Signal Strength
  * Indicator"
  *
- * Returns wifi status.
+ * Returns WiFi status.
  */
 wl_status_t startWiFi(int &wifiRSSI)
 {
@@ -51,7 +51,7 @@ wl_status_t startWiFi(int &wifiRSSI)
   Serial.printf("Connecting to '%s'", WIFI_SSID);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-  // timeout if wifi does not connect in 10s from now
+  // timeout if WiFi does not connect in 10s from now
   unsigned long timeout = millis() + 10000;
   wl_status_t connection_status = WiFi.status();
 
@@ -65,7 +65,7 @@ wl_status_t startWiFi(int &wifiRSSI)
 
   if (connection_status == WL_CONNECTED)
   {
-    wifiRSSI = WiFi.RSSI(); // get Wifi signal strength now, because the WiFi
+    wifiRSSI = WiFi.RSSI(); // get WiFi signal strength now, because the WiFi
                             // will be turned off to save power!
     Serial.println("IP: " + WiFi.localIP().toString());
   }
@@ -76,7 +76,7 @@ wl_status_t startWiFi(int &wifiRSSI)
   return connection_status;
 } // startWiFi
 
-/* Disconnect and power-off wifi.
+/* Disconnect and power-off WiFi.
  */
 void killWiFi()
 {
@@ -102,10 +102,10 @@ bool printLocalTime(tm *timeInfo)
 
 /* Connects to NTP server and stores time in a tm struct, adjusted for the time
  * zone specified in config.cpp.
- * 
+ *
  * Returns true if success, otherwise false.
- * 
- * Note: Must be connected to wifi to get time from NTP server.
+ *
+ * Note: Must be connected to WiFi to get time from NTP server.
  */
 bool setupTime(tm *timeInfo)
 {
@@ -118,7 +118,7 @@ bool setupTime(tm *timeInfo)
 } // setupTime
 
 /* Perform an HTTP GET request to OpenWeatherMap's "One Call" API
- * If data is recieved, it will be parsed and stored in the global variable
+ * If data is received, it will be parsed and stored in the global variable
  * owm_onecall.
  *
  * Returns the HTTP Status Code.
@@ -129,13 +129,13 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
   bool rxSuccess = false;
   DeserializationError jsonErr = {};
   String uri = "/data/" + OWM_ONECALL_VERSION
-               + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG 
+               + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG
                + "&units=standard&exclude=minutely&appid=" + OWM_APIKEY;
   // This string is printed to terminal to help with debugging. The API key is
-  // censored to reduce the risk of users exposing thier key.
+  // censored to reduce the risk of users exposing their key.
   String sanitizedUri = OWM_ENDPOINT
                + "/data/" + OWM_ONECALL_VERSION
-               + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG 
+               + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG
                + "&units=standard&exclude=minutely&appid={API key}";
 
   Serial.println("Attempting HTTP Request: " + sanitizedUri);
@@ -151,7 +151,7 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
       if (jsonErr)
       {
         rxSuccess = false;
-        // given a -100 offset to distiguish these errors from httpClient errors
+        // -100 offset distinguishes these errors from httpClient errors
         httpResponse = -100 - static_cast<int>(jsonErr.code());
       }
       rxSuccess = !jsonErr;
@@ -167,7 +167,7 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
 } // getOWMonecall
 
 /* Perform an HTTP GET request to OpenWeatherMap's "Air Pollution" API
- * If data is recieved, it will be parsed and stored in the global variable
+ * If data is received, it will be parsed and stored in the global variable
  * owm_air_pollution.
  *
  * Returns the HTTP Status Code.
@@ -178,7 +178,7 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
   bool rxSuccess = false;
   DeserializationError jsonErr = {};
 
-  // set start and end to approriate values so that the last 24 hours of air
+  // set start and end to appropriate values so that the last 24 hours of air
   // pollution history is returned. Unix, UTC.
   time_t now;
   int64_t end = time(&now);
@@ -192,7 +192,7 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
                + "&start=" + startStr + "&end=" + endStr
                + "&appid=" + OWM_APIKEY;
   // This string is printed to terminal to help with debugging. The API key is
-  // censored to reduce the risk of users exposing thier key.
+  // censored to reduce the risk of users exposing their key.
   String sanitizedUri = OWM_ENDPOINT +
                "/data/2.5/air_pollution/history?lat=" + LAT + "&lon=" + LON
                + "&start=" + startStr + "&end=" + endStr
@@ -210,7 +210,7 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
       jsonErr = deserializeAirQuality(http.getStream(), r);
       if (jsonErr)
       {
-        // given a -100 offset to distiguish these errors from httpClient errors
+        // -100 offset to distinguishes these errors from httpClient errors
         httpResponse = -100 - static_cast<int>(jsonErr.code());
       }
       rxSuccess = !jsonErr;
@@ -224,3 +224,4 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
 
   return httpResponse;
 } // getOWMairpollution
+

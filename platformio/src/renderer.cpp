@@ -42,7 +42,7 @@ GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
   GxEPD2_750_T7(PIN_EPD_CS,
                 PIN_EPD_DC,
                 PIN_EPD_RST,
-                PIN_EPD_BUSY));    
+                PIN_EPD_BUSY));
 #endif
 #ifdef DISP_3C
 GxEPD2_3C<GxEPD2_750c_Z08, GxEPD2_750c_Z08::HEIGHT / 2> display(
@@ -99,17 +99,16 @@ void drawString(int16_t x, int16_t y, String text, alignment_t alignment,
 /* Draws a string that will flow into the next line when max_width is reached.
  * If a string exceeds max_lines an ellipsis (...) will terminate the last word.
  * Lines will break at spaces(' ') and dashes('-').
- * 
+ *
  * Note: max_width should be big enough to accommodate the largest word that
  *       will be displayed. If an unbroken string of characters longer than
  *       max_width exist in text, then the string will be printed beyond 
  *       max_width.
  */
-void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment, 
+void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
                        uint16_t max_width, uint16_t max_lines, 
                        int16_t line_spacing, uint16_t color)
 {
-  
   uint16_t current_line = 0;
   String textRemaining = text;
   // print until we reach max_lines or no more text remains
@@ -119,7 +118,7 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
     uint16_t w, h;
 
     display.getTextBounds(textRemaining, 0, 0, &x1, &y1, &w, &h);
-    
+
     int endIndex = textRemaining.length();
     // check if remaining text is to wide, if it is then print what we can
     String subStr = textRemaining;
@@ -137,7 +136,7 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
       // find the last place in the string that we can break it.
       if (current_line < max_lines - 1)
       {
-        splitAt = max(subStr.lastIndexOf(" "), 
+        splitAt = max(subStr.lastIndexOf(" "),
                       subStr.lastIndexOf("-"));
       }
       else
@@ -145,8 +144,8 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
         // this is the last line, only break at spaces so we can add ellipsis
         splitAt = subStr.lastIndexOf(" ");
       }
-      
-      // if splitAt == -1 then there is an unbroken set of characters that is 
+
+      // if splitAt == -1 then there is an unbroken set of characters that is
       // longer than max_width. Otherwise if splitAt != -1 then we can continue
       // the loop until the string is <= max_width
       if (splitAt != -1)
@@ -187,7 +186,7 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
 
       } // end if (splitAt != -1)
     } // end inner while
-    
+
     drawString(x, y + (current_line * line_spacing), subStr, alignment, color);
 
     // update textRemaining to no longer include what was printed
@@ -219,17 +218,17 @@ void initDisplay()
   display.setFullWindow();
 } // end initDisplay
 
-/* This function is responsible for drawing the current conditions and 
+/* This function is responsible for drawing the current conditions and
  * associated icons.
  */
 void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
-                           owm_resp_air_pollution_t &owm_air_pollution, 
+                           owm_resp_air_pollution_t &owm_air_pollution,
                            float inTemp, float inHumidity)
 {
   String dataStr, unitStr;
   // current weather icon
   display.drawInvertedBitmap(0, 0,
-                             getCurrentConditionsBitmap196(current, today), 
+                             getCurrentConditionsBitmap196(current, today),
                              196, 196, GxEPD_BLACK);
 
   // current temp
@@ -254,17 +253,17 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // current feels like
 #ifdef UNITS_TEMP_KELVIN
-  dataStr = String(TXT_FEELS_LIKE) + ' ' 
+  dataStr = String(TXT_FEELS_LIKE) + ' '
             + String(static_cast<int>(round(current.feels_like)));
 #endif
 #ifdef UNITS_TEMP_CELSIUS
-  dataStr = String(TXT_FEELS_LIKE) + ' ' 
+  dataStr = String(TXT_FEELS_LIKE) + ' '
             + String(static_cast<int>(round(
                      kelvin_to_celsius(current.feels_like))))
             + '\xB0';
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
-  dataStr = String(TXT_FEELS_LIKE) + ' ' 
+  dataStr = String(TXT_FEELS_LIKE) + ' '
             + String(static_cast<int>(round(
                      kelvin_to_fahrenheit(current.feels_like))))
             + '\xB0';
@@ -319,8 +318,8 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   drawString(48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
 
   // wind
-  display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1, 
-                             getWindBitmap24(current.wind_deg), 
+  display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1,
+                             getWindBitmap24(current.wind_deg),
                              24, 24, GxEPD_BLACK);
 #ifdef UNITS_SPEED_METERSPERSECOND
   dataStr = String(static_cast<int>(round(current.wind_speed)));
@@ -352,7 +351,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 #endif
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, 
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
              unitStr, LEFT);
 
   // uv and air quality indices
@@ -369,7 +368,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   int max_w = 170 - (display.getCursorX() + sp);
   if (getStringWidth(dataStr) <= max_w)
   { // Fits on a single line, draw along bottom
-    drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+    drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2,
                dataStr, LEFT);
   }
   else
@@ -377,14 +376,14 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
     display.setFont(&FONT_5pt8b);
     if (getStringWidth(dataStr) <= max_w)
     { // Fits on a single line with smaller font, draw along bottom
-      drawString(display.getCursorX() + sp, 
-                 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+      drawString(display.getCursorX() + sp,
+                 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2,
                  dataStr, LEFT);
     }
     else
     { // Does not fit on a single line, draw higher to allow room for 2nd line
       drawMultiLnString(display.getCursorX() + sp,
-                        204 + 17 / 2 + (48 + 8) * 2 + 48 / 2 - 10, 
+                        204 + 17 / 2 + (48 + 8) * 2 + 48 / 2 - 10,
                         dataStr, LEFT, max_w, 2, 10);
     }
   }
@@ -399,7 +398,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   max_w = 170 - (display.getCursorX() + sp);
   if (getStringWidth(dataStr) <= max_w)
   { // Fits on a single line, draw along bottom
-    drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+    drawString(display.getCursorX() + sp, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2,
                dataStr, LEFT);
   }
   else
@@ -407,14 +406,14 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
     display.setFont(&FONT_5pt8b);
     if (getStringWidth(dataStr) <= max_w)
     { // Fits on a single line with smaller font, draw along bottom
-      drawString(display.getCursorX() + sp, 
-                 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+      drawString(display.getCursorX() + sp,
+                 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2,
                  dataStr, LEFT);
     }
     else
     { // Does not fit on a single line, draw higher to allow room for 2nd line
       drawMultiLnString(display.getCursorX() + sp,
-                        204 + 17 / 2 + (48 + 8) * 3 + 48 / 2 - 10, 
+                        204 + 17 / 2 + (48 + 8) * 3 + 48 / 2 - 10,
                         dataStr, LEFT, max_w, 2, 10);
     }
   }
@@ -453,7 +452,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   dataStr = String(current.humidity);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, 
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
              "%", LEFT);
 
   // pressure
@@ -490,20 +489,20 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 #endif
 #ifdef UNITS_PRES_GRAMSPERSQUARECENTIMETER
   dataStr = String(static_cast<int>(round(
-                   hectopascals_to_gramspersquarecentimeter(current.pressure) 
+                   hectopascals_to_gramspersquarecentimeter(current.pressure)
                    )));
   unitStr = TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER;
 #endif
 #ifdef UNITS_PRES_POUNDSPERSQUAREINCH
   dataStr = String(round(1e2f *
-                   hectopascals_to_poundspersquareinch(current.pressure) 
+                   hectopascals_to_poundspersquareinch(current.pressure)
                    ) / 1e2f, 2);
   unitStr = TXT_UNITS_PRES_POUNDSPERSQUAREINCH;
 #endif
   display.setFont(&FONT_12pt8b);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, 
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2,
              unitStr, LEFT);
 
   // visibility
@@ -536,7 +535,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, 
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2,
              unitStr, LEFT);
 
   // indoor humidity
@@ -551,7 +550,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, 
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2,
              "%", LEFT);
 
   return;
@@ -606,7 +605,7 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 /* This function is responsible for drawing the current alerts if any.
  * Up to 2 alerts can be drawn.
  */
-void drawAlerts(std::vector<owm_alerts_t> &alerts, 
+void drawAlerts(std::vector<owm_alerts_t> &alerts,
                 const String &city, const String &date)
 {
   if (alerts.size() == 0)
@@ -627,7 +626,7 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
   int date_w = getStringWidth(date);
   int max_w = DISP_WIDTH - 2 - max(city_w, date_w) - (196 + 4) - 8;
 
-  // find indicies of valid alerts
+  // find indices of valid alerts
   int alert_indices[alerts.size()] = {};
   int num_valid_alerts = 0;
   for (int i = 0; i < alerts.size(); ++i)
@@ -664,7 +663,7 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
       }
       else
       { // Does not fit on a single line, draw higher to allow room for 2nd line
-        drawMultiLnString(196 + 48 + 4, 24 + 8 - 12 + 17 - 11, 
+        drawMultiLnString(196 + 48 + 4, 24 + 8 - 12 + 17 - 11,
                           cur_alert.event, LEFT, max_w, 2, 23);
       }
     }
@@ -683,16 +682,16 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
                                  32, 32, ACCENT_COLOR);
       // must be called after getAlertBitmap
       toTitleCase(cur_alert.event);
-      
-      drawMultiLnString(196 + 32 + 3, 5 + 17 + (i * 32), 
+
+      drawMultiLnString(196 + 32 + 3, 5 + 17 + (i * 32),
                         cur_alert.event, LEFT, max_w, 1, 0);
     } // end for-loop
   } // end 2 alerts
-  
+
   return;
 } // end drawAlerts
 
-/* This function is responsible for drawing the city string and date 
+/* This function is responsible for drawing the city string and date
  * information in the top right corner.
  */
 void drawLocationDate(const String &city, const String &date)
@@ -759,18 +758,18 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     tempMin = min(tempMin, newTemp);
     tempMax = max(tempMax, newTemp);
   }
-  int tempBoundMin = static_cast<int>(tempMin - 1) 
+  int tempBoundMin = static_cast<int>(tempMin - 1)
                       - modulo(static_cast<int>(tempMin - 1), yTempMajorTicks);
-  int tempBoundMax = static_cast<int>(tempMax + 1) 
+  int tempBoundMax = static_cast<int>(tempMax + 1)
    + (yTempMajorTicks - modulo(static_cast<int>(tempMax + 1), yTempMajorTicks));
 
   // while we have to many major ticks then increase the step
   while ((tempBoundMax - tempBoundMin) / yTempMajorTicks > yMajorTicks)
   {
     yTempMajorTicks += 5;
-    tempBoundMin = static_cast<int>(tempMin - 1) 
+    tempBoundMin = static_cast<int>(tempMin - 1)
                       - modulo(static_cast<int>(tempMin - 1), yTempMajorTicks);
-    tempBoundMax = static_cast<int>(tempMax + 1) + (yTempMajorTicks 
+    tempBoundMax = static_cast<int>(tempMax + 1) + (yTempMajorTicks
                       - modulo(static_cast<int>(tempMax + 1), yTempMajorTicks));
   }
   // while we have not enough major ticks add to either bound
@@ -831,9 +830,9 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     if (i > 0)
     {
       // temperature
-      x0_t = static_cast<int>(round(xPos0 + ((i - 1) * xInterval) 
+      x0_t = static_cast<int>(round(xPos0 + ((i - 1) * xInterval)
                                     + (0.5 * xInterval) ));
-      x1_t = static_cast<int>(round(xPos0 + (i * xInterval) 
+      x1_t = static_cast<int>(round(xPos0 + (i * xInterval)
                                     + (0.5 * xInterval) ));
       yPxPerUnit = (yPos1 - yPos0) 
                    / static_cast<float>(tempBoundMax - tempBoundMin);
@@ -933,7 +932,7 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   if (batVoltage < BATTERY_WARN_VOLTAGE) {
     dataColor = ACCENT_COLOR;
   }
-  dataStr = String(batPercent) + "% (" 
+  dataStr = String(batPercent) + "% ("
             + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
   drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 25;
@@ -941,7 +940,7 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
                              getBatBitmap24(batPercent), 24, 24, dataColor);
   pos -= sp + 9;
 
-  // wifi
+  // WiFi
   dataStr = String(getWiFidesc(rssi));
   dataColor = rssi >= -70 ? GxEPD_BLACK : ACCENT_COLOR;
   if (rssi != 0)
@@ -968,7 +967,7 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
   {
     drawString(pos, DISP_HEIGHT - 1 - 2, statusStr, RIGHT, dataColor);
     pos -= getStringWidth(statusStr) + 24;
-    display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 18, error_icon_24x24, 
+    display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 18, error_icon_24x24,
                                24, 24, dataColor);
   }
 
@@ -978,18 +977,19 @@ void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
 /* This function is responsible for drawing prominent error messages to the
  * screen.
  */
-void drawError(const uint8_t *bitmap_196x196, 
+void drawError(const uint8_t *bitmap_196x196,
                const String &errMsgLn1, const String &errMsgLn2)
 {
   display.setFont(&FONT_26pt8b);
-  drawString(DISP_WIDTH / 2, 
-             DISP_HEIGHT / 2 + 196 / 2 + 21, 
+  drawString(DISP_WIDTH / 2,
+             DISP_HEIGHT / 2 + 196 / 2 + 21,
              errMsgLn1, CENTER);
-  drawString(DISP_WIDTH / 2, 
-             DISP_HEIGHT / 2 + 196 / 2 + 76, 
+  drawString(DISP_WIDTH / 2,
+             DISP_HEIGHT / 2 + 196 / 2 + 76,
              errMsgLn2, CENTER);
-  display.drawInvertedBitmap(DISP_WIDTH / 2 - 196 / 2, 
+  display.drawInvertedBitmap(DISP_WIDTH / 2 - 196 / 2,
                              DISP_HEIGHT / 2 - 196 / 2 - 21,
                              bitmap_196x196, 196, 196, ACCENT_COLOR);
   return;
 } // end drawError
+
