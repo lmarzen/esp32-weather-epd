@@ -21,10 +21,6 @@
  * project's github page: <https://github.com/lmarzen/esp32-weather-epd/issues>
  */
 
-#include "config.h"
-
-#ifdef LOCALE_nl_BE
-
 #include <vector>
 #include <Arduino.h>
 #include "_locale.h"
@@ -296,6 +292,4 @@ const char *UNITED_STATES_AQI_TXT[6] =
   "Gevaarlijk",
 };
 } // end extern "C"
-
-#endif
 

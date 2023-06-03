@@ -15,10 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-
-#ifdef LOCALE_en_GB
-
 #include <vector>
 #include <Arduino.h>
 #include "_locale.h"
@@ -290,6 +286,4 @@ const char *UNITED_STATES_AQI_TXT[6] =
   "Hazardous",
 };
 } // end extern "C"
-
-#endif
 

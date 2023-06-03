@@ -1,4 +1,4 @@
-/* German locale data for esp32-weather-epd.
+/* American English locale data for esp32-weather-epd.
  * Copyright (C) 2022-2023  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,17 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-/* Special thanks to Matthias Deimbacher (deimi) for contributing this 
- * translation.
- *
- * If you have any feedback or suggestions, please open an issue on this
- * project's github page: <https://github.com/lmarzen/esp32-weather-epd/issues>
- */
-
-#include "config.h"
-
-#ifdef LOCALE_de_DE
 
 #include <vector>
 #include <Arduino.h>
@@ -42,29 +31,29 @@
 //   LC_TIME category.
 //   https://www.gnu.org/software/libc/sources.html
 // D_T_FMT                 string for formatting date and time
-const char *LC_D_T_FMT     = "%a %d %b %Y %T %Z";
+const char *LC_D_T_FMT     = "%a %d %b %Y %r %Z";
 // LC_D_FMT                date format string
-const char *LC_D_FMT       = "%d.%m.%y";
+const char *LC_D_FMT       = "%m/%d/%y";
 // T_FMT                   time format string
-const char *LC_T_FMT       = "%T";
+const char *LC_T_FMT       = "%r";
 // T_FMT_AMPM              a.m. or p.m. time format string
-const char *LC_T_FMT_AMPM  = "";
+const char *LC_T_FMT_AMPM  = "%I:%M:%S %p";
 // AM_STR                  Ante Meridian affix
-const char *LC_AM_STR      = "";
+const char *LC_AM_STR      = "AM";
 // PM_STR                  Post Meridian affix
-const char *LC_PM_STR      = "";
+const char *LC_PM_STR      = "PM";
 // DAY_{1-7}               name of the n-th day of the week
-const char *LC_DAY[7]      = {"Sonntag", "Montag", "Dienstag", "Mittwoch", 
-                              "Donnerstag", "Freitag", "Samstag"};
+const char *LC_DAY[7]      = {"Sunday", "Monday", "Tuesday", "Wednesday", 
+                              "Thursday", "Friday", "Saturday"};
 // ABDAY_{1-7}             abbreviated ame of the n-th day of the week
-const char *LC_ABDAY[7]    = {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
+const char *LC_ABDAY[7]    = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = { "Januar",    "Februar",  "M\xE4rz",  "April", 
-                               "Mai",       "Juni",     "Juli",     "August", 
-                               "September", "Oktober",  "November", "Dezember"};
+const char *LC_MON[12]     = {"January",    "February", "March",    "April", 
+                               "May",       "June",     "July",     "August", 
+                               "September", "October",  "November", "December"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
-const char *LC_ABMON[12]   = {"Jan", "Feb", "M\xE4r", "Apr", "Mai", "Jun", 
-                              "Jul", "Aug", "Sep",    "Okt", "Nov", "Dez"};
+const char *LC_ABMON[12]   = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 // ERA                     era description segments
 const char *LC_ERA         = "";
 // ERA_D_FMT               era date format string
@@ -78,34 +67,34 @@ const char *LC_ERA_T_FMT   = "";
 // For full list of languages, see 
 // https://openweathermap.org/api/one-call-api#multi
 // Note: "[only] The contents of the 'description' field will be translated."
-const String OWM_LANG = "de";
+const String OWM_LANG = "en";
 
 // CURRENT CONDITIONS
-const char *TXT_FEELS_LIKE         = "Gef\xFChlt";
-const char *TXT_SUNRISE            = "Aufgang";
-const char *TXT_SUNSET             = "Untergang";
+const char *TXT_FEELS_LIKE         = "Feels Like";
+const char *TXT_SUNRISE            = "Sunrise";
+const char *TXT_SUNSET             = "Sunset";
 const char *TXT_WIND               = "Wind";
-const char *TXT_HUMIDITY           = "Feuchtigkeit";
+const char *TXT_HUMIDITY           = "Humidity";
 const char *TXT_UV_INDEX           = "UV Index";
-const char *TXT_PRESSURE           = "Druck";
-const char *TXT_AIR_QUALITY_INDEX  = "Luftqualit\xE4t";
-const char *TXT_VISIBILITY         = "Sichtweite";
-const char *TXT_INDOOR_TEMPERATURE = "Temperatur";
-const char *TXT_INDOOR_HUMIDITY    = "Feuchtigkeit";
+const char *TXT_PRESSURE           = "Pressure";
+const char *TXT_AIR_QUALITY_INDEX  = "Air Quality Index";
+const char *TXT_VISIBILITY         = "Visibility";
+const char *TXT_INDOOR_TEMPERATURE = "Temperature";
+const char *TXT_INDOOR_HUMIDITY    = "Humidity";
 
 // UV INDEX
-const char *TXT_UV_LOW       = "Schwach";
-const char *TXT_UV_MODERATE  = "Mittel";
-const char *TXT_UV_HIGH      = "Hoch";
-const char *TXT_UV_VERY_HIGH = "Sehr hoch";
-const char *TXT_UV_EXTREME   = "Extrem";
+const char *TXT_UV_LOW       = "Low";
+const char *TXT_UV_MODERATE  = "Moderate";
+const char *TXT_UV_HIGH      = "High";
+const char *TXT_UV_VERY_HIGH = "Very High";
+const char *TXT_UV_EXTREME   = "Extreme";
 
 // WIFI
-const char *TXT_WIFI_EXCELLENT     = "Hervorragend";
-const char *TXT_WIFI_GOOD          = "Gut";
-const char *TXT_WIFI_FAIR          = "Ausreichend";
-const char *TXT_WIFI_WEAK          = "Schwach";
-const char *TXT_WIFI_NO_CONNECTION = "Keine Verbindung";
+const char *TXT_WIFI_EXCELLENT     = "Excellent";
+const char *TXT_WIFI_GOOD          = "Good";
+const char *TXT_WIFI_FAIR          = "Fair";
+const char *TXT_WIFI_WEAK          = "Weak";
+const char *TXT_WIFI_NO_CONNECTION = "No Connection";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
@@ -132,7 +121,7 @@ const char *TXT_UNITS_DIST_KILOMETERS = "km";
 const char *TXT_UNITS_DIST_MILES      = "mi";
 
 // LAST REFRESH
-const char *TXT_UNKNOWN = "Unbekannt";
+const char *TXT_UNKNOWN = "Unknown";
 
 // ALERTS
 // The display can show up to 2 alerts, but alerts can be unpredictible in
@@ -154,9 +143,9 @@ const char *TXT_UNKNOWN = "Unbekannt";
 //
 // Here are a few examples, uncomment the array for your region (or create your
 // own).
-// const std::vector<String> ALERT_URGENCY = {"statement", "watch", "advisory", "warning", "emergency"}; // US National Weather Service
+const std::vector<String> ALERT_URGENCY = {"statement", "watch", "advisory", "warning", "emergency"}; // US National Weather Service
 // const std::vector<String> ALERT_URGENCY = {"yellow", "amber", "red"};                 // United Kingdom's national weather service (MET Office)
-const std::vector<String> ALERT_URGENCY = {"minor", "moderate", "severe", "extreme"}; // METEO
+// const std::vector<String> ALERT_URGENCY = {"minor", "moderate", "severe", "extreme"}; // METEO
 // const std::vector<String> ALERT_URGENCY = {}; // Disable urgency interpretation (algorithm will fallback to only prefer the most recently issued alerts)
 
 // ALERT TERMINOLOGY
@@ -233,11 +222,11 @@ const char *CANADA_AQHI_TXT[4] =
 };
 const char *EUROPE_CAQI_TXT[5] =
 {
-  "Sehr niedrig",
-  "Niedrig",
-  "Mittel",
-  "Hoch",
-  "Sehr Hoch",
+  "Very Low",
+  "Low",
+  "Medium",
+  "High",
+  "Very High",
 };
 const char *HONG_KONG_AQHI_TXT[5] =
 {
@@ -297,6 +286,4 @@ const char *UNITED_STATES_AQI_TXT[6] =
   "Hazardous",
 };
 } // end extern "C"
-
-#endif
 

@@ -43,10 +43,10 @@
 // the files in src/locales. Please feel free to create a pull request to add
 // official support for your locale.
 // Uncomment your preferred locale. (exactly 1 must be defined)
-// #define LOCALE_de_DE  // German
-// #define LOCALE_en_GB  // British English
-#define LOCALE_en_US     // American English
-// #define LOCALE_nl_BE  // Belgian Dutch
+// #define LOCALE de_DE  // German
+// #define LOCALE en_GB  // British English
+#define LOCALE en_US     // American English
+// #define LOCALE nl_BE  // Belgian Dutch
 
 // UNITS
 // Define exactly one macro for each unit below.
