@@ -50,7 +50,7 @@
 #define POSIX_2008 // flag and fw for C, F, G, Y formats
 #define GNU_EXT    // includes %P
 
-#define range(low, item, hi) max(low, min(item, hi))
+#define range(low, item, hi) std::max(low, std::min(item, hi))
 
 /* Returns an int indication whether or not it is a leap year.
  */

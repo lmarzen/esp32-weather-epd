@@ -240,7 +240,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   return error;
 } // end deserializeOneCall
 
-DeserializationError deserializeAirQuality(WiFiClient& json,
+DeserializationError deserializeAirQuality(WiFiClient &json,
                                            owm_resp_air_pollution_t &r)
 {
   int i = 0;

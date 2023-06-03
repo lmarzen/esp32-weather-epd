@@ -274,7 +274,7 @@ void setup()
     // note: readings are checked again before drawing to screen. If a reading
     //       is not a number (NAN) then an error occurred, a dash '-' will be
     //       displayed.
-    if (isnan(inTemp) || isnan(inHumidity)) {
+    if (std::isnan(inTemp) || std::isnan(inHumidity)) {
       statusStr = "BME read failed";
       Serial.println(statusStr);
     }

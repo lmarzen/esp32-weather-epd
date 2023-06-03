@@ -56,9 +56,6 @@ GxEPD2_3C<GxEPD2_750c_Z08, GxEPD2_750c_Z08::HEIGHT / 2> display(
   #define ACCENT_COLOR GxEPD_BLACK
 #endif
 
-extern owm_resp_onecall_t owm_onecall;
-extern owm_resp_air_pollution_t owm_air_pollution;
-
 /* Returns the string width in pixels
  */
 uint16_t getStringWidth(String text)
@@ -221,8 +218,9 @@ void initDisplay()
 /* This function is responsible for drawing the current conditions and
  * associated icons.
  */
-void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
-                           owm_resp_air_pollution_t &owm_air_pollution,
+void drawCurrentConditions(const owm_current_t &current,
+                           const owm_daily_t &today,
+                           const owm_resp_air_pollution_t &owm_air_pollution,
                            float inTemp, float inHumidity)
 {
   String dataStr, unitStr;
@@ -420,7 +418,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // indoor temperature
   display.setFont(&FONT_12pt8b);
-  if (!isnan(inTemp))
+  if (!std::isnan(inTemp))
   {
 #ifdef UNITS_TEMP_KELVIN
     dataStr = String(static_cast<int>(round(celsius_to_kelvin(inTemp))));
@@ -540,7 +538,7 @@ void drawCurrentConditions(owm_current_t &current, owm_daily_t &today,
 
   // indoor humidity
   display.setFont(&FONT_12pt8b);
-  if (!isnan(inHumidity))
+  if (!std::isnan(inHumidity))
   {
     dataStr = String(static_cast<int>(round(inHumidity)));
   }

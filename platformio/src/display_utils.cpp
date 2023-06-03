@@ -195,7 +195,7 @@ void truncateExtraAlertInfo(String &text)
  * is returned.
  * In the United States example, Watch = 0, Advisory = 1, Warning = 2
  */
-int eventUrgency(String &event)
+int eventUrgency(const String &event)
 {
   int urgency_lvl = -1;
   for (int i = 0; i < ALERT_URGENCY.size(); ++i)
@@ -342,7 +342,7 @@ const char *getUVIdesc(unsigned int uvi)
  *
  * hours must be a positive integer
  */
-float getAvgConc(float pollutant[], int hours)
+float getAvgConc(const float pollutant[], int hours)
 {
   float avg = 0;
   // index (OWM_NUM_AIR_POLLUTION - 1) is most recent hourly concentration
@@ -360,7 +360,7 @@ float getAvgConc(float pollutant[], int hours)
 /* Returns the aqi for the given AQI and the selected AQI scale(defined in 
  * config.h)
  */
-int getAQI(owm_resp_air_pollution_t &p)
+int getAQI(const owm_resp_air_pollution_t &p)
 {
 #ifdef AUSTRALIA_AQI
   float co_8h     = getAvgConc(p.components.co,     8);
@@ -563,7 +563,7 @@ const uint8_t *getWiFiBitmap16(int rssi)
  *   https://openweathermap.org/weather-conditions
  *   https://www.weather.gov/ajk/ForecastTerms
  */
-const uint8_t *getForecastBitmap64(owm_daily_t &daily)
+const uint8_t *getForecastBitmap64(const owm_daily_t &daily)
 {
   int id = daily.weather.id;
   // always using the day icon for weather forecast
@@ -707,8 +707,8 @@ const uint8_t *getForecastBitmap64(owm_daily_t &daily)
  *   https://openweathermap.org/weather-conditions
  *   https://www.weather.gov/ajk/ForecastTerms
  */
-const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current, 
-                                             owm_daily_t   &today)
+const uint8_t *getCurrentConditionsBitmap196(const owm_current_t &current,
+                                             const owm_daily_t   &today)
 {
   int id = current.weather.id;
   // OpenWeatherMap indicates sun is up with d otherwise n for night
@@ -869,7 +869,7 @@ const uint8_t *getCurrentConditionsBitmap196(owm_current_t &current,
  * If a relevant category can not be determined, the default alert bitmap will 
  * be returned. (warning triangle icon)
  */
-const uint8_t *getAlertBitmap32(owm_alerts_t &alert)
+const uint8_t *getAlertBitmap32(const owm_alerts_t &alert)
 {
   enum alert_category c = getAlertCategory(alert);
   switch (c)
@@ -915,7 +915,7 @@ const uint8_t *getAlertBitmap32(owm_alerts_t &alert)
  * If a relevant category can not be determined, the default alert bitmap will 
  * be returned. (warning triangle icon)
  */
-const uint8_t *getAlertBitmap48(owm_alerts_t &alert)
+const uint8_t *getAlertBitmap48(const owm_alerts_t &alert)
 {
   enum alert_category c = getAlertCategory(alert);
   switch (c)
@@ -975,7 +975,7 @@ bool containsTerminology(const String s, const std::vector<String> &terminology)
  *
  * Weather alert terminology is defined in the included locale header.
  */
-enum alert_category getAlertCategory(owm_alerts_t &alert)
+enum alert_category getAlertCategory(const owm_alerts_t &alert)
 {
   if (containsTerminology(alert.event, TERM_SMOG))
   {
