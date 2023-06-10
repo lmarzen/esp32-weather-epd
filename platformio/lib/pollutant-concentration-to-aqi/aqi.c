@@ -38,7 +38,7 @@ int compute_piecewise_aqi(float i_lo, float i_hi,
                           float c_lo, float c_hi, float c)
 {
   return min(i_hi, max(i_lo, round(
-                             ( ((float)(i_hi - i_lo)) / ((float)(c_hi - c_lo)) ) 
+                             ( ((float)(i_hi - i_lo)) / ((float)(c_hi - c_lo)) )
                              * (c - c_lo) + i_lo)));
 } // end compute_piecewise_aqi
 
