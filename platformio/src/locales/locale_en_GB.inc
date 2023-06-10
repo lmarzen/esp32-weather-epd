@@ -45,7 +45,7 @@ const char *LC_PM_STR      = "pm";
 // DAY_{1-7}               name of the n-th day of the week
 const char *LC_DAY[7]      = {"Sunday", "Monday", "Tuesday", "Wednesday", 
                               "Thursday", "Friday", "Saturday"};
-// ABDAY_{1-7}             abbreviated ame of the n-th day of the week
+// ABDAY_{1-7}             abbreviated name of the n-th day of the week
 const char *LC_ABDAY[7]    = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 // MON_{1-12}              name of the n-th month of the year
 const char *LC_MON[12]     = {"January",    "February", "March",    "April", 
@@ -98,8 +98,8 @@ const char *TXT_WIFI_NO_CONNECTION = "No Connection";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
-const char *TXT_UNITS_TEMP_CELSIUS    = "\xB0" "C";
-const char *TXT_UNITS_TEMP_FAHRENHEIT = "\xB0" "F";
+const char *TXT_UNITS_TEMP_CELSIUS    = "\xB0""C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "\xB0""F";
 // UNIT SYMBOLS - WIND SPEED
 const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
 const char *TXT_UNITS_SPEED_FEETPERSECOND     = "ft/s";
