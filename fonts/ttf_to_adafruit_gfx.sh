@@ -2,7 +2,7 @@
 
 # Font file to Adafruit GFX format script for esp32-weather-epd.
 # Copyright (C) 2022-2023  Luke Marzen
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +20,7 @@ OUTPUT_PATH="./fonts"
 SIZES=(4 5 6 7 8 9 10 11 12 14 16 18 20 22 24 26)
 TEMPERATURE_SIZES=(48)
 
-# clean fonts output 
+# clean fonts output
 echo "Cleaning $OUTPUT_PATH"
 rm -r $OUTPUT_PATH
 mkdir $OUTPUT_PATH

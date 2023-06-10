@@ -2,7 +2,7 @@
 
 # Scalar vector icons to Adafruit GFX format script for esp32-weather-epd.
 # Copyright (C) 2022-2023  Luke Marzen
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -47,7 +47,7 @@ for f in $SVG_FILES
 do
   echo "Converting .svg to .png for $f..."
 
-  # use mogrify to convert to png 
+  # use mogrify to convert to png
   # SVG_SIZE=$(identify -format '%w' $f)
   # DENSITY=$(bc -l <<< "96 * $1 / $SVG_SIZE")
   # mogrify -format png -path $PNG_PATH -colorspace sRGB -density $DENSITY $f

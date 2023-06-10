@@ -7,9 +7,9 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
 <p float="left">
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
   <img src="showcase/assembled-demo-raleigh-side.jpg" width="49%" />
-  <img src="showcase/assembled-demo-raleigh-back.jpg" width="49%" /> 
+  <img src="showcase/assembled-demo-raleigh-back.jpg" width="49%" />
   <img src="showcase/assembled-demo-bottom-cover.jpg" width="49%" />
-  <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49%" /> 
+  <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49%" />
 </p>
 
 I made a small stand by hollowing out a piece of wood from the bottom. On the back, I used a short USB extension cable so that I can charge the battery without needing to remove the components from the stand. I also wired a small reset button to refresh the display manually. Additionally, I 3d printed a cover for the bottom, which is held on by magnets. The E-paper screen is very thin, so I used a thin piece of acrylic to support it.
@@ -34,7 +34,7 @@ Here are two examples utilizing various configuration options:
 - Advantages of E-Paper
   - Ultra Low Power Consumption - E-Paper (or E-Ink) displays are ideal for low-power applications that do not require frequent display refreshes. E-Paper displays only draw power when refreshing the display and do not have a backlight. Images will remain on the screen even when power is removed.
 
-- Limitations of E-Paper: 
+- Limitations of E-Paper:
   - Colors - E-Paper has traditionally been limited to just black and white, but in recent years 3-color E-Paper screens have started showing up.
 
   - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed too quickly. To avoid this, E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times, which can be distracting.
@@ -42,7 +42,7 @@ Here are two examples utilizing various configuration options:
 
 - https://www.waveshare.com/product/7.5inch-e-paper-hat.htm (800x480, 7.5inch E-Ink display, Black/White)
 
-- Note that this project also now supports this 3-color panel as well. Some elements will be drawn with an accent color, at the cost of a longer refresh sequence. https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm (800x480, 7.5inch E-Ink display, Red/Black/White) 
+- Note that this project also now supports this 3-color panel as well. Some elements will be drawn with an accent color, at the cost of a longer refresh sequence. https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm (800x480, 7.5inch E-Ink display, Red/Black/White)
 
 
 FireBeetle 2 ESP32-E Microcontroller
@@ -66,7 +66,7 @@ FireBeetle 2 ESP32-E Microcontroller
   - FireBeetle ESP32 models include onboard circuitry to monitor battery voltage of a battery connected to its JST-PH2.0 connector.
 
 
-- https://www.dfrobot.com/product-2195.html 
+- https://www.dfrobot.com/product-2195.html
 
 
 BME280 - Pressure, Temperature, and Humidity Sensor
@@ -77,7 +77,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 - Much faster than the DHT22, which requires a 2-second wait before reading temperature and humidity samples.
 
 
-3.7V Lipo Battery w/ 2 Pin JST Connector 
+3.7V Lipo Battery w/ 2 Pin JST Connector
 
 
 - Size is up to you. I used a 10000mah battery so that the device can operate on a single charge for >1 year.
@@ -91,7 +91,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 
 ### Wiring
 
-Pin connections are defined in config.cpp. 
+Pin connections are defined in config.cpp.
 
 If you are using the FireBeetle 2 ESP32-E, you can use the connections I used or change them how you would like.
 
@@ -160,7 +160,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
    b. Click the upload arrow along the bottom of the VSCode window. (Should say "PlatformIO: Upload" if you hover over it.)
 
       - PlatformIO will automatically download the required third-party libraries, compile, and upload the code. :)
-     
+
       - You will only see this if you have the PlatformIO extension installed.
 
       - If you are getting errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.

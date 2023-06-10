@@ -43,16 +43,16 @@ const char *LC_AM_STR      = "am";
 // PM_STR                  Post Meridian affix
 const char *LC_PM_STR      = "pm";
 // DAY_{1-7}               name of the n-th day of the week
-const char *LC_DAY[7]      = {"Sunday", "Monday", "Tuesday", "Wednesday", 
+const char *LC_DAY[7]      = {"Sunday", "Monday", "Tuesday", "Wednesday",
                               "Thursday", "Friday", "Saturday"};
 // ABDAY_{1-7}             abbreviated name of the n-th day of the week
 const char *LC_ABDAY[7]    = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = {"January",    "February", "March",    "April", 
-                               "May",       "June",     "July",     "August", 
+const char *LC_MON[12]     = {"January",    "February", "March",    "April",
+                               "May",       "June",     "July",     "August",
                                "September", "October",  "November", "December"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
-const char *LC_ABMON[12]   = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+const char *LC_ABMON[12]   = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
                               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 // ERA                     era description segments
 const char *LC_ERA         = "";
@@ -64,7 +64,7 @@ const char *LC_ERA_D_T_FMT = "";
 const char *LC_ERA_T_FMT   = "";
 
 // OWM LANGUAGE
-// For full list of languages, see 
+// For full list of languages, see
 // https://openweathermap.org/api/one-call-api#multi
 // Note: "[only] The contents of the 'description' field will be translated."
 const String OWM_LANG = "en";
@@ -171,7 +171,7 @@ const std::vector<String> TERM_FIRE =
 const std::vector<String> TERM_HEAT =
     {"heat"};
 const std::vector<String> TERM_WINTER =
-    {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain", 
+    {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain",
      "wind chill", "freeze", "frost", "hail"};
 const std::vector<String> TERM_LIGHTNING =
     {"thunderstorm", "storm cell", "pulse storm", "squall line", "supercell",

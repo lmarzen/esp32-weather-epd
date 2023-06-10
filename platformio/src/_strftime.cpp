@@ -22,7 +22,7 @@
  *
  * This is modified version of a public domain strftime implementation that
  * was retrieved from https://github.com/arnoldrobbins/strftime/.
- * 
+ *
  * The C99 standard now specifies just about all of the formats that were
  * additional in the earlier versions of this file.
  *
@@ -32,7 +32,7 @@
  *
  * The code for %X follows the C99 specification for the "C" locale.
  * The code for %c, and %x follows the C11 specification for the "C" locale.
- * 
+ *
  * Note: No implementations for %z and %Z.
  */
 
@@ -170,8 +170,8 @@ static int iso8601wknum(const struct tm *timeptr)
 
     wday = timeptr->tm_wday;
     mday = timeptr->tm_mday;
-    if ((wday == 1 && (mday >= 29 && mday <= 31)) 
-     || (wday == 2 && (mday == 30 || mday == 31)) 
+    if ((wday == 1 && (mday >= 29 && mday <= 31))
+     || (wday == 2 && (mday == 30 || mday == 31))
      || (wday == 3 && mday == 31) )
       weeknum = 1;
   }
@@ -214,7 +214,7 @@ static void iso_8601_2000_year(char *buf, int year, size_t fw)
  * format specification format and places the result in the character array s of
  * size max.
  */
-size_t _strftime(char *s, size_t maxsize, const char *format, 
+size_t _strftime(char *s, size_t maxsize, const char *format,
                  const struct tm *timeptr)
 {
   char *endp = s + maxsize;

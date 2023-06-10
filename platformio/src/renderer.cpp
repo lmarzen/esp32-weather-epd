@@ -99,11 +99,11 @@ void drawString(int16_t x, int16_t y, String text, alignment_t alignment,
  *
  * Note: max_width should be big enough to accommodate the largest word that
  *       will be displayed. If an unbroken string of characters longer than
- *       max_width exist in text, then the string will be printed beyond 
+ *       max_width exist in text, then the string will be printed beyond
  *       max_width.
  */
 void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
-                       uint16_t max_width, uint16_t max_lines, 
+                       uint16_t max_width, uint16_t max_lines,
                        int16_t line_spacing, uint16_t color)
 {
   uint16_t current_line = 0;
@@ -171,7 +171,7 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
         }
         else
         {
-          // this is the last line, we need to make sure there is space for 
+          // this is the last line, we need to make sure there is space for
           // ellipsis
           display.getTextBounds(subStr + "...", 0, 0, &x1, &y1, &w, &h);
           if (w <= max_width)
@@ -187,7 +187,7 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
     drawString(x, y + (current_line * line_spacing), subStr, alignment, color);
 
     // update textRemaining to no longer include what was printed
-    // +1 for exclusive bounds, +1 to get passed space/dash 
+    // +1 for exclusive bounds, +1 to get passed space/dash
     textRemaining = textRemaining.substring(endIndex + 2 - keepLastChar);
 
     ++current_line;
@@ -832,7 +832,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
                                     + (0.5 * xInterval) ));
       x1_t = static_cast<int>(round(xPos0 + (i * xInterval)
                                     + (0.5 * xInterval) ));
-      yPxPerUnit = (yPos1 - yPos0) 
+      yPxPerUnit = (yPos1 - yPos0)
                    / static_cast<float>(tempBoundMax - tempBoundMin);
 #ifdef UNITS_TEMP_KELVIN
       y0_t = static_cast<int>(round(

@@ -1,14 +1,14 @@
 HOW TO RUN SCRIPT TO GENERATE .h FILES FROM .svg FILES
 ---
 svg_to_headers.sh, will convert the svg files in ./svg to the
-specified size of .png which will then be converted to header files each 
-containing a bitmap, formatted into a c-style array for use by the AdafruitGFX 
+specified size of .png which will then be converted to header files each
+containing a bitmap, formatted into a c-style array for use by the AdafruitGFX
 library. The output files will be in a new directory, ./icons.
 
 Usage:
   bash svg_to_headers.sh <size_of_output_image>
 
-Dependencies: 
+Dependencies:
   Inkscape - Inkscape's cli is used to convert .svg to .png
   Python3 - to run png_to_header.py (in this folder)
 
@@ -73,7 +73,7 @@ with 'house.svg' and as such are
 ********************************************************************************
 
 ********************************************************************************
-Wind Direction Icons 'meteorological_wind_direction_**deg.svg' in the 
+Wind Direction Icons 'meteorological_wind_direction_**deg.svg' in the
 sub-directory 'svg'
   Retrieved from: https://www.onlinewebfonts.com/icon/251550
   Licensed under CC BY 3.0: http://creativecommons.org/licenses/by/3.0

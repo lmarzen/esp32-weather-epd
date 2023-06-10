@@ -110,7 +110,7 @@
 // HTTPS_WITH_CERT_VERIF
 //   HTTPS with X.509 certificate verification offers the highest level of
 //   security by providing encryption and verifying the identity of the server.
-// 
+//
 //   HTTPS with X.509 certificate verification comes with the draw back that
 //   eventually the certificates one the esp32 will expire, requiring you to
 //   update the certificates in cert.h and reflash this software.
@@ -130,7 +130,7 @@
 // selectable options listed below. 360 points seems excessive, but the option
 // is there.
 //
-//   DIRECTIONS                 #     ERROR  STORAGE  
+//   DIRECTIONS                 #     ERROR  STORAGE
 //   Cardinal                   4  ±45.000°     288B  E
 //   Ordinal                    8  ±22.500°     576B  NE
 //   Secondary Intercardinal   16  ±11.250°   1,152B  NNE
@@ -168,7 +168,7 @@
 //
 // Note:
 //   The layout of the display was designed around spacing and size of the GNU
-//   FreeSans font, but this project supports the ability to modularly swap 
+//   FreeSans font, but this project supports the ability to modularly swap
 //   fonts. Using a font other than FreeSans may result in undesired spacing or
 //   other artifacts.
 #define FONT_HEADER "fonts/FreeSans.h"

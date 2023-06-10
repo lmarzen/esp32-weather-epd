@@ -1,6 +1,6 @@
 # Scalar vector icons to Adafruit GFX format helper for esp32-weather-epd.
 # Copyright (C) 2022-2023  Luke Marzen
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -45,7 +45,7 @@ try: outputfile
 except NameError:
     print("Error: outputfile is a required parameter. See usage -h")
     exit()
-   
+
 src_image = Image.open(inputfile)
 # Converts the image to grayscale
 src_g = src_image.convert('L')
@@ -88,7 +88,7 @@ for i in range(n):
             transcribed_width += 1
         tmp_bite = 0
         bit_cnt = 1
-        
+
 tmp_bite <<= BITS_PER_BITE - bit_cnt
 f.write(" " + "0x{:02x}".format(tmp_bite) + "\n};")
 f.close()

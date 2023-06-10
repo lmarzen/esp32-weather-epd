@@ -50,7 +50,7 @@ int calcBatPercent(double v)
   // enforce bounds, 0-100
   y = max(y, 0.0);
   y = min(y, 100.0);
-  
+
   y = round(y);
   return static_cast<int>(y);
 } // end calcBatPercent
@@ -115,7 +115,7 @@ void getRefreshTimeStr(String &s, bool timeSuccess, tm *timeInfo)
     s = TXT_UNKNOWN;
     return;
   }
-  
+
   char buf[48] = {};
   _strftime(buf, sizeof(buf), REFRESH_TIME_FORMAT, timeInfo);
   s = buf;
@@ -137,8 +137,8 @@ void toTitleCase(String &text)
 
   for (int i = 1; i < text.length(); ++i)
   {
-    if (text.charAt(i - 1) == ' ' 
-     || text.charAt(i - 1) == '-' 
+    if (text.charAt(i - 1) == ' '
+     || text.charAt(i - 1) == '-'
      || text.charAt(i - 1) == '(')
     {
       text.setCharAt(i, toUpperCase(text.charAt(i)));
@@ -168,9 +168,9 @@ void truncateExtraAlertInfo(String &text)
 
   int i = 1;
   int lastChar = i;
-  while (i < text.length() 
-    && text.charAt(i) != ',' 
-    && text.charAt(i) != '.' 
+  while (i < text.length()
+    && text.charAt(i) != ','
+    && text.charAt(i) != '.'
     && text.charAt(i) != '(')
   {
     if (text.charAt(i) != ' ')
@@ -212,11 +212,11 @@ int eventUrgency(const String &event)
  * marking the corresponding index in the ignore list.
  *
  * Background:
- * The display layout is setup to show up to 2 alerts, but alerts can be 
- * unpredictible in severity and number. If more than 2 alerts are active, this 
- * algorithm will attempt to interpret the urgency of each alert and prefer to 
- * display the most urgent and recently issued alerts of each event type. 
- * Depending on the region different keywords are used to convey the level of 
+ * The display layout is setup to show up to 2 alerts, but alerts can be
+ * unpredictible in severity and number. If more than 2 alerts are active, this
+ * algorithm will attempt to interpret the urgency of each alert and prefer to
+ * display the most urgent and recently issued alerts of each event type.
+ * Depending on the region different keywords are used to convey the level of
  * urgency.
  *
  * A vector array is used to store these keywords. (defined in config.h) Urgency
@@ -314,7 +314,7 @@ const char *getUVIdesc(unsigned int uvi)
   }
   else if (uvi <= 7)
   {
-    return TXT_UV_HIGH; 
+    return TXT_UV_HIGH;
   }
   else if (uvi <= 10)
   {
@@ -357,7 +357,7 @@ float getAvgConc(const float pollutant[], int hours)
   return avg;
 }
 
-/* Returns the aqi for the given AQI and the selected AQI scale(defined in 
+/* Returns the aqi for the given AQI and the selected AQI scale(defined in
  * config.h)
  */
 int getAQI(const owm_resp_air_pollution_t &p)
@@ -462,7 +462,7 @@ int getAQI(const owm_resp_air_pollution_t &p)
 #endif // end UNITED_STATES_AQI
 } // end getAQI
 
-/* Returns the descriptor text for the given AQI and the selected AQI 
+/* Returns the descriptor text for the given AQI and the selected AQI
  * scale(defined in config.h)
  */
 const char *getAQIdesc(int aqi)
@@ -551,15 +551,15 @@ const uint8_t *getWiFiBitmap16(int rssi)
   }
 } // end getWiFiBitmap24
 
-/* Takes the daily weather forecast (from OpenWeatherMap API 
+/* Takes the daily weather forecast (from OpenWeatherMap API
  * response) and returns a pointer to the icon's 64x64 bitmap.
  *
- * Uses multiple factors to return more detailed icons than the simple icon 
+ * Uses multiple factors to return more detailed icons than the simple icon
  * catagories that OpenWeatherMap provides.
- * 
+ *
  * Last Updated: June 26, 2022
- * 
- * References: 
+ *
+ * References:
  *   https://openweathermap.org/weather-conditions
  *   https://www.weather.gov/ajk/ForecastTerms
  */
@@ -692,18 +692,18 @@ const uint8_t *getForecastBitmap64(const owm_daily_t &daily)
   }
 } // end getForecastBitmap64
 
-/* Takes the current weather and today's daily weather forcast (from 
- * OpenWeatherMap API response) and returns a pointer to the icon's 196x196 
+/* Takes the current weather and today's daily weather forcast (from
+ * OpenWeatherMap API response) and returns a pointer to the icon's 196x196
  * bitmap.
  *
- * Uses multiple factors to return more detailed icons than the simple icon 
+ * Uses multiple factors to return more detailed icons than the simple icon
  * catagories that OpenWeatherMap provides.
- * 
+ *
  * The daily weather forcast of today is needed for moonrise and moonset times.
- * 
+ *
  * Last Updated: June 26, 2022
- * 
- * References: 
+ *
+ * References:
  *   https://openweathermap.org/weather-conditions
  *   https://www.weather.gov/ajk/ForecastTerms
  */
@@ -864,9 +864,9 @@ const uint8_t *getCurrentConditionsBitmap196(const owm_current_t &current,
 /* Returns a 32x32 bitmap for a given alert.
  *
  * The purpose of this function is to return a relevant bitmap for an alert.
- * This is done by searching the event text for key terminology defined in the 
+ * This is done by searching the event text for key terminology defined in the
  * included locale header.
- * If a relevant category can not be determined, the default alert bitmap will 
+ * If a relevant category can not be determined, the default alert bitmap will
  * be returned. (warning triangle icon)
  */
 const uint8_t *getAlertBitmap32(const owm_alerts_t &alert)
@@ -903,16 +903,16 @@ const uint8_t *getAlertBitmap32(const owm_alerts_t &alert)
   case STRONG_WIND:          return wi_strong_wind_32x32;
 
   // this code will never be reached
-  default:                   return wi_na_48x48; 
+  default:                   return wi_na_48x48;
   }
 } // end getAlertBitmap32
 
 /* Returns a 48x48 bitmap for a given alert.
  *
  * The purpose of this function is to return a relevant bitmap for an alert.
- * This is done by searching the event text for key terminology defined in the 
+ * This is done by searching the event text for key terminology defined in the
  * included locale header.
- * If a relevant category can not be determined, the default alert bitmap will 
+ * If a relevant category can not be determined, the default alert bitmap will
  * be returned. (warning triangle icon)
  */
 const uint8_t *getAlertBitmap48(const owm_alerts_t &alert)
@@ -949,11 +949,11 @@ const uint8_t *getAlertBitmap48(const owm_alerts_t &alert)
   case STRONG_WIND:          return wi_strong_wind_48x48;
 
   // this code will never be reached
-  default:                   return wi_na_48x48; 
+  default:                   return wi_na_48x48;
   }
 } // end getAlertBitmap48
 
-/* Returns true of a String, s, contains any of the strings in the terminology 
+/* Returns true of a String, s, contains any of the strings in the terminology
  * vector.
  *
  * Note: This function is case sensitive.
@@ -970,7 +970,7 @@ bool containsTerminology(const String s, const std::vector<String> &terminology)
   return false;
 } // end containsTerminology
 
-/* Returns the category of an alert based on the terminology found in the event 
+/* Returns the category of an alert based on the terminology found in the event
  * name.
  *
  * Weather alert terminology is defined in the included locale header.
@@ -1521,8 +1521,8 @@ const uint8_t *getWindBitmap24(int windDeg)
   windDeg %= 360; // enforce domain
   // number of directions
   int n = sizeof(wind_direction_icon_arr)
-          / sizeof(wind_direction_icon_arr[0]); 
-  int arr_offset = (int) ( (windDeg + (360 / n / 2)) % 360 ) 
+          / sizeof(wind_direction_icon_arr[0]);
+  int arr_offset = (int) ( (windDeg + (360 / n / 2)) % 360 )
                          / ( 360 / (float) n );
 
   return wind_direction_icon_arr[arr_offset];
@@ -1536,7 +1536,7 @@ const uint8_t *getWindBitmap24(int windDeg)
  *
  * HTTP response status codes (100 to 511)
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
- * 
+ *
  * HTTP client errors (-1 to -11)
  * https://github.com/espressif/arduino-esp32/blob/master/libraries/HTTPClient/src/HTTPClient.h
  *

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/* Special thanks to Matthias Deimbacher (deimi) for contributing this 
+/* Special thanks to Matthias Deimbacher (deimi) for contributing this
  * translation.
  *
  * If you have any feedback or suggestions, please open an issue on this
@@ -50,16 +50,16 @@ const char *LC_AM_STR      = "";
 // PM_STR                  Post Meridian affix
 const char *LC_PM_STR      = "";
 // DAY_{1-7}               name of the n-th day of the week
-const char *LC_DAY[7]      = {"Sonntag", "Montag", "Dienstag", "Mittwoch", 
+const char *LC_DAY[7]      = {"Sonntag", "Montag", "Dienstag", "Mittwoch",
                               "Donnerstag", "Freitag", "Samstag"};
 // ABDAY_{1-7}             abbreviated name of the n-th day of the week
 const char *LC_ABDAY[7]    = {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = { "Januar",    "Februar",  "M\xE4rz",  "April", 
-                               "Mai",       "Juni",     "Juli",     "August", 
+const char *LC_MON[12]     = { "Januar",    "Februar",  "M\xE4rz",  "April",
+                               "Mai",       "Juni",     "Juli",     "August",
                                "September", "Oktober",  "November", "Dezember"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
-const char *LC_ABMON[12]   = {"Jan", "Feb", "M\xE4r", "Apr", "Mai", "Jun", 
+const char *LC_ABMON[12]   = {"Jan", "Feb", "M\xE4r", "Apr", "Mai", "Jun",
                               "Jul", "Aug", "Sep",    "Okt", "Nov", "Dez"};
 // ERA                     era description segments
 const char *LC_ERA         = "";
@@ -71,7 +71,7 @@ const char *LC_ERA_D_T_FMT = "";
 const char *LC_ERA_T_FMT   = "";
 
 // OWM LANGUAGE
-// For full list of languages, see 
+// For full list of languages, see
 // https://openweathermap.org/api/one-call-api#multi
 // Note: "[only] The contents of the 'description' field will be translated."
 const String OWM_LANG = "de";
@@ -178,7 +178,7 @@ const std::vector<String> TERM_FIRE =
 const std::vector<String> TERM_HEAT =
     {"heat"};
 const std::vector<String> TERM_WINTER =
-    {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain", 
+    {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain",
      "wind chill", "freeze", "frost", "hail"};
 const std::vector<String> TERM_LIGHTNING =
     {"thunderstorm", "storm cell", "pulse storm", "squall line", "supercell",

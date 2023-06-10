@@ -86,7 +86,7 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
 
   if (extraHoursUntilWake == 0)
   { // align wake time to nearest multiple of SLEEP_DURATION
-    sleepDuration = SLEEP_DURATION * 60ULL 
+    sleepDuration = SLEEP_DURATION * 60ULL
                     - ((timeInfo->tm_min % SLEEP_DURATION) * 60ULL
                         + timeInfo->tm_sec);
   }
@@ -101,12 +101,12 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   {
     sleepDuration += SLEEP_DURATION * 60ULL;
   }
-  
+
   // add extra delay to compensate for esp32's with fast RTCs.
   sleepDuration += 10ULL;
 
   esp_sleep_enable_timer_wakeup(sleepDuration * 1000000ULL);
-  Serial.println("Awake for " 
+  Serial.println("Awake for "
                  + String((millis() - startTime) / 1000.0, 3) + "s");
   Serial.println("Deep-sleep for " + String(sleepDuration) + "s");
   esp_deep_sleep_start();
@@ -120,9 +120,9 @@ void setup()
   Serial.begin(115200);
 
   // GET BATTERY VOLTAGE
-  // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings 
+  // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings
   // are multiplied by 2. Readings are divided by 1000 to convert mV to V.
-  double batteryVoltage = 
+  double batteryVoltage =
             static_cast<double>(analogRead(PIN_BAT_ADC)) / 1000.0 * (3.5 / 2.0);
             // use / 1000.0 * (3.3 / 2.0) multiplier above for firebeetle esp32
             // use / 1000.0 * (3.5 / 2.0) for firebeetle esp32-E
@@ -130,7 +130,7 @@ void setup()
 
   // When the battery is low, the display should be updated to reflect that, but
   // only the first time we detect low voltage. The next time the display will
-  // refresh is when voltage is no longer low. To keep track of that we will 
+  // refresh is when voltage is no longer low. To keep track of that we will
   // make use of non-volatile storage.
   // Open namespace for read/write to non-volatile storage
   prefs.begin("lowBat", false);
@@ -159,10 +159,10 @@ void setup()
     }
     else if (batteryVoltage <= VERY_LOW_BATTERY_VOLTAGE)
     { // very low battery
-      esp_sleep_enable_timer_wakeup(VERY_LOW_BATTERY_SLEEP_INTERVAL 
+      esp_sleep_enable_timer_wakeup(VERY_LOW_BATTERY_SLEEP_INTERVAL
                                     * 60ULL * 1000000ULL);
       Serial.println("Very low battery voltage!");
-      Serial.println("Deep-sleep for " 
+      Serial.println("Deep-sleep for "
                      + String(VERY_LOW_BATTERY_SLEEP_INTERVAL) + "min");
     }
     else
@@ -170,7 +170,7 @@ void setup()
       esp_sleep_enable_timer_wakeup(LOW_BATTERY_SLEEP_INTERVAL
                                     * 60ULL * 1000000ULL);
       Serial.println("Low battery voltage!");
-      Serial.println("Deep-sleep for " 
+      Serial.println("Deep-sleep for "
                     + String(LOW_BATTERY_SLEEP_INTERVAL) + "min");
     }
     esp_deep_sleep_start();
@@ -287,7 +287,8 @@ void setup()
     // note: readings are checked again before drawing to screen. If a reading
     //       is not a number (NAN) then an error occurred, a dash '-' will be
     //       displayed.
-    if (std::isnan(inTemp) || std::isnan(inHumidity)) {
+    if (std::isnan(inTemp) || std::isnan(inHumidity))
+    {
       statusStr = "BME read failed";
       Serial.println(statusStr);
     }

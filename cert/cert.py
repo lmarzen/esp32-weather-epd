@@ -53,7 +53,7 @@ def printData(data, showPub = True):
         pem = xcert.public_key().public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo).decode('utf-8')
         print('const char pubkey_{}[] PROGMEM = R"PUBKEY('.format(name))
         print(pem + ')PUBKEY";')
-    
+
     else:
 
         cert = xcert.public_bytes(Encoding.PEM).decode('utf-8')
@@ -118,7 +118,6 @@ def main():
     print()
     print('// alternatively, the certificate chain can be extracted using openssl')
     print('// \'openssl s_client -verify 5 -showcerts -connect api.openweathermap.org:443 < /dev/null\'')
-
     print()
     print('#ifndef __CERT_H__')
     print('#define __CERT_H__')
@@ -126,7 +125,7 @@ def main():
     get_certificate(server, port, args.name)
     print('#endif')
     print()
-    return 
+    return
 
 if __name__ == '__main__':
     sys.exit(main())
