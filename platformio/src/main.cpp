@@ -27,9 +27,14 @@
 #include "client_utils.h"
 #include "config.h"
 #include "display_utils.h"
-#include "renderer.h"
-
 #include "icons/icons_196x196.h"
+#include "renderer.h"
+#ifndef USE_HTTP
+  #include <WiFiClientSecure.h>
+#endif
+#ifdef USE_HTTPS_WITH_CERT_VERIF
+  #include "cert.h"
+#endif
 
 // too large to allocate locally on stack
 static owm_resp_onecall_t       owm_onecall;
@@ -44,8 +49,8 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
 {
   if (!getLocalTime(timeInfo))
   {
-    Serial.print("Failed to obtain time before deep-sleep");
-    Serial.println(", referencing older time.");
+    Serial.println("Failed to obtain time before deep-sleep, referencing " \
+                   "older time.");
   }
 
   uint64_t sleepDuration = 0;
@@ -226,8 +231,16 @@ void setup()
   getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
 
   // MAKE API REQUESTS
-  int rxOWM[2] = {};
+#ifdef USE_HTTP
   WiFiClient client;
+#elif defined(USE_HTTPS_NO_CERT_VERIF)
+  WiFiClientSecure client;
+  client.setInsecure();
+#elif defined(USE_HTTPS_WITH_CERT_VERIF)
+  WiFiClientSecure client;
+  client.setCACert(cert_Sectigo_RSA_Domain_Validation_Secure_Server_CA);
+#endif
+  int rxOWM[2] = {};
   rxOWM[0] = getOWMonecall(client, owm_onecall);
   if (rxOWM[0] != HTTP_CODE_OK)
   {

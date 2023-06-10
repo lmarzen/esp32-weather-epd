@@ -38,6 +38,15 @@
 #include "config.h"
 #include "display_utils.h"
 #include "renderer.h"
+#ifndef USE_HTTP
+  #include <WiFiClientSecure.h>
+#endif
+
+#ifdef USE_HTTP
+  static const uint16_t OWM_PORT = 80;
+#else
+  static const uint16_t OWM_PORT = 443;
+#endif
 
 /* Power-on and connect WiFi.
  * Takes int parameter to store WiFi RSSI, or “Received Signal Strength
@@ -123,7 +132,11 @@ bool setupTime(tm *timeInfo)
  *
  * Returns the HTTP Status Code.
  */
-int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
+#ifdef USE_HTTP
+  int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
+#else
+  int getOWMonecall(WiFiClientSecure &client, owm_resp_onecall_t &r)
+#endif
 {
   int attempts = 0;
   bool rxSuccess = false;
@@ -143,7 +156,7 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
   while (!rxSuccess && attempts < 3)
   {
     HTTPClient http;
-    http.begin(client, OWM_ENDPOINT, 80, uri);
+    http.begin(client, OWM_ENDPOINT, OWM_PORT, uri);
     httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK)
     {
@@ -172,7 +185,11 @@ int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r)
  *
  * Returns the HTTP Status Code.
  */
-int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
+#ifdef USE_HTTP
+  int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
+#else
+  int getOWMairpollution(WiFiClientSecure &client, owm_resp_air_pollution_t &r)
+#endif
 {
   int attempts = 0;
   bool rxSuccess = false;
@@ -203,7 +220,7 @@ int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r)
   while (!rxSuccess && attempts < 3)
   {
     HTTPClient http;
-    http.begin(client, OWM_ENDPOINT, 80, uri);
+    http.begin(client, OWM_ENDPOINT, OWM_PORT, uri);
     httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK)
     {

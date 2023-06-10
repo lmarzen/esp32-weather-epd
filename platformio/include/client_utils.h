@@ -19,13 +19,26 @@
 #define __CLIENT_UTILS_H__
 
 #include <Arduino.h>
+#include "api_response.h"
+#include "config.h"
+#ifdef USE_HTTP
+  #include <WiFiClient.h>
+#else
+  #include <WiFiClientSecure.h>
+#endif
 
 wl_status_t startWiFi(int &wifiRSSI);
 void killWiFi();
 bool setupTime(tm *timeInfo);
 bool printLocalTime(tm *timeInfo);
-int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r);
-int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r);
+#ifdef USE_HTTP
+  int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r);
+  int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r);
+#else
+  int getOWMonecall(WiFiClientSecure &client, owm_resp_onecall_t &r);
+  int getOWMairpollution(WiFiClientSecure &client, owm_resp_air_pollution_t &r);
+#endif
+
 
 #endif
 
