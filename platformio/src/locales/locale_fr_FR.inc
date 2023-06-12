@@ -151,56 +151,56 @@ const std::vector<String> ALERT_URGENCY = {"yellow", "amber", "red"};           
 // ALERT TERMINOLOGY
 // Weather terminology associated with each alert icon
 const std::vector<String> TERM_SMOG =
-    {"brouillard"};
+    {"smog"};
 const std::vector<String> TERM_SMOKE =
-    {"fumée"};
+    {"smoke"};
 const std::vector<String> TERM_FOG =
-    {"brouillard", "haar"};
+    {"fog", "haar"};
 const std::vector<String> TERM_METEOR =
     {"meteor", "asteroid"};
 const std::vector<String> TERM_NUCLEAR =
-    {"nuclear", "radiation ionisante"};
+    {"nuclear", "ionizing radiation"};
 const std::vector<String> TERM_BIOHAZARD =
-    {"biohazard", "risque biologique"};
+    {"biohazard", "biological hazard"};
 const std::vector<String> TERM_EARTHQUAKE =
-    {"tremblement de terre"};
+    {"earthquake"};
 const std::vector<String> TERM_TSUNAMI =
     {"tsunami"};
 const std::vector<String> TERM_FIRE =
-    {"feu", "drapeau rouge"};
+    {"fire", "red flag"};
 const std::vector<String> TERM_HEAT =
-    {"chaleur"};
+    {"heat"};
 const std::vector<String> TERM_WINTER =
-    {"blizzard", "hiver", "glace", "neige", "grésil", "froid", "pluie verglaçante", 
-     "vent refroidissant", "gel", "givre", "grêle"};
+    {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain", 
+     "wind chill", "freeze", "frost", "hail"};
 const std::vector<String> TERM_LIGHTNING =
-    {"orage", "cellule orageuse", "pulse storm", "ligne de grain", "supercellule",
-     "éclair"};
+    {"thunderstorm", "storm cell", "pulse storm", "squall line", "supercell",
+     "lightning"};
 const std::vector<String> TERM_SANDSTORM =
-    {"tempête de sable", "poussiere souflée", "tempete de poussiere"};
+    {"sandstorm", "blowing dust", "dust storm"};
 const std::vector<String> TERM_FLOOD =
-    {"inondation", "onde de tempête", "seiche", "gonflement", "mer haute", "grande marée",
-     "raz-de-marée"};
+    {"flood", "storm surge", "seiche", "swell", "high seas", "high tides",
+     "tidal surge"};
 const std::vector<String> TERM_VOLCANO =
-    {"volcanic", "cendre", "volcan", "éruption"};
+    {"volcanic", "ash", "volcano", "eruption"};
 const std::vector<String> TERM_AIR_QUALITY =
     {"air", "stagnation", "pollution"};
 const std::vector<String> TERM_TORNADO =
-    {"tornade"};
+    {"tornado"};
 const std::vector<String> TERM_SMALL_CRAFT_ADVISORY =
-    {"petit navire", "avis de vent"};
+    {"small craft", "wind advisory"};
 const std::vector<String> TERM_GALE_WARNING =
-    {"coup de vent"};
+    {"gale"};
 const std::vector<String> TERM_STORM_WARNING =
     {"storm warning"};
 const std::vector<String> TERM_HURRICANE_WARNING =
-    {"vent de type ouragan", "vent extreme", "grand vent"};
+    {"hurricane force wind", "extreme wind", "high wind"};
 const std::vector<String> TERM_HURRICANE =
-    {"ouragan", "tempete tropicale", "typhoon", "cyclone"};
+    {"hurricane", "tropical storm", "typhoon", "cyclone"};
 const std::vector<String> TERM_DUST =
-    {"poussière", "sable"};
+    {"dust", "sand"};
 const std::vector<String> TERM_STRONG_WIND =
-    {"vent"};
+    {"wind"};
 
 // AIR QUALITY INDEX
 extern "C" {
