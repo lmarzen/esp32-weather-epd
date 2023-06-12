@@ -206,60 +206,60 @@ const std::vector<String> TERM_STRONG_WIND =
 extern "C" {
 const char *AUSTRALIA_AQI_TXT[6] =
 {
-  "Très bon",
+  "Tr\xE8""s bon",
   "Bon",
   "Juste",
   "Mauvais",
-  "Très mauvais",
+  "Tr\xE8""s mauvais",
   "Dangereux",
 };
 const char *CANADA_AQHI_TXT[4] =
 {
   "Bas",
-  "Modéré",
+  "Mod\xE9""r\xE9",
   "Haut",
-  "Très haut",
+  "Tr\xE8""s haut",
 };
 const char *EUROPE_CAQI_TXT[5] =
 {
-  "Très bas",
+  "Tr\xE8""s bas",
   "Bas",
   "Moyen",
   "Haut",
-  "Très haut",
+  "Tr\xE8""s haut",
 };
 const char *HONG_KONG_AQHI_TXT[5] =
 {
   "Bas",
-  "Modéré",
+  "Mod\xE9""r\xE9",
   "Haut",
-  "Très haut",
+  "Tr\xE8""s haut",
   "Dangereux",
 };
 const char *INDIA_AQI_TXT[6] =
 {
   "Bon",
   "Satisfaisant",
-  "Modéré",
+  "Mod\xE9""r\xE9",
   "Mauvais",
-  "Tres mauvais",
-  "Sévère",
+  "Tr\xE8""s mauvais",
+  "S\xE9""v\xE8""re",
 };
 const char *MAINLAND_CHINA_AQI_TXT[6] =
 {
   "Excellent",
   "Bon",
-  "Légèrement pollué",
-  "Modérément pollué",
-  "Très pollué",
-  "Sévèrement pollué",
+  "L\xE9""g\xE8""rement pollu\xE9",
+  "Mod\xE9""r\xE9""ment pollu\xE9",
+  "Tr\xE8""s pollu\xE9",
+  "S\xE9""v\xE8""rement pollu\xE9",
 };
 const char *SINGAPORE_PSI_TXT[5] =
 {
   "Bon",
-  "Modéré",
+  "Mod\xE9""r\xE9",
   "Malsain",
-  "Très malsain",
+  "Tr\xE8""s malsain",
   "Dangereux",
 };
 const char *SOUTH_KOREA_CAI_TXT[4] =
@@ -267,22 +267,22 @@ const char *SOUTH_KOREA_CAI_TXT[4] =
   "Bon",
   "Moyen",
   "Malsain",
-  "Très malsain",
+  "Tr\xE8""s malsain",
 };
 const char *UNITED_KINGDOM_DAQI_TXT[4] =
 {
   "Bas",
-  "Modéré",
+  "Mod\xE9""r\xE9",
   "Haut",
-  "Très haut",
+  "Tr\xE8""s haut",
 };
 const char *UNITED_STATES_AQI_TXT[6] =
 {
   "Bon",
-  "Modéré",
+  "Mod\xE9""r\xE9",
   "Malsain pour les groupes sensibles",
   "Malsain",
-  "Très malsain",
+  "Tr\xE8""s malsain",
   "Dangereux",
 };
 } // end extern "C"
