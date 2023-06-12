@@ -84,10 +84,10 @@ const char *TXT_INDOOR_HUMIDITY    = "Humidit\xE9";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Bas";
-const char *TXT_UV_MODERATE  = "Moderaté";
+const char *TXT_UV_MODERATE  = "Moderat\xE9";
 const char *TXT_UV_HIGH      = "Haut";
-const char *TXT_UV_VERY_HIGH = "Très haut";
-const char *TXT_UV_EXTREME   = "Extreme";
+const char *TXT_UV_VERY_HIGH = "Tr\xE8""s haut";
+const char *TXT_UV_EXTREME   = "Extr\xEA""me";
 
 // WIFI
 const char *TXT_WIFI_EXCELLENT     = "Excellent";
