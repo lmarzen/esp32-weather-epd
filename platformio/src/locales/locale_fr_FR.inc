@@ -31,29 +31,29 @@
 //   LC_TIME category.
 //   https://www.gnu.org/software/libc/sources.html
 // D_T_FMT                 string for formatting date and time
-const char *LC_D_T_FMT     = "%a %d %b %Y %T %Z";
+const char *LC_D_T_FMT     = "%a %d %b %Y %T";
 // LC_D_FMT                date format string
 const char *LC_D_FMT       = "%d/%m/%y";
 // T_FMT                   time format string
 const char *LC_T_FMT       = "%T";
 // T_FMT_AMPM              a.m. or p.m. time format string
-const char *LC_T_FMT_AMPM  = "%l:%M:%S %P %Z";
+const char *LC_T_FMT_AMPM  = "";
 // AM_STR                  Ante Meridian affix
-const char *LC_AM_STR      = "am";
+const char *LC_AM_STR      = "";
 // PM_STR                  Post Meridian affix
-const char *LC_PM_STR      = "pm";
+const char *LC_PM_STR      = "";
 // DAY_{1-7}               name of the n-th day of the week
-const char *LC_DAY[7]      = {"Dimanche", "Lundi", "Mardi", "Mercredi", 
-                              "Jeudi", "Vendredi", "Samedi"};
+const char *LC_DAY[7]      = {"dimanche", "lundi", "mardi", "mercredi", 
+                              "jeudi", "vendredi", "samedi"};
 // ABDAY_{1-7}             abbreviated ame of the n-th day of the week
-const char *LC_ABDAY[7]    = {"Dim", "Lun", "Mar", "Mer", "Jeudi", "Ven", "Sam"};
+const char *LC_ABDAY[7]    = {"dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = {"Janvier", "Fevrier", "Mars", "Avril", 
-                               "Mai",       "Juin",     "Juillet",     "Aout", 
-                               "Septembre", "Octobre",  "Novembre", "Décembre"};
+const char *LC_MON[12]     = {"janvier", "f\xE9""vrier", "mars", "avril", 
+                               "mai",       "juin",     "juillet",     "ao\xFB""t", 
+                               "septembre", "octobre",  "novembre", "d\xE9""cembre"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
-const char *LC_ABMON[12]   = {"Jan", "Fev", "Mar", "Apr", "Mai", "Jun", 
-                              "Jul", "Aou", "Sep", "Oct", "Nov", "Dec"};
+const char *LC_ABMON[12]   = {"janv.", "f\xE9""vr.", "mars", "avril", "mai", "juin", 
+                              "juil.", "ao\xFB""t", "sept.", "oct.", "nov.", ""d\xE9""c."};
 // ERA                     era description segments
 const char *LC_ERA         = "";
 // ERA_D_FMT               era date format string
