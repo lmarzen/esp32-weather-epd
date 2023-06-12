@@ -77,10 +77,10 @@ const char *TXT_WIND               = "Vent";
 const char *TXT_HUMIDITY           = "Humidit\xE9";
 const char *TXT_UV_INDEX           = "Indice UV";
 const char *TXT_PRESSURE           = "Pression";
-const char *TXT_AIR_QUALITY_INDEX  = "Qualité de l'air";
-const char *TXT_VISIBILITY         = "Visibilité";
-const char *TXT_INDOOR_TEMPERATURE = "Temperature";
-const char *TXT_INDOOR_HUMIDITY    = "Humidité";
+const char *TXT_AIR_QUALITY_INDEX  = "Qualit\xE9"" de l'air";
+const char *TXT_VISIBILITY         = "Visibilit\xE9";
+const char *TXT_INDOOR_TEMPERATURE = "Temp\xE9""rature";
+const char *TXT_INDOOR_HUMIDITY    = "Humidit\xE9";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Bas";
