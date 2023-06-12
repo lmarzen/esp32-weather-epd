@@ -92,7 +92,7 @@ const char *TXT_UV_EXTREME   = "Extr\xEA""me";
 // WIFI
 const char *TXT_WIFI_EXCELLENT     = "Excellent";
 const char *TXT_WIFI_GOOD          = "Bon";
-const char *TXT_WIFI_FAIR          = "juste";
+const char *TXT_WIFI_FAIR          = "Juste";
 const char *TXT_WIFI_WEAK          = "Faible";
 const char *TXT_WIFI_NO_CONNECTION = "Pas de Connection";
 
