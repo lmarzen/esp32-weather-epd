@@ -46,6 +46,7 @@
 //   German (Germany)                de_DE
 //   English (United Kingdom)        en_GB
 //   English (United States)         en_US
+//   French (France)                 fr_FR
 //   Dutch (Belgium)                 nl_BE
 #define LOCALE en_US
 
@@ -112,7 +113,7 @@
 //   security by providing encryption and verifying the identity of the server.
 //
 //   HTTPS with X.509 certificate verification comes with the draw back that
-//   eventually the certificates one the esp32 will expire, requiring you to
+//   eventually the certificates on the esp32 will expire, requiring you to
 //   update the certificates in cert.h and reflash this software.
 //   Running cert.py will generate an updated cert.h file.
 //   The current certificate for api.openweathermap.org is valid until
