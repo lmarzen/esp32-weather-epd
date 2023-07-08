@@ -193,9 +193,10 @@ void setup()
   if (digitalRead(PIN_CONFIGURE_WIFI) == LOW) 
   {
     Serial.println("WIFI config pin detected");
+    initDisplay();
     do
     {
-      drawError(wifi_x_196x196, "Weather Station is in WIFI configuration mode", "");
+      drawError(wifi_x_196x196, "Weather Station is in", "WIFI configuration mode");
     } while (display.nextPage());
     // Configure WIFI
     Serial.println("Entering config mode");
