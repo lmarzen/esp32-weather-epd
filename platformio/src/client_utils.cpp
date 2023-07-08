@@ -73,18 +73,6 @@ wl_status_t startWiFi(int &wifiRSSI)
   return WiFi.status();
 } // startWiFi
 
-/* Callback called when WIFI config AP is enabled.
- * Takes in the WiFiManager instance.
- *
- * Returns WiFi status.
- */
-void configModeCallback(WiFiManager *myWiFiManager)
-{
-  Serial.println("Entered Configuration Mode");
-  Serial.println("Config SSID: " + myWiFiManager->getConfigPortalSSID());
-  Serial.println("Config IP Address: " + WiFi.softAPIP());
-}
-
 /* Power-on and start WiFi config AP.
  * Takes int parameter to store WiFi RSSI, or “Received Signal Strength
  * Indicator"
@@ -98,7 +86,6 @@ wl_status_t configureWiFi(int &wifiRSSI)
   WiFiManager wifi_manager;
   wifi_manager.setConnectTimeout(10);
   wifi_manager.setConfigPortalTimeout(60 * 5);  
-  wifi_manager.setAPCallback(configModeCallback);
 
   // Start the configuration AP portal with 10 minute timeout
   if (wifi_manager.startConfigPortal(WIFI_AP_SSID))
