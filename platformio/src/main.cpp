@@ -186,8 +186,26 @@ void setup()
   tm timeInfo = {};
 
   // START WIFI
+  wl_status_t wifiStatus;
   int wifiRSSI = 0; // “Received Signal Strength Indicator"
-  wl_status_t wifiStatus = startWiFi(wifiRSSI);
+  
+  pinMode(PIN_CONFIGURE_WIFI, INPUT_PULLUP);
+  if (digitalRead(PIN_CONFIGURE_WIFI) == LOW) 
+  {
+    Serial.println("WIFI config pin detected");
+    do
+    {
+      drawError(wifi_x_196x196, "Weather Station is in WIFI configuration mode", "");
+    } while (display.nextPage());
+    // Configure WIFI
+    Serial.println("Entering config mode");
+    wifiStatus = configureWiFi(wifiRSSI);
+  }
+  else
+  {
+    wifiStatus = startWiFi(wifiRSSI);
+  }
+
   if (wifiStatus != WL_CONNECTED)
   { // WiFi Connection Failed
     killWiFi();

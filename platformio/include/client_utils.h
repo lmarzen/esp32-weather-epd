@@ -28,6 +28,7 @@
 #endif
 
 wl_status_t startWiFi(int &wifiRSSI);
+wl_status_t configureWiFi(int &wifiRSSI);
 void killWiFi();
 bool setupTime(tm *timeInfo);
 bool printLocalTime(tm *timeInfo);
