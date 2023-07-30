@@ -49,7 +49,7 @@
   static const uint16_t OWM_PORT = 443;
 #endif
 
-/* Power-on and connect WiFi.
+/* Power-on and connect WiFi using WiFi Manager.
  * Takes int parameter to store WiFi RSSI, or “Received Signal Strength
  * Indicator"
  *
@@ -72,6 +72,43 @@ wl_status_t startWiFi(int &wifiRSSI)
   }
   return WiFi.status();
 } // startWiFi
+
+/* Power-on and connect WiFi.
+ * Takes int parameter to store WiFi RSSI, or “Received Signal Strength
+ * Indicator"
+ *
+ * Returns WiFi status.
+ */
+wl_status_t startDefaultWiFi(int &wifiRSSI)
+{
+    WiFi.mode(WIFI_STA);
+    Serial.printf("Connecting to '%s'", WIFI_SSID);
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+    // timeout if WiFi does not connect in 10s from now
+    unsigned long timeout = millis() + 10000;
+    wl_status_t connection_status = WiFi.status();
+
+    while ((connection_status != WL_CONNECTED) && (millis() < timeout))
+    {
+    Serial.print(".");
+    delay(50);
+    connection_status = WiFi.status();
+    }
+    Serial.println();
+
+    if (connection_status == WL_CONNECTED)
+    {
+    wifiRSSI = WiFi.RSSI(); // get WiFi signal strength now, because the WiFi
+                            // will be turned off to save power!
+    Serial.println("IP: " + WiFi.localIP().toString());
+    }
+    else
+    {
+    Serial.printf("Could not connect to '%s'\n", WIFI_SSID);
+    }
+    return connection_status;
+} // startDefaultWiFi
 
 /* Callback when WiFi config AP is started
  * Takes in a WiFiManager instance. 
