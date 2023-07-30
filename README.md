@@ -135,8 +135,8 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
    - Important settings to configure in config.cpp:
 
-     - WiFi credentials (ssid, password).
-
+     - WiFi credentials (ssid, password, ap ssid).
+     
      - Open Weather Map API key (it's free, see next section for important notes about obtaining an API key).
 
      - Latitude and longitude.
@@ -164,6 +164,12 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
       - You will only see this if you have the PlatformIO extension installed.
 
       - If you are getting errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
+
+7. Boot options.
+
+  - To configure WiFi without requiring a change in cofigs and re-upload, a [WiFi Manager](https://github.com/tzapu/WiFiManager) has been integrated.  To use it hold HW button 27 (or PIN_CONFIGURE_WIFI config value) down and press and release the reset button.  This will cause the weather station to create an ad-hoc wifi network named "Weather_Station" (or the value of WIFI_AP_SSID).  Connect to this network (ideally using a mobile device) to configure the WiFi network. Visit the WiFi Manger site for further details.
+    > **Note** 
+    > Once you reset with the button held down any previously configured WiFi network will be lost however. This does not impact the compiled defaults and resetting without the button held down after previously configured WiFi networks have been cleared will cause the weather station to connect to the compiled config vaules.
 
 ### OpenWeatherMap API Key
 
