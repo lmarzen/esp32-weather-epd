@@ -2,8 +2,6 @@
 
 This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 7.5in E-Paper (aka E-ink) display. Current and forecasted weather data is obtained from the OpenWeatherMap API. A sensor provides the display with accurate indoor temperature and humidity.
 
-The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
-
 <p float="left">
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
   <img src="showcase/assembled-demo-raleigh-side.jpg" width="49%" />
@@ -12,7 +10,7 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
   <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49%" />
 </p>
 
-I made a small stand by hollowing out a piece of wood from the bottom. On the back, I used a short USB extension cable so that I can charge the battery without needing to remove the components from the stand. I also wired a small reset button to refresh the display manually. Additionally, I 3d printed a cover for the bottom, which is held on by magnets. The E-paper screen is very thin, so I used a thin piece of acrylic to support it.
+The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
 
 There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
 
@@ -88,10 +86,25 @@ BME280 - Pressure, Temperature, and Humidity Sensor
   > **Warning**
   > The polarity of JST-PH2.0 connectors is not standardized! You may need to swap the order of the wires in the connector.
 
+Stand/Frame
+- You'll want a nice way to show off your project. Here are a few popular choices.
+- DIY Wooden
+  - I made a small stand by hollowing out a piece of wood from the bottom. On the back, I used a short USB extension cable so that I can charge the battery without needing to remove the components from the stand. I also wired a small reset button to refresh the display manually. Additionally, I 3d printed a cover for the bottom, which is held on by magnets. The E-paper screen is very thin, so I used a thin piece of acrylic to support it.
+  - Measurements:
+    - depth = 63mm <br>
+      height = 49mm <br>
+      width = 170.2mm (= width of the screen) <br>
+      screen angle = 80deg <br>
+      screen is 15mm from the front
+- 3D Printable
+  - Community-contributed designs can be found here [3d_models](3d_models).
+  - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
+- Picture Frame
+
 
 ### Wiring
 
-Pin connections are defined in config.cpp.
+Pin connections are defined in [config.cpp](platformio/src/config.cpp).
 
 If you are using the FireBeetle 2 ESP32-E, you can use the connections I used or change them how you would like.
 
