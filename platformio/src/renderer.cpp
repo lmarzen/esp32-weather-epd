@@ -44,6 +44,13 @@ GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(
                 PIN_EPD_RST,
                 PIN_EPD_BUSY));
 #endif
+#ifdef DISP_BWV1
+GxEPD2_BW<GxEPD2_750, GxEPD2_750::HEIGHT> display(
+  GxEPD2_750(PIN_EPD_CS,
+                PIN_EPD_DC,
+                PIN_EPD_RST,
+                PIN_EPD_BUSY));
+#endif
 #ifdef DISP_3C
 GxEPD2_3C<GxEPD2_750c_Z08, GxEPD2_750c_Z08::HEIGHT / 2> display(
   GxEPD2_750c_Z08(PIN_EPD_CS,
