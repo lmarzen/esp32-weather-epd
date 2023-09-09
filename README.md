@@ -37,19 +37,16 @@ Here are two examples utilizing various configuration options:
 
   - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed too quickly. To avoid this, E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times, which can be distracting.
 
-- https://www.waveshare.com/product/7.5inch-e-paper-hat.htm (800x480, 7.5inch E-Ink display, Black/White)
+- Panel support:
 
-  > **Note**
-  > Panel support.
-  >
-  > This software has limited support for accent colors. E-paper panels with additional colors tend to have longer refresh times, which will reduce battery life.
-  >
-  > | Panel                            | Resolution | Colors          | Notes                                                                                                                 |
-  > |----------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
-  > | Waveshare 7.5in e-paper (v2)     | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat.htm).                                          |
-  > | Waveshare 7.5in e-Paper (B)      | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm).                                        |
-  > | Waveshare 7.3in ACeP e-Paper (F) | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-hat-f.htm). Coming soon. |
-  > | Waveshare 7.5in e-paper (v1)     | 640x384px  | Black/White     | Limited support. Some information not displayed. See [image](showcase/demo-waveshare75-version1.jpg).                 |
+  | Panel                            | Resolution | Colors          | Notes                                                                                                                 |
+  |----------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
+  | Waveshare 7.5in e-paper (v2)     | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat.htm). (recommended)                            |
+  | Waveshare 7.5in e-Paper (B)      | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm).                                        |
+  | Waveshare 7.3in ACeP e-Paper (F) | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-hat-f.htm). Coming soon. |
+  | Waveshare 7.5in e-paper (v1)     | 640x384px  | Black/White     | Limited support. Some information not displayed. See [image](showcase/demo-waveshare75-version1.jpg).                 |
+
+  This software has limited support for accent colors. E-paper panels with additional colors tend to have longer refresh times, which will reduce battery life.
 
 
 FireBeetle 2 ESP32-E Microcontroller
