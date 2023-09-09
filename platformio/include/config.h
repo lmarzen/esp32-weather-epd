@@ -29,8 +29,8 @@
 //   DISP_3C - Waveshare 800x384, 7.5inch E-Ink display, Red/Black/White
 //             https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm
 // Uncomment the macro that identifies your physical panel.
-// #define DISP_BW
 #define DISP_BW
+// #define DISP_BWV1
 // #define DISP_3C
 
 // 3 COLOR E-INK ACCENT COLOR
