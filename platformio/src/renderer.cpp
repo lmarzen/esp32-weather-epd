@@ -589,7 +589,7 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
   {
 #ifdef DISP_BWV1
     int x = 318 + (i * 64);
-#elif
+#else
     int x = 398 + (i * 82);
 #endif
     // icons
