@@ -44,7 +44,7 @@ Here are two examples utilizing various configuration options:
   | Waveshare 7.5in e-paper (v2)     | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat.htm). (recommended)                            |
   | Waveshare 7.5in e-Paper (B)      | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm).                                        |
   | Waveshare 7.3in ACeP e-Paper (F) | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-hat-f.htm). Coming soon. |
-  | Waveshare 7.5in e-paper (v1)     | 640x384px  | Black/White     | Limited support. Some information not displayed. See [image](showcase/demo-waveshare75-version1.jpg).                 |
+  | Waveshare 7.5in e-paper (v1)     | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
 
   This software has limited support for accent colors. E-paper panels with additional colors tend to have longer refresh times, which will reduce battery life.
 
