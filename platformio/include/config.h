@@ -30,7 +30,7 @@
 //             https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm
 // Uncomment the macro that identifies your physical panel.
 // #define DISP_BW
-#define DISP_BWV1
+#define DISP_BW
 // #define DISP_3C
 
 // 3 COLOR E-INK ACCENT COLOR
