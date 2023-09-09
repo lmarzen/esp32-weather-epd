@@ -280,7 +280,7 @@ void drawCurrentConditions(const owm_current_t &current,
   display.setFont(&FONT_12pt8b);
 #ifdef DISP_BWV1
   drawString(156 + 164 / 2, 98 + 69 / 2 + 12 + 17, dataStr, CENTER);
-#elif 
+#else
   drawString(196 + 164 / 2, 98 + 69 / 2 + 12 + 17, dataStr, CENTER);
 #endif
   // line dividing top and bottom display areas
