@@ -22,22 +22,26 @@
 #include <Arduino.h>
 
 // E-PAPER PANEL
-// This project currently supports the following E-Paper panels:
-//   DISP_BW - WaveShare 800x480, 7.5inch E-Ink display, Black/White
-//             https://www.waveshare.com/product/7.5inch-e-paper-hat.htm
-//   DISP_BWV1 - WaveShare 640x480, 7.5inch E-Ink display, Black/White
-//   DISP_3C - Waveshare 800x384, 7.5inch E-Ink display, Red/Black/White
-//             https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm
+// This project supports the following E-Paper panels:
+//   DISP_BW_V2 - Waveshare 7.5in e-paper (v2)      800x480px  Black/White
+//   DISP_3C_B  - Waveshare 7.5in e-Paper (B)       800x480px  Red/Black/White
+//   DISP_7C_F  - Waveshare 7.3in ACeP e-Paper (F)  800x480px  7-Color
+//   DISP_BW_V1 - Waveshare 7.5in e-paper (v1)      640x384px  Black/White
 // Uncomment the macro that identifies your physical panel.
-#define DISP_BW
-// #define DISP_BWV1
-// #define DISP_3C
+#define DISP_BW_V2
+// #define DISP_3C_B
+// #define DISP_7C_F
+// #define DISP_BW_V1
 
 // 3 COLOR E-INK ACCENT COLOR
-// Defines the 3rd color to be used when a 3 color display is selected.
-#ifdef DISP_3C
+// Defines the 3rd color to be used when a 3+ color display is selected.
+#if defined(DISP_3C_B) || defined(DISP_7C_F)
   // #define ACCENT_COLOR GxEPD_BLACK
   #define ACCENT_COLOR GxEPD_RED
+  // #define ACCENT_COLOR GxEPD_GREEN
+  // #define ACCENT_COLOR GxEPD_BLUE
+  // #define ACCENT_COLOR GxEPD_YELLOW
+  // #define ACCENT_COLOR GxEPD_ORANGE
 #endif
 
 // LOCALE
