@@ -254,7 +254,7 @@ void drawCurrentConditions(const owm_current_t &current,
   display.setFont(&FONT_48pt8b_temperature);
 #ifdef DISP_BWV1  
   drawString(156 + 164 / 2 - 20, 196 / 2 + 69 / 2, dataStr, CENTER);
-#elif
+#else
   drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, dataStr, CENTER);
 #endif
   display.setFont(&FONT_14pt8b);
