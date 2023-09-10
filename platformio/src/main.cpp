@@ -119,6 +119,10 @@ void setup()
   unsigned long startTime = millis();
   Serial.begin(115200);
 
+#if DEBUG_LEVEL >= 1
+  printHeapUsage();
+#endif
+
   // GET BATTERY VOLTAGE
   // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings
   // are multiplied by 2. Readings are divided by 1000 to convert mV to V.
@@ -321,6 +325,10 @@ void setup()
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
   } while (display.nextPage());
   display.powerOff();
+
+#if DEBUG_LEVEL >= 1
+  printHeapUsage();
+#endif
 
   // DEEP-SLEEP
   beginDeepSleep(startTime, &timeInfo);

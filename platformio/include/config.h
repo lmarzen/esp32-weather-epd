@@ -155,21 +155,21 @@
 // project for your convenience. Change the font by selecting its corresponding
 // header file.
 //
-//   FONT           HEADER FILE                    FAMILY          LICENSE
-//   FreeMono       "fonts/FreeMono.h"             GNU FreeFont    GNU GPL v3.0
-//   FreeSans       "fonts/FreeSans.h"             GNU FreeFont    GNU GPL v3.0
-//   FreeSerif      "fonts/FreeSerif.h"            GNU FreeFont    GNU GPL v3.0
-//   Lato           "fonts/Lato_Regular.h          Lato            SIL OFL 1.1
-//   Montserrat     "fonts/Montserrat_Regular.h    Montserrat      SIL OFL 1.1
-//   Open Sans      "fonts/OpenSans_Regular.h      Open Sans       SIL OFL 1.1
-//   Poppins        "fonts/Poppins_Regular.h       Poppins         SIL OFL 1.1
-//   Quicksand      "fonts/Quicksand_Regular.h     Quicksand       SIL OFL 1.1
-//   Raleway        "fonts/Raleway_Regular.h       Raleway         SIL OFL 1.1
-//   Roboto         "fonts/Roboto_Regular.h        Roboto          Apache v2.0
-//   Roboto Mono    "fonts/RobotoMono_Regular.h    Roboto Mono     Apache v2.0
-//   Roboto Slab    "fonts/RobotoSlab_Regular.h    Roboto Slab     Apache v2.0
-//   Ubuntu         "fonts/Ubuntu_R.h              Ubuntu font     UFL v1.0
-//   Ubuntu Mono    "fonts/UbuntuMono_R.h          Ubuntu font     UFL v1.0
+//   FONT           HEADER FILE              FAMILY          LICENSE
+//   FreeMono       FreeMono.h               GNU FreeFont    GNU GPL v3.0
+//   FreeSans       FreeSans.h               GNU FreeFont    GNU GPL v3.0
+//   FreeSerif      FreeSerif.h              GNU FreeFont    GNU GPL v3.0
+//   Lato           Lato_Regular.h           Lato            SIL OFL v1.1
+//   Montserrat     Montserrat_Regular.h     Montserrat      SIL OFL v1.1
+//   Open Sans      OpenSans_Regular.h       Open Sans       SIL OFL v1.1
+//   Poppins        Poppins_Regular.h        Poppins         SIL OFL v1.1
+//   Quicksand      Quicksand_Regular.h      Quicksand       SIL OFL v1.1
+//   Raleway        Raleway_Regular.h        Raleway         SIL OFL v1.1
+//   Roboto         Roboto_Regular.h         Roboto          Apache v2.0
+//   Roboto Mono    RobotoMono_Regular.h     Roboto Mono     Apache v2.0
+//   Roboto Slab    RobotoSlab_Regular.h     Roboto Slab     Apache v2.0
+//   Ubuntu         Ubuntu_R.h               Ubuntu font     UFL v1.0
+//   Ubuntu Mono    UbuntuMono_R.h           Ubuntu font     UFL v1.0
 //
 // Adding new fonts is relatively straightforward, see fonts/README.
 //
@@ -188,6 +188,12 @@
 //   it undesirable to display alerts in some regions.
 //   Disable alerts by defining the DISABLE_ALERTS macro.
 // #define DISABLE_ALERTS
+
+// DEBUG
+//   If defined, enables increase verbosity over the serial port.
+//   level 0: basic status information, assists troubleshooting (default)
+//   level 1: increased verbosity for debugging
+#define DEBUG_LEVEL 0
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;
@@ -219,7 +225,6 @@ extern const char *NTP_SERVER_2;
 extern const long SLEEP_DURATION;
 extern const int BED_TIME;
 extern const int WAKE_TIME;
-extern const char UNITS;
 extern const int HOURLY_GRAPH_MAX;
 extern const float BATTERY_WARN_VOLTAGE;
 extern const float LOW_BATTERY_VOLTAGE;
