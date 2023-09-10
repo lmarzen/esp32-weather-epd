@@ -76,7 +76,7 @@
 
 /* Returns the string width in pixels
  */
-uint16_t getStringWidth(String text)
+uint16_t getStringWidth(const String &text)
 {
   int16_t x1, y1;
   uint16_t w, h;
@@ -86,7 +86,7 @@ uint16_t getStringWidth(String text)
 
 /* Returns the string height in pixels
  */
-uint16_t getStringHeight(String text)
+uint16_t getStringHeight(const String &text)
 {
   int16_t x1, y1;
   uint16_t w, h;
@@ -96,7 +96,7 @@ uint16_t getStringHeight(String text)
 
 /* Draws a string with alignment
  */
-void drawString(int16_t x, int16_t y, String text, alignment_t alignment,
+void drawString(int16_t x, int16_t y, const String &text, alignment_t alignment,
                 uint16_t color)
 {
   int16_t x1, y1;
@@ -104,11 +104,16 @@ void drawString(int16_t x, int16_t y, String text, alignment_t alignment,
   display.setTextColor(color);
   display.getTextBounds(text, x, y, &x1, &y1, &w, &h);
   if (alignment == RIGHT)
+  {
     x = x - w;
+  }
   if (alignment == CENTER)
+  {
     x = x - w / 2;
+  }
   display.setCursor(x, y);
   display.print(text);
+  return;
 } // end drawString
 
 /* Draws a string that will flow into the next line when max_width is reached.
@@ -120,9 +125,10 @@ void drawString(int16_t x, int16_t y, String text, alignment_t alignment,
  *       max_width exist in text, then the string will be printed beyond
  *       max_width.
  */
-void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
-                       uint16_t max_width, uint16_t max_lines,
-                       int16_t line_spacing, uint16_t color)
+void drawMultiLnString(int16_t x, int16_t y, const String &text,
+                       alignment_t alignment, uint16_t max_width,
+                       uint16_t max_lines, int16_t line_spacing,
+                       uint16_t color)
 {
   uint16_t current_line = 0;
   String textRemaining = text;
@@ -151,8 +157,8 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
       // find the last place in the string that we can break it.
       if (current_line < max_lines - 1)
       {
-        splitAt = max(subStr.lastIndexOf(" "),
-                      subStr.lastIndexOf("-"));
+        splitAt = std::max(subStr.lastIndexOf(" "),
+                           subStr.lastIndexOf("-"));
       }
       else
       {
@@ -219,7 +225,6 @@ void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
 void initDisplay()
 {
   display.init(115200, true, 2, false);
-  // display.init(); for older Waveshare HAT's
   SPI.begin(PIN_EPD_SCK,
             PIN_EPD_MISO,
             PIN_EPD_MOSI,
@@ -231,6 +236,7 @@ void initDisplay()
   display.setTextWrap(false);
   display.fillScreen(GxEPD_WHITE);
   display.setFullWindow();
+  display.firstPage(); // use paged drawing mode
 } // end initDisplay
 
 /* This function is responsible for drawing the current conditions and
@@ -391,7 +397,7 @@ void drawCurrentConditions(const owm_current_t &current,
 
   // uv index
   display.setFont(&FONT_12pt8b);
-  uint uvi = static_cast<uint>(max(round(current.uvi), 0.0f));
+  uint uvi = static_cast<uint>(std::max(round(current.uvi), 0.0f));
   dataStr = String(uvi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_7pt8b);
@@ -646,14 +652,26 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 void drawAlerts(std::vector<owm_alerts_t> &alerts,
                 const String &city, const String &date)
 {
+#if DEBUG_LEVEL >= 1
+  Serial.println("[debug] alerts.size()    : " + String(alerts.size()));
+#endif
   if (alerts.size() == 0)
   { // no alerts to draw
     return;
   }
 
+  int *ignore_list = (int *) calloc(alerts.size(), sizeof(*ignore_list));
+  int *alert_indices = (int *) calloc(alerts.size(), sizeof(*alert_indices));
+  if (!ignore_list || !alert_indices)
+  {
+    Serial.println("Error: Failed to allocate memory while handling alerts.");
+    free(ignore_list);
+    free(alert_indices);
+    return;
+  }
+
   // Converts all event text and tags to lowercase, removes extra information,
   // and filters out redundant alerts of lesser urgency.
-  int ignore_list[alerts.size()] = {};
   filterAlerts(alerts, ignore_list);
 
   // limit alert text width so that is does not run into the location or date
@@ -662,19 +680,27 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
   int city_w = getStringWidth(city);
   display.setFont(&FONT_12pt8b);
   int date_w = getStringWidth(date);
-  int max_w = DISP_WIDTH - 2 - max(city_w, date_w) - (196 + 4) - 8;
+  int max_w = DISP_WIDTH - 2 - std::max(city_w, date_w) - (196 + 4) - 8;
 
   // find indices of valid alerts
-  int alert_indices[alerts.size()] = {};
   int num_valid_alerts = 0;
+#if DEBUG_LEVEL >= 1
+  Serial.print("[debug] ignore_list      : [ ");
+#endif
   for (int i = 0; i < alerts.size(); ++i)
   {
+#if DEBUG_LEVEL >= 1
+    Serial.print(String(ignore_list[i]) + " ");
+#endif
     if (!ignore_list[i])
     {
       alert_indices[num_valid_alerts] = i;
       ++num_valid_alerts;
     }
   }
+#if DEBUG_LEVEL >= 1
+  Serial.println("]\n[debug] num_valid_alerts : " + String(num_valid_alerts));
+#endif
 
   if (num_valid_alerts == 1)
   { // 1 alert
@@ -725,6 +751,9 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
                         cur_alert.event, LEFT, max_w, 1, 0);
     } // end for-loop
   } // end 2 alerts
+
+  free(ignore_list);
+  free(alert_indices);
 
   return;
 } // end drawAlerts
@@ -793,8 +822,8 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #ifdef UNITS_TEMP_FAHRENHEIT
     newTemp = kelvin_to_fahrenheit(hourly[i].temp);
 #endif
-    tempMin = min(tempMin, newTemp);
-    tempMax = max(tempMax, newTemp);
+    tempMin = std::min(tempMin, newTemp);
+    tempMax = std::max(tempMax, newTemp);
   }
   int tempBoundMin = static_cast<int>(tempMin - 1)
                       - modulo(static_cast<int>(tempMin - 1), yTempMajorTicks);
@@ -956,8 +985,8 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 /* This function is responsible for drawing the status bar along the bottom of
  * the display.
  */
-void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
-                   double batVoltage)
+void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
+                   int rssi, double batVoltage)
 {
   String dataStr;
   uint16_t dataColor = GxEPD_BLACK;

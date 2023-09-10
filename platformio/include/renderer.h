@@ -60,13 +60,14 @@ typedef enum alignment
   CENTER
 } alignment_t;
 
-uint16_t getStringWidth(String text);
-uint16_t getStringHeight(String text);
-void drawString(int16_t x, int16_t y, String text, alignment_t alignment,
+uint16_t getStringWidth(const String &text);
+uint16_t getStringHeight(const String &text);
+void drawString(int16_t x, int16_t y, const String &text, alignment_t alignment,
                 uint16_t color=GxEPD_BLACK);
-void drawMultiLnString(int16_t x, int16_t y, String text, alignment_t alignment,
-                       uint16_t max_width, uint16_t max_lines,
-                       int16_t line_spacing, uint16_t color=GxEPD_BLACK);
+void drawMultiLnString(int16_t x, int16_t y, const String &text,
+                       alignment_t alignment, uint16_t max_width,
+                       uint16_t max_lines, int16_t line_spacing,
+                       uint16_t color=GxEPD_BLACK);
 void initDisplay();
 void drawCurrentConditions(const owm_current_t &current,
                            const owm_daily_t &today,
@@ -77,8 +78,8 @@ void drawAlerts(std::vector<owm_alerts_t> &alerts,
                 const String &city, const String &date);
 void drawLocationDate(const String &city, const String &date);
 void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo);
-void drawStatusBar(String statusStr, String refreshTimeStr, int rssi,
-                   double batVoltage);
+void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
+                   int rssi, double batVoltage);
 void drawError(const uint8_t *bitmap_196x196,
                const String &errMsgLn1, const String &errMsgLn2);
 

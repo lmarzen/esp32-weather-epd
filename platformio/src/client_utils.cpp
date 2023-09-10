@@ -242,3 +242,17 @@ bool setupTime(tm *timeInfo)
   return httpResponse;
 } // getOWMairpollution
 
+/* Prints debug information about heap usage.
+ */
+void printHeapUsage() {
+  Serial.println("[debug] Heap Size       : "
+                 + String(ESP.getHeapSize()) + " B");
+  Serial.println("[debug] Available Heap  : "
+                 + String(ESP.getFreeHeap()) + " B");
+  Serial.println("[debug] Min Free Heap   : "
+                 + String(ESP.getMinFreeHeap()) + " B");
+  Serial.println("[debug] Max Allocatable : "
+                 + String(ESP.getMaxAllocHeap()) + " B");
+  return;
+}
+
