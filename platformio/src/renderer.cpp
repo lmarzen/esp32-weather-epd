@@ -234,9 +234,9 @@ void initDisplay()
   display.setTextSize(1);
   display.setTextColor(GxEPD_BLACK);
   display.setTextWrap(false);
-  display.fillScreen(GxEPD_WHITE);
+  // display.fillScreen(GxEPD_WHITE);
   display.setFullWindow();
-  display.firstPage(); // use paged drawing mode
+  display.firstPage(); // use paged drawing mode, sets fillScreen(GxEPD_WHITE)
 } // end initDisplay
 
 /* This function is responsible for drawing the current conditions and

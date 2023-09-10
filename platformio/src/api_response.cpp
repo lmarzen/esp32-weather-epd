@@ -18,6 +18,7 @@
 #include <vector>
 #include <ArduinoJson.h>
 #include "api_response.h"
+#include "config.h"
 
 DeserializationError deserializeOneCall(WiFiClient &json,
                                         owm_resp_onecall_t &r)
@@ -91,10 +92,16 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   filter_alerts_7["description"] = false;
   filter_alerts_7["tags"]        = true;
 
-  DynamicJsonDocument doc(48 * 1024);
+  DynamicJsonDocument doc(32 * 1024);
 
   DeserializationError error = deserializeJson(doc, json,
                                          DeserializationOption::Filter(filter));
+#if DEBUG_LEVEL >= 1
+  Serial.println("[debug] doc.memoryUsage() : "
+                 + String(doc.memoryUsage()) + " B");
+  Serial.println("[debug] doc.capacity() : "
+                 + String(doc.capacity()) + " B"); // 0 on allocation failure
+#endif
   if (error) {
     return error;
   }
@@ -245,9 +252,15 @@ DeserializationError deserializeAirQuality(WiFiClient &json,
 {
   int i = 0;
 
-  DynamicJsonDocument doc(8 * 1024);
+  DynamicJsonDocument doc(6 * 1024);
 
   DeserializationError error = deserializeJson(doc, json);
+#if DEBUG_LEVEL >= 1
+  Serial.println("[debug] doc.memoryUsage() : "
+                 + String(doc.memoryUsage()) + " B");
+  Serial.println("[debug] doc.capacity() : "
+                 + String(doc.capacity()) + " B"); // 0 on allocation failure
+#endif
   if (error) {
     return error;
   }

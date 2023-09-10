@@ -105,6 +105,10 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   // add extra delay to compensate for esp32's with fast RTCs.
   sleepDuration += 10ULL;
 
+#if DEBUG_LEVEL >= 1
+  printHeapUsage();
+#endif
+
   esp_sleep_enable_timer_wakeup(sleepDuration * 1000000ULL);
   Serial.println("Awake for "
                  + String((millis() - startTime) / 1000.0, 3) + "s");
@@ -325,10 +329,6 @@ void setup()
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
   } while (display.nextPage());
   display.powerOff();
-
-#if DEBUG_LEVEL >= 1
-  printHeapUsage();
-#endif
 
   // DEEP-SLEEP
   beginDeepSleep(startTime, &timeInfo);
