@@ -63,14 +63,14 @@ FireBeetle 2 ESP32-E Microcontroller
 
 - Why the FireBeetle 2 ESP32-E
 
-  - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (https://diyi0t.com/reduce-the-esp32-power-consumption/). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Micro-USB would work fine too.
+  - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (<https://diyi0t.com/reduce-the-esp32-power-consumption/>). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Micro-USB would work fine too.
 
   - Firebeetle ESP32 models include onboard charging circuitry for a 3.7v lithium-ion(LiPo) battery.
 
   - FireBeetle ESP32 models include onboard circuitry to monitor battery voltage of a battery connected to its JST-PH2.0 connector.
 
 
-- [https://www.dfrobot.com/product-2195.html](https://www.dfrobot.com/product-2195.html)
+- <https://www.dfrobot.com/product-2195.html>
 
 
 BME280 - Pressure, Temperature, and Humidity Sensor
@@ -122,7 +122,7 @@ IMPORTANT: The E-Paper Driver Hat has two physical switches that MUST be set cor
 
 Cut the low power pad for even longer battery life.
 
-- From [https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654](https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654)
+- From <https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654>
 
   > Low Power Pad: This pad is specially designed for low power consumption. It is connected by default. You can cut off the thin wire in the middle with a knife to disconnect it. After disconnection, the static power consumption can be reduced by 500 μA. The power consumption can be reduced to 13 μA after controlling the maincontroller enter the sleep mode through the program. Note: when the pad is disconnected, you can only drive RGB LED light via the USB Power supply.
 
@@ -140,7 +140,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
 2. Install VSCode.
 
-3. Follow these instructions to install the PlatformIO extension for VSCode: https://platformio.org/install/ide?install=vscode
+3. Follow these instructions to install the PlatformIO extension for VSCode: <https://platformio.org/install/ide?install=vscode>
 
 4. Open the project in VSCode.
 
@@ -186,7 +186,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
 ### OpenWeatherMap API Key
 
-Sign up here to get an API key; it's free. https://openweathermap.org/api
+Sign up here to get an API key; it's free. <https://openweathermap.org/api>
 
 This project will make calls to 2 different APIs ("One Call" and "Air Pollution").
 
@@ -198,9 +198,9 @@ This project will make calls to 2 different APIs ("One Call" and "Air Pollution"
 - Otherwise, the One Call API 3.0 is only included in the "One Call by Call" subscription. This separate subscription includes 1,000 calls/day for free and allows you to pay only for the number of API calls made to this product.
 
 Here's how to subscribe and avoid any credit card changes:
-   - Go to https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30
+   - Go to <https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30>
    - Follow the instructions to complete the subscription.
-   - Go to https://home.openweathermap.org/subscriptions and set the "Calls per day (no more than)" to 1,000. This ensures you will never overrun the free calls.
+   - Go to <https://home.openweathermap.org/subscriptions> and set the "Calls per day (no more than)" to 1,000. This ensures you will never overrun the free calls.
 
 ## Error Messages and Troubleshooting
 
