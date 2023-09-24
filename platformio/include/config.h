@@ -22,20 +22,26 @@
 #include <Arduino.h>
 
 // E-PAPER PANEL
-// This project currently supports the following E-Paper panels:
-//   DISP_BW - WaveShare 800x480, 7.5inch E-Ink display, Black/White
-//             https://www.waveshare.com/product/7.5inch-e-paper-hat.htm
-//   DISP_3C - Waveshare 800x480, 7.5inch E-Ink display, Red/Black/White
-//             https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm
+// This project supports the following E-Paper panels:
+//   DISP_BW_V2 - Waveshare 7.5in e-paper (v2)      800x480px  Black/White
+//   DISP_3C_B  - Waveshare 7.5in e-Paper (B)       800x480px  Red/Black/White
+//   DISP_7C_F  - Waveshare 7.3in ACeP e-Paper (F)  800x480px  7-Color
+//   DISP_BW_V1 - Waveshare 7.5in e-paper (v1)      640x384px  Black/White
 // Uncomment the macro that identifies your physical panel.
-#define DISP_BW
-// #define DISP_3C
+#define DISP_BW_V2
+// #define DISP_3C_B
+// #define DISP_7C_F
+// #define DISP_BW_V1
 
 // 3 COLOR E-INK ACCENT COLOR
-// Defines the 3rd color to be used when a 3 color display is selected.
-#ifdef DISP_3C
+// Defines the 3rd color to be used when a 3+ color display is selected.
+#if defined(DISP_3C_B) || defined(DISP_7C_F)
   // #define ACCENT_COLOR GxEPD_BLACK
   #define ACCENT_COLOR GxEPD_RED
+  // #define ACCENT_COLOR GxEPD_GREEN
+  // #define ACCENT_COLOR GxEPD_BLUE
+  // #define ACCENT_COLOR GxEPD_YELLOW
+  // #define ACCENT_COLOR GxEPD_ORANGE
 #endif
 
 // LOCALE
@@ -149,21 +155,21 @@
 // project for your convenience. Change the font by selecting its corresponding
 // header file.
 //
-//   FONT           HEADER FILE                    FAMILY          LICENSE
-//   FreeMono       "fonts/FreeMono.h"             GNU FreeFont    GNU GPL v3.0
-//   FreeSans       "fonts/FreeSans.h"             GNU FreeFont    GNU GPL v3.0
-//   FreeSerif      "fonts/FreeSerif.h"            GNU FreeFont    GNU GPL v3.0
-//   Lato           "fonts/Lato_Regular.h          Lato            SIL OFL 1.1
-//   Montserrat     "fonts/Montserrat_Regular.h    Montserrat      SIL OFL 1.1
-//   Open Sans      "fonts/OpenSans_Regular.h      Open Sans       SIL OFL 1.1
-//   Poppins        "fonts/Poppins_Regular.h       Poppins         SIL OFL 1.1
-//   Quicksand      "fonts/Quicksand_Regular.h     Quicksand       SIL OFL 1.1
-//   Raleway        "fonts/Raleway_Regular.h       Raleway         SIL OFL 1.1
-//   Roboto         "fonts/Roboto_Regular.h        Roboto          Apache v2.0
-//   Roboto Mono    "fonts/RobotoMono_Regular.h    Roboto Mono     Apache v2.0
-//   Roboto Slab    "fonts/RobotoSlab_Regular.h    Roboto Slab     Apache v2.0
-//   Ubuntu         "fonts/Ubuntu_R.h              Ubuntu font     UFL v1.0
-//   Ubuntu Mono    "fonts/UbuntuMono_R.h          Ubuntu font     UFL v1.0
+//   FONT           HEADER FILE              FAMILY          LICENSE
+//   FreeMono       FreeMono.h               GNU FreeFont    GNU GPL v3.0
+//   FreeSans       FreeSans.h               GNU FreeFont    GNU GPL v3.0
+//   FreeSerif      FreeSerif.h              GNU FreeFont    GNU GPL v3.0
+//   Lato           Lato_Regular.h           Lato            SIL OFL v1.1
+//   Montserrat     Montserrat_Regular.h     Montserrat      SIL OFL v1.1
+//   Open Sans      OpenSans_Regular.h       Open Sans       SIL OFL v1.1
+//   Poppins        Poppins_Regular.h        Poppins         SIL OFL v1.1
+//   Quicksand      Quicksand_Regular.h      Quicksand       SIL OFL v1.1
+//   Raleway        Raleway_Regular.h        Raleway         SIL OFL v1.1
+//   Roboto         Roboto_Regular.h         Roboto          Apache v2.0
+//   Roboto Mono    RobotoMono_Regular.h     Roboto Mono     Apache v2.0
+//   Roboto Slab    RobotoSlab_Regular.h     Roboto Slab     Apache v2.0
+//   Ubuntu         Ubuntu_R.h               Ubuntu font     UFL v1.0
+//   Ubuntu Mono    UbuntuMono_R.h           Ubuntu font     UFL v1.0
 //
 // Adding new fonts is relatively straightforward, see fonts/README.
 //
@@ -182,6 +188,12 @@
 //   it undesirable to display alerts in some regions.
 //   Disable alerts by defining the DISABLE_ALERTS macro.
 // #define DISABLE_ALERTS
+
+// DEBUG
+//   If defined, enables increase verbosity over the serial port.
+//   level 0: basic status information, assists troubleshooting (default)
+//   level 1: increased verbosity for debugging
+#define DEBUG_LEVEL 0
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;
@@ -213,7 +225,6 @@ extern const char *NTP_SERVER_2;
 extern const long SLEEP_DURATION;
 extern const int BED_TIME;
 extern const int WAKE_TIME;
-extern const char UNITS;
 extern const int HOURLY_GRAPH_MAX;
 extern const float BATTERY_WARN_VOLTAGE;
 extern const float LOW_BATTERY_VOLTAGE;

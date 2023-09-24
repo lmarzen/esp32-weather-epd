@@ -105,6 +105,10 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
   // add extra delay to compensate for esp32's with fast RTCs.
   sleepDuration += 10ULL;
 
+#if DEBUG_LEVEL >= 1
+  printHeapUsage();
+#endif
+
   esp_sleep_enable_timer_wakeup(sleepDuration * 1000000ULL);
   Serial.println("Awake for "
                  + String((millis() - startTime) / 1000.0, 3) + "s");
@@ -118,6 +122,10 @@ void setup()
 {
   unsigned long startTime = millis();
   Serial.begin(115200);
+
+#if DEBUG_LEVEL >= 1
+  printHeapUsage();
+#endif
 
   // GET BATTERY VOLTAGE
   // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings
