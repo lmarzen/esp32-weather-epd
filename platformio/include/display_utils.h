@@ -72,6 +72,7 @@ enum alert_category getAlertCategory(const owm_alerts_t &alert);
 const uint8_t *getWindBitmap24(int windDeg);
 const char *getHttpResponsePhrase(int code);
 const char *getWifiStatusPhrase(wl_status_t status);
+void printHeapUsage();
 
 #endif
 

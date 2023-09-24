@@ -2,8 +2,6 @@
 
 This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 7.5in E-Paper (aka E-ink) display. Current and forecasted weather data is obtained from the OpenWeatherMap API. A sensor provides the display with accurate indoor temperature and humidity.
 
-The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
-
 <p float="left">
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
   <img src="showcase/assembled-demo-raleigh-side.jpg" width="49%" />
@@ -12,7 +10,7 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
   <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49%" />
 </p>
 
-I made a small stand by hollowing out a piece of wood from the bottom. On the back, I used a short USB extension cable so that I can charge the battery without needing to remove the components from the stand. I also wired a small reset button to refresh the display manually. Additionally, I 3d printed a cover for the bottom, which is held on by magnets. The E-paper screen is very thin, so I used a thin piece of acrylic to support it.
+The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
 
 There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
 
@@ -39,10 +37,16 @@ Here are two examples utilizing various configuration options:
 
   - Refresh Times and Ghosting - E-Paper displays are highly susceptible to ghosting effects if refreshed too quickly. To avoid this, E-Paper displays often take a few seconds to refresh(4s for the unit used in this project) and will alternate between black and white a few times, which can be distracting.
 
+- Panel support:
 
-- https://www.waveshare.com/product/7.5inch-e-paper-hat.htm (800x480, 7.5inch E-Ink display, Black/White)
+  | Panel                            | Resolution | Colors          | Notes                                                                                                                 |
+  |----------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
+  | Waveshare 7.5in e-paper (v2)     | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat.htm). (recommended)                            |
+  | Waveshare 7.5in e-Paper (B)      | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm).                                        |
+  | Waveshare 7.3in ACeP e-Paper (F) | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-hat-f.htm).              |
+  | Waveshare 7.5in e-paper (v1)     | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
 
-- Note that this project also now supports this 3-color panel as well. Some elements will be drawn with an accent color, at the cost of a longer refresh sequence. https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm (800x480, 7.5inch E-Ink display, Red/Black/White)
+  This software has limited support for accent colors. E-paper panels with additional colors tend to have longer refresh times, which will reduce battery life.
 
 
 FireBeetle 2 ESP32-E Microcontroller
@@ -59,14 +63,14 @@ FireBeetle 2 ESP32-E Microcontroller
 
 - Why the FireBeetle 2 ESP32-E
 
-  - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (https://diyi0t.com/reduce-the-esp32-power-consumption/). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Mirco-USB would work fine too.
+  - Drobot's FireBeetle ESP32 models are optimized for low-power consumption (<https://diyi0t.com/reduce-the-esp32-power-consumption/>). The Drobot's FireBeetle 2 ESP32-E variant offers USB-C, but older versions of the board with Micro-USB would work fine too.
 
-  - Firebeelte ESP32 models include onboard charging circuitry for a 3.7v lithium-ion(LiPo) battery.
+  - Firebeetle ESP32 models include onboard charging circuitry for a 3.7v lithium-ion(LiPo) battery.
 
   - FireBeetle ESP32 models include onboard circuitry to monitor battery voltage of a battery connected to its JST-PH2.0 connector.
 
 
-- https://www.dfrobot.com/product-2195.html
+- <https://www.dfrobot.com/product-2195.html>
 
 
 BME280 - Pressure, Temperature, and Humidity Sensor
@@ -88,10 +92,25 @@ BME280 - Pressure, Temperature, and Humidity Sensor
   > **Warning**
   > The polarity of JST-PH2.0 connectors is not standardized! You may need to swap the order of the wires in the connector.
 
+Stand/Frame
+- You'll want a nice way to show off your project. Here are a few popular choices.
+- DIY Wooden
+  - I made a small stand by hollowing out a piece of wood from the bottom. On the back, I used a short USB extension cable so that I can charge the battery without needing to remove the components from the stand. I also wired a small reset button to refresh the display manually. Additionally, I 3d printed a cover for the bottom, which is held on by magnets. The E-paper screen is very thin, so I used a thin piece of acrylic to support it.
+  - Measurements:
+    - depth = 63mm <br>
+      height = 49mm <br>
+      width = 170.2mm (= width of the screen) <br>
+      screen angle = 80deg <br>
+      screen is 15mm from the front
+- 3D Printable
+  - Community-contributed designs can be found here [3d_models](3d_models).
+  - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
+- Picture Frame
+
 
 ### Wiring
 
-Pin connections are defined in config.cpp.
+Pin connections are defined in [config.cpp](platformio/src/config.cpp).
 
 If you are using the FireBeetle 2 ESP32-E, you can use the connections I used or change them how you would like.
 
@@ -103,7 +122,7 @@ IMPORTANT: The E-Paper Driver Hat has two physical switches that MUST be set cor
 
 Cut the low power pad for even longer battery life.
 
-- From https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654
+- From <https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654>
 
   > Low Power Pad: This pad is specially designed for low power consumption. It is connected by default. You can cut off the thin wire in the middle with a knife to disconnect it. After disconnection, the static power consumption can be reduced by 500 μA. The power consumption can be reduced to 13 μA after controlling the maincontroller enter the sleep mode through the program. Note: when the pad is disconnected, you can only drive RGB LED light via the USB Power supply.
 
@@ -121,7 +140,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
 2. Install VSCode.
 
-3. Follow these instructions to install the PlatformIO extension for VSCode: https://platformio.org/install/ide?install=vscode
+3. Follow these instructions to install the PlatformIO extension for VSCode: <https://platformio.org/install/ide?install=vscode>
 
 4. Open the project in VSCode.
 
@@ -173,7 +192,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
 ### OpenWeatherMap API Key
 
-Sign up here to get an API key; it's free. https://openweathermap.org/api
+Sign up here to get an API key; it's free. <https://openweathermap.org/api>
 
 This project will make calls to 2 different APIs ("One Call" and "Air Pollution").
 
@@ -185,9 +204,9 @@ This project will make calls to 2 different APIs ("One Call" and "Air Pollution"
 - Otherwise, the One Call API 3.0 is only included in the "One Call by Call" subscription. This separate subscription includes 1,000 calls/day for free and allows you to pay only for the number of API calls made to this product.
 
 Here's how to subscribe and avoid any credit card changes:
-   - Go to https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30
+   - Go to <https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30>
    - Follow the instructions to complete the subscription.
-   - Go to https://home.openweathermap.org/subscriptions and set the "Calls per day (no more than)" to 1,000. This ensures you will never overrun the free calls.
+   - Go to <https://home.openweathermap.org/subscriptions> and set the "Calls per day (no more than)" to 1,000. This ensures you will never overrun the free calls.
 
 ## Error Messages and Troubleshooting
 
@@ -226,22 +245,22 @@ esp32-weather-epd is licensed under the [GNU General Public License v3.0](LICENS
 | [Adafruit-GFX-Library: fontconvert](https://github.com/adafruit/Adafruit-GFX-Library/tree/master/fontconvert) | [BSD License](fonts/fontconvert/license.txt) | CLI tool for preprocessing fonts to be used with the Adafruit_GFX Arduino library. |
 | [pollutant-concentration-to-aqi](https://github.com/lmarzen/pollutant-concentration-to-aqi) | [GNU Lesser General Public License v2.1](platformio/lib/pollutant-concentration-to-aqi/LICENSE) | C library that converts pollutant concentrations to Air Quality Index(AQI). |
 | [GNU FreeFont](https://www.gnu.org/software/freefont/) | [GNU General Public License v3.0](https://www.gnu.org/software/freefont/license.html) | Font Family |
-| [Lato](https://fonts.google.com/specimen/Lato) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
-| [Montserrat](https://fonts.google.com/specimen/Montserrat) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
-| [Open Sans](https://fonts.google.com/specimen/Open+Sans) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
-| [Poppins](https://fonts.google.com/specimen/Poppins) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
-| [Quicksand](https://fonts.google.com/specimen/Quicksand) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
-| [Raleway](https://fonts.google.com/specimen/Raleway) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Lato](https://fonts.google.com/specimen/Lato) | [SIL OFL v1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Montserrat](https://fonts.google.com/specimen/Montserrat) | [SIL OFL v1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Open Sans](https://fonts.google.com/specimen/Open+Sans) | [SIL OFL v1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Poppins](https://fonts.google.com/specimen/Poppins) | [SIL OFL v1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Quicksand](https://fonts.google.com/specimen/Quicksand) | [SIL OFL v1.1](http://scripts.sil.org/OFL) | Font Family |
+| [Raleway](https://fonts.google.com/specimen/Raleway) | [SIL OFL v1.1](http://scripts.sil.org/OFL) | Font Family |
 | [Roboto](https://fonts.google.com/specimen/Roboto) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | Font Family |
 | [Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | Font Family |
 | [Roboto Slab](https://fonts.google.com/specimen/Roboto+Slab) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | Font Family |
 | [Ubuntu font](https://design.ubuntu.com/font) | [Ubuntu Font Licence v1.0](https://ubuntu.com/legal/font-licence) | Font Family |
-| [Weather Themed Icons](https://github.com/erikflowers/weather-icons) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (wi-**.svg) Weather icon family by Lukas Bischoff/Erik Flowers. |
+| [Weather Themed Icons](https://github.com/erikflowers/weather-icons) | [SIL OFL v1.1](http://scripts.sil.org/OFL) | (wi-**.svg) Weather icon family by Lukas Bischoff/Erik Flowers. |
 | [Google Icons](https://fonts.google.com/icons) | [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) | (battery**.svg, visibility_icon.svg) Battery and visibility icons from Google Icons. |
-| [Biological Hazard Symbol](https://svgsilh.com/image/37775.html) | [CC0 1.0](https://en.wikipedia.org/wiki/Public_domain) | (biological_hazard_symbol.svg) Biohazard icon. |
+| [Biological Hazard Symbol](https://svgsilh.com/image/37775.html) | [CC0 v1.0](https://en.wikipedia.org/wiki/Public_domain) | (biological_hazard_symbol.svg) Biohazard icon. |
 | [House Icon](https://seekicon.com/free-icon/house_16) | [MIT License](http://opensource.org/licenses/mit-license.html) | (house.svg) House icon. |
-| [Indoor Temerature/Humidity Icons](icons/svg) | [SIL OFL 1.1](http://scripts.sil.org/OFL) | (house_**.svg) Indoor temerature/humidity icons. |
-| [Ionizing Radiation Symbol](https://svgsilh.com/image/309911.html) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) | (ionizing_radiation_symbol.svg) Ionizing radiation icons. |
+| [Indoor Temerature/Humidity Icons](icons/svg) | [SIL OFL v1.1](http://scripts.sil.org/OFL) | (house_**.svg) Indoor temerature/humidity icons. |
+| [Ionizing Radiation Symbol](https://svgsilh.com/image/309911.html) | [CC0 v1.0](https://creativecommons.org/publicdomain/zero/1.0/) | (ionizing_radiation_symbol.svg) Ionizing radiation icons. |
 | [Phosphor Icons](https://github.com/phosphor-icons/homepage) | [MIT License](http://opensource.org/licenses/mit-license.html) | (wifi**.svg, warning_icon.svg, error_icon.svg) WiFi, Warning, and Error icons from Phosphor Icons. |
-| [Wind Direction Icon](https://www.onlinewebfonts.com/icon/251550) | [CC BY 3.0](http://creativecommons.org/licenses/by/3.0) | (meteorological_wind_direction_**deg.svg) Meteorological wind direction icon from Online Web Fonts. |
+| [Wind Direction Icon](https://www.onlinewebfonts.com/icon/251550) | [CC BY v3.0](http://creativecommons.org/licenses/by/3.0) | (meteorological_wind_direction_**deg.svg) Meteorological wind direction icon from Online Web Fonts. |
 

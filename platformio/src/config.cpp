@@ -20,9 +20,9 @@
 
 // PINS
 // ADC pin used to measure battery voltage
-const uint8_t PIN_BAT_ADC  = A2;
+const uint8_t PIN_BAT_ADC  = A2; // A0 for micro-usb firebeetle
 // Pins for Waveshare e-paper Driver Board
-const uint8_t PIN_EPD_BUSY = 13;
+const uint8_t PIN_EPD_BUSY = 13; // 5 for micro-usb firebeetle
 const uint8_t PIN_EPD_CS   =  2;
 const uint8_t PIN_EPD_RST  = 21;
 const uint8_t PIN_EPD_DC   = 22;
@@ -30,8 +30,8 @@ const uint8_t PIN_EPD_SCK  = 18;
 const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
 const uint8_t PIN_EPD_MOSI = 23;
 // I2C Pins used for BME280
-const uint8_t PIN_BME_SDA = 17;
-const uint8_t PIN_BME_SCL = 16;
+const uint8_t PIN_BME_SDA = 17;   // 27 for micro-usb firebeetle
+const uint8_t PIN_BME_SCL = 16;   // 26 for micro-usb firebeetle
 const uint8_t BME_ADDRESS = 0x76; // if sensor does not work, try 0x77
 
 // WIFI CREDENTIALS
@@ -69,7 +69,7 @@ const String OWM_ONECALL_VERSION = "3.0";
 const String LAT = "40.7128";
 const String LON = "-74.0060";
 // City name that will be shown in the top-right corner of the display.
-const String CITY_STRING = "New York, New York";
+const String CITY_STRING = "New York";
 
 // TIME
 // For list of time zones see
@@ -85,12 +85,12 @@ const char *TIME_FORMAT = "%H:%M";   // 24-hour ex: 01:23   23:00
 // https://man7.org/linux/man-pages/man3/strftime.3.html
 // const char *HOUR_FORMAT = "%l%P"; // 12-hour ex: 1am  11pm
 const char *HOUR_FORMAT = "%H";      // 24-hour ex: 01   23
-// Date format used when displaying date in top-right corner. For more
+// Date format used when displaying date in top-right corner.
 // For more information about formatting see
 // https://man7.org/linux/man-pages/man3/strftime.3.html
 const char *DATE_FORMAT = "%A, %B %e"; // Saturday, January 1
 // Date/Time format used when displaying the last refresh time along the bottom
-// of the screen
+// of the screen.
 // For more information about formatting see
 // https://man7.org/linux/man-pages/man3/strftime.3.html
 const char *REFRESH_TIME_FORMAT = "%x %H:%M";
@@ -100,17 +100,17 @@ const char *REFRESH_TIME_FORMAT = "%x %H:%M";
 const char *NTP_SERVER_1 = "us.pool.ntp.org";
 const char *NTP_SERVER_2 = "time.nist.gov";
 // Sleep duration in minutes. (aka how often esp32 will wake for an update)
-// Aligned to the nearest minute boundary, so if 30 will always update at 00 or
-// 30 past the hour. (range: 0-59)
+// Aligned to the nearest minute boundary and must evenly divide 60.
+// For example, if set to 30 (minutes) the display will update at 00 or 30
+// minutes past the hour. (range: [2-60])
 const long SLEEP_DURATION = 30;
 // If BED_TIME == WAKE_TIME, then this battery saving feature will be disabled.
-// (range: 0-23)
+// (range: [0-23])
 const int BED_TIME  = 00; // Last update at 00:00 (midnight) until WAKE_TIME.
 const int WAKE_TIME = 06; // Hour of first update after BED_TIME, 06:00.
 
 // HOURLY OUTLOOK GRAPH
-// Number of hours to display on the outlook graph.
-// Value must be between 8-48 (inclusively).
+// Number of hours to display on the outlook graph. (range: [8-48])
 const int HOURLY_GRAPH_MAX = 24;
 
 // BATTERY
