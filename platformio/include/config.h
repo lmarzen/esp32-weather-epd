@@ -222,6 +222,8 @@ extern const char *DATE_FORMAT;
 extern const char *REFRESH_TIME_FORMAT;
 extern const char *NTP_SERVER_1;
 extern const char *NTP_SERVER_2;
+extern const int NTP_RETRY_MAX;
+extern const int NTP_RETRY_DELAY;
 extern const long SLEEP_DURATION;
 extern const int BED_TIME;
 extern const int WAKE_TIME;

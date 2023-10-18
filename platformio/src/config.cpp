@@ -94,6 +94,10 @@ const char *REFRESH_TIME_FORMAT = "%x %H:%M";
 // The system will try finding the closest available servers for you.
 const char *NTP_SERVER_1 = "us.pool.ntp.org";
 const char *NTP_SERVER_2 = "time.nist.gov";
+// These constants are used in client_utils.cpp/setupTime() to control how
+// long to wait for a time update from an NTP server.
+const int NTP_RETRY_MAX = 10;     // Maximum number of retries
+const int NTP_RETRY_DELAY = 5000; // Delay between retries in msec
 // Sleep duration in minutes. (aka how often esp32 will wake for an update)
 // Aligned to the nearest minute boundary and must evenly divide 60.
 // For example, if set to 30 (minutes) the display will update at 00 or 30

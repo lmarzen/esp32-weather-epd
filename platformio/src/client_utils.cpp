@@ -118,11 +118,16 @@ bool printLocalTime(tm *timeInfo)
  */
 bool setupTime(tm *timeInfo)
 {
-  // passing 0 for gmtOffset_sec and daylightOffset_sec and instead use setenv()
-  // for timezone offsets
-  configTime(0, 0, NTP_SERVER_1, NTP_SERVER_2);
-  setenv("TZ", TIMEZONE, 1);
-  tzset();
+  // configTzTime takes care of setting the offsets, etc., correctly
+  // based upon the provided TIMEZONE (which you should set in config.cpp)
+  configTzTime(TIMEZONE, NTP_SERVER_1, NTP_SERVER_2);
+  // Wait for SNTP synchronization to complete
+  int retry = 0;
+  while ((sntp_get_sync_status() == SNTP_SYNC_STATUS_RESET) && (retry < NTP_RETRY_MAX)) {
+    Serial.printf("Waiting for SNTP synchronization, attempt %d of %d...\n", retry + 1, NTP_RETRY_MAX);
+    delay(NTP_RETRY_DELAY);  // Delay for 5 seconds before retrying
+    retry++;
+  }
   return printLocalTime(timeInfo);
 } // setupTime
 
