@@ -35,8 +35,12 @@ const uint8_t PIN_BME_SCL = 16;   // 26 for micro-usb firebeetle
 const uint8_t BME_ADDRESS = 0x76; // if sensor does not work, try 0x77
 
 // WIFI
-const char *WIFI_SSID     = "ssid";
-const char *WIFI_PASSWORD = "password";
+// List as many WiFi networks and their passwords as desired.
+// They will be tried in order of their signal strength.
+const String WIFI_INFO[][2] = {
+        {"Network Name", "password"},
+        {"Alternate Network Name", "password"}
+    };
 const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
 // OPENWEATHERMAP API

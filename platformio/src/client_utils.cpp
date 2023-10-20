@@ -49,6 +49,31 @@
   static const uint16_t OWM_PORT = 443;
 #endif
 
+//
+// Helper function to attempt a WiFi connection.
+//
+wl_status_t connectWiFi(String ssid, String pw) {
+  unsigned long timeout;
+  wl_status_t connection_status;
+  // Start trying to connect to the network
+  WiFi.begin(ssid, pw);
+  // A short delay is required after begin() to let status() update, or you'll get the
+  // status from the previous connection attempt
+  delay(200);
+  // timeout if WiFi does not connect in 10s from now
+  timeout = millis() + 10000;
+  connection_status = WiFi.status();
+  // A connection status of WL_DISCONNECTED indicates that the network disconnected the 
+  // attempt, i.e., you have the wrong password
+  while ((connection_status != WL_CONNECTED) && (connection_status != WL_DISCONNECTED) && (millis() < timeout)) {
+    Serial.print(".");
+    delay(50);
+    connection_status = WiFi.status();
+  }
+  Serial.println();
+  return connection_status;
+}
+
 /* Power-on and connect WiFi.
  * Takes int parameter to store WiFi RSSI, or “Received Signal Strength
  * Indicator"
@@ -57,33 +82,46 @@
  */
 wl_status_t startWiFi(int &wifiRSSI)
 {
+  wl_status_t connection_status;
   WiFi.mode(WIFI_STA);
-  Serial.printf("Connecting to '%s'", WIFI_SSID);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-  // timeout if WiFi does not connect in WIFI_TIMEOUT ms from now
-  unsigned long timeout = millis() + WIFI_TIMEOUT;
-  wl_status_t connection_status = WiFi.status();
-
-  while ((connection_status != WL_CONNECTED) && (millis() < timeout))
-  {
-    Serial.print(".");
-    delay(50);
-    connection_status = WiFi.status();
+  // Scan to see what networks are available
+  // WiFi.scanNetworks will return the number of networks found
+  //
+  int num_networks = WiFi.scanNetworks();
+  Serial.printf("WiFi scan found %d networks.\n", num_networks);
+  for (int i = 0; i < num_networks; ++i) {
+      // Print SSID and RSSI for each network found
+      Serial.printf("  %d: %s (%d)%c\n", i+1, WiFi.SSID(i).c_str(), WiFi.RSSI(i), (WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?'*':' ');
   }
-  Serial.println();
-
-  if (connection_status == WL_CONNECTED)
-  {
-    wifiRSSI = WiFi.RSSI(); // get WiFi signal strength now, because the WiFi
-                            // will be turned off to save power!
-    Serial.println("IP: " + WiFi.localIP().toString());
+  // Figure out the number of entries in WIFI_INFO
+  int length = sizeof(WIFI_INFO) / sizeof(WIFI_INFO[0]);
+  // If there's only one entry in WIFI_INFO, we can just try that one.
+  if (length == 1) {
+    return connectWiFi(WIFI_INFO[0][0], WIFI_INFO[0][1]);
+  } else {
+    // Otherwise we'll scan for networks and try them in order, which is conveniently 
+    // sorted from strongest to weakest, so we'll connect to the strongest available
+    // network.
+    for(int i=0;i<num_networks;i++) {
+      for(int j=0;j<length;j++) {
+        if (WiFi.SSID(i) == WIFI_INFO[j][0]) {
+          connection_status = connectWiFi(WIFI_INFO[j][0], WIFI_INFO[j][1]);
+          if (connection_status == WL_CONNECTED) {
+            // Save signal strength
+            wifiRSSI = WiFi.RSSI(i);
+            Serial.printf("Connected to '%s'\n", WiFi.SSID(i).c_str());
+            Serial.println("IP: " + WiFi.localIP().toString());
+            return connection_status;
+          } else {
+            Serial.printf("Could not connect to '%s'\n", WiFi.SSID(i).c_str());
+          }
+        }
+      }
+    }
   }
-  else
-  {
-    Serial.printf("Could not connect to '%s'\n", WIFI_SSID);
-  }
-  return connection_status;
+  // Unable to find any network 
+  Serial.println("Unable to connect to a WiFi network.");
+  return WL_CONNECT_FAILED;
 } // startWiFi
 
 /* Disconnect and power-off WiFi.
