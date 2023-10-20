@@ -34,9 +34,10 @@ const uint8_t PIN_BME_SDA = 17;   // 27 for micro-usb firebeetle
 const uint8_t PIN_BME_SCL = 16;   // 26 for micro-usb firebeetle
 const uint8_t BME_ADDRESS = 0x76; // if sensor does not work, try 0x77
 
-// WIFI CREDENTIALS
+// WIFI
 const char *WIFI_SSID     = "ssid";
 const char *WIFI_PASSWORD = "password";
+const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
 // OPENWEATHERMAP API
 // OpenWeatherMap API key, https://openweathermap.org/
@@ -90,14 +91,12 @@ const char *DATE_FORMAT = "%A, %B %e"; // Saturday, January 1
 // https://man7.org/linux/man-pages/man3/strftime.3.html
 const char *REFRESH_TIME_FORMAT = "%x %H:%M";
 // NTP_SERVER_1 is the primary time server, while NTP_SERVER_2 is a fallback.
-// In most cases it's best to use pool.ntp.org to find an NTP server
-// The system will try finding the closest available servers for you.
-const char *NTP_SERVER_1 = "us.pool.ntp.org";
+// pool.ntp.org will find the closest available NTP server to you.
+const char *NTP_SERVER_1 = "pool.ntp.org";
 const char *NTP_SERVER_2 = "time.nist.gov";
-// These constants are used in client_utils.cpp/setupTime() to control how
-// long to wait for a time update from an NTP server.
-const int NTP_RETRY_MAX = 10;     // Maximum number of retries
-const int NTP_RETRY_DELAY = 5000; // Delay between retries in msec
+// If you encounter the 'Failed To Fetch The Time' error, try increasing
+// NTP_TIMEOUT or select closer/lower latency time servers.
+const unsigned long NTP_TIMEOUT = 20000; // ms
 // Sleep duration in minutes. (aka how often esp32 will wake for an update)
 // Aligned to the nearest minute boundary and must evenly divide 60.
 // For example, if set to 30 (minutes) the display will update at 00 or 30
