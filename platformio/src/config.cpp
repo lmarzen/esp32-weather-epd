@@ -41,6 +41,7 @@ const String WIFI_INFO[][2] = {
         {"Network Name", "password"},
         {"Alternate Network Name", "password"}
     };
+const int NUM_NETWORKS = sizeof(WIFI_INFO) / sizeof(WIFI_INFO[0]);
 const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
 // OPENWEATHERMAP API

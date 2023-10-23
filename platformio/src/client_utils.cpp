@@ -93,17 +93,16 @@ wl_status_t startWiFi(int &wifiRSSI)
       // Print SSID and RSSI for each network found
       Serial.printf("  %d: %s (%d)%c\n", i+1, WiFi.SSID(i).c_str(), WiFi.RSSI(i), (WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?'*':' ');
   }
-  // Figure out the number of entries in WIFI_INFO
-  int length = sizeof(WIFI_INFO) / sizeof(WIFI_INFO[0]);
+
   // If there's only one entry in WIFI_INFO, we can just try that one.
-  if (length == 1) {
+  if (NUM_NETWORKS == 1) {
     return connectWiFi(WIFI_INFO[0][0], WIFI_INFO[0][1]);
   } else {
     // Otherwise we'll scan for networks and try them in order, which is conveniently 
     // sorted from strongest to weakest, so we'll connect to the strongest available
     // network.
     for(int i=0;i<num_networks;i++) {
-      for(int j=0;j<length;j++) {
+      for(int j=0;j<NUM_NETWORKS;j++) {
         if (WiFi.SSID(i) == WIFI_INFO[j][0]) {
           connection_status = connectWiFi(WIFI_INFO[j][0], WIFI_INFO[j][1]);
           if (connection_status == WL_CONNECTED) {

@@ -208,6 +208,7 @@ extern const uint8_t PIN_BME_SDA;
 extern const uint8_t PIN_BME_SCL;
 extern const uint8_t BME_ADDRESS;
 extern const String WIFI_INFO[][2];
+extern const int NUM_NETWORKS;
 extern const unsigned long WIFI_TIMEOUT;
 extern const String OWM_APIKEY;
 extern const String OWM_ENDPOINT;
