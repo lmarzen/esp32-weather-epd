@@ -92,21 +92,21 @@ wl_status_t startDefaultWiFi(int &wifiRSSI)
 
     while ((connection_status != WL_CONNECTED) && (millis() < timeout))
     {
-    Serial.print(".");
-    delay(50);
-    connection_status = WiFi.status();
+      Serial.print(".");
+      delay(50);
+      connection_status = WiFi.status();
     }
     Serial.println();
 
     if (connection_status == WL_CONNECTED)
     {
-    wifiRSSI = WiFi.RSSI(); // get WiFi signal strength now, because the WiFi
-                            // will be turned off to save power!
-    Serial.println("IP: " + WiFi.localIP().toString());
+      wifiRSSI = WiFi.RSSI(); // get WiFi signal strength now, because the WiFi
+                              // will be turned off to save power!
+      Serial.println("IP: " + WiFi.localIP().toString());
     }
     else
     {
-    Serial.printf("Could not connect to '%s'\n", WIFI_SSID);
+      Serial.printf("Could not connect to '%s'\n", WIFI_SSID);
     }
     return connection_status;
 } // startDefaultWiFi
