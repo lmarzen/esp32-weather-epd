@@ -29,7 +29,7 @@
 
 wl_status_t startWiFi(int &wifiRSSI);
 void killWiFi();
-bool setupTime(tm *timeInfo);
+bool waitForSNTPSync(tm *timeInfo);
 bool printLocalTime(tm *timeInfo);
 #ifdef USE_HTTP
   int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r);
