@@ -251,9 +251,53 @@ void setup()
     beginDeepSleep(startTime, &timeInfo);
   } 
 
-  // FETCH TIME
-  bool timeConfigured = false;
-  timeConfigured = setupTime(&timeInfo);
+  // BEGIN TIME SYNCHRONIZATION
+  configTzTime(TIMEZONE, NTP_SERVER_1, NTP_SERVER_2);
+
+  // MAKE API REQUESTS
+#ifdef USE_HTTP
+  WiFiClient client;
+#elif defined(USE_HTTPS_NO_CERT_VERIF)
+  WiFiClientSecure client;
+  client.setInsecure();
+#elif defined(USE_HTTPS_WITH_CERT_VERIF)
+  WiFiClientSecure client;
+  client.setCACert(cert_Sectigo_RSA_Domain_Validation_Secure_Server_CA);
+#endif
+  int rxStatus = getOWMonecall(client, owm_onecall);
+  if (rxStatus != HTTP_CODE_OK)
+  {
+    waitForSNTPSync(&timeInfo);
+    killWiFi();
+    statusStr = "One Call " + OWM_ONECALL_VERSION + " API";
+    tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
+    initDisplay();
+    do
+    {
+      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+    } while (display.nextPage());
+    display.powerOff();
+    beginDeepSleep(startTime, &timeInfo);
+  }
+  rxStatus = getOWMairpollution(client, owm_air_pollution);
+  if (rxStatus != HTTP_CODE_OK)
+  {
+    waitForSNTPSync(&timeInfo);
+    killWiFi();
+    statusStr = "Air Pollution API";
+    tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
+    initDisplay();
+    do
+    {
+      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+    } while (display.nextPage());
+    display.powerOff();
+    beginDeepSleep(startTime, &timeInfo);
+  }
+
+  // COMPLETE TIME SYNCHRONIZATION
+  bool timeConfigured = waitForSNTPSync(&timeInfo);
+  killWiFi(); // WiFi no longer needed
   if (!timeConfigured)
   { // Failed To Fetch The Time
     Serial.println("Failed To Fetch The Time");
@@ -266,49 +310,7 @@ void setup()
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
   }
-  String refreshTimeStr;
-  getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
-
-  // MAKE API REQUESTS
-#ifdef USE_HTTP
-  WiFiClient client;
-#elif defined(USE_HTTPS_NO_CERT_VERIF)
-  WiFiClientSecure client;
-  client.setInsecure();
-#elif defined(USE_HTTPS_WITH_CERT_VERIF)
-  WiFiClientSecure client;
-  client.setCACert(cert_Sectigo_RSA_Domain_Validation_Secure_Server_CA);
-#endif
-  int rxOWM[2] = {};
-  rxOWM[0] = getOWMonecall(client, owm_onecall);
-  if (rxOWM[0] != HTTP_CODE_OK)
-  {
-    statusStr = "One Call " + OWM_ONECALL_VERSION + " API";
-    tmpStr = String(rxOWM[0], DEC) + ": " + getHttpResponsePhrase(rxOWM[0]);
-    killWiFi();
-    initDisplay();
-    do
-    {
-      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
-    } while (display.nextPage());
-    display.powerOff();
-    beginDeepSleep(startTime, &timeInfo);
-  }
-  rxOWM[1] = getOWMairpollution(client, owm_air_pollution);
-  killWiFi(); // WiFi no longer needed
-  if (rxOWM[1] != HTTP_CODE_OK)
-  {
-    statusStr = "Air Pollution API";
-    tmpStr = String(rxOWM[1], DEC) + ": " + getHttpResponsePhrase(rxOWM[1]);
-    initDisplay();
-    do
-    {
-      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
-    } while (display.nextPage());
-    display.powerOff();
-    beginDeepSleep(startTime, &timeInfo);
-  }
-
+  
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
   float inTemp     = NAN;
   float inHumidity = NAN;
@@ -342,6 +344,8 @@ void setup()
     Serial.println(statusStr);
   }
 
+  String refreshTimeStr;
+  getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
   String dateStr;
   getDateStr(dateStr, &timeInfo);
 

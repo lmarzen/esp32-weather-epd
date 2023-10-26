@@ -21,6 +21,7 @@
 
 // arduino/esp32 libraries
 #include <Arduino.h>
+#include <esp_sntp.h>
 #include <HTTPClient.h>
 #include <SPI.h>
 #include <time.h>
@@ -86,7 +87,7 @@ wl_status_t startDefaultWiFi(int &wifiRSSI)
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
     // timeout if WiFi does not connect in 10s from now
-    unsigned long timeout = millis() + 10000;
+    unsigned long timeout = millis() + WIFI_TIMEOUT;
     wl_status_t connection_status = WiFi.status();
 
     while ((connection_status != WL_CONNECTED) && (millis() < timeout))
@@ -171,22 +172,32 @@ bool printLocalTime(tm *timeInfo)
   return true;
 } // killWiFi
 
-/* Connects to NTP server and stores time in a tm struct, adjusted for the time
- * zone specified in config.cpp.
+/* Waits for NTP server time sync, adjusted for the time zone specified in
+ * config.cpp.
  *
- * Returns true if success, otherwise false.
+ * Returns true if time was set successfully, otherwise false.
  *
  * Note: Must be connected to WiFi to get time from NTP server.
  */
-bool setupTime(tm *timeInfo)
+bool waitForSNTPSync(tm *timeInfo)
 {
-  // passing 0 for gmtOffset_sec and daylightOffset_sec and instead use setenv()
-  // for timezone offsets
-  configTime(0, 0, NTP_SERVER_1, NTP_SERVER_2);
-  setenv("TZ", TIMEZONE, 1);
-  tzset();
+  // Wait for SNTP synchronization to complete
+  unsigned long timeout = millis() + NTP_TIMEOUT;
+  if ((sntp_get_sync_status() == SNTP_SYNC_STATUS_RESET)
+      && (millis() < timeout))
+  {
+    Serial.print("Waiting for SNTP synchronization.");
+    delay(100); // ms
+    while ((sntp_get_sync_status() == SNTP_SYNC_STATUS_RESET)
+        && (millis() < timeout))
+    {
+      Serial.print(".");
+      delay(100); // ms
+    }
+    Serial.println();
+  }
   return printLocalTime(timeInfo);
-} // setupTime
+} // waitForSNTPSync
 
 /* Perform an HTTP GET request to OpenWeatherMap's "One Call" API
  * If data is received, it will be parsed and stored in the global variable
