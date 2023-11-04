@@ -127,6 +127,7 @@ void setup()
   printHeapUsage();
 #endif
 
+#if BATTERY_MONITORING
   // GET BATTERY VOLTAGE
   // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings
   // are multiplied by 2. Readings are divided by 1000 to convert mV to V.
@@ -188,6 +189,9 @@ void setup()
   {
     prefs.putBool("lowBat", false);
   }
+#else
+  double batteryVoltage = NAN;
+#endif
 
   String statusStr = {};
   String tmpStr = {};
@@ -327,7 +331,7 @@ void setup()
     drawForecast(owm_onecall.daily, timeInfo);
     drawLocationDate(CITY_STRING, dateStr);
     drawOutlookGraph(owm_onecall.hourly, timeInfo);
-#ifndef DISABLE_ALERTS
+#if !DISPLAY_ALERTS
     drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
 #endif
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);

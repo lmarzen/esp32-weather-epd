@@ -994,6 +994,7 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   int pos = DISP_WIDTH - 2;
   const int sp = 2;
 
+#if BATTERY_MONITORING
   // battery
   int batPercent = calcBatPercent(batVoltage);
   if (batVoltage < BATTERY_WARN_VOLTAGE) {
@@ -1006,6 +1007,7 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 17,
                              getBatBitmap24(batPercent), 24, 24, dataColor);
   pos -= sp + 9;
+#endif
 
   // WiFi
   dataStr = String(getWiFidesc(rssi));

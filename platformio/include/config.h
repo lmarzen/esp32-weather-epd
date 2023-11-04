@@ -180,14 +180,20 @@
 //   other artifacts.
 #define FONT_HEADER "fonts/FreeSans.h"
 
-// DISABLE ALERTS
+// ALERTS
 //   The handling of alerts is complex. Each country has a unique national alert
 //   system that receives alerts from many different government agencies. This
 //   results is huge variance in the formatting of alerts. OpenWeatherMap
 //   provides alerts in English only. Any combination of these factors may make
 //   it undesirable to display alerts in some regions.
-//   Disable alerts by defining the DISABLE_ALERTS macro.
-// #define DISABLE_ALERTS
+//   Disable alerts by changing the DISPLAY_ALERTS macro to 0.
+#define DISPLAY_ALERTS 1
+
+// BATTERY MONITORING
+//   You may choose to power your whether display with or without a battery.
+//   Low power behavior can be controlled in config.cpp.
+//   If you wish to disable battery monitoring set this macro to 0.
+#define BATTERY_MONITORING 1
 
 // DEBUG
 //   If defined, enables increase verbosity over the serial port.
@@ -235,5 +241,78 @@ extern const float CRIT_LOW_BATTERY_VOLTAGE;
 extern const unsigned long LOW_BATTERY_SLEEP_INTERVAL;
 extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 
+// CONFIG VALIDATION - DO NOT MODIFY
+#if !(  defined(DISP_BW_V2)  \
+      ^ defined(DISP_3C_B)   \
+      ^ defined(DISP_7C_F)   \
+      ^ defined(DISP_BW_V1))
+  #error Invalid configuration. Exactly one display panel must be selected.
+#endif
+#if !(defined(LOCALE))
+  #error Invalid configuration. Locale not selected.
+#endif
+#if !(  defined(UNITS_TEMP_KELVIN)      \
+      ^ defined(UNITS_TEMP_CELSIUS)     \
+      ^ defined(UNITS_TEMP_FAHRENHEIT))
+  #error Invalid configuration. Exactly one temperature unit must be selected.
+#endif
+#if !(  defined(UNITS_SPEED_METERSPERSECOND)   \
+      ^ defined(UNITS_SPEED_FEETPERSECOND)     \
+      ^ defined(UNITS_SPEED_KILOMETERSPERHOUR) \
+      ^ defined(UNITS_SPEED_MILESPERHOUR)      \
+      ^ defined(UNITS_SPEED_KNOTS)             \
+      ^ defined(UNITS_SPEED_BEAUFORT))
+  #error Invalid configuration. Exactly one wind speed unit must be selected.
+#endif
+#if !(  defined(UNITS_PRES_HECTOPASCALS)             \
+      ^ defined(UNITS_PRES_PASCALS)                  \
+      ^ defined(UNITS_PRES_MILLIMETERSOFMERCURY)     \
+      ^ defined(UNITS_PRES_INCHESOFMERCURY)          \
+      ^ defined(UNITS_PRES_MILLIBARS)                \
+      ^ defined(UNITS_PRES_ATMOSPHERES)              \
+      ^ defined(UNITS_PRES_GRAMSPERSQUARECENTIMETER) \
+      ^ defined(UNITS_PRES_POUNDSPERSQUAREINCH))
+  #error Invalid configuration. Exactly one pressure unit must be selected.
+#endif
+#if !(  defined(UNITS_DIST_KILOMETERS) \
+      ^ defined(UNITS_DIST_MILES))
+  #error Invalid configuration. Exactly one distance unit must be selected.
+#endif
+#if !(  defined(AUSTRALIA_AQI)       \
+      ^ defined(CANADA_AQHI)         \
+      ^ defined(EUROPE_CAQI)         \
+      ^ defined(HONG_KONG_AQHI)      \
+      ^ defined(INDIA_AQI)           \
+      ^ defined(MAINLAND_CHINA_AQI)  \
+      ^ defined(SINGAPORE_PSI)       \
+      ^ defined(SOUTH_KOREA_CAI)     \
+      ^ defined(UNITED_KINGDOM_DAQI) \
+      ^ defined(UNITED_STATES_AQI))
+  #error Invalid configuration. Exactly one air quality index scale must be selected.
+#endif
+#if !(  defined(USE_HTTP)                   \
+      ^ defined(USE_HTTPS_NO_CERT_VERIF)    \
+      ^ defined(USE_HTTPS_WITH_CERT_VERIF))
+  #error Invalid configuration. Exactly one HTTP mode must be selected.
+#endif
+#if !(  defined(WIND_DIRECTIONS_CARDINAL)                \
+      ^ defined(WIND_DIRECTIONS_ORDINAL)                 \
+      ^ defined(WIND_DIRECTIONS_SECONDARY_INTERCARDINAL) \
+      ^ defined(WIND_DIRECTIONS_TERTIARY_INTERCARDINAL)  \
+      ^ defined(WIND_DIRECTIONS_360))
+  #error Invalid configuration. Exactly one wind direction precision level must be selected.
+#endif
+#if !(defined(FONT_HEADER))
+  #error Invalid configuration. Font not selected.
+#endif
+#if !(defined(DISPLAY_ALERTS))
+  #error Invalid configuration. DISPLAY_ALERTS not defined.
+#endif
+#if !(defined(BATTERY_MONITORING))
+  #error Invalid configuration. BATTERY_MONITORING not defined.
+#endif
+#if !(defined(DEBUG_LEVEL))
+  #error Invalid configuration. DEBUG_LEVEL not defined.
 #endif
 
+#endif

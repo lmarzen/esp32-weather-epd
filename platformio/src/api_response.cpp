@@ -30,7 +30,9 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   filter["minutely"] = false;
   filter["hourly"]   = true;
   filter["daily"]    = true;
-
+#if !DISPLAY_ALERTS
+  filter["alerts"]   = false;
+#else
   JsonArray filter_alerts = filter.createNestedArray("alerts");
 
   // description can be very long so they are filtered out to save on memory
@@ -91,6 +93,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   filter_alerts_7["end"]         = true;
   filter_alerts_7["description"] = false;
   filter_alerts_7["tags"]        = true;
+#endif
 
   DynamicJsonDocument doc(32 * 1024);
 
@@ -225,6 +228,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
     ++i;
   }
 
+#if DISPLAY_ALERTS
   i = 0;
   for (JsonObject alerts : doc["alerts"].as<JsonArray>())
   {
@@ -243,6 +247,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
     }
     ++i;
   }
+#endif
 
   return error;
 } // end deserializeOneCall
