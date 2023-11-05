@@ -94,6 +94,10 @@
 // #define UNITS_DIST_KILOMETERS
 #define UNITS_DIST_MILES
 
+// Rain type precipitation or probability of precipitation
+// #define RAIN_VOLUME // Volume in mm
+#define RAIN_POP // Probability Of Precipitation
+
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).
 // I have written a library to calculate many of the most popular AQI scales.

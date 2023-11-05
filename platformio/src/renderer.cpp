@@ -809,6 +809,9 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   float tempMin = kelvin_to_fahrenheit(hourly[0].temp);
 #endif
   float tempMax = tempMin;
+#ifdef RAIN_VOLUME
+  float rainMax = 0;
+#endif
   int yTempMajorTicks = 5;
   float newTemp = 0;
   for (int i = 1; i < HOURLY_GRAPH_MAX; ++i)
@@ -824,6 +827,9 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #endif
     tempMin = std::min(tempMin, newTemp);
     tempMax = std::max(tempMax, newTemp);
+#ifdef RAIN_VOLUME
+    rainMax = std::max<float>(rainMax, hourly[i].rain_1h);
+#endif
   }
   int tempBoundMin = static_cast<int>(tempMin - 1)
                       - modulo(static_cast<int>(tempMin - 1), yTempMajorTicks);
@@ -853,6 +859,13 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     }
   }
 
+#ifdef RAIN_VOLUME
+  float rainBoundMax = std::ceil(rainMax); // Round up to nearest mm
+  float yRainMajorTickValue = rainBoundMax / yMajorTicks;
+#endif
+#ifdef RAIN_POP
+  float rainBoundMax = 100.0f;
+#endif
   // draw y axis
   float yInterval = (yPos1 - yPos0) / static_cast<float>(yMajorTicks);
   for (int i = 0; i <= yMajorTicks; ++i)
@@ -867,11 +880,21 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #endif
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT, ACCENT_COLOR);
 
+#ifdef RAIN_VOLUME
+    // Rain volume
+    float rainTick = rainBoundMax - (i * yRainMajorTickValue);
+    rainTick = ((int)std::round(rainTick * 10)) / 10.0f; // Round to 1 decimal
+    dataStr = String(rainTick, 1);
+    String rain_unit = "mm";
+#else
     // PoP
     dataStr = String(100 - (i * 20));
+    String rain_unit = "%";
+#endif
+
     drawString(xPos1 + 8, yTick + 4, dataStr, LEFT);
     display.setFont(&FONT_5pt8b);
-    drawString(display.getCursorX(), yTick + 4, "%", LEFT);
+    drawString(display.getCursorX(), yTick + 4, rain_unit, LEFT);
 
     // draw dotted line
     if (i < yMajorTicks)
@@ -932,15 +955,20 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
       display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , ACCENT_COLOR);
     }
 
-    // PoP
+#ifdef RAIN_VOLUME
+    float rainVal = hourly[i].rain_1h;
+#else
+    float rainVal = hourly[i].pop * 100;
+#endif
+
     x0_t = static_cast<int>(round( xPos0 + 1 + (i * xInterval)));
     x1_t = static_cast<int>(round( xPos0 + 1 + ((i + 1) * xInterval) ));
-    yPxPerUnit = (yPos1 - yPos0) / 100.0;
+    yPxPerUnit = (yPos1 - yPos0) / rainBoundMax;
     y0_t = static_cast<int>(round(
-                            yPos1 - (yPxPerUnit * (hourly[i    ].pop * 100)) ));
+                            yPos1 - (yPxPerUnit * (rainVal)) ));
     y1_t = yPos1;
 
-    // graph PoP
+    // graph Rain/PoP
     for (int y = y1_t - 1; y > y0_t; y -= 2)
     {
       for (int x = x0_t + (x0_t % 2); x < x1_t; x += 2)
