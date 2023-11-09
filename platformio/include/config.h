@@ -98,6 +98,11 @@
 // #define RAIN_VOLUME // Volume in mm
 #define RAIN_POP // Probability Of Precipitation
 
+// UNITS - PRECIPITATION
+// #define UNITS_RAIN_MM
+// #define UNITS_RAIN_CM
+// #define UNITS_RAIN_IN
+
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).
 // I have written a library to calculate many of the most popular AQI scales.

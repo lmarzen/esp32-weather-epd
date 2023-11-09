@@ -789,7 +789,11 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 {
 
   const int xPos0 = 350;
+#ifdef RAIN_VOLUME
+  const int xPos1 = DISP_WIDTH - 52; // A little extra room for more decimals
+#else
   const int xPos1 = DISP_WIDTH - 46;
+#endif
   const int yPos0 = 216;
   const int yPos1 = DISP_HEIGHT - 46;
 
@@ -828,7 +832,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     tempMin = std::min(tempMin, newTemp);
     tempMax = std::max(tempMax, newTemp);
 #ifdef RAIN_VOLUME
-    rainMax = std::max<float>(rainMax, hourly[i].rain_1h);
+    rainMax = std::max<float>(rainMax, hourly[i].rain_1h + hourly[i].snow_1h);
 #endif
   }
   int tempBoundMin = static_cast<int>(tempMin - 1)
@@ -860,7 +864,17 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   }
 
 #ifdef RAIN_VOLUME
+#ifdef UNITS_RAIN_MM
   float rainBoundMax = std::ceil(rainMax); // Round up to nearest mm
+#endif
+#ifdef UNITS_RAIN_CM
+  rainMax = millimeters_to_centimeters(rainMax);
+  float rainBoundMax = std::ceil(rainMax * 10) / 10.0f; // Round up to nearest 0.1 cm
+#endif
+#ifdef UNITS_RAIN_IN
+  rainMax = millimeters_to_inches(rainMax);
+  float rainBoundMax = std::ceil(rainMax * 10) / 10.0f; // Round up to nearest 0.1 inch
+#endif
   float yRainMajorTickValue = rainBoundMax / yMajorTicks;
 #endif
 #ifdef RAIN_POP
@@ -883,9 +897,21 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #ifdef RAIN_VOLUME
     // Rain volume
     float rainTick = rainBoundMax - (i * yRainMajorTickValue);
+#ifdef UNITS_RAIN_MM
     rainTick = ((int)std::round(rainTick * 10)) / 10.0f; // Round to 1 decimal
     dataStr = String(rainTick, 1);
     String rain_unit = "mm";
+#endif
+#ifdef UNITS_RAIN_CM
+    rainTick = ((int)std::round(rainTick * 100)) / 100.0f; // Round to 2 decimal
+    dataStr = String(rainTick, 2);
+    String rain_unit = "cm";
+#endif
+#ifdef UNITS_RAIN_IN
+    rainTick = ((int)std::round(rainTick * 100)) / 100.0f; // Round to 2 decimal
+    dataStr = String(rainTick, 2);
+    String rain_unit = "in";
+#endif
 #else
     // PoP
     dataStr = String(100 - (i * 20));
@@ -956,7 +982,13 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     }
 
 #ifdef RAIN_VOLUME
-    float rainVal = hourly[i].rain_1h;
+    float rainVal = hourly[i].rain_1h + hourly[i].snow_1h;
+#ifdef UNITS_RAIN_CM
+    rainVal = millimeters_to_centimeters(rainVal);
+#endif
+#ifdef UNITS_RAIN_IN
+    rainVal = millimeters_to_inches(rainVal);
+#endif
 #else
     float rainVal = hourly[i].pop * 100;
 #endif
