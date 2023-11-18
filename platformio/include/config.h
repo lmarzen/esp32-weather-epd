@@ -57,7 +57,7 @@
 #define LOCALE en_US
 
 // UNITS
-// Define exactly one macro for each unit below.
+// Define exactly one macro for each measurement type below.
 
 // UNITS - TEMPERATURE
 //   Metric   : Celsius
@@ -94,14 +94,15 @@
 // #define UNITS_DIST_KILOMETERS
 #define UNITS_DIST_MILES
 
-// Rain type precipitation or probability of precipitation
-// #define RAIN_VOLUME // Volume in mm
-#define RAIN_POP // Probability Of Precipitation
-
 // UNITS - PRECIPITATION
-// #define UNITS_RAIN_MM
-// #define UNITS_RAIN_CM
-// #define UNITS_RAIN_IN
+// Measure of precipitation.
+// This can either be Probability of Precipitation (PoP) or hourly volume.
+//   Metric   : Millimeters
+//   Imperial : Inches
+#define UNITS_PRECIP_POP
+// #define UNITS_PRECIP_MILLIMETERS
+// #define UNITS_PRECIP_CENTIMETERS
+// #define UNITS_PRECIP_INCHES
 
 // AIR QUALITY INDEX
 // Seemingly every country uses a different scale for Air Quality Index (AQI).
@@ -286,6 +287,12 @@ extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 #if !(  defined(UNITS_DIST_KILOMETERS) \
       ^ defined(UNITS_DIST_MILES))
   #error Invalid configuration. Exactly one distance unit must be selected.
+#endif
+#if !(  defined(UNITS_PRECIP_POP)         \
+      ^ defined(UNITS_PRECIP_MILLIMETERS) \
+      ^ defined(UNITS_PRECIP_CENTIMETERS) \
+      ^ defined(UNITS_PRECIP_INCHES))
+  #error Invalid configuration. Exactly one precipitation measurement must be selected.
 #endif
 #if !(  defined(AUSTRALIA_AQI)       \
       ^ defined(CANADA_AQHI)         \
