@@ -14,7 +14,7 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
 
 There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
 
-The hourly outlook graph (bottom right) shows a line indicating temperature and shaded bars indicating probability of precipitation.
+The hourly outlook graph (bottom right) shows a line indicating temperature and shaded bars indicating probability of precipitation (or optionally volume of precipitation).
 
 Here are two examples utilizing various configuration options:
 
