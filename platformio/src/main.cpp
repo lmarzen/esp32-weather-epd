@@ -127,6 +127,9 @@ void setup()
   printHeapUsage();
 #endif
 
+  // Open namespace for read/write to non-volatile storage
+  prefs.begin(NVS_NAMESPACE, false);
+
 #if BATTERY_MONITORING
   // GET BATTERY VOLTAGE
   // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings
@@ -135,14 +138,12 @@ void setup()
             static_cast<double>(analogRead(PIN_BAT_ADC)) / 1000.0 * (3.5 / 2.0);
             // use / 1000.0 * (3.3 / 2.0) multiplier above for firebeetle esp32
             // use / 1000.0 * (3.5 / 2.0) for firebeetle esp32-E
-  Serial.println("Battery voltage: " + String(batteryVoltage,2));
+  Serial.println("Battery voltage: " + String(batteryVoltage, 2));
 
   // When the battery is low, the display should be updated to reflect that, but
   // only the first time we detect low voltage. The next time the display will
   // refresh is when voltage is no longer low. To keep track of that we will
   // make use of non-volatile storage.
-  // Open namespace for read/write to non-volatile storage
-  prefs.begin("lowBat", false);
   bool lowBat = prefs.getBool("lowBat", false);
 
   // low battery, deep-sleep now
@@ -151,6 +152,7 @@ void setup()
     if (lowBat == false)
     { // battery is now low for the first time
       prefs.putBool("lowBat", true);
+      prefs.end();
       initDisplay();
       do
       {
@@ -193,6 +195,9 @@ void setup()
   double batteryVoltage = NAN;
 #endif
 
+  // All data should have been loaded from NVS. Close filesystem.
+  prefs.end();
+
   String statusStr = {};
   String tmpStr = {};
   tm timeInfo = {};
@@ -206,10 +211,10 @@ void setup()
     initDisplay();
     if (wifiStatus == WL_NO_SSID_AVAIL)
     {
-      Serial.println("SSID Not Available");
+      Serial.println("Network Not Available");
       do
       {
-        drawError(wifi_x_196x196, "SSID Not Available", "");
+        drawError(wifi_x_196x196, "Network Not", "Available");
       } while (display.nextPage());
     }
     else
@@ -224,8 +229,21 @@ void setup()
     beginDeepSleep(startTime, &timeInfo);
   }
 
-  // BEGIN TIME SYNCHRONIZATION
+  // TIME SYNCHRONIZATION
   configTzTime(TIMEZONE, NTP_SERVER_1, NTP_SERVER_2);
+  bool timeConfigured = waitForSNTPSync(&timeInfo);
+  if (!timeConfigured)
+  { // Failed To Fetch The Time
+    Serial.println("Time Synchronization Failed");
+    killWiFi();
+    initDisplay();
+    do
+    {
+      drawError(wi_time_4_196x196, "Time Synchronization", "Failed");
+    } while (display.nextPage());
+    display.powerOff();
+    beginDeepSleep(startTime, &timeInfo);
+  }
 
   // MAKE API REQUESTS
 #ifdef USE_HTTP
@@ -240,7 +258,6 @@ void setup()
   int rxStatus = getOWMonecall(client, owm_onecall);
   if (rxStatus != HTTP_CODE_OK)
   {
-    waitForSNTPSync(&timeInfo);
     killWiFi();
     statusStr = "One Call " + OWM_ONECALL_VERSION + " API";
     tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
@@ -255,7 +272,6 @@ void setup()
   rxStatus = getOWMairpollution(client, owm_air_pollution);
   if (rxStatus != HTTP_CODE_OK)
   {
-    waitForSNTPSync(&timeInfo);
     killWiFi();
     statusStr = "Air Pollution API";
     tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
@@ -267,23 +283,8 @@ void setup()
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
   }
-
-  // COMPLETE TIME SYNCHRONIZATION
-  bool timeConfigured = waitForSNTPSync(&timeInfo);
   killWiFi(); // WiFi no longer needed
-  if (!timeConfigured)
-  { // Failed To Fetch The Time
-    Serial.println("Failed To Fetch The Time");
-    killWiFi();
-    initDisplay();
-    do
-    {
-      drawError(wi_time_4_196x196, "Failed To Fetch", "The Time");
-    } while (display.nextPage());
-    display.powerOff();
-    beginDeepSleep(startTime, &timeInfo);
-  }
-  
+
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
   float inTemp     = NAN;
   float inHumidity = NAN;
