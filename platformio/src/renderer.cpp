@@ -814,7 +814,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #endif
   float tempMax = tempMin;
 #ifndef UNITS_PRECIP_POP
-  float precipMax = 0;
+  float precipMax = hourly[0].rain_1h + hourly[0].snow_1h;
 #endif
   int yTempMajorTicks = 5;
   float newTemp = 0;
