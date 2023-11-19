@@ -23,10 +23,10 @@
 
 // E-PAPER PANEL
 // This project supports the following E-Paper panels:
-//   DISP_BW_V2 - Waveshare 7.5in e-paper (v2)      800x480px  Black/White
-//   DISP_3C_B  - Waveshare 7.5in e-Paper (B)       800x480px  Red/Black/White
-//   DISP_7C_F  - Waveshare 7.3in ACeP e-Paper (F)  800x480px  7-Color
-//   DISP_BW_V1 - Waveshare 7.5in e-paper (v1)      640x384px  Black/White
+//   DISP_BW_V2 - 7.5in e-paper (v2)      800x480px  Black/White
+//   DISP_3C_B  - 7.5in e-Paper (B)       800x480px  Red/Black/White
+//   DISP_7C_F  - 7.3in ACeP e-Paper (F)  800x480px  7-Color
+//   DISP_BW_V1 - 7.5in e-paper (v1)      640x384px  Black/White
 // Uncomment the macro that identifies your physical panel.
 #define DISP_BW_V2
 // #define DISP_3C_B
