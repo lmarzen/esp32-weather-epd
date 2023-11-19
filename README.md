@@ -39,14 +39,30 @@ Here are two examples utilizing various configuration options:
 
 - Panel support:
 
-  | Panel                            | Resolution | Colors          | Notes                                                                                                                 |
-  |----------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
-  | Waveshare 7.5in e-paper (v2)     | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat.htm). (recommended)                            |
-  | Waveshare 7.5in e-Paper (B)      | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm).                                        |
-  | Waveshare 7.3in ACeP e-Paper (F) | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-hat-f.htm).              |
-  | Waveshare 7.5in e-paper (v1)     | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
+  Waveshare and Good Display make equivalent panels. Either variant will work.
+
+  | Panel                                   | Resolution | Colors          | Notes                                                                                                                 |
+  |-----------------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
+  | Waveshare 7.5in e-paper (v2)            | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat.htm). (recommended)                            |
+  | Good Display 7.5in e-paper (GDEY075T7)  | 800x480px  | Black/White     | Available [here](https://www.aliexpress.us/item/3256802683908868.html). (recommended)                                 |
+  | Waveshare 7.5in e-Paper (B)             | 800x480px  | Red/Black/White | Available [here](https://www.aliexpress.us/item/3256803540460035.html).                                               |
+  | Good Display 7.5in e-paper (GDEY075Z08) | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm).                                        |
+  | Waveshare 7.3in ACeP e-Paper (F)        | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-hat-f.htm).              |
+  | Good Display 7.3in e-paper (GDEY073D46) | 800x480px  | 7-Color         | Available [here](https://www.aliexpress.us/item/3256805485098421.html).                                               |
+  | Waveshare 7.5in e-paper (v1)            | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
+  | Good Display 7.5in e-paper (GDEW075T8)  | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
 
   This software has limited support for accent colors. E-paper panels with additional colors tend to have longer refresh times, which will reduce battery life.
+
+DESPI-C02 Adapter Board
+
+- No level converters, which makes it better for low-power use with 3.3V processors compared to the Waveshare HAT.
+
+- The Waveshare started shipping revision 2.3 of their e-paper HAT. Some users are reporting issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62)).
+
+- https://www.e-paper-display.com/products_detail/productId=403.html
+  
+- https://www.aliexpress.us/item/3256804446769469.html
 
 
 FireBeetle 2 ESP32-E Microcontroller
