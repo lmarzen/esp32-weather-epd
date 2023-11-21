@@ -789,7 +789,11 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 {
 
   const int xPos0 = 350;
+#ifdef UNITS_PRECIP_CENTIMETERS
+  const int xPos1 = DISP_WIDTH - 52; // A little extra room for more decimals
+#else
   const int xPos1 = DISP_WIDTH - 46;
+#endif
   const int yPos0 = 216;
   const int yPos1 = DISP_HEIGHT - 46;
 
@@ -809,6 +813,9 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   float tempMin = kelvin_to_fahrenheit(hourly[0].temp);
 #endif
   float tempMax = tempMin;
+#ifndef UNITS_PRECIP_POP
+  float precipMax = hourly[0].rain_1h + hourly[0].snow_1h;
+#endif
   int yTempMajorTicks = 5;
   float newTemp = 0;
   for (int i = 1; i < HOURLY_GRAPH_MAX; ++i)
@@ -824,6 +831,9 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #endif
     tempMin = std::min(tempMin, newTemp);
     tempMax = std::max(tempMax, newTemp);
+#ifndef UNITS_PRECIP_POP
+    precipMax = std::max<float>(precipMax, hourly[i].rain_1h + hourly[i].snow_1h);
+#endif
   }
   int tempBoundMin = static_cast<int>(tempMin - 1)
                       - modulo(static_cast<int>(tempMin - 1), yTempMajorTicks);
@@ -853,6 +863,52 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     }
   }
 
+#ifdef UNITS_PRECIP_POP
+  float precipBoundMax = 100.0f;
+#else
+#ifdef UNITS_PRECIP_MILLIMETERS
+  float precipBoundMax = std::ceil(precipMax); // Round up to nearest mm
+  int yPrecipMajorTickDecimals = precipBoundMax < 10 ? 1 : 0;
+#endif
+#ifdef UNITS_PRECIP_CENTIMETERS
+  precipMax = millimeters_to_centimeters(precipMax);
+  // Round up to nearest 0.1 cm
+  float precipBoundMax = std::ceil(precipMax * 10) / 10.0f;
+  int yPrecipMajorTickDecimals;
+  if (precipBoundMax < 1)
+  {
+    yPrecipMajorTickDecimals = 2;
+  }
+  else if (precipBoundMax < 10)
+  {
+    yPrecipMajorTickDecimals = 1;
+  }
+  else
+  {
+    yPrecipMajorTickDecimals = 0;
+  }
+#endif
+#ifdef UNITS_PRECIP_INCHES
+  precipMax = millimeters_to_inches(precipMax);
+  // Round up to nearest 0.1 inch
+  float precipBoundMax = std::ceil(precipMax * 10) / 10.0f;
+  int yPrecipMajorTickDecimals;
+  if (precipBoundMax < 1)
+  {
+    yPrecipMajorTickDecimals = 2;
+  }
+  else if (precipBoundMax < 10)
+  {
+    yPrecipMajorTickDecimals = 1;
+  }
+  else
+  {
+    yPrecipMajorTickDecimals = 0;
+  }
+#endif
+  float yPrecipMajorTickValue = precipBoundMax / yMajorTicks;
+  float precipRoundingMultiplier = std::pow(10.f, yPrecipMajorTickDecimals);
+#endif
   // draw y axis
   float yInterval = (yPos1 - yPos0) / static_cast<float>(yMajorTicks);
   for (int i = 0; i <= yMajorTicks; ++i)
@@ -867,11 +923,30 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #endif
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT, ACCENT_COLOR);
 
+#ifdef UNITS_PRECIP_POP
     // PoP
     dataStr = String(100 - (i * 20));
+    String precip_unit = "%";
+#else
+    // Precipitation volume
+    float precipTick = precipBoundMax - (i * yPrecipMajorTickValue);
+    precipTick = std::round(precipTick * precipRoundingMultiplier)
+                            / precipRoundingMultiplier;
+    dataStr = String(precipTick, yPrecipMajorTickDecimals);
+#ifdef UNITS_PRECIP_MILLIMETERS
+    String precip_unit = "mm";
+#endif
+#ifdef UNITS_PRECIP_CENTIMETERS
+    String precip_unit = "cm";
+#endif
+#ifdef UNITS_PRECIP_INCHES
+    String precip_unit = "in";
+#endif
+#endif
+
     drawString(xPos1 + 8, yTick + 4, dataStr, LEFT);
     display.setFont(&FONT_5pt8b);
-    drawString(display.getCursorX(), yTick + 4, "%", LEFT);
+    drawString(display.getCursorX(), yTick + 4, precip_unit, LEFT);
 
     // draw dotted line
     if (i < yMajorTicks)
@@ -932,15 +1007,25 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
       display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , ACCENT_COLOR);
     }
 
-    // PoP
+#ifdef UNITS_PRECIP_POP
+    float precipVal = hourly[i].pop * 100;
+#else
+    float precipVal = hourly[i].rain_1h + hourly[i].snow_1h;
+#ifdef UNITS_PRECIP_CENTIMETERS
+    precipVal = millimeters_to_centimeters(precipVal);
+#endif
+#ifdef UNITS_PRECIP_INCHES
+    precipVal = millimeters_to_inches(precipVal);
+#endif
+#endif
+
     x0_t = static_cast<int>(round( xPos0 + 1 + (i * xInterval)));
     x1_t = static_cast<int>(round( xPos0 + 1 + ((i + 1) * xInterval) ));
-    yPxPerUnit = (yPos1 - yPos0) / 100.0;
-    y0_t = static_cast<int>(round(
-                            yPos1 - (yPxPerUnit * (hourly[i    ].pop * 100)) ));
+    yPxPerUnit = (yPos1 - yPos0) / precipBoundMax;
+    y0_t = static_cast<int>(round( yPos1 - (yPxPerUnit * (precipVal)) ));
     y1_t = yPos1;
 
-    // graph PoP
+    // graph Precipitation
     for (int y = y1_t - 1; y > y0_t; y -= 2)
     {
       for (int x = x0_t + (x0_t % 2); x < x1_t; x += 2)
@@ -994,6 +1079,7 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   int pos = DISP_WIDTH - 2;
   const int sp = 2;
 
+#if BATTERY_MONITORING
   // battery
   int batPercent = calcBatPercent(batVoltage);
   if (batVoltage < BATTERY_WARN_VOLTAGE) {
@@ -1006,6 +1092,7 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 17,
                              getBatBitmap24(batPercent), 24, 24, dataColor);
   pos -= sp + 9;
+#endif
 
   // WiFi
   dataStr = String(getWiFidesc(rssi));

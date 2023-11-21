@@ -154,13 +154,17 @@ bool waitForSNTPSync(tm *timeInfo)
   DeserializationError jsonErr = {};
   String uri = "/data/" + OWM_ONECALL_VERSION
                + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG
-               + "&units=standard&exclude=minutely&appid=" + OWM_APIKEY;
+               + "&units=standard&exclude=minutely";
+#if !DISPLAY_ALERTS
+  // exclude alerts
+  uri += ",alerts";
+#endif
+
   // This string is printed to terminal to help with debugging. The API key is
   // censored to reduce the risk of users exposing their key.
-  String sanitizedUri = OWM_ENDPOINT
-               + "/data/" + OWM_ONECALL_VERSION
-               + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG
-               + "&units=standard&exclude=minutely&appid={API key}";
+  String sanitizedUri = OWM_ENDPOINT + uri + "&appid={API key}";
+
+  uri += "&appid=" + OWM_APIKEY;
 
   Serial.println("Attempting HTTP Request: " + sanitizedUri);
   int httpResponse = 0;

@@ -14,7 +14,7 @@ The project draws ~14μA when sleeping and an estimated average of ~83mA during 
 
 There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
 
-The hourly outlook graph (bottom right) shows a line indicating temperature and shaded bars indicating probability of precipitation.
+The hourly outlook graph (bottom right) shows a line indicating temperature and shaded bars indicating probability of precipitation (or optionally volume of precipitation).
 
 Here are two examples utilizing various configuration options:
 
@@ -27,7 +27,7 @@ Here are two examples utilizing various configuration options:
 
 ### Hardware
 
-7.5inch (800×480) E-Ink Display w/ HAT for Raspberry Pi, SPI interface
+7.5inch (800×480) E-Ink Display
 
 - Advantages of E-Paper
   - Ultra Low Power Consumption - E-Paper (or E-Ink) displays are ideal for low-power applications that do not require frequent display refreshes. E-Paper displays only draw power when refreshing the display and do not have a backlight. Images will remain on the screen even when power is removed.
@@ -39,14 +39,30 @@ Here are two examples utilizing various configuration options:
 
 - Panel support:
 
-  | Panel                            | Resolution | Colors          | Notes                                                                                                                 |
-  |----------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
-  | Waveshare 7.5in e-paper (v2)     | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat.htm). (recommended)                            |
-  | Waveshare 7.5in e-Paper (B)      | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-hat-b.htm).                                        |
-  | Waveshare 7.3in ACeP e-Paper (F) | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-hat-f.htm).              |
-  | Waveshare 7.5in e-paper (v1)     | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
+  Waveshare and Good Display make equivalent panels. Either variant will work.
+
+  | Panel                                   | Resolution | Colors          | Notes                                                                                                                 |
+  |-----------------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
+  | Waveshare 7.5in e-paper (v2)            | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper.htm). (recommended)                                |
+  | Good Display 7.5in e-paper (GDEY075T7)  | 800x480px  | Black/White     | Available [here](https://www.aliexpress.us/item/3256802683908868.html). (recommended)                                 |
+  | Waveshare 7.5in e-Paper (B)             | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-b.htm).                                            |
+  | Good Display 7.5in e-paper (GDEY075Z08) | 800x480px  | Red/Black/White | Available [here](https://www.aliexpress.us/item/3256803540460035.html).                                               |
+  | Waveshare 7.3in ACeP e-Paper (F)        | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-f.htm).                  |
+  | Good Display 7.3in e-paper (GDEY073D46) | 800x480px  | 7-Color         | Available [here](https://www.aliexpress.us/item/3256805485098421.html).                                               |
+  | Waveshare 7.5in e-paper (v1)            | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
+  | Good Display 7.5in e-paper (GDEW075T8)  | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
 
   This software has limited support for accent colors. E-paper panels with additional colors tend to have longer refresh times, which will reduce battery life.
+
+DESPI-C02 Adapter Board
+
+- No level converters, which makes it better for low-power use with 3.3V processors compared to the Waveshare HAT.
+
+- The Waveshare started shipping revision 2.3 of their e-paper HAT. Some users are reporting issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62)).
+
+- https://www.e-paper-display.com/products_detail/productId=403.html
+  
+- https://www.aliexpress.us/item/3256804446769469.html
 
 
 FireBeetle 2 ESP32-E Microcontroller
@@ -114,11 +130,17 @@ Pin connections are defined in [config.cpp](platformio/src/config.cpp).
 
 If you are using the FireBeetle 2 ESP32-E, you can use the connections I used or change them how you would like.
 
-IMPORTANT: The E-Paper Driver Hat has two physical switches that MUST be set correctly for the display to work.
+I have included 2 wiring diagrams. One for the Waveshare HAT rev2.2 and another using the recommended DESPI-C02.
+
+IMPORTANT: The Waveshare E-Paper Driver HAT has two physical switches that MUST be set correctly for the display to work.
 
 - Display Config: Set switch to position B.
 
 - Interface Config: Set switch to position 0.
+
+IMPORTANT: The DESPI-C02 adapter has one physical switch that MUST be set correctly for the display to work.
+
+- RESE: Set switch to position 3.
 
 Cut the low power pad for even longer battery life.
 
@@ -127,7 +149,8 @@ Cut the low power pad for even longer battery life.
   > Low Power Pad: This pad is specially designed for low power consumption. It is connected by default. You can cut off the thin wire in the middle with a knife to disconnect it. After disconnection, the static power consumption can be reduced by 500 μA. The power consumption can be reduced to 13 μA after controlling the maincontroller enter the sleep mode through the program. Note: when the pad is disconnected, you can only drive RGB LED light via the USB Power supply.
 
 <p float="left">
-  <img src="showcase/wiring_diagram.png" width="66%" />
+  <img src="showcase/wiring_diagram_despi-c02.png" width="49%" />
+  <img src="showcase/wiring_diagram_waveshare_rev22.png" width="49%" />
   <img src="showcase/demo-tucson.jpg" width="32%" />
 </p>
 

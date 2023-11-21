@@ -117,3 +117,13 @@ float meters_to_feet(float meters)
   return meters * 3.281f;
 } // end meters_to_feet
 
+float millimeters_to_inches(float millimeter)
+{
+  return millimeter / 25.4f;
+} // end milimeters_to_inches
+
+float millimeters_to_centimeters(float millimeter)
+{
+  return millimeter / 10.0f;
+} // end milimeters_to_centimeter
+
