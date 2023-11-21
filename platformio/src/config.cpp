@@ -89,7 +89,7 @@ const char *HOUR_FORMAT = "%H";      // 24-hour ex: 01   23
 // Date format used when displaying date in top-right corner.
 // For more information about formatting see
 // https://man7.org/linux/man-pages/man3/strftime.3.html
-const char *DATE_FORMAT = "%A, %B %e"; // Saturday, January 1
+const char *DATE_FORMAT = "%a, %B %e"; // ex: Sat, January 1
 // Date/Time format used when displaying the last refresh time along the bottom
 // of the screen.
 // For more information about formatting see
@@ -123,7 +123,7 @@ const int HOURLY_GRAPH_MAX = 24;
 // minutes). Once the battery voltage has fallen to CRIT_LOW_BATTERY_VOLTAGE,
 // the esp32 will hibernate and a manual press of the reset (RST) button to
 // begin operating again.
-const float BATTERY_WARN_VOLTAGE     = 3.40; // (volts) ~ 10%
+const float BATTERY_WARN_VOLTAGE     = 3.40; // (volts)
 const float LOW_BATTERY_VOLTAGE      = 3.20; // (volts)
 const float VERY_LOW_BATTERY_VOLTAGE = 3.10; // (volts)
 const float CRIT_LOW_BATTERY_VOLTAGE = 3.00; // (volts)
@@ -137,5 +137,6 @@ const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
 // AIR QUALITY INDEX
 // WIND ICON PRECISION
 // FONTS
-// DISABLE ALERTS
+// ALERTS
+// BATTERY MONITORING
 

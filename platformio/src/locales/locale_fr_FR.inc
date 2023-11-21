@@ -146,7 +146,7 @@ const char *TXT_UNKNOWN = "Unknown";
 //   option or territory. For this reason it is preferred that you do not
 //   translate text related to Alerts. Understandably, it may be undesirable to
 //   see English alerts in territories where English is uncommon. To satisify
-//   this, users should uncomment the DISABLE_ALERTS macro in config.h.
+//   this, users should set the DISPLAY_ALERTS macro to 0 in config.h.
 //
 // Here are a few examples, uncomment the array for your region (or create your
 // own).
