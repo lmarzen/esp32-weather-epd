@@ -21,9 +21,11 @@ How do I generate different sizes of fonts?
   In ttf_to_adafruit_gfx.sh there is an array called SIZES which specifies what
   size fonts should be generated.
 
-How do I add a generate files for a new font?
+How do I generate and add files for a new font?
   Add the .ttf or .otf file to the ./ttf directory then run the script.
   The script will generate a new subdirectory, ./fonts.
+  Manually move the newly generated font fonts folder to
+  platformio/lib/esp32-weather-epd-assets/fonts.
 
 To run this script execute the following command:
   bash ttf_to_adafruit_gfx.sh

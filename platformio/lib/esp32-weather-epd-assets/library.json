@@ -1,0 +1,7 @@
+{
+  "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
+  "name": "esp32-weather-epd-assets",
+  "build": {
+    "libLDFMode": "off"
+  }
+}
