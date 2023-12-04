@@ -3,7 +3,9 @@ HOW TO RUN SCRIPT TO GENERATE .h FILES FROM .svg FILES
 svg_to_headers.sh, will convert the svg files in ./svg to the
 specified size of .png which will then be converted to header files each
 containing a bitmap, formatted into a c-style array for use by the AdafruitGFX
-library. The output files will be in a new directory, ./icons.
+library. The output files will be in a new directory, ./icons. To add the new
+icons, you must manually move the newly generated icons folder to
+platformio/lib/esp32-weather-epd-assets/icons.
 
 Usage:
   bash svg_to_headers.sh <size_of_output_image>
