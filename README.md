@@ -23,6 +23,25 @@ Here are two examples utilizing various configuration options:
   <img src="showcase/demo-london.jpg" width="49%" />
 </p>
 
+
+## Contents
+
+-   [Setup Guide](#setup-guide){#toc-setup-guide}
+    -   [Hardware](#hardware){#toc-hardware}
+    -   [Wiring](#wiring){#toc-wiring}
+    -   [Configuration, Compilation, and
+        Upload](#configuration-compilation-and-upload){#toc-configuration-compilation-and-upload}
+    -   [OpenWeatherMap API
+        Key](#openweathermap-api-key){#toc-openweathermap-api-key}
+-   [Error Messages and
+    Troubleshooting](#error-messages-and-troubleshooting){#toc-error-messages-and-troubleshooting}
+    -   [Low Battery](#low-battery){#toc-low-battery}
+    -   [WiFi Connection](#wifi-connection){#toc-wifi-connection}
+    -   [API Error](#api-error){#toc-api-error}
+    -   [Time Server Error](#time-server-error){#toc-time-server-error}
+-   [Licensing](#licensing){#toc-licensing}
+
+
 ## Setup Guide
 
 ### Hardware
