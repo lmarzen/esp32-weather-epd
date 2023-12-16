@@ -23,6 +23,22 @@ Here are two examples utilizing various configuration options:
   <img src="showcase/demo-london.jpg" width="49%" />
 </p>
 
+
+## Contents
+
+-   [Setup Guide](#setup-guide)
+    -   [Hardware](#hardware)
+    -   [Wiring](#wiring)
+    -   [Configuration, Compilation, and Upload](#configuration-compilation-and-upload)
+    -   [OpenWeatherMap API Key](#openweathermap-api-key)
+-   [Error Messages and Troubleshooting](#error-messages-and-troubleshooting)
+    -   [Low Battery](#low-battery)
+    -   [WiFi Connection](#wifi-connection)
+    -   [API Error](#api-error)
+    -   [Time Server Error](#time-server-error)
+-   [Licensing](#licensing)
+
+
 ## Setup Guide
 
 ### Hardware
@@ -100,7 +116,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 3.7V Lipo Battery w/ 2 Pin JST Connector
 
 
-- Size is up to you. I used a 10000mah battery so that the device can operate on a single charge for >1 year.
+- Size is up to you. I used a 5000mah battery so that the device can operate on a single charge for >6 months.
 
 
 - The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
@@ -119,7 +135,14 @@ Stand/Frame
       screen angle = 80deg <br>
       screen is 15mm from the front
 - 3D Printable
-  - Community-contributed designs can be found here [3d_models](3d_models).
+  - Here is a list of community designs.
+  
+    | Contributor                                               | Link                                                                                      |
+    |-----------------------------------------------------------|-------------------------------------------------------------------------------------------|
+    | [3D Nate](https://www.printables.com/@3DNate_451157)      | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)         |
+    | [Sven F.](https://github.com/Spanholz)                    | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)      |
+    | [Layers Studio](https://www.printables.com/@LayersStudio) | [Printables](https://www.printables.com/model/655768-esp32-e-paper-weather-display-stand) |
+
   - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
 - Picture Frame
 
