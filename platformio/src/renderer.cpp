@@ -224,6 +224,8 @@ void drawMultiLnString(int16_t x, int16_t y, const String &text,
  */
 void initDisplay()
 {
+  pinMode(PIN_EPD_PWR, OUTPUT);
+  digitalWrite(PIN_EPD_PWR, HIGH);
   display.init(115200, true, 2, false);
   SPI.begin(PIN_EPD_SCK,
             PIN_EPD_MISO,
@@ -237,6 +239,16 @@ void initDisplay()
   // display.fillScreen(GxEPD_WHITE);
   display.setFullWindow();
   display.firstPage(); // use paged drawing mode, sets fillScreen(GxEPD_WHITE)
+  return;
+} // end initDisplay
+
+/* Power-off e-paper display
+ */
+void powerOffDisplay()
+{
+  display.powerOff();
+  digitalWrite(PIN_EPD_PWR, LOW);
+  return;
 } // end initDisplay
 
 /* This function is responsible for drawing the current conditions and
@@ -1085,8 +1097,10 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   if (batVoltage < BATTERY_WARN_VOLTAGE) {
     dataColor = ACCENT_COLOR;
   }
-  dataStr = String(batPercent) + "% ("
-            + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
+  dataStr = String(batPercent) + "%";
+#if STATUS_BAR_EXTRAS_BAT_VOLTAGE
+  dataStr += " (" + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
+#endif
   drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 25;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 17,
@@ -1097,10 +1111,12 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   // WiFi
   dataStr = String(getWiFidesc(rssi));
   dataColor = rssi >= -70 ? GxEPD_BLACK : ACCENT_COLOR;
+#if STATUS_BAR_EXTRAS_WIFI_RSSI
   if (rssi != 0)
   {
     dataStr += " (" + String(rssi) + "dBm)";
   }
+#endif
   drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 19;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 13, getWiFiBitmap16(rssi),

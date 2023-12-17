@@ -199,6 +199,12 @@
 //   Disable alerts by changing the DISPLAY_ALERTS macro to 0.
 #define DISPLAY_ALERTS 1
 
+// STATUS BAR EXTRAS
+//   Extra information that can be displayed on the status bar. Set to 1 to
+//   enable.
+#define STATUS_BAR_EXTRAS_BAT_VOLTAGE 0
+#define STATUS_BAR_EXTRAS_WIFI_RSSI   0
+
 // BATTERY MONITORING
 //   You may choose to power your whether display with or without a battery.
 //   Low power behavior can be controlled in config.cpp.
@@ -223,8 +229,10 @@ extern const uint8_t PIN_EPD_DC;
 extern const uint8_t PIN_EPD_SCK;
 extern const uint8_t PIN_EPD_MISO;
 extern const uint8_t PIN_EPD_MOSI;
+extern const uint8_t PIN_EPD_PWR;
 extern const uint8_t PIN_BME_SDA;
 extern const uint8_t PIN_BME_SCL;
+extern const uint8_t PIN_BME_PWR;
 extern const uint8_t BME_ADDRESS;
 extern const char *WIFI_SSID;
 extern const char *WIFI_PASSWORD;
