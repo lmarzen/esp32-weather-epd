@@ -1076,14 +1076,14 @@ enum alert_category getAlertCategory(const owm_alerts_t &alert)
   return alert_category::NOT_FOUND;
 } // end getAlertCategory
 
-#ifdef WIND_DIRECTIONS_CARDINAL
+#ifdef WIND_ICONS_CARDINAL
 static const unsigned char *wind_direction_icon_arr[] = {
   wind_direction_meteorological_0deg_24x24,    // N
   wind_direction_meteorological_90deg_24x24,   // E
   wind_direction_meteorological_180deg_24x24,  // S
   wind_direction_meteorological_270deg_24x24}; // W
-#endif // end WIND_DIRECTIONS_CARDINAL
-#ifdef WIND_DIRECTIONS_ORDINAL
+#endif // end WIND_ICONS_CARDINAL
+#ifdef WIND_ICONS_INTERCARDINAL
 static const unsigned char *wind_direction_icon_arr[] = {
   wind_direction_meteorological_0deg_24x24,    // N
   wind_direction_meteorological_45deg_24x24,   // NE
@@ -1093,8 +1093,8 @@ static const unsigned char *wind_direction_icon_arr[] = {
   wind_direction_meteorological_225deg_24x24,  // SW
   wind_direction_meteorological_270deg_24x24,  // W
   wind_direction_meteorological_315deg_24x24}; // NW
-#endif // end WIND_DIRECTIONS_ORDINAL
-#ifdef WIND_DIRECTIONS_SECONDARY_INTERCARDINAL
+#endif // end WIND_ICONS_INTERCARDINAL
+#ifdef WIND_ICONS_SECONDARY_INTERCARDINAL
 static const unsigned char *wind_direction_icon_arr[] = {
   wind_direction_meteorological_0deg_24x24,      // N
   wind_direction_meteorological_22_5deg_24x24,   // NNE
@@ -1112,8 +1112,8 @@ static const unsigned char *wind_direction_icon_arr[] = {
   wind_direction_meteorological_292_5deg_24x24,  // WNW
   wind_direction_meteorological_315deg_24x24,    // NW
   wind_direction_meteorological_337_5deg_24x24}; // NNW
-#endif // end WIND_DIRECTIONS_SECONDARY_INTERCARDINAL
-#ifdef WIND_DIRECTIONS_TERTIARY_INTERCARDINAL
+#endif // end WIND_ICONS_SECONDARY_INTERCARDINAL
+#ifdef WIND_ICONS_TERTIARY_INTERCARDINAL
 static const unsigned char *wind_direction_icon_arr[] = {
   wind_direction_meteorological_0deg_24x24,       // N
   wind_direction_meteorological_11_25deg_24x24,   // NbE
@@ -1147,8 +1147,8 @@ static const unsigned char *wind_direction_icon_arr[] = {
   wind_direction_meteorological_326_25deg_24x24,  // NWbN
   wind_direction_meteorological_337_5deg_24x24,   // NNW
   wind_direction_meteorological_348_75deg_24x24}; // NbW
-#endif // end WIND_DIRECTIONS_TERTIARY_INTERCARDINAL
-#ifdef WIND_DIRECTIONS_360
+#endif // end WIND_ICONS_TERTIARY_INTERCARDINAL
+#ifdef WIND_ICONS_360
 static const unsigned char *wind_direction_icon_arr[] = {
   wind_direction_meteorological_0deg_24x24,
   wind_direction_meteorological_1deg_24x24,
@@ -1510,7 +1510,7 @@ static const unsigned char *wind_direction_icon_arr[] = {
   wind_direction_meteorological_357deg_24x24,
   wind_direction_meteorological_358deg_24x24,
   wind_direction_meteorological_359deg_24x24};
-#endif // end WIND_DIRECTIONS_360
+#endif // end WIND_ICONS_360
 
 /* Returns a 24x24 wind direction icon bitmap for angles 0 to 359 degrees
  * Parameter is meteorological wind direction, arrow points in the direction the
@@ -1528,6 +1528,41 @@ const uint8_t *getWindBitmap24(int windDeg)
   return wind_direction_icon_arr[arr_offset];
 } // end getWindBitmap24
 
+static const char *compass_point_notation_arr[32] = {
+  "N", "NbE", "NNE", "NEbN", "NE", "NEbE", "ENE", "EbN", 
+  "E", "EbS", "ESE", "SEbE", "SE", "SEbS", "SSE", "SbE", 
+  "S", "SbW", "SSW", "SWbS", "SW", "SWbW", "WSW", "WbS", 
+  "W", "WbN", "WNW", "NWbW", "NW", "NWbN", "NNW", "NbW"};
+
+/* Returns a pointer to a string that expresses the Compass Point Notation (CPN)
+ * of the given windDeg.
+ *
+ *   PRECISION                  #     ERROR   EXAMPLE
+ *   Cardinal                   4  ±45.000°   E
+ *   Intercardinal (Ordinal)    8  ±22.500°   NE
+ *   Secondary Intercardinal   16  ±11.250°   NNE
+ *   Tertiary Intercardinal    32   ±5.625°   NbE
+ */
+const char *getCompassPointNotation(int windDeg)
+{
+#if defined(WIND_INDICATOR_CPN_CARDINAL)
+  const int precision = 4;
+#elif defined(WIND_INDICATOR_CPN_INTERCARDINAL)
+  const int precision = 8;
+#elif defined(WIND_INDICATOR_CPN_SECONDARY_INTERCARDINAL)
+  const int precision = 16;
+#elif defined(WIND_INDICATOR_CPN_TERTIARY_INTERCARDINAL)
+  const int precision = 32;
+#else
+  const int precision = 4;
+#endif
+
+  windDeg %= 360; // enforce domain
+  int arr_offset = (int) (windDeg / ( 360 / (float) precision )) 
+                         * ( 32 / precision) ;
+
+  return compass_point_notation_arr[arr_offset];
+} // end getCompassPointNotation
 
 /* This function returns a pointer to a string representing the meaning for a
  * HTTP response status code or an arduino client error code.

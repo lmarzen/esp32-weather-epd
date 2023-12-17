@@ -367,9 +367,11 @@ void drawCurrentConditions(const owm_current_t &current,
   drawString(48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
 
   // wind
+#ifdef WIND_INDICATOR_ARROW
   display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1,
                              getWindBitmap24(current.wind_deg),
                              24, 24, GxEPD_BLACK);
+#endif
 #ifdef UNITS_SPEED_METERSPERSECOND
   dataStr = String(static_cast<int>(round(current.wind_speed)));
   unitStr = TXT_UNITS_SPEED_METERSPERSECOND;
@@ -398,10 +400,31 @@ void drawCurrentConditions(const owm_current_t &current,
   dataStr = String(meterspersecond_to_beaufort(current.wind_speed));
   unitStr = TXT_UNITS_SPEED_BEAUFORT;
 #endif
+
+#ifdef WIND_INDICATOR_ARROW
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
+#else
+  drawString(48     , 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
+#endif
   display.setFont(&FONT_8pt8b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
              unitStr, LEFT);
+
+#if defined(WIND_INDICATOR_NUMBER)
+  dataStr = String(current.wind_deg) + "\xB0";
+  display.setFont(&FONT_12pt8b);
+  drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
+             dataStr, LEFT);
+#endif
+#if defined(WIND_INDICATOR_CPN_CARDINAL)                \
+ || defined(WIND_INDICATOR_CPN_INTERCARDINAL)           \
+ || defined(WIND_INDICATOR_CPN_SECONDARY_INTERCARDINAL) \
+ || defined(WIND_INDICATOR_CPN_TERTIARY_INTERCARDINAL)
+  dataStr = getCompassPointNotation(current.wind_deg);
+  display.setFont(&FONT_12pt8b);
+  drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
+             dataStr, LEFT);
+#endif
 
   // uv and air quality indices
   // spacing between end of index value and start of descriptor text
