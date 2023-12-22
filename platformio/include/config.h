@@ -139,7 +139,25 @@
 #define USE_HTTPS_NO_CERT_VERIF
 // #define USE_HTTPS_WITH_CERT_VERIF
 
-// WIND ICON PRECISION
+// WIND DIRECTION INDICATOR
+// Choose whether the wind direction indicator should be an arrow, number, or 
+// expressed in Compass Point Notation (CPN).
+// The arrow indicator can be combined with NUMBER or CPN.
+//
+//   PRECISION                  #     ERROR   EXAMPLE
+//   Cardinal                   4  ±45.000°   E
+//   Intercardinal (Ordinal)    8  ±22.500°   NE
+//   Secondary Intercardinal   16  ±11.250°   NNE
+//   Tertiary Intercardinal    32   ±5.625°   NbE
+#define WIND_INDICATOR_ARROW
+// #define WIND_INDICATOR_NUMBER
+// #define WIND_INDICATOR_CPN_CARDINAL
+// #define WIND_INDICATOR_CPN_INTERCARDINAL
+// #define WIND_INDICATOR_CPN_SECONDARY_INTERCARDINAL
+// #define WIND_INDICATOR_CPN_TERTIARY_INTERCARDINAL
+// #define WIND_INDICATOR_NONE
+
+// WIND DIRECTION ICON PRECISION
 // The wind direction icon shown to the left of the wind speed can indicate wind
 // direction with a minimum error of ±0.5°. This uses more flash storage because
 // 360 24x24 wind direction icons must be stored, totaling ~25kB. For either
@@ -147,18 +165,18 @@
 // selectable options listed below. 360 points seems excessive, but the option
 // is there.
 //
-//   DIRECTIONS                 #     ERROR  STORAGE
+//   PRECISION                  #     ERROR  STORAGE
 //   Cardinal                   4  ±45.000°     288B  E
-//   Ordinal                    8  ±22.500°     576B  NE
+//   Intercardinal (Ordinal)    8  ±22.500°     576B  NE
 //   Secondary Intercardinal   16  ±11.250°   1,152B  NNE
 //   Tertiary Intercardinal    32   ±5.625°   2,304B  NbE
 //   (360)                    360   ±0.500°  25,920B  1°
 // Uncomment your preferred wind level direction precision.
-// #define WIND_DIRECTIONS_CARDINAL
-// #define WIND_DIRECTIONS_ORDINAL
-#define WIND_DIRECTIONS_SECONDARY_INTERCARDINAL
-// #define WIND_DIRECTIONS_TERTIARY_INTERCARDINAL
-// #define WIND_DIRECTIONS_360
+// #define WIND_ICONS_CARDINAL
+// #define WIND_ICONS_INTERCARDINAL
+#define WIND_ICONS_SECONDARY_INTERCARDINAL
+// #define WIND_ICONS_TERTIARY_INTERCARDINAL
+// #define WIND_ICONS_360
 
 // FONTS
 // A handful of popular Open Source typefaces have been included with this
@@ -199,6 +217,12 @@
 //   Disable alerts by changing the DISPLAY_ALERTS macro to 0.
 #define DISPLAY_ALERTS 1
 
+// STATUS BAR EXTRAS
+//   Extra information that can be displayed on the status bar. Set to 1 to
+//   enable.
+#define STATUS_BAR_EXTRAS_BAT_VOLTAGE 0
+#define STATUS_BAR_EXTRAS_WIFI_RSSI   0
+
 // BATTERY MONITORING
 //   You may choose to power your whether display with or without a battery.
 //   Low power behavior can be controlled in config.cpp.
@@ -223,8 +247,10 @@ extern const uint8_t PIN_EPD_DC;
 extern const uint8_t PIN_EPD_SCK;
 extern const uint8_t PIN_EPD_MISO;
 extern const uint8_t PIN_EPD_MOSI;
+extern const uint8_t PIN_EPD_PWR;
 extern const uint8_t PIN_BME_SDA;
 extern const uint8_t PIN_BME_SCL;
+extern const uint8_t PIN_BME_PWR;
 extern const uint8_t BME_ADDRESS;
 extern const uint8_t PIN_CONFIGURE_WIFI;
 extern const char *WIFI_SSID;
@@ -316,12 +342,24 @@ extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
       ^ defined(USE_HTTPS_WITH_CERT_VERIF))
   #error Invalid configuration. Exactly one HTTP mode must be selected.
 #endif
-#if !(  defined(WIND_DIRECTIONS_CARDINAL)                \
-      ^ defined(WIND_DIRECTIONS_ORDINAL)                 \
-      ^ defined(WIND_DIRECTIONS_SECONDARY_INTERCARDINAL) \
-      ^ defined(WIND_DIRECTIONS_TERTIARY_INTERCARDINAL)  \
-      ^ defined(WIND_DIRECTIONS_360))
-  #error Invalid configuration. Exactly one wind direction precision level must be selected.
+#if !(  defined(WIND_INDICATOR_ARROW)                         \
+      || (                                                    \
+          defined(WIND_INDICATOR_NUMBER)                      \
+        ^ defined(WIND_INDICATOR_CPN_CARDINAL)                \
+        ^ defined(WIND_INDICATOR_CPN_INTERCARDINAL)           \
+        ^ defined(WIND_INDICATOR_CPN_SECONDARY_INTERCARDINAL) \
+        ^ defined(WIND_INDICATOR_CPN_TERTIARY_INTERCARDINAL)  \
+      )                                                       \
+      ^ defined(WIND_INDICATOR_NONE))
+  #error Invalid configuration. Illegal selction of wind indicator(s).
+#endif
+#if defined(WIND_INDICATOR_ARROW)                   \
+ && !(  defined(WIND_ICONS_CARDINAL)                \
+      ^ defined(WIND_ICONS_INTERCARDINAL)           \
+      ^ defined(WIND_ICONS_SECONDARY_INTERCARDINAL) \
+      ^ defined(WIND_ICONS_TERTIARY_INTERCARDINAL)  \
+      ^ defined(WIND_ICONS_360))
+  #error Invalid configuration. Exactly one wind direction icon precision level must be selected.
 #endif
 #if !(defined(FONT_HEADER))
   #error Invalid configuration. Font not selected.

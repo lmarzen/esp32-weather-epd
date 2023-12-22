@@ -224,6 +224,8 @@ void drawMultiLnString(int16_t x, int16_t y, const String &text,
  */
 void initDisplay()
 {
+  pinMode(PIN_EPD_PWR, OUTPUT);
+  digitalWrite(PIN_EPD_PWR, HIGH);
   display.init(115200, true, 2, false);
   SPI.begin(PIN_EPD_SCK,
             PIN_EPD_MISO,
@@ -237,6 +239,16 @@ void initDisplay()
   // display.fillScreen(GxEPD_WHITE);
   display.setFullWindow();
   display.firstPage(); // use paged drawing mode, sets fillScreen(GxEPD_WHITE)
+  return;
+} // end initDisplay
+
+/* Power-off e-paper display
+ */
+void powerOffDisplay()
+{
+  display.powerOff();
+  digitalWrite(PIN_EPD_PWR, LOW);
+  return;
 } // end initDisplay
 
 /* This function is responsible for drawing the current conditions and
@@ -355,9 +367,11 @@ void drawCurrentConditions(const owm_current_t &current,
   drawString(48, 204 + 17 / 2 + (48 + 8) * 0 + 48 / 2, timeBuffer, LEFT);
 
   // wind
+#ifdef WIND_INDICATOR_ARROW
   display.drawInvertedBitmap(48, 204 + 24 / 2 + (48 + 8) * 1,
                              getWindBitmap24(current.wind_deg),
                              24, 24, GxEPD_BLACK);
+#endif
 #ifdef UNITS_SPEED_METERSPERSECOND
   dataStr = String(static_cast<int>(round(current.wind_speed)));
   unitStr = TXT_UNITS_SPEED_METERSPERSECOND;
@@ -386,10 +400,31 @@ void drawCurrentConditions(const owm_current_t &current,
   dataStr = String(meterspersecond_to_beaufort(current.wind_speed));
   unitStr = TXT_UNITS_SPEED_BEAUFORT;
 #endif
+
+#ifdef WIND_INDICATOR_ARROW
   drawString(48 + 24, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
+#else
+  drawString(48     , 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
+#endif
   display.setFont(&FONT_8pt8b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
              unitStr, LEFT);
+
+#if defined(WIND_INDICATOR_NUMBER)
+  dataStr = String(current.wind_deg) + "\xB0";
+  display.setFont(&FONT_12pt8b);
+  drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
+             dataStr, LEFT);
+#endif
+#if defined(WIND_INDICATOR_CPN_CARDINAL)                \
+ || defined(WIND_INDICATOR_CPN_INTERCARDINAL)           \
+ || defined(WIND_INDICATOR_CPN_SECONDARY_INTERCARDINAL) \
+ || defined(WIND_INDICATOR_CPN_TERTIARY_INTERCARDINAL)
+  dataStr = getCompassPointNotation(current.wind_deg);
+  display.setFont(&FONT_12pt8b);
+  drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
+             dataStr, LEFT);
+#endif
 
   // uv and air quality indices
   // spacing between end of index value and start of descriptor text
@@ -1085,8 +1120,10 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   if (batVoltage < BATTERY_WARN_VOLTAGE) {
     dataColor = ACCENT_COLOR;
   }
-  dataStr = String(batPercent) + "% ("
-            + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
+  dataStr = String(batPercent) + "%";
+#if STATUS_BAR_EXTRAS_BAT_VOLTAGE
+  dataStr += " (" + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
+#endif
   drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 25;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 17,
@@ -1097,10 +1134,12 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   // WiFi
   dataStr = String(getWiFidesc(rssi));
   dataColor = rssi >= -70 ? GxEPD_BLACK : ACCENT_COLOR;
+#if STATUS_BAR_EXTRAS_WIFI_RSSI
   if (rssi != 0)
   {
     dataStr += " (" + String(rssi) + "dBm)";
   }
+#endif
   drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 19;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 13, getWiFiBitmap16(rssi),

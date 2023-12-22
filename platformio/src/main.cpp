@@ -18,6 +18,7 @@
 #include <Arduino.h>
 #include <Adafruit_BME280.h>
 #include <Adafruit_Sensor.h>
+#include <driver/adc.h>
 #include <Preferences.h>
 #include <time.h>
 #include <WiFi.h>
@@ -127,6 +128,8 @@ void setup()
   printHeapUsage();
 #endif
 
+  disableBuiltinLED();
+
   // Open namespace for read/write to non-volatile storage
   prefs.begin(NVS_NAMESPACE, false);
 
@@ -134,8 +137,10 @@ void setup()
   // GET BATTERY VOLTAGE
   // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings
   // are multiplied by 2. Readings are divided by 1000 to convert mV to V.
-  double batteryVoltage =
-            static_cast<double>(analogRead(PIN_BAT_ADC)) / 1000.0 * (3.5 / 2.0);
+  adc_power_acquire();
+  uint16_t batADC = analogRead(PIN_BAT_ADC);
+  adc_power_release();
+  double batteryVoltage = static_cast<double>(batADC) / 1000.0 * (3.5 / 2.0);
             // use / 1000.0 * (3.3 / 2.0) multiplier above for firebeetle esp32
             // use / 1000.0 * (3.5 / 2.0) for firebeetle esp32-E
   Serial.println("Battery voltage: " + String(batteryVoltage, 2));
@@ -158,7 +163,7 @@ void setup()
       {
         drawError(battery_alert_0deg_196x196, "Low Battery", "");
       } while (display.nextPage());
-      display.powerOff();
+      powerOffDisplay();
     }
 
     if (batteryVoltage <= CRIT_LOW_BATTERY_VOLTAGE)
@@ -257,7 +262,7 @@ void setup()
         drawError(wifi_x_196x196, "WiFi Connection", "Failed");
       } while (display.nextPage());
     }
-    display.powerOff();
+    powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   } 
 
@@ -273,7 +278,7 @@ void setup()
     {
       drawError(wi_time_4_196x196, "Time Synchronization", "Failed");
     } while (display.nextPage());
-    display.powerOff();
+    powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   }
 
@@ -298,7 +303,7 @@ void setup()
     {
       drawError(wi_cloud_down_196x196, statusStr, tmpStr);
     } while (display.nextPage());
-    display.powerOff();
+    powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   }
   rxStatus = getOWMairpollution(client, owm_air_pollution);
@@ -312,12 +317,14 @@ void setup()
     {
       drawError(wi_cloud_down_196x196, statusStr, tmpStr);
     } while (display.nextPage());
-    display.powerOff();
+    powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   }
   killWiFi(); // WiFi no longer needed
 
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
+  pinMode(PIN_BME_PWR, OUTPUT);
+  digitalWrite(PIN_BME_PWR, HIGH);
   float inTemp     = NAN;
   float inHumidity = NAN;
   Serial.print("Reading from BME280... ");
@@ -350,6 +357,7 @@ void setup()
     statusStr = "BME not found"; // check wiring
     Serial.println(statusStr);
   }
+  digitalWrite(PIN_BME_PWR, LOW);
 
   String refreshTimeStr;
   getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
@@ -370,7 +378,7 @@ void setup()
 #endif
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
   } while (display.nextPage());
-  display.powerOff();
+  powerOffDisplay();
 
   // DEEP-SLEEP
   beginDeepSleep(startTime, &timeInfo);
