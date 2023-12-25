@@ -142,6 +142,7 @@ Stand/Frame
     | [3D Nate](https://www.printables.com/@3DNate_451157)      | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)         |
     | [Sven F.](https://github.com/Spanholz)                    | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)      |
     | [Layers Studio](https://www.printables.com/@LayersStudio) | [Printables](https://www.printables.com/model/655768-esp32-e-paper-weather-display-stand) |
+    | [PJ Veltri](https://www.printables.com/@PJVeltri_1590999) | [Printables](https://www.printables.com/model/692944-base-and-display-holder-for-esp-32-e-paper-weather) |
 
   - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
 - Picture Frame
