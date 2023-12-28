@@ -164,7 +164,7 @@ IMPORTANT: The Waveshare E-Paper Driver HAT has two physical switches that MUST 
 
 IMPORTANT: The DESPI-C02 adapter has one physical switch that MUST be set correctly for the display to work.
 
-- RESE: Set switch to position 3.
+- RESE: Set switch to position 0.47.
 
 Cut the low power pad for even longer battery life.
 
