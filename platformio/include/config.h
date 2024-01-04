@@ -33,6 +33,11 @@
 // #define DISP_7C_F
 // #define DISP_BW_V1
 
+// E-PAPER DRIVER BOARD
+// Uncomment the macro that identifies your driver board hardware.
+#define DRIVER_DESPI_C02
+// #define DRIVER_WAVESHARE
+
 // 3 COLOR E-INK ACCENT COLOR
 // Defines the 3rd color to be used when a 3+ color display is selected.
 #if defined(DISP_3C_B) || defined(DISP_7C_F)
@@ -288,6 +293,10 @@ extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
       ^ defined(DISP_7C_F)   \
       ^ defined(DISP_BW_V1))
   #error Invalid configuration. Exactly one display panel must be selected.
+#endif
+#if !(  defined(DRIVER_WAVESHARE) \
+      ^ defined(DRIVER_DESPI_C02))
+  #error Invalid configuration. Exactly one driver board must be selected.
 #endif
 #if !(defined(LOCALE))
   #error Invalid configuration. Locale not selected.
