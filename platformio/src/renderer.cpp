@@ -226,11 +226,18 @@ void initDisplay()
 {
   pinMode(PIN_EPD_PWR, OUTPUT);
   digitalWrite(PIN_EPD_PWR, HIGH);
+#ifdef DRIVER_WAVESHARE
   display.init(115200, true, 2, false);
+  // remap spi for waveshare
+  SPI.end();
   SPI.begin(PIN_EPD_SCK,
             PIN_EPD_MISO,
             PIN_EPD_MOSI,
             PIN_EPD_CS);
+#endif
+#ifdef DRIVER_DESPI_C02
+  display.init(115200, true, 10, false);
+#endif
 
   display.setRotation(0);
   display.setTextSize(1);
@@ -246,7 +253,8 @@ void initDisplay()
  */
 void powerOffDisplay()
 {
-  display.powerOff();
+  display.hibernate(); // turns powerOff() and sets controller to deep sleep for
+                       // minimum power use
   digitalWrite(PIN_EPD_PWR, LOW);
   return;
 } // end initDisplay
