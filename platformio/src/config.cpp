@@ -37,8 +37,13 @@ const uint8_t PIN_BME_PWR =  4;   // Irrelevant if directly connected to 3.3V
 const uint8_t BME_ADDRESS = 0x76; // If sensor does not work, try 0x77
 
 // WIFI
-const char *WIFI_SSID     = "ssid";
-const char *WIFI_PASSWORD = "password";
+// List as many WiFi networks and their passwords as desired.
+// They will be tried in order of their signal strength.
+const String WIFI_INFO[][2] = {
+        {"Network Name", "password"},
+        {"Alternate Network Name", "password"}
+    };
+const int NUM_NETWORKS = sizeof(WIFI_INFO) / sizeof(WIFI_INFO[0]);
 const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
 // OPENWEATHERMAP API
