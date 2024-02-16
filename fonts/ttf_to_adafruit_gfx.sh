@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Font file to Adafruit GFX format script for esp32-weather-epd.
 # Copyright (C) 2022-2023  Luke Marzen
 #

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Scalar vector icons to Adafruit GFX format helper for esp32-weather-epd.
 # Copyright (C) 2022-2023  Luke Marzen
 #
