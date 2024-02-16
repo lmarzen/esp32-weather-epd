@@ -202,6 +202,18 @@ const std::vector<String> TERM_DUST =
 const std::vector<String> TERM_STRONG_WIND =
     {"wind"};
 
+// COMPASS POINT
+const char *COMPASS_POINT_NOTATION[32] = {
+//   0°   11.25°   22.5°   33.75°   45°   56.25°   67.5°   78.75°
+   "N",  "NbE",  "NNE",   "NEbN",  "NE", "NEbE",  "ENE",  "EbN",
+//  90°  101.25°  112.5°  123.75°  135°  146.25°  157.5°  168.75°
+   "E",  "EbS",   "ESE",  "SEbE",  "SE", "SEbS",  "SSE",  "SbE",
+// 180°  191.25°  202.5°  213.75°  225°  236.25°  247.5°  258.75°
+   "S",  "SbW",   "SSW",  "SWbS",  "SW", "SWbW",  "WSW",  "WbS",
+// 270°  281.25°  292.5°  303.75°  315°  326.25°  337.5°  348.75°
+   "W",  "WbN",   "WNW",  "NWbW",  "NW", "NWbN",  "NNW",  "NbW",
+};
+
 // AIR QUALITY INDEX
 extern "C" {
 const char *AUSTRALIA_AQI_TXT[6] =

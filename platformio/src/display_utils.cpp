@@ -1528,12 +1528,6 @@ const uint8_t *getWindBitmap24(int windDeg)
   return wind_direction_icon_arr[arr_offset];
 } // end getWindBitmap24
 
-static const char *compass_point_notation_arr[32] = {
-  "N", "NbE", "NNE", "NEbN", "NE", "NEbE", "ENE", "EbN", 
-  "E", "EbS", "ESE", "SEbE", "SE", "SEbS", "SSE", "SbE", 
-  "S", "SbW", "SSW", "SWbS", "SW", "SWbW", "WSW", "WbS", 
-  "W", "WbN", "WNW", "NWbW", "NW", "NWbN", "NNW", "NbW"};
-
 /* Returns a pointer to a string that expresses the Compass Point Notation (CPN)
  * of the given windDeg.
  *
@@ -1561,7 +1555,7 @@ const char *getCompassPointNotation(int windDeg)
   int arr_offset = (int) (windDeg / ( 360 / (float) precision )) 
                          * ( 32 / precision) ;
 
-  return compass_point_notation_arr[arr_offset];
+  return COMPASS_POINT_NOTATION[arr_offset];
 } // end getCompassPointNotation
 
 /* This function returns a pointer to a string representing the meaning for a

@@ -122,6 +122,9 @@ extern const std::vector<String> TERM_HURRICANE;
 extern const std::vector<String> TERM_DUST;
 extern const std::vector<String> TERM_STRONG_WIND;
 
+// COMPASS POINT
+extern const char *COMPASS_POINT_NOTATION[32];
+
 // AIR QUALITY INDEX
 extern "C" {
 extern const char *AUSTRALIA_AQI_TXT[6];

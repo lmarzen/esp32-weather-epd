@@ -18,8 +18,9 @@
 /* Special thanks to Matthias Deimbacher (deimi) for contributing this
  * translation.
  *
- * If you have any feedback or suggestions, please open an issue on this
- * project's github page: <https://github.com/lmarzen/esp32-weather-epd/issues>
+ * If you have any feedback or suggestions on translations, please open an issue
+ * on this project's github page:
+ * <https://github.com/lmarzen/esp32-weather-epd/issues>
  */
 
 #include <vector>
@@ -208,6 +209,18 @@ const std::vector<String> TERM_DUST =
     {"dust", "sand"};
 const std::vector<String> TERM_STRONG_WIND =
     {"wind"};
+
+// COMPASS POINT
+const char *COMPASS_POINT_NOTATION[32] = {
+//   0°   11.25°   22.5°   33.75°   45°   56.25°   67.5°   78.75°
+   "N",  "NzO",  "NNO",   "NOzN",  "NO", "NOzO",  "ONO",  "OzN",
+//  90°  101.25°  112.5°  123.75°  135°  146.25°  157.5°  168.75°
+   "O",  "OzS",   "OSO",  "SOzO",  "SO", "SOzS",  "SSO",  "SzO",
+// 180°  191.25°  202.5°  213.75°  225°  236.25°  247.5°  258.75°
+   "S",  "SzW",   "SSW",  "SWzS",  "SW", "SWzW",  "WSW",  "WzS",
+// 270°  281.25°  292.5°  303.75°  315°  326.25°  337.5°  348.75°
+   "W",  "WzN",   "WNW",  "NWzW",  "NW", "NWzN",  "NNW",  "NzW",
+};
 
 // AIR QUALITY INDEX
 extern "C" {
