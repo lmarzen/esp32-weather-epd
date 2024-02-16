@@ -1577,97 +1577,97 @@ const char *getHttpResponsePhrase(int code)
   switch (code)
   {
   // HTTP client errors
-  case HTTPC_ERROR_CONNECTION_REFUSED:  return "connection refused";
-  case HTTPC_ERROR_SEND_HEADER_FAILED:  return "send header failed";
-  case HTTPC_ERROR_SEND_PAYLOAD_FAILED: return "send payload failed";
-  case HTTPC_ERROR_NOT_CONNECTED:       return "not connected";
-  case HTTPC_ERROR_CONNECTION_LOST:     return "connection lost";
-  case HTTPC_ERROR_NO_STREAM:           return "no stream";
-  case HTTPC_ERROR_NO_HTTP_SERVER:      return "no HTTP server";
-  case HTTPC_ERROR_TOO_LESS_RAM:        return "too less ram";
-  case HTTPC_ERROR_ENCODING:            return "Transfer-Encoding not supported";
-  case HTTPC_ERROR_STREAM_WRITE:        return "Stream write error";
-  case HTTPC_ERROR_READ_TIMEOUT:        return "read Timeout";
+  case HTTPC_ERROR_CONNECTION_REFUSED:  return TXT_HTTPC_ERROR_CONNECTION_REFUSED;
+  case HTTPC_ERROR_SEND_HEADER_FAILED:  return TXT_HTTPC_ERROR_SEND_HEADER_FAILED;
+  case HTTPC_ERROR_SEND_PAYLOAD_FAILED: return TXT_HTTPC_ERROR_SEND_PAYLOAD_FAILED;
+  case HTTPC_ERROR_NOT_CONNECTED:       return TXT_HTTPC_ERROR_NOT_CONNECTED;
+  case HTTPC_ERROR_CONNECTION_LOST:     return TXT_HTTPC_ERROR_CONNECTION_LOST;
+  case HTTPC_ERROR_NO_STREAM:           return TXT_HTTPC_ERROR_NO_STREAM;
+  case HTTPC_ERROR_NO_HTTP_SERVER:      return TXT_HTTPC_ERROR_NO_HTTP_SERVER;
+  case HTTPC_ERROR_TOO_LESS_RAM:        return TXT_HTTPC_ERROR_TOO_LESS_RAM;
+  case HTTPC_ERROR_ENCODING:            return TXT_HTTPC_ERROR_ENCODING;
+  case HTTPC_ERROR_STREAM_WRITE:        return TXT_HTTPC_ERROR_STREAM_WRITE;
+  case HTTPC_ERROR_READ_TIMEOUT:        return TXT_HTTPC_ERROR_READ_TIMEOUT;
 
   // 1xx - Informational Responses
-  case 100: return "Continue";
-  case 101: return "Switching Protocols";
-  case 102: return "Processing";
-  case 103: return "Early Hints";
+  case 100: return TXT_HTTP_RESPONSE_100;
+  case 101: return TXT_HTTP_RESPONSE_101;
+  case 102: return TXT_HTTP_RESPONSE_102;
+  case 103: return TXT_HTTP_RESPONSE_103;
 
   // 2xx - Successful Responses
-  case 200: return "OK";
-  case 201: return "Created";
-  case 202: return "Accepted";
-  case 203: return "Non-Authoritative Information";
-  case 204: return "No Content";
-  case 205: return "Reset Content";
-  case 206: return "Partial Content";
-  case 207: return "Multi-Status";
-  case 208: return "Already Reported";
-  case 226: return "IM Used";
+  case 200: return TXT_HTTP_RESPONSE_200;
+  case 201: return TXT_HTTP_RESPONSE_201;
+  case 202: return TXT_HTTP_RESPONSE_202;
+  case 203: return TXT_HTTP_RESPONSE_203;
+  case 204: return TXT_HTTP_RESPONSE_204;
+  case 205: return TXT_HTTP_RESPONSE_205;
+  case 206: return TXT_HTTP_RESPONSE_206;
+  case 207: return TXT_HTTP_RESPONSE_207;
+  case 208: return TXT_HTTP_RESPONSE_208;
+  case 226: return TXT_HTTP_RESPONSE_226;
 
   // 3xx - Redirection Responses
-  case 300: return "Multiple Choices";
-  case 301: return "Moved Permanently";
-  case 302: return "Found";
-  case 303: return "See Other";
-  case 304: return "Not Modified";
-  case 305: return "Use Proxy";
-  case 307: return "Temporary Redirect";
-  case 308: return "Permanent Redirect";
+  case 300: return TXT_HTTP_RESPONSE_300;
+  case 301: return TXT_HTTP_RESPONSE_301;
+  case 302: return TXT_HTTP_RESPONSE_302;
+  case 303: return TXT_HTTP_RESPONSE_303;
+  case 304: return TXT_HTTP_RESPONSE_304;
+  case 305: return TXT_HTTP_RESPONSE_305;
+  case 307: return TXT_HTTP_RESPONSE_307;
+  case 308: return TXT_HTTP_RESPONSE_308;
 
   // 4xx - Client Error Responses
-  case 400: return "Bad Request";
-  case 401: return "Unauthorized";
-  case 402: return "Payment Required";
-  case 403: return "Forbidden";
-  case 404: return "Not Found";
-  case 405: return "Method Not Allowed";
-  case 406: return "Not Acceptable";
-  case 407: return "Proxy Authentication Required";
-  case 408: return "Request Timeout";
-  case 409: return "Conflict";
-  case 410: return "Gone";
-  case 411: return "Length Required";
-  case 412: return "Precondition Failed";
-  case 413: return "Content Too Large";
-  case 414: return "URI Too Long";
-  case 415: return "Unsupported Media Type";
-  case 416: return "Range Not Satisfiable";
-  case 417: return "Expectation Failed";
-  case 418: return "I'm a teapot";
-  case 421: return "Misdirected Request";
-  case 422: return "Unprocessable Content";
-  case 423: return "Locked";
-  case 424: return "Failed Dependency";
-  case 425: return "Too Early";
-  case 426: return "Upgrade Required";
-  case 428: return "Precondition Required";
-  case 429: return "Too Many Requests";
-  case 431: return "Request Header Fields Too Large";
-  case 451: return "Unavailable For Legal Reasons";
+  case 400: return TXT_HTTP_RESPONSE_400;
+  case 401: return TXT_HTTP_RESPONSE_401;
+  case 402: return TXT_HTTP_RESPONSE_402;
+  case 403: return TXT_HTTP_RESPONSE_403;
+  case 404: return TXT_HTTP_RESPONSE_404;
+  case 405: return TXT_HTTP_RESPONSE_405;
+  case 406: return TXT_HTTP_RESPONSE_406;
+  case 407: return TXT_HTTP_RESPONSE_407;
+  case 408: return TXT_HTTP_RESPONSE_408;
+  case 409: return TXT_HTTP_RESPONSE_409;
+  case 410: return TXT_HTTP_RESPONSE_410;
+  case 411: return TXT_HTTP_RESPONSE_411;
+  case 412: return TXT_HTTP_RESPONSE_412;
+  case 413: return TXT_HTTP_RESPONSE_413;
+  case 414: return TXT_HTTP_RESPONSE_414;
+  case 415: return TXT_HTTP_RESPONSE_415;
+  case 416: return TXT_HTTP_RESPONSE_416;
+  case 417: return TXT_HTTP_RESPONSE_417;
+  case 418: return TXT_HTTP_RESPONSE_418;
+  case 421: return TXT_HTTP_RESPONSE_421;
+  case 422: return TXT_HTTP_RESPONSE_422;
+  case 423: return TXT_HTTP_RESPONSE_423;
+  case 424: return TXT_HTTP_RESPONSE_424;
+  case 425: return TXT_HTTP_RESPONSE_425;
+  case 426: return TXT_HTTP_RESPONSE_426;
+  case 428: return TXT_HTTP_RESPONSE_428;
+  case 429: return TXT_HTTP_RESPONSE_429;
+  case 431: return TXT_HTTP_RESPONSE_431;
+  case 451: return TXT_HTTP_RESPONSE_451;
 
   // 5xx - Server Error Responses
-  case 500: return "Internal Server Error";
-  case 501: return "Not Implemented";
-  case 502: return "Bad Gateway";
-  case 503: return "Service Unavailable";
-  case 504: return "Gateway Timeout";
-  case 505: return "HTTP Version Not Supported";
-  case 506: return "Variant Also Negotiates";
-  case 507: return "Insufficient Storage";
-  case 508: return "Loop Detected";
-  case 510: return "Not Extended";
-  case 511: return "Network Authentication Required";
+  case 500: return TXT_HTTP_RESPONSE_500;
+  case 501: return TXT_HTTP_RESPONSE_501;
+  case 502: return TXT_HTTP_RESPONSE_502;
+  case 503: return TXT_HTTP_RESPONSE_503;
+  case 504: return TXT_HTTP_RESPONSE_504;
+  case 505: return TXT_HTTP_RESPONSE_505;
+  case 506: return TXT_HTTP_RESPONSE_506;
+  case 507: return TXT_HTTP_RESPONSE_507;
+  case 508: return TXT_HTTP_RESPONSE_508;
+  case 510: return TXT_HTTP_RESPONSE_510;
+  case 511: return TXT_HTTP_RESPONSE_511;
 
   // ArduinoJson DeserializationError codes
-  case -100 - (DeserializationError::Code::Ok):              return "Deserialization OK";
-  case -100 - (DeserializationError::Code::EmptyInput):      return "Deserialization EmptyInput";
-  case -100 - (DeserializationError::Code::IncompleteInput): return "Deserialization IncompleteInput";
-  case -100 - (DeserializationError::Code::InvalidInput):    return "Deserialization InvalidInput";
-  case -100 - (DeserializationError::Code::NoMemory):        return "Deserialization NoMemory";
-  case -100 - (DeserializationError::Code::TooDeep):         return "Deserialization TooDeep";
+  case -100 - (DeserializationError::Code::Ok):              return TXT_DESERIALIZATION_ERROR_OK;
+  case -100 - (DeserializationError::Code::EmptyInput):      return TXT_DESERIALIZATION_ERROR_EMPTY_INPUT;
+  case -100 - (DeserializationError::Code::IncompleteInput): return TXT_DESERIALIZATION_ERROR_INCOMPLETE_INPUT;
+  case -100 - (DeserializationError::Code::InvalidInput):    return TXT_DESERIALIZATION_ERROR_INVALID_INPUT;
+  case -100 - (DeserializationError::Code::NoMemory):        return TXT_DESERIALIZATION_ERROR_NO_MEMORY;
+  case -100 - (DeserializationError::Code::TooDeep):         return TXT_DESERIALIZATION_ERROR_TOO_DEEP;
 
   default:  return "";
   }

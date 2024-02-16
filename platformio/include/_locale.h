@@ -122,9 +122,6 @@ extern const std::vector<String> TERM_HURRICANE;
 extern const std::vector<String> TERM_DUST;
 extern const std::vector<String> TERM_STRONG_WIND;
 
-// COMPASS POINT
-extern const char *COMPASS_POINT_NOTATION[32];
-
 // AIR QUALITY INDEX
 extern "C" {
 extern const char *AUSTRALIA_AQI_TXT[6];
@@ -139,5 +136,97 @@ extern const char *UNITED_KINGDOM_DAQI_TXT[4];
 extern const char *UNITED_STATES_AQI_TXT[6];
 }
 
-#endif
+// COMPASS POINT
+extern const char *COMPASS_POINT_NOTATION[32];
 
+// HTTP CLIENT ERRORS
+extern const char *TXT_HTTPC_ERROR_CONNECTION_REFUSED;
+extern const char *TXT_HTTPC_ERROR_SEND_HEADER_FAILED;
+extern const char *TXT_HTTPC_ERROR_SEND_PAYLOAD_FAILED;
+extern const char *TXT_HTTPC_ERROR_NOT_CONNECTED;
+extern const char *TXT_HTTPC_ERROR_CONNECTION_LOST;
+extern const char *TXT_HTTPC_ERROR_NO_STREAM;
+extern const char *TXT_HTTPC_ERROR_NO_HTTP_SERVER;
+extern const char *TXT_HTTPC_ERROR_TOO_LESS_RAM;
+extern const char *TXT_HTTPC_ERROR_ENCODING;
+extern const char *TXT_HTTPC_ERROR_STREAM_WRITE;
+extern const char *TXT_HTTPC_ERROR_READ_TIMEOUT;
+
+// HTTP RESPONSE STATUS CODES
+// 1xx - Informational Responses
+extern const char *TXT_HTTP_RESPONSE_100;
+extern const char *TXT_HTTP_RESPONSE_101;
+extern const char *TXT_HTTP_RESPONSE_102;
+extern const char *TXT_HTTP_RESPONSE_103;
+// 2xx - Successful Responses
+extern const char *TXT_HTTP_RESPONSE_200;
+extern const char *TXT_HTTP_RESPONSE_201;
+extern const char *TXT_HTTP_RESPONSE_202;
+extern const char *TXT_HTTP_RESPONSE_203;
+extern const char *TXT_HTTP_RESPONSE_204;
+extern const char *TXT_HTTP_RESPONSE_205;
+extern const char *TXT_HTTP_RESPONSE_206;
+extern const char *TXT_HTTP_RESPONSE_207;
+extern const char *TXT_HTTP_RESPONSE_208;
+extern const char *TXT_HTTP_RESPONSE_226;
+// 3xx - Redirection Responses
+extern const char *TXT_HTTP_RESPONSE_300;
+extern const char *TXT_HTTP_RESPONSE_301;
+extern const char *TXT_HTTP_RESPONSE_302;
+extern const char *TXT_HTTP_RESPONSE_303;
+extern const char *TXT_HTTP_RESPONSE_304;
+extern const char *TXT_HTTP_RESPONSE_305;
+extern const char *TXT_HTTP_RESPONSE_307;
+extern const char *TXT_HTTP_RESPONSE_308;
+// 4xx - Client Error Responses
+extern const char *TXT_HTTP_RESPONSE_400;
+extern const char *TXT_HTTP_RESPONSE_401;
+extern const char *TXT_HTTP_RESPONSE_402;
+extern const char *TXT_HTTP_RESPONSE_403;
+extern const char *TXT_HTTP_RESPONSE_404;
+extern const char *TXT_HTTP_RESPONSE_405;
+extern const char *TXT_HTTP_RESPONSE_406;
+extern const char *TXT_HTTP_RESPONSE_407;
+extern const char *TXT_HTTP_RESPONSE_408;
+extern const char *TXT_HTTP_RESPONSE_409;
+extern const char *TXT_HTTP_RESPONSE_410;
+extern const char *TXT_HTTP_RESPONSE_411;
+extern const char *TXT_HTTP_RESPONSE_412;
+extern const char *TXT_HTTP_RESPONSE_413;
+extern const char *TXT_HTTP_RESPONSE_414;
+extern const char *TXT_HTTP_RESPONSE_415;
+extern const char *TXT_HTTP_RESPONSE_416;
+extern const char *TXT_HTTP_RESPONSE_417;
+extern const char *TXT_HTTP_RESPONSE_418;
+extern const char *TXT_HTTP_RESPONSE_421;
+extern const char *TXT_HTTP_RESPONSE_422;
+extern const char *TXT_HTTP_RESPONSE_423;
+extern const char *TXT_HTTP_RESPONSE_424;
+extern const char *TXT_HTTP_RESPONSE_425;
+extern const char *TXT_HTTP_RESPONSE_426;
+extern const char *TXT_HTTP_RESPONSE_428;
+extern const char *TXT_HTTP_RESPONSE_429;
+extern const char *TXT_HTTP_RESPONSE_431;
+extern const char *TXT_HTTP_RESPONSE_451;
+// 5xx - Server Error Responses
+extern const char *TXT_HTTP_RESPONSE_500;
+extern const char *TXT_HTTP_RESPONSE_501;
+extern const char *TXT_HTTP_RESPONSE_502;
+extern const char *TXT_HTTP_RESPONSE_503;
+extern const char *TXT_HTTP_RESPONSE_504;
+extern const char *TXT_HTTP_RESPONSE_505;
+extern const char *TXT_HTTP_RESPONSE_506;
+extern const char *TXT_HTTP_RESPONSE_507;
+extern const char *TXT_HTTP_RESPONSE_508;
+extern const char *TXT_HTTP_RESPONSE_510;
+extern const char *TXT_HTTP_RESPONSE_511;
+
+// ARDUINOJSON DESERIALIZATION ERROR CODES
+extern const char *TXT_DESERIALIZATION_ERROR_OK;
+extern const char *TXT_DESERIALIZATION_ERROR_EMPTY_INPUT;
+extern const char *TXT_DESERIALIZATION_ERROR_INCOMPLETE_INPUT;
+extern const char *TXT_DESERIALIZATION_ERROR_INVALID_INPUT;
+extern const char *TXT_DESERIALIZATION_ERROR_NO_MEMORY;
+extern const char *TXT_DESERIALIZATION_ERROR_TOO_DEEP;
+
+#endif

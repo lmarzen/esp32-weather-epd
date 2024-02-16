@@ -210,18 +210,6 @@ const std::vector<String> TERM_DUST =
 const std::vector<String> TERM_STRONG_WIND =
     {"wind"};
 
-// COMPASS POINT
-const char *COMPASS_POINT_NOTATION[32] = {
-//   0°   11.25°   22.5°   33.75°   45°   56.25°   67.5°   78.75°
-   "N",  "NzO",  "NNO",   "NOzN",  "NO", "NOzO",  "ONO",  "OzN",
-//  90°  101.25°  112.5°  123.75°  135°  146.25°  157.5°  168.75°
-   "O",  "OzS",   "OSO",  "SOzO",  "SO", "SOzS",  "SSO",  "SzO",
-// 180°  191.25°  202.5°  213.75°  225°  236.25°  247.5°  258.75°
-   "S",  "SzW",   "SSW",  "SWzS",  "SW", "SWzW",  "WSW",  "WzS",
-// 270°  281.25°  292.5°  303.75°  315°  326.25°  337.5°  348.75°
-   "W",  "WzN",   "WNW",  "NWzW",  "NW", "NWzN",  "NNW",  "NzW",
-};
-
 // AIR QUALITY INDEX
 extern "C" {
 const char *AUSTRALIA_AQI_TXT[6] =
@@ -307,3 +295,104 @@ const char *UNITED_STATES_AQI_TXT[6] =
 };
 } // end extern "C"
 
+// COMPASS POINT
+const char *COMPASS_POINT_NOTATION[32] = {
+//   0°   11.25°   22.5°   33.75°   45°   56.25°   67.5°   78.75°
+   "N",  "NzO",  "NNO",   "NOzN",  "NO", "NOzO",  "ONO",  "OzN",
+//  90°  101.25°  112.5°  123.75°  135°  146.25°  157.5°  168.75°
+   "O",  "OzS",   "OSO",  "SOzO",  "SO", "SOzS",  "SSO",  "SzO",
+// 180°  191.25°  202.5°  213.75°  225°  236.25°  247.5°  258.75°
+   "S",  "SzW",   "SSW",  "SWzS",  "SW", "SWzW",  "WSW",  "WzS",
+// 270°  281.25°  292.5°  303.75°  315°  326.25°  337.5°  348.75°
+   "W",  "WzN",   "WNW",  "NWzW",  "NW", "NWzN",  "NNW",  "NzW",
+};
+
+// HTTP CLIENT ERRORS
+const char *TXT_HTTPC_ERROR_CONNECTION_REFUSED   = "Connection Refused";
+const char *TXT_HTTPC_ERROR_SEND_HEADER_FAILED   = "Send Header Failed";
+const char *TXT_HTTPC_ERROR_SEND_PAYLOAD_FAILED  = "Send Payload Failed";
+const char *TXT_HTTPC_ERROR_NOT_CONNECTED        = "Not Connected";
+const char *TXT_HTTPC_ERROR_CONNECTION_LOST      = "Connection Lost";
+const char *TXT_HTTPC_ERROR_NO_STREAM            = "No Stream";
+const char *TXT_HTTPC_ERROR_NO_HTTP_SERVER       = "No HTTP Server";
+const char *TXT_HTTPC_ERROR_TOO_LESS_RAM         = "Too Less Ram";
+const char *TXT_HTTPC_ERROR_ENCODING             = "Transfer-Encoding Not Supported";
+const char *TXT_HTTPC_ERROR_STREAM_WRITE         = "Stream Write Error";
+const char *TXT_HTTPC_ERROR_READ_TIMEOUT         = "Read Timeout";
+
+// HTTP RESPONSE STATUS CODES
+// 1xx - Informational Responses
+const char *TXT_HTTP_RESPONSE_100 = "Continue";
+const char *TXT_HTTP_RESPONSE_101 = "Switching Protocols";
+const char *TXT_HTTP_RESPONSE_102 = "Processing";
+const char *TXT_HTTP_RESPONSE_103 = "Early Hints";
+// 2xx - Successful Responses
+const char *TXT_HTTP_RESPONSE_200 = "OK";
+const char *TXT_HTTP_RESPONSE_201 = "Created";
+const char *TXT_HTTP_RESPONSE_202 = "Accepted";
+const char *TXT_HTTP_RESPONSE_203 = "Non-Authoritative Information";
+const char *TXT_HTTP_RESPONSE_204 = "No Content";
+const char *TXT_HTTP_RESPONSE_205 = "Reset Content";
+const char *TXT_HTTP_RESPONSE_206 = "Partial Content";
+const char *TXT_HTTP_RESPONSE_207 = "Multi-Status";
+const char *TXT_HTTP_RESPONSE_208 = "Already Reported";
+const char *TXT_HTTP_RESPONSE_226 = "IM Used";
+// 3xx - Redirection Responses
+const char *TXT_HTTP_RESPONSE_300 = "Multiple Choices";
+const char *TXT_HTTP_RESPONSE_301 = "Moved Permanently";
+const char *TXT_HTTP_RESPONSE_302 = "Found";
+const char *TXT_HTTP_RESPONSE_303 = "See Other";
+const char *TXT_HTTP_RESPONSE_304 = "Not Modified";
+const char *TXT_HTTP_RESPONSE_305 = "Use Proxy";
+const char *TXT_HTTP_RESPONSE_307 = "Temporary Redirect";
+const char *TXT_HTTP_RESPONSE_308 = "Permanent Redirect";
+// 4xx - Client Error Responses
+const char *TXT_HTTP_RESPONSE_400 = "Bad Request";
+const char *TXT_HTTP_RESPONSE_401 = "Unauthorized";
+const char *TXT_HTTP_RESPONSE_402 = "Payment Required";
+const char *TXT_HTTP_RESPONSE_403 = "Forbidden";
+const char *TXT_HTTP_RESPONSE_404 = "Not Found";
+const char *TXT_HTTP_RESPONSE_405 = "Method Not Allowed";
+const char *TXT_HTTP_RESPONSE_406 = "Not Acceptable";
+const char *TXT_HTTP_RESPONSE_407 = "Proxy Authentication Required";
+const char *TXT_HTTP_RESPONSE_408 = "Request Timeout";
+const char *TXT_HTTP_RESPONSE_409 = "Conflict";
+const char *TXT_HTTP_RESPONSE_410 = "Gone";
+const char *TXT_HTTP_RESPONSE_411 = "Length Required";
+const char *TXT_HTTP_RESPONSE_412 = "Precondition Failed";
+const char *TXT_HTTP_RESPONSE_413 = "Content Too Large";
+const char *TXT_HTTP_RESPONSE_414 = "URI Too Long";
+const char *TXT_HTTP_RESPONSE_415 = "Unsupported Media Type";
+const char *TXT_HTTP_RESPONSE_416 = "Range Not Satisfiable";
+const char *TXT_HTTP_RESPONSE_417 = "Expectation Failed";
+const char *TXT_HTTP_RESPONSE_418 = "I'm a teapot";
+const char *TXT_HTTP_RESPONSE_421 = "Misdirected Request";
+const char *TXT_HTTP_RESPONSE_422 = "Unprocessable Content";
+const char *TXT_HTTP_RESPONSE_423 = "Locked";
+const char *TXT_HTTP_RESPONSE_424 = "Failed Dependency";
+const char *TXT_HTTP_RESPONSE_425 = "Too Early";
+const char *TXT_HTTP_RESPONSE_426 = "Upgrade Required";
+const char *TXT_HTTP_RESPONSE_428 = "Precondition Required";
+const char *TXT_HTTP_RESPONSE_429 = "Too Many Requests";
+const char *TXT_HTTP_RESPONSE_431 = "Request Header Fields Too Large";
+const char *TXT_HTTP_RESPONSE_451 = "Unavailable For Legal Reasons";
+// 5xx - Server Error Responses
+const char *TXT_HTTP_RESPONSE_500 = "Internal Server Error";
+const char *TXT_HTTP_RESPONSE_501 = "Not Implemented";
+const char *TXT_HTTP_RESPONSE_502 = "Bad Gateway";
+const char *TXT_HTTP_RESPONSE_503 = "Service Unavailable";
+const char *TXT_HTTP_RESPONSE_504 = "Gateway Timeout";
+const char *TXT_HTTP_RESPONSE_505 = "HTTP Version Not Supported";
+const char *TXT_HTTP_RESPONSE_506 = "Variant Also Negotiates";
+const char *TXT_HTTP_RESPONSE_507 = "Insufficient Storage";
+const char *TXT_HTTP_RESPONSE_508 = "Loop Detected";
+const char *TXT_HTTP_RESPONSE_510 = "Not Extended";
+const char *TXT_HTTP_RESPONSE_511 = "Network Authentication Required";
+
+// ARDUINOJSON DESERIALIZATION ERROR CODES
+const char *TXT_DESERIALIZATION_ERROR_OK               = "Deserialization OK";
+const char *TXT_DESERIALIZATION_ERROR_EMPTY_INPUT      = "Deserialization Empty Input";
+const char *TXT_DESERIALIZATION_ERROR_INCOMPLETE_INPUT = "Deserialization Incomplete Input";
+const char *TXT_DESERIALIZATION_ERROR_INVALID_INPUT    = "Deserialization Invalid Input";
+const char *TXT_DESERIALIZATION_ERROR_NO_MEMORY        = "Deserialization No Memory";
+const char *TXT_DESERIALIZATION_ERROR_TOO_DEEP         = "Deserialization Too Deep";
