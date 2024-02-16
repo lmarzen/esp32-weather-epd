@@ -91,8 +91,34 @@ extern const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH;
 extern const char *TXT_UNITS_DIST_KILOMETERS;
 extern const char *TXT_UNITS_DIST_MILES;
 
-// LAST REFRESH
+// MISCELLANEOUS MESSAGES
+// Title Case
+extern const char *TXT_LOW_BATTERY;
+extern const char *TXT_NETWORK_NOT_AVAILABLE;
+extern const char *TXT_TIME_SYNCHRONIZATION_FAILED;
+extern const char *TXT_WIFI_CONNECTION_FAILED;
+// First Word Capitalized
+extern const char *TXT_ATTEMPTING_HTTP_REQ;
+extern const char *TXT_AWAKE_FOR;
+extern const char *TXT_BATTERY_VOLTAGE;
+extern const char *TXT_CONNECTING_TO;
+extern const char *TXT_COULD_NOT_CONNECT_TO;
+extern const char *TXT_ENTERING_DEEP_SLEEP_FOR;
+extern const char *TXT_READING_FROM;
+extern const char *TXT_FAILED;
+extern const char *TXT_SUCCESS;
 extern const char *TXT_UNKNOWN;
+// All Lowercase
+extern const char *TXT_NOT_FOUND;
+extern const char *TXT_READ_FAILED;
+// Complete 
+extern const char *TXT_FAILED_TO_GET_TIME;
+extern const char *TXT_HIBERNATING_INDEFINITELY_NOTICE;
+extern const char *TXT_REFERENCING_OLDER_TIME_NOTICE;
+extern const char *TXT_WAITING_FOR_SNTP;
+extern const char *TXT_LOW_BATTERY_VOLTAGE;
+extern const char *TXT_VERY_LOW_BATTERY_VOLTAGE;
+extern const char *TXT_CRIT_LOW_BATTERY_VOLTAGE;
 
 // ALERTS
 extern const std::vector<String> ALERT_URGENCY;
@@ -228,5 +254,16 @@ extern const char *TXT_DESERIALIZATION_ERROR_INCOMPLETE_INPUT;
 extern const char *TXT_DESERIALIZATION_ERROR_INVALID_INPUT;
 extern const char *TXT_DESERIALIZATION_ERROR_NO_MEMORY;
 extern const char *TXT_DESERIALIZATION_ERROR_TOO_DEEP;
+
+// WIFI STATUS
+extern const char *TXT_WL_NO_SHIELD;
+extern const char *TXT_WL_IDLE_STATUS;
+extern const char *TXT_WL_NO_SSID_AVAIL;
+extern const char *TXT_WL_SCAN_COMPLETED;
+extern const char *TXT_WL_CONNECTED;
+extern const char *TXT_WL_CONNECT_FAILED;
+extern const char *TXT_WL_CONNECTION_LOST;
+extern const char *TXT_WL_DISCONNECTED;
+
 
 #endif

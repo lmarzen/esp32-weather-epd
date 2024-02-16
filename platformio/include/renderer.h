@@ -82,6 +82,6 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo);
 void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
                    int rssi, double batVoltage);
 void drawError(const uint8_t *bitmap_196x196,
-               const String &errMsgLn1, const String &errMsgLn2);
+               const String &errMsgLn1, const String &errMsgLn2="");
 
 #endif

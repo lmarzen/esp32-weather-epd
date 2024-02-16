@@ -1177,17 +1177,29 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
 
 /* This function is responsible for drawing prominent error messages to the
  * screen.
+ *
+ * If error message line 2 (errMsgLn2) is empty, line 1 will be automatically
+ * wrapped.
  */
 void drawError(const uint8_t *bitmap_196x196,
                const String &errMsgLn1, const String &errMsgLn2)
 {
   display.setFont(&FONT_26pt8b);
-  drawString(DISP_WIDTH / 2,
-             DISP_HEIGHT / 2 + 196 / 2 + 21,
-             errMsgLn1, CENTER);
-  drawString(DISP_WIDTH / 2,
-             DISP_HEIGHT / 2 + 196 / 2 + 76,
-             errMsgLn2, CENTER);
+  if (!errMsgLn2.isEmpty())
+  {
+    drawString(DISP_WIDTH / 2,
+               DISP_HEIGHT / 2 + 196 / 2 + 21,
+               errMsgLn1, CENTER);
+    drawString(DISP_WIDTH / 2,
+               DISP_HEIGHT / 2 + 196 / 2 + 21 + 55,
+               errMsgLn2, CENTER);
+  }
+  else
+  {
+    drawMultiLnString(DISP_WIDTH / 2,
+                      DISP_HEIGHT / 2 + 196 / 2 + 21,
+                      errMsgLn1, CENTER, DISP_WIDTH - 200, 2, 55);
+  }
   display.drawInvertedBitmap(DISP_WIDTH / 2 - 196 / 2,
                              DISP_HEIGHT / 2 - 196 / 2 - 21,
                              bitmap_196x196, 196, 196, ACCENT_COLOR);

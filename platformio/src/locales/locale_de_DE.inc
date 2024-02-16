@@ -128,8 +128,34 @@ const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/in\xB2";
 const char *TXT_UNITS_DIST_KILOMETERS = "km";
 const char *TXT_UNITS_DIST_MILES      = "mi";
 
-// LAST REFRESH
-const char *TXT_UNKNOWN = "Unbekannt";
+// MISCELLANEOUS MESSAGES
+// Title Case
+const char *TXT_LOW_BATTERY = "Low Battery";
+const char *TXT_NETWORK_NOT_AVAILABLE = "Network Not Available";
+const char *TXT_TIME_SYNCHRONIZATION_FAILED = "Time Synchronization Failed";
+const char *TXT_WIFI_CONNECTION_FAILED = "WiFi Connection Failed";
+// First Word Capitalized
+const char *TXT_ATTEMPTING_HTTP_REQ = "Attempting HTTP request";
+const char *TXT_AWAKE_FOR = "Awake for";
+const char *TXT_BATTERY_VOLTAGE = "Battery voltage";
+const char *TXT_CONNECTING_TO = "Connecting to";
+const char *TXT_COULD_NOT_CONNECT_TO = "Could not connect to";
+const char *TXT_ENTERING_DEEP_SLEEP_FOR = "Entering deep sleep for";
+const char *TXT_READING_FROM = "Reading from";
+const char *TXT_FAILED  = "Failed";
+const char *TXT_SUCCESS = "Success";
+const char *TXT_UNKNOWN = "Unknown";
+// All Lowercase
+const char *TXT_NOT_FOUND = "not found";
+const char *TXT_READ_FAILED = "read failed";
+// Complete Sentences
+const char *TXT_FAILED_TO_GET_TIME = "Failed to get the time!";
+const char *TXT_HIBERNATING_INDEFINITELY_NOTICE = "Hibernating without wake time!";
+const char *TXT_REFERENCING_OLDER_TIME_NOTICE = "Failed to syncronize time before deep-sleep, referencing older time.";
+const char *TXT_WAITING_FOR_SNTP = "Waiting for SNTP synchronization.";
+const char *TXT_LOW_BATTERY_VOLTAGE = "Low battery voltage!";
+const char *TXT_VERY_LOW_BATTERY_VOLTAGE = "Very low battery voltage!";
+const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Critically low battery voltage!";
 
 // ALERTS
 // The display can show up to 2 alerts, but alerts can be unpredictible in
@@ -396,3 +422,13 @@ const char *TXT_DESERIALIZATION_ERROR_INCOMPLETE_INPUT = "Deserialization Incomp
 const char *TXT_DESERIALIZATION_ERROR_INVALID_INPUT    = "Deserialization Invalid Input";
 const char *TXT_DESERIALIZATION_ERROR_NO_MEMORY        = "Deserialization No Memory";
 const char *TXT_DESERIALIZATION_ERROR_TOO_DEEP         = "Deserialization Too Deep";
+
+// WIFI STATUS
+const char *TXT_WL_NO_SHIELD       = "No Shield";
+const char *TXT_WL_IDLE_STATUS     = "Idle";
+const char *TXT_WL_NO_SSID_AVAIL   = "No SSID Available";
+const char *TXT_WL_SCAN_COMPLETED  = "Scan Complete";
+const char *TXT_WL_CONNECTED       = "Connected";
+const char *TXT_WL_CONNECT_FAILED  = "Connection Failed";
+const char *TXT_WL_CONNECTION_LOST = "Connection Lost";
+const char *TXT_WL_DISCONNECTED    = "Disconnected";
