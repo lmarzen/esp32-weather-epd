@@ -19,17 +19,24 @@
 #include "config.h"
 
 // PINS
+// The configuration below is intended for use with the project's official 
+// wiring diagrams using the FireBeetle 2 ESP32-E microcontroller board.
+//
+// Note: LED_BUILTIN pin will be disabled to reduce power draw.  Refer to your
+//       board's pinout to ensure you avoid using a pin with this shared 
+//       functionality.
+//
 // ADC pin used to measure battery voltage
 const uint8_t PIN_BAT_ADC  = A2; // A0 for micro-usb firebeetle
 // Pins for Waveshare e-paper Driver Board
-const uint8_t PIN_EPD_BUSY = 13; // 5 for micro-usb firebeetle
-const uint8_t PIN_EPD_CS   =  2;
+const uint8_t PIN_EPD_BUSY = 14; // 5 for micro-usb firebeetle
+const uint8_t PIN_EPD_CS   = 13;
 const uint8_t PIN_EPD_RST  = 21;
 const uint8_t PIN_EPD_DC   = 22;
 const uint8_t PIN_EPD_SCK  = 18;
 const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
 const uint8_t PIN_EPD_MOSI = 23;
-const uint8_t PIN_EPD_PWR  = 14; // Irrelevant if directly connected to 3.3V
+const uint8_t PIN_EPD_PWR  = 26; // Irrelevant if directly connected to 3.3V
 // I2C Pins used for BME280
 const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
