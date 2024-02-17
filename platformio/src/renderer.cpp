@@ -1125,7 +1125,7 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
 #if BATTERY_MONITORING
   // battery
   uint32_t batPercent = calcBatPercent(batVoltage,
-                                       LOW_BATTERY_VOLTAGE,
+                                       CRIT_LOW_BATTERY_VOLTAGE,
                                        MAX_BATTERY_VOLTAGE);
 #if defined(DISP_3C_B) || defined(DISP_7C_F)
   if (batVoltage < WARN_BATTERY_VOLTAGE) {
