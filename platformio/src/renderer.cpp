@@ -1114,7 +1114,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
  * the display.
  */
 void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
-                   int rssi, double batVoltage)
+                   int rssi, uint32_t batVoltage)
 {
   String dataStr;
   uint16_t dataColor = GxEPD_BLACK;
@@ -1124,13 +1124,17 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
 
 #if BATTERY_MONITORING
   // battery
-  int batPercent = calcBatPercent(batVoltage);
-  if (batVoltage < BATTERY_WARN_VOLTAGE) {
+  uint32_t batPercent = calcBatPercent(batVoltage,
+                                       LOW_BATTERY_VOLTAGE,
+                                       MAX_BATTERY_VOLTAGE);
+#if defined(DISP_3C_B) || defined(DISP_7C_F)
+  if (batVoltage < WARN_BATTERY_VOLTAGE) {
     dataColor = ACCENT_COLOR;
   }
+#endif
   dataStr = String(batPercent) + "%";
 #if STATUS_BAR_EXTRAS_BAT_VOLTAGE
-  dataStr += " (" + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
+  dataStr += " (" + String( round(batVoltage / 10.f) / 100.f, 2 ) + "v)";
 #endif
   drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 25;

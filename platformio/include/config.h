@@ -278,10 +278,11 @@ extern const long SLEEP_DURATION;
 extern const int BED_TIME;
 extern const int WAKE_TIME;
 extern const int HOURLY_GRAPH_MAX;
-extern const float BATTERY_WARN_VOLTAGE;
-extern const float LOW_BATTERY_VOLTAGE;
-extern const float VERY_LOW_BATTERY_VOLTAGE;
-extern const float CRIT_LOW_BATTERY_VOLTAGE;
+extern const uint32_t MAX_BATTERY_VOLTAGE;
+extern const uint32_t WARN_BATTERY_VOLTAGE;
+extern const uint32_t LOW_BATTERY_VOLTAGE;
+extern const uint32_t VERY_LOW_BATTERY_VOLTAGE;
+extern const uint32_t CRIT_LOW_BATTERY_VOLTAGE;
 extern const unsigned long LOW_BATTERY_SLEEP_INTERVAL;
 extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 

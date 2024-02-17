@@ -18,7 +18,6 @@
 #include <Arduino.h>
 #include <Adafruit_BME280.h>
 #include <Adafruit_Sensor.h>
-#include <driver/adc.h>
 #include <Preferences.h>
 #include <time.h>
 #include <WiFi.h>
@@ -135,17 +134,9 @@ void setup()
   prefs.begin(NVS_NAMESPACE, false);
 
 #if BATTERY_MONITORING
-  // GET BATTERY VOLTAGE
-  // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings
-  // are multiplied by 2. Readings are divided by 1000 to convert mV to V.
-  adc_power_acquire();
-  uint16_t batADC = analogRead(PIN_BAT_ADC);
-  adc_power_release();
-  double batteryVoltage = static_cast<double>(batADC) / 1000.0 * (3.5 / 2.0);
-            // use / 1000.0 * (3.3 / 2.0) multiplier above for firebeetle esp32
-            // use / 1000.0 * (3.5 / 2.0) for firebeetle esp32-E
+  uint32_t batteryVoltage = readBatteryVoltage();
   Serial.print(TXT_BATTERY_VOLTAGE);
-  Serial.println(": " + String(batteryVoltage, 2));
+  Serial.println(": " + String(batteryVoltage) + "mv");
 
   // When the battery is low, the display should be updated to reflect that, but
   // only the first time we detect low voltage. The next time the display will
@@ -199,7 +190,7 @@ void setup()
     prefs.putBool("lowBat", false);
   }
 #else
-  double batteryVoltage = NAN;
+  uint32_t batteryVoltage = UINT32_MAX;
 #endif
 
   // All data should have been loaded from NVS. Close filesystem.
