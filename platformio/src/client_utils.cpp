@@ -92,7 +92,7 @@ void killWiFi()
 {
   WiFi.disconnect();
   WiFi.mode(WIFI_OFF);
-}
+} // killWiFi
 
 /* Prints the local time to serial monitor.
  *
@@ -108,7 +108,7 @@ bool printLocalTime(tm *timeInfo)
   }
   Serial.println(timeInfo, "%A, %B %d, %Y %H:%M:%S");
   return true;
-} // killWiFi
+} // printLocalTime
 
 /* Waits for NTP server time sync, adjusted for the time zone specified in
  * config.cpp.
