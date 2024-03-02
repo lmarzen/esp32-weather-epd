@@ -25,7 +25,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
 {
   int i;
 
-  StaticJsonDocument<832> filter;
+  JsonDocument filter;
   filter["current"]  = true;
   filter["minutely"] = false;
   filter["hourly"]   = true;
@@ -33,77 +33,29 @@ DeserializationError deserializeOneCall(WiFiClient &json,
 #if !DISPLAY_ALERTS
   filter["alerts"]   = false;
 #else
-  JsonArray filter_alerts = filter.createNestedArray("alerts");
-
   // description can be very long so they are filtered out to save on memory
   // along with sender_name
-  JsonObject filter_alerts_0 = filter_alerts.createNestedObject();
-  filter_alerts_0["sender_name"] = false;
-  filter_alerts_0["event"]       = true;
-  filter_alerts_0["start"]       = true;
-  filter_alerts_0["end"]         = true;
-  filter_alerts_0["description"] = false;
-  filter_alerts_0["tags"]        = true;
-  JsonObject filter_alerts_1 = filter_alerts.createNestedObject();
-  filter_alerts_1["sender_name"] = false;
-  filter_alerts_1["event"]       = true;
-  filter_alerts_1["start"]       = true;
-  filter_alerts_1["end"]         = true;
-  filter_alerts_1["description"] = false;
-  filter_alerts_1["tags"]        = true;
-  JsonObject filter_alerts_2 = filter_alerts.createNestedObject();
-  filter_alerts_2["sender_name"] = false;
-  filter_alerts_2["event"]       = true;
-  filter_alerts_2["start"]       = true;
-  filter_alerts_2["end"]         = true;
-  filter_alerts_2["description"] = false;
-  filter_alerts_2["tags"]        = true;
-  JsonObject filter_alerts_3 = filter_alerts.createNestedObject();
-  filter_alerts_3["sender_name"] = false;
-  filter_alerts_3["event"]       = true;
-  filter_alerts_3["start"]       = true;
-  filter_alerts_3["end"]         = true;
-  filter_alerts_3["description"] = false;
-  filter_alerts_3["tags"]        = true;
-  JsonObject filter_alerts_4 = filter_alerts.createNestedObject();
-  filter_alerts_4["sender_name"] = false;
-  filter_alerts_4["event"]       = true;
-  filter_alerts_4["start"]       = true;
-  filter_alerts_4["end"]         = true;
-  filter_alerts_4["description"] = false;
-  filter_alerts_4["tags"]        = true;
-  JsonObject filter_alerts_5 = filter_alerts.createNestedObject();
-  filter_alerts_5["sender_name"] = false;
-  filter_alerts_5["event"]       = true;
-  filter_alerts_5["start"]       = true;
-  filter_alerts_5["end"]         = true;
-  filter_alerts_5["description"] = false;
-  filter_alerts_5["tags"]        = true;
-  JsonObject filter_alerts_6 = filter_alerts.createNestedObject();
-  filter_alerts_6["sender_name"] = false;
-  filter_alerts_6["event"]       = true;
-  filter_alerts_6["start"]       = true;
-  filter_alerts_6["end"]         = true;
-  filter_alerts_6["description"] = false;
-  filter_alerts_6["tags"]        = true;
-  JsonObject filter_alerts_7 = filter_alerts.createNestedObject();
-  filter_alerts_7["sender_name"] = false;
-  filter_alerts_7["event"]       = true;
-  filter_alerts_7["start"]       = true;
-  filter_alerts_7["end"]         = true;
-  filter_alerts_7["description"] = false;
-  filter_alerts_7["tags"]        = true;
+  for (int i = 0; i < OWM_NUM_ALERTS; ++i)
+  {
+    filter["alerts"][i]["sender_name"] = false;
+    filter["alerts"][i]["event"]       = true;
+    filter["alerts"][i]["start"]       = true;
+    filter["alerts"][i]["end"]         = true;
+    filter["alerts"][i]["description"] = false;
+    filter["alerts"][i]["tags"]        = true;
+  }
 #endif
 
-  DynamicJsonDocument doc(32 * 1024);
+  JsonDocument doc;
 
   DeserializationError error = deserializeJson(doc, json,
                                          DeserializationOption::Filter(filter));
 #if DEBUG_LEVEL >= 1
-  Serial.println("[debug] doc.memoryUsage() : "
-                 + String(doc.memoryUsage()) + " B");
-  Serial.println("[debug] doc.capacity() : "
-                 + String(doc.capacity()) + " B"); // 0 on allocation failure
+  Serial.println("[debug] doc.overflowed() : "
+                 + String(doc.overflowed()));
+#endif
+#if DEBUG_LEVEL >= 2
+  serializeJsonPretty(doc, Serial);
 #endif
   if (error) {
     return error;
@@ -257,14 +209,15 @@ DeserializationError deserializeAirQuality(WiFiClient &json,
 {
   int i = 0;
 
-  DynamicJsonDocument doc(6 * 1024);
+  JsonDocument doc;
 
   DeserializationError error = deserializeJson(doc, json);
 #if DEBUG_LEVEL >= 1
-  Serial.println("[debug] doc.memoryUsage() : "
-                 + String(doc.memoryUsage()) + " B");
-  Serial.println("[debug] doc.capacity() : "
-                 + String(doc.capacity()) + " B"); // 0 on allocation failure
+  Serial.println("[debug] doc.overflowed() : "
+                 + String(doc.overflowed()));
+#endif
+#if DEBUG_LEVEL >= 2
+  serializeJsonPretty(doc, Serial);
 #endif
   if (error) {
     return error;

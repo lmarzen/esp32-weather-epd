@@ -30,7 +30,7 @@
 #include "display_utils.h"
 #include "icons/icons_196x196.h"
 #include "renderer.h"
-#ifndef USE_HTTP
+#if defined(USE_HTTPS_WITH_CERT_VERIF) || defined(USE_HTTPS_WITH_CERT_VERIF)
   #include <WiFiClientSecure.h>
 #endif
 #ifdef USE_HTTPS_WITH_CERT_VERIF

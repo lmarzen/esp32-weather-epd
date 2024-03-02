@@ -241,6 +241,7 @@
 //   If defined, enables increase verbosity over the serial port.
 //   level 0: basic status information, assists troubleshooting (default)
 //   level 1: increased verbosity for debugging
+//   level 2: print api responses to serial monitor
 #define DEBUG_LEVEL 0
 
 // Set the below constants in "config.cpp"
