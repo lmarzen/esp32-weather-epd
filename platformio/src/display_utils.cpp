@@ -42,7 +42,9 @@
 uint32_t readBatteryVoltage()
 {
   esp_adc_cal_characteristics_t adc_chars;
-  esp_adc_cal_value_t val_type;
+  // __attribute__((unused)) disables compiler warnings about this variable
+  // being unused (Clang, GCC) which is the case when DEBUG_LEVEL == 0.
+  esp_adc_cal_value_t val_type __attribute__((unused));
   adc_power_acquire();
   uint16_t adc_val = analogRead(PIN_BAT_ADC);
   adc_power_release();
