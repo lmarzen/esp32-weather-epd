@@ -56,12 +56,12 @@ const char *LC_DAY[7]      = {"dimanche", "lundi", "mardi", "mercredi",
 // ABDAY_{1-7}             abbreviated ame of the n-th day of the week
 const char *LC_ABDAY[7]    = {"dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = {"janvier", "f\xE9""vrier", "mars", "avril", 
-                               "mai",       "juin",     "juillet",     "ao\xFB""t", 
-                               "septembre", "octobre",  "novembre", "d\xE9""cembre"};
+const char *LC_MON[12]     = {"janvier", "f\351vrier", "mars", "avril", 
+                               "mai",       "juin",     "juillet",     "ao\373t", 
+                               "septembre", "octobre",  "novembre", "d\351cembre"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
-const char *LC_ABMON[12]   = {"janv.", "f\xE9""vr.", "mars", "avril", "mai", "juin", 
-                              "juil.", "ao\xFB""t", "sept.", "oct.", "nov.", "d\xE9""c."};
+const char *LC_ABMON[12]   = {"janv.", "f\351vr.", "mars", "avril", "mai", "juin", 
+                              "juil.", "ao\373t", "sept.", "oct.", "nov.", "d\351c."};
 // ERA                     era description segments
 const char *LC_ERA         = "";
 // ERA_D_FMT               era date format string
@@ -82,20 +82,20 @@ const char *TXT_FEELS_LIKE         = "Temperature ressentie";
 const char *TXT_SUNRISE            = "Lever de soleil";
 const char *TXT_SUNSET             = "Coucher de soleil";
 const char *TXT_WIND               = "Vent";
-const char *TXT_HUMIDITY           = "Humidit\xE9";
+const char *TXT_HUMIDITY           = "Humidit\351";
 const char *TXT_UV_INDEX           = "Indice UV";
 const char *TXT_PRESSURE           = "Pression";
-const char *TXT_AIR_QUALITY_INDEX  = "Qualit\xE9"" de l'air";
-const char *TXT_VISIBILITY         = "Visibilit\xE9";
-const char *TXT_INDOOR_TEMPERATURE = "Temp\xE9""rature";
-const char *TXT_INDOOR_HUMIDITY    = "Humidit\xE9";
+const char *TXT_AIR_QUALITY_INDEX  = "Qualit\351 de l'air";
+const char *TXT_VISIBILITY         = "Visibilit\351";
+const char *TXT_INDOOR_TEMPERATURE = "Temp\351rature";
+const char *TXT_INDOOR_HUMIDITY    = "Humidit\351";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Bas";
-const char *TXT_UV_MODERATE  = "Moderat\xE9";
+const char *TXT_UV_MODERATE  = "Moderat\351";
 const char *TXT_UV_HIGH      = "Haut";
-const char *TXT_UV_VERY_HIGH = "Tr\xE8""s haut";
-const char *TXT_UV_EXTREME   = "Extr\xEA""me";
+const char *TXT_UV_VERY_HIGH = "Tr\350s haut";
+const char *TXT_UV_EXTREME   = "Extr\352me";
 
 // WIFI
 const char *TXT_WIFI_EXCELLENT     = "Excellent";
@@ -106,8 +106,8 @@ const char *TXT_WIFI_NO_CONNECTION = "Pas de Connection";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
-const char *TXT_UNITS_TEMP_CELSIUS    = "\xB0" "C";
-const char *TXT_UNITS_TEMP_FAHRENHEIT = "\xB0" "F";
+const char *TXT_UNITS_TEMP_CELSIUS    = "\260" "C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "\260" "F";
 // UNIT SYMBOLS - WIND SPEED
 const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
 const char *TXT_UNITS_SPEED_FEETPERSECOND     = "ft/s";
@@ -122,8 +122,8 @@ const char *TXT_UNITS_PRES_MILLIMETERSOFMERCURY     = "mmHg";
 const char *TXT_UNITS_PRES_INCHESOFMERCURY          = "inHg";
 const char *TXT_UNITS_PRES_MILLIBARS                = "mbar";
 const char *TXT_UNITS_PRES_ATMOSPHERES              = "atm";
-const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "g/cm\xB2";
-const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/in\xB2";
+const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "g/cm\262";
+const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/in\262";
 // UNITS - VISIBILITY DISTANCE
 const char *TXT_UNITS_DIST_KILOMETERS = "km";
 const char *TXT_UNITS_DIST_MILES      = "mi";
@@ -151,14 +151,14 @@ const char *TXT_READ_FAILED = "read failed";
 // Complete Sentences
 const char *TXT_FAILED_TO_GET_TIME = "Failed to get the time!";
 const char *TXT_HIBERNATING_INDEFINITELY_NOTICE = "Hibernating without wake time!";
-const char *TXT_REFERENCING_OLDER_TIME_NOTICE = "Failed to syncronize time before deep-sleep, referencing older time.";
+const char *TXT_REFERENCING_OLDER_TIME_NOTICE = "Failed to synchronize time before deep-sleep, referencing older time.";
 const char *TXT_WAITING_FOR_SNTP = "Waiting for SNTP synchronization.";
 const char *TXT_LOW_BATTERY_VOLTAGE = "Low battery voltage!";
 const char *TXT_VERY_LOW_BATTERY_VOLTAGE = "Very low battery voltage!";
 const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Critically low battery voltage!";
 
 // ALERTS
-// The display can show up to 2 alerts, but alerts can be unpredictible in
+// The display can show up to 2 alerts, but alerts can be unpredictable in
 // severity and number. If more than 2 alerts are active, the esp32 will attempt
 // to interpret the urgency of each alert and prefer to display the most urgent
 // and recently issued alerts of each event type. Depending on your region
@@ -172,7 +172,7 @@ const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Critically low battery voltage!";
 //   OpenWeatherMap returns alerts in English regardless of the OWM LANGUAGE
 //   option or territory. For this reason it is preferred that you do not
 //   translate text related to Alerts. Understandably, it may be undesirable to
-//   see English alerts in territories where English is uncommon. To satisify
+//   see English alerts in territories where English is uncommon. To satisfy
 //   this, users should set the DISPLAY_ALERTS macro to 0 in config.h.
 //
 // Here are a few examples, uncomment the array for your region (or create your
@@ -240,60 +240,60 @@ const std::vector<String> TERM_STRONG_WIND =
 extern "C" {
 const char *AUSTRALIA_AQI_TXT[6] =
 {
-  "Tr\xE8""s bon",
+  "Tr\350s bon",
   "Bon",
   "Juste",
   "Mauvais",
-  "Tr\xE8""s mauvais",
+  "Tr\350s mauvais",
   "Dangereux",
 };
 const char *CANADA_AQHI_TXT[4] =
 {
   "Bas",
-  "Mod\xE9""r\xE9",
+  "Mod\351r\351",
   "Haut",
-  "Tr\xE8""s haut",
+  "Tr\350s haut",
 };
 const char *EUROPE_CAQI_TXT[5] =
 {
-  "Tr\xE8""s bas",
+  "Tr\350s bas",
   "Bas",
   "Moyen",
   "Haut",
-  "Tr\xE8""s haut",
+  "Tr\350s haut",
 };
 const char *HONG_KONG_AQHI_TXT[5] =
 {
   "Bas",
-  "Mod\xE9""r\xE9",
+  "Mod\351r\351",
   "Haut",
-  "Tr\xE8""s haut",
+  "Tr\350s haut",
   "Dangereux",
 };
 const char *INDIA_AQI_TXT[6] =
 {
   "Bon",
   "Satisfaisant",
-  "Mod\xE9""r\xE9",
+  "Mod\351r\351",
   "Mauvais",
-  "Tr\xE8""s mauvais",
-  "S\xE9""v\xE8""re",
+  "Tr\350s mauvais",
+  "S\351v\350re",
 };
 const char *MAINLAND_CHINA_AQI_TXT[6] =
 {
   "Excellent",
   "Bon",
-  "L\xE9""g\xE8""rement pollu\xE9",
-  "Mod\xE9""r\xE9""ment pollu\xE9",
-  "Tr\xE8""s pollu\xE9",
-  "S\xE9""v\xE8""rement pollu\xE9",
+  "L\351g\350rement pollu\351",
+  "Mod\351r\351ment pollu\351",
+  "Tr\350s pollu\351",
+  "S\351v\350rement pollu\351",
 };
 const char *SINGAPORE_PSI_TXT[5] =
 {
   "Bon",
-  "Mod\xE9""r\xE9",
+  "Mod\351r\351",
   "Malsain",
-  "Tr\xE8""s malsain",
+  "Tr\350s malsain",
   "Dangereux",
 };
 const char *SOUTH_KOREA_CAI_TXT[4] =
@@ -301,22 +301,22 @@ const char *SOUTH_KOREA_CAI_TXT[4] =
   "Bon",
   "Moyen",
   "Malsain",
-  "Tr\xE8""s malsain",
+  "Tr\350s malsain",
 };
 const char *UNITED_KINGDOM_DAQI_TXT[4] =
 {
   "Bas",
-  "Mod\xE9""r\xE9",
+  "Mod\351r\351",
   "Haut",
-  "Tr\xE8""s haut",
+  "Tr\350s haut",
 };
 const char *UNITED_STATES_AQI_TXT[6] =
 {
   "Bon",
-  "Mod\xE9""r\xE9",
+  "Mod\351r\351",
   "Malsain pour les groupes sensibles",
   "Malsain",
-  "Tr\xE8""s malsain",
+  "Tr\350s malsain",
   "Dangereux",
 };
 } // end extern "C"

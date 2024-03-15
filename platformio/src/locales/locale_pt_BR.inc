@@ -159,7 +159,7 @@ const char *TXT_VERY_LOW_BATTERY_VOLTAGE = "Voltagem da bateria muito baixa!";
 const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Voltagem da bateria criticamente baixa!";
 
 // ALERTS
-// The display can show up to 2 alerts, but alerts can be unpredictible in
+// The display can show up to 2 alerts, but alerts can be unpredictable in
 // severity and number. If more than 2 alerts are active, the esp32 will attempt
 // to interpret the urgency of each alert and prefer to display the most urgent
 // and recently issued alerts of each event type. Depending on your region
@@ -173,7 +173,7 @@ const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Voltagem da bateria criticamente bai
 //   OpenWeatherMap returns alerts in English regardless of the OWM LANGUAGE
 //   option or territory. For this reason it is preferred that you do not
 //   translate text related to Alerts. Understandably, it may be undesirable to
-//   see English alerts in territories where English is uncommon. To satisify
+//   see English alerts in territories where English is uncommon. To satisfy
 //   this, users should set the DISPLAY_ALERTS macro to 0 in config.h.
 //
 // Here are a few examples, uncomment the array for your region (or create your

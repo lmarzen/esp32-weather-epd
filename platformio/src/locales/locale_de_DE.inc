@@ -56,11 +56,11 @@ const char *LC_DAY[7]      = {"Sonntag", "Montag", "Dienstag", "Mittwoch",
 // ABDAY_{1-7}             abbreviated name of the n-th day of the week
 const char *LC_ABDAY[7]    = {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = { "Januar",    "Februar",  "M\xE4rz",  "April",
+const char *LC_MON[12]     = { "Januar",    "Februar",  "M\344rz",  "April",
                                "Mai",       "Juni",     "Juli",     "August",
                                "September", "Oktober",  "November", "Dezember"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
-const char *LC_ABMON[12]   = {"Jan", "Feb", "M\xE4r", "Apr", "Mai", "Jun",
+const char *LC_ABMON[12]   = {"Jan", "Feb", "M\344r", "Apr", "Mai", "Jun",
                               "Jul", "Aug", "Sep",    "Okt", "Nov", "Dez"};
 // ERA                     era description segments
 const char *LC_ERA         = "";
@@ -78,14 +78,14 @@ const char *LC_ERA_T_FMT   = "";
 const String OWM_LANG = "de";
 
 // CURRENT CONDITIONS
-const char *TXT_FEELS_LIKE         = "Gef\xFChlt";
+const char *TXT_FEELS_LIKE         = "Gef\374hlt";
 const char *TXT_SUNRISE            = "Aufgang";
 const char *TXT_SUNSET             = "Untergang";
 const char *TXT_WIND               = "Wind";
 const char *TXT_HUMIDITY           = "Feuchtigkeit";
 const char *TXT_UV_INDEX           = "UV Index";
 const char *TXT_PRESSURE           = "Druck";
-const char *TXT_AIR_QUALITY_INDEX  = "Luftqualit\xE4t";
+const char *TXT_AIR_QUALITY_INDEX  = "Luftqualit\344t";
 const char *TXT_VISIBILITY         = "Sichtweite";
 const char *TXT_INDOOR_TEMPERATURE = "Temperatur";
 const char *TXT_INDOOR_HUMIDITY    = "Feuchtigkeit";
@@ -106,8 +106,8 @@ const char *TXT_WIFI_NO_CONNECTION = "Keine Verbindung";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
-const char *TXT_UNITS_TEMP_CELSIUS    = "\xB0""C";
-const char *TXT_UNITS_TEMP_FAHRENHEIT = "\xB0""F";
+const char *TXT_UNITS_TEMP_CELSIUS    = "\260C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "\260F";
 // UNIT SYMBOLS - WIND SPEED
 const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
 const char *TXT_UNITS_SPEED_FEETPERSECOND     = "ft/s";
@@ -122,8 +122,8 @@ const char *TXT_UNITS_PRES_MILLIMETERSOFMERCURY     = "mmHg";
 const char *TXT_UNITS_PRES_INCHESOFMERCURY          = "inHg";
 const char *TXT_UNITS_PRES_MILLIBARS                = "mbar";
 const char *TXT_UNITS_PRES_ATMOSPHERES              = "atm";
-const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "g/cm\xB2";
-const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/in\xB2";
+const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "g/cm\262";
+const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/in\262";
 // UNITS - VISIBILITY DISTANCE
 const char *TXT_UNITS_DIST_KILOMETERS = "km";
 const char *TXT_UNITS_DIST_MILES      = "mi";
@@ -151,14 +151,14 @@ const char *TXT_READ_FAILED = "read failed";
 // Complete Sentences
 const char *TXT_FAILED_TO_GET_TIME = "Failed to get the time!";
 const char *TXT_HIBERNATING_INDEFINITELY_NOTICE = "Hibernating without wake time!";
-const char *TXT_REFERENCING_OLDER_TIME_NOTICE = "Failed to syncronize time before deep-sleep, referencing older time.";
+const char *TXT_REFERENCING_OLDER_TIME_NOTICE = "Failed to synchronize time before deep-sleep, referencing older time.";
 const char *TXT_WAITING_FOR_SNTP = "Waiting for SNTP synchronization.";
 const char *TXT_LOW_BATTERY_VOLTAGE = "Low battery voltage!";
 const char *TXT_VERY_LOW_BATTERY_VOLTAGE = "Very low battery voltage!";
 const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Critically low battery voltage!";
 
 // ALERTS
-// The display can show up to 2 alerts, but alerts can be unpredictible in
+// The display can show up to 2 alerts, but alerts can be unpredictable in
 // severity and number. If more than 2 alerts are active, the esp32 will attempt
 // to interpret the urgency of each alert and prefer to display the most urgent
 // and recently issued alerts of each event type. Depending on your region
@@ -172,7 +172,7 @@ const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Critically low battery voltage!";
 //   OpenWeatherMap returns alerts in English regardless of the OWM LANGUAGE
 //   option or territory. For this reason it is preferred that you do not
 //   translate text related to Alerts. Understandably, it may be undesirable to
-//   see English alerts in territories where English is uncommon. To satisify
+//   see English alerts in territories where English is uncommon. To satisfy
 //   this, users should set the DISPLAY_ALERTS macro to 0 in config.h.
 //
 // Here are a few examples, uncomment the array for your region (or create your
