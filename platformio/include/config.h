@@ -59,6 +59,7 @@
 //   English (United States)         en_US
 //   French (France)                 fr_FR
 //   Dutch (Belgium)                 nl_BE
+//   Portuguese (Brazil)             pt_BR
 #define LOCALE en_US
 
 // UNITS
@@ -145,7 +146,7 @@
 // #define USE_HTTPS_WITH_CERT_VERIF
 
 // WIND DIRECTION INDICATOR
-// Choose whether the wind direction indicator should be an arrow, number, or 
+// Choose whether the wind direction indicator should be an arrow, number, or
 // expressed in Compass Point Notation (CPN).
 // The arrow indicator can be combined with NUMBER or CPN.
 //
