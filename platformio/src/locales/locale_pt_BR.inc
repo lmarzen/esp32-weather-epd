@@ -1,5 +1,5 @@
-/* American English locale data for esp32-weather-epd.
- * Copyright (C) 2022-2024  Artur Piasi
+/* Brazilian Portuguese locale data for esp32-weather-epd.
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,6 +13,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* Special thanks to Apiasi Piasi (apiasi) for contributing this translation.
+ *
+ * If you have any feedback or suggestions on translations, please open an issue
+ * on this project's github page:
+ * <https://github.com/lmarzen/esp32-weather-epd/issues>
  */
 
 #include <vector>
@@ -44,14 +51,14 @@ const char *LC_AM_STR      = "AM";
 // PM_STR                  Post Meridian affix
 const char *LC_PM_STR      = "PM";
 // DAY_{1-7}               name of the n-th day of the week
-const char *LC_DAY[7]      = {"Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira",
-                              "Quinta-feira", "Sexta-feira", "Sábado"};
+const char *LC_DAY[7]      = {"Domingo",      "Segunda-feira", "Ter\347a-feira", "Quarta-feira",
+                              "Quinta-feira", "Sexta-feira",   "S\341bado"};
 // ABDAY_{1-7}             abbreviated name of the n-th day of the week
-const char *LC_ABDAY[7]    = {"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"};
+const char *LC_ABDAY[7]    = {"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "S\341b"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = {"Janeiro",    "Fevereiro", "Março",    "Abril",
-                               "Maio",       "Junho",     "Julho",     "Agosto",
-                               "Setembro", "Outubro",  "Novembro", "Dezembro"};
+const char *LC_MON[12]     = {"Janeiro",   "Fevereiro", "Mar\347o", "Abril",
+                              "Maio",      "Junho",     "Julho",    "Agosto",
+                              "Setembro",  "Outubro",   "Novembro", "Dezembro"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
 const char *LC_ABMON[12]   = {"Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
                               "Jul", "Ago", "Set", "Out", "Nov", "Dez"};
@@ -71,14 +78,14 @@ const char *LC_ERA_T_FMT   = "";
 const String OWM_LANG = "pt_br";
 
 // CURRENT CONDITIONS
-const char *TXT_FEELS_LIKE         = "Sensação térmica";
+const char *TXT_FEELS_LIKE         = "Sensa\347\343o t\351rmica";
 const char *TXT_SUNRISE            = "Nascer do Sol";
-const char *TXT_SUNSET             = "Pôr do Sol";
+const char *TXT_SUNSET             = "P\364r do Sol";
 const char *TXT_WIND               = "Vento";
 const char *TXT_HUMIDITY           = "Umidade";
-const char *TXT_UV_INDEX           = "Índice UV";
-const char *TXT_PRESSURE           = "Pressão";
-const char *TXT_AIR_QUALITY_INDEX  = "Índice de Qualidade do Ar";
+const char *TXT_UV_INDEX           = "\315ndice UV";
+const char *TXT_PRESSURE           = "Press\343o";
+const char *TXT_AIR_QUALITY_INDEX  = "\315ndice de Qualidade do Ar";
 const char *TXT_VISIBILITY         = "Visibilidade";
 const char *TXT_INDOOR_TEMPERATURE = "Temperatura Interna";
 const char *TXT_INDOOR_HUMIDITY    = "Umidade Interna";
@@ -95,7 +102,7 @@ const char *TXT_WIFI_EXCELLENT     = "Excelente";
 const char *TXT_WIFI_GOOD          = "Bom";
 const char *TXT_WIFI_FAIR          = "Regular";
 const char *TXT_WIFI_WEAK          = "Fraco";
-const char *TXT_WIFI_NO_CONNECTION = "Sem Conexão";
+const char *TXT_WIFI_NO_CONNECTION = "Sem Conex\343o";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
@@ -125,28 +132,28 @@ const char *TXT_UNITS_DIST_MILES      = "mi";
 // MISCELLANEOUS MESSAGES
 // Title Case
 const char *TXT_LOW_BATTERY = "Bateria Baixa";
-const char *TXT_NETWORK_NOT_AVAILABLE = "Rede Não Disponível";
-const char *TXT_TIME_SYNCHRONIZATION_FAILED = "Falha na Sincronização do Tempo";
-const char *TXT_WIFI_CONNECTION_FAILED = "Falha na Conexão WiFi";
+const char *TXT_NETWORK_NOT_AVAILABLE = "Rede N\343o Dispon\355vel";
+const char *TXT_TIME_SYNCHRONIZATION_FAILED = "Falha na Sincroniza\347\343o do Tempo";
+const char *TXT_WIFI_CONNECTION_FAILED = "Falha na Conex\343o WiFi";
 // First Word Capitalized
-const char *TXT_ATTEMPTING_HTTP_REQ = "Tentando Requisição HTTP";
+const char *TXT_ATTEMPTING_HTTP_REQ = "Tentando Requisi\347\343o HTTP";
 const char *TXT_AWAKE_FOR = "Acordado por";
 const char *TXT_BATTERY_VOLTAGE = "Voltagem da Bateria";
 const char *TXT_CONNECTING_TO = "Conectando a";
-const char *TXT_COULD_NOT_CONNECT_TO = "Não foi possível conectar a";
-const char *TXT_ENTERING_DEEP_SLEEP_FOR = "Entrando em hibernação por";
+const char *TXT_COULD_NOT_CONNECT_TO = "N\343o foi poss\355vel conectar a";
+const char *TXT_ENTERING_DEEP_SLEEP_FOR = "Entrando em hiberna\347\343o por";
 const char *TXT_READING_FROM = "Lendo de";
 const char *TXT_FAILED  = "Falhou";
 const char *TXT_SUCCESS = "Sucesso";
 const char *TXT_UNKNOWN = "Desconhecido";
 // All Lowercase
-const char *TXT_NOT_FOUND = "não encontrado";
+const char *TXT_NOT_FOUND = "n\343o encontrado";
 const char *TXT_READ_FAILED = "falha na leitura";
 // Complete Sentences
-const char *TXT_FAILED_TO_GET_TIME = "Falha ao obter o horário!";
+const char *TXT_FAILED_TO_GET_TIME = "Falha ao obter o hor\341rio!";
 const char *TXT_HIBERNATING_INDEFINITELY_NOTICE = "Hibernando sem hora de despertar!";
-const char *TXT_REFERENCING_OLDER_TIME_NOTICE = "Falha ao sincronizar o tempo antes da hibernação, referenciando tempo anterior.";
-const char *TXT_WAITING_FOR_SNTP = "Aguardando sincronização SNTP.";
+const char *TXT_REFERENCING_OLDER_TIME_NOTICE = "Falha ao sincronizar o tempo antes da hiberna\347\343o, referenciando tempo anterior.";
+const char *TXT_WAITING_FOR_SNTP = "Aguardando sincroniza\347\343o SNTP.";
 const char *TXT_LOW_BATTERY_VOLTAGE = "Baixa voltagem da bateria!";
 const char *TXT_VERY_LOW_BATTERY_VOLTAGE = "Voltagem da bateria muito baixa!";
 const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Voltagem da bateria criticamente baixa!";
@@ -328,15 +335,15 @@ const char *COMPASS_POINT_NOTATION[32] = {
 };
 
 // HTTP CLIENT ERRORS
-const char *TXT_HTTPC_ERROR_CONNECTION_REFUSED   = "Conexão Recusada";
-const char *TXT_HTTPC_ERROR_SEND_HEADER_FAILED   = "Falha ao Enviar Cabeçalho";
+const char *TXT_HTTPC_ERROR_CONNECTION_REFUSED   = "Conex\343o Recusada";
+const char *TXT_HTTPC_ERROR_SEND_HEADER_FAILED   = "Falha ao Enviar Cabe\347alho";
 const char *TXT_HTTPC_ERROR_SEND_PAYLOAD_FAILED  = "Falha ao Enviar Carga";
-const char *TXT_HTTPC_ERROR_NOT_CONNECTED        = "Não Conectado";
-const char *TXT_HTTPC_ERROR_CONNECTION_LOST      = "Conexão Perdida";
+const char *TXT_HTTPC_ERROR_NOT_CONNECTED        = "N\343o Conectado";
+const char *TXT_HTTPC_ERROR_CONNECTION_LOST      = "Conex\343o Perdida";
 const char *TXT_HTTPC_ERROR_NO_STREAM            = "Nenhum Fluxo";
 const char *TXT_HTTPC_ERROR_NO_HTTP_SERVER       = "Nenhum Servidor HTTP";
-const char *TXT_HTTPC_ERROR_TOO_LESS_RAM         = "Pouca Memória RAM";
-const char *TXT_HTTPC_ERROR_ENCODING             = "Transfer-Encoding Não Suportado";
+const char *TXT_HTTPC_ERROR_TOO_LESS_RAM         = "Pouca Mem\363ria RAM";
+const char *TXT_HTTPC_ERROR_ENCODING             = "Transfer-Encoding N\343o Suportado";
 const char *TXT_HTTPC_ERROR_STREAM_WRITE         = "Erro na Escrita do Fluxo";
 const char *TXT_HTTPC_ERROR_READ_TIMEOUT         = "Tempo de Leitura Excedido";
 
@@ -350,79 +357,80 @@ const char *TXT_HTTP_RESPONSE_103 = "Dicas Iniciais";
 const char *TXT_HTTP_RESPONSE_200 = "OK";
 const char *TXT_HTTP_RESPONSE_201 = "Criado";
 const char *TXT_HTTP_RESPONSE_202 = "Aceito";
-const char *TXT_HTTP_RESPONSE_203 = "Informações Não Autorizadas";
-const char *TXT_HTTP_RESPONSE_204 = "Nenhum Conteúdo";
-const char *TXT_HTTP_RESPONSE_205 = "Redefinir Conteúdo";
-const char *TXT_HTTP_RESPONSE_206 = "Conteúdo Parcial";
+const char *TXT_HTTP_RESPONSE_203 = "Informa\347\365es N\343o Autorizadas";
+const char *TXT_HTTP_RESPONSE_204 = "Nenhum Conte\372do";
+const char *TXT_HTTP_RESPONSE_205 = "Redefinir Conte\372do";
+const char *TXT_HTTP_RESPONSE_206 = "Conte\372do Parcial";
 const char *TXT_HTTP_RESPONSE_207 = "Status Multi";
-const char *TXT_HTTP_RESPONSE_208 = "Já Reportado";
+const char *TXT_HTTP_RESPONSE_208 = "J\341 Reportado";
 const char *TXT_HTTP_RESPONSE_226 = "IM Usado";
 // 3xx - Redirection Responses
-const char *TXT_HTTP_RESPONSE_300 = "Múltiplas Escolhas";
+const char *TXT_HTTP_RESPONSE_300 = "M\372ltiplas Escolhas";
 const char *TXT_HTTP_RESPONSE_301 = "Movido Permanentemente";
 const char *TXT_HTTP_RESPONSE_302 = "Encontrado";
 const char *TXT_HTTP_RESPONSE_303 = "Veja Outros";
-const char *TXT_HTTP_RESPONSE_304 = "Não Modificado";
+const char *TXT_HTTP_RESPONSE_304 = "N\343o Modificado";
 const char *TXT_HTTP_RESPONSE_305 = "Use Proxy";
-const char *TXT_HTTP_RESPONSE_306 = "Proxy Móvel";
-const char *TXT_HTTP_RESPONSE_307 = "Redirecionamento Temporário";
+const char *TXT_HTTP_RESPONSE_306 = "Proxy M\363vel";
+const char *TXT_HTTP_RESPONSE_307 = "Redirecionamento Tempor\341rio";
 const char *TXT_HTTP_RESPONSE_308 = "Redirecionamento Permanente";
 // 4xx - Client Error Responses
-const char *TXT_HTTP_RESPONSE_400 = "Solicitação Incorreta";
-const char *TXT_HTTP_RESPONSE_401 = "Não Autorizado";
-const char *TXT_HTTP_RESPONSE_402 = "Pagamento Necessário";
+const char *TXT_HTTP_RESPONSE_400 = "Solicita\347\343o Incorreta";
+const char *TXT_HTTP_RESPONSE_401 = "N\343o Autorizado";
+const char *TXT_HTTP_RESPONSE_402 = "Pagamento Necess\341rio";
 const char *TXT_HTTP_RESPONSE_403 = "Proibido";
-const char *TXT_HTTP_RESPONSE_404 = "Não Encontrado";
-const char *TXT_HTTP_RESPONSE_405 = "Método Não Permitido";
-const char *TXT_HTTP_RESPONSE_406 = "Não Aceitável";
-const char *TXT_HTTP_RESPONSE_407 = "Autenticação de Proxy Necessária";
-const char *TXT_HTTP_RESPONSE_408 = "Tempo Limite de Solicitação";
+const char *TXT_HTTP_RESPONSE_404 = "N\343o Encontrado";
+const char *TXT_HTTP_RESPONSE_405 = "M\351todo N\343o Permitido";
+const char *TXT_HTTP_RESPONSE_406 = "N\343o Aceit\341vel";
+const char *TXT_HTTP_RESPONSE_407 = "Autentica\347\343o de Proxy Necess\341ria";
+const char *TXT_HTTP_RESPONSE_408 = "Tempo Limite de Solicita\347\343o";
 const char *TXT_HTTP_RESPONSE_409 = "Conflito";
 const char *TXT_HTTP_RESPONSE_410 = "Desaparecido";
-const char *TXT_HTTP_RESPONSE_411 = "Comprimento Necessário";
-const char *TXT_HTTP_RESPONSE_412 = "Falha na Pré-condição";
-const char *TXT_HTTP_RESPONSE_413 = "Solicitação de Entidade Grande Demais";
+const char *TXT_HTTP_RESPONSE_411 = "Comprimento Necess\341rio";
+const char *TXT_HTTP_RESPONSE_412 = "Falha na Pr\351-condi\347\343o";
+const char *TXT_HTTP_RESPONSE_413 = "Solicita\347\343o de Entidade Grande Demais";
 const char *TXT_HTTP_RESPONSE_414 = "URI Muito Longo";
-const char *TXT_HTTP_RESPONSE_415 = "Tipo de Mídia Não Suportado";
-const char *TXT_HTTP_RESPONSE_416 = "Solicitação de Faixa Não Satisfatória";
+const char *TXT_HTTP_RESPONSE_415 = "Tipo de M\355dia N\343o Suportado";
+const char *TXT_HTTP_RESPONSE_416 = "Solicita\347\343o de Faixa N\343o Satisfat\363ria";
 const char *TXT_HTTP_RESPONSE_417 = "Falha na Expectativa";
 const char *TXT_HTTP_RESPONSE_418 = "I'm a teapot"; //TODO
-const char *TXT_HTTP_RESPONSE_421 = "Solicitação Direcionada para Serviços";
-const char *TXT_HTTP_RESPONSE_422 = "Entidade Não Processável";
+const char *TXT_HTTP_RESPONSE_421 = "Solicita\347\343o Direcionada para Servi\347os";
+const char *TXT_HTTP_RESPONSE_422 = "Entidade N\343o Process\341vel";
 const char *TXT_HTTP_RESPONSE_423 = "Bloqueado";
-const char *TXT_HTTP_RESPONSE_424 = "Falha na Dependência";
-const char *TXT_HTTP_RESPONSE_426 = "Atualização Obrigatória";
-const char *TXT_HTTP_RESPONSE_428 = "Pré-condição Requerida";
-const char *TXT_HTTP_RESPONSE_429 = "Muitas Solicitações";
-const char *TXT_HTTP_RESPONSE_431 = "Campo de Cabeçalho de Solicitação Muito Grande";
-const char *TXT_HTTP_RESPONSE_451 = "Indisponível por Motivos Legais";
+const char *TXT_HTTP_RESPONSE_424 = "Falha na Depend\352ncia";
+const char *TXT_HTTP_RESPONSE_425 = "Cole\347\343o N\343o Ordenada";
+const char *TXT_HTTP_RESPONSE_426 = "Atualiza\347\343o Obrigat\363ria";
+const char *TXT_HTTP_RESPONSE_428 = "Pr\351-condi\347\343o Requerida";
+const char *TXT_HTTP_RESPONSE_429 = "Muitas Solicita\347\365es";
+const char *TXT_HTTP_RESPONSE_431 = "Campo de Cabe\347alho de Solicita\347\343o Muito Grande";
+const char *TXT_HTTP_RESPONSE_451 = "Indispon\355vel por Motivos Legais";
 // 5xx - Server Error Responses
 const char *TXT_HTTP_RESPONSE_500 = "Erro Interno do Servidor";
-const char *TXT_HTTP_RESPONSE_501 = "Não Implementado";
+const char *TXT_HTTP_RESPONSE_501 = "N\343o Implementado";
 const char *TXT_HTTP_RESPONSE_502 = "Porta de Entrada Ruim";
-const char *TXT_HTTP_RESPONSE_503 = "Serviço Indisponível";
+const char *TXT_HTTP_RESPONSE_503 = "Servi\347o Indispon\355vel";
 const char *TXT_HTTP_RESPONSE_504 = "Tempo Limite do Gateway";
-const char *TXT_HTTP_RESPONSE_505 = "Versão HTTP Não Suportada";
-const char *TXT_HTTP_RESPONSE_506 = "Variação de Variante Também Negocia";
+const char *TXT_HTTP_RESPONSE_505 = "Vers\343o HTTP N\343o Suportada";
+const char *TXT_HTTP_RESPONSE_506 = "Varia\347\343o de Variante Tamb\351m Negocia";
 const char *TXT_HTTP_RESPONSE_507 = "Armazenamento Insuficiente";
 const char *TXT_HTTP_RESPONSE_508 = "Loop Detectado";
-const char *TXT_HTTP_RESPONSE_510 = "Não Estendido";
-const char *TXT_HTTP_RESPONSE_511 = "Autenticação de Rede Necessária";
+const char *TXT_HTTP_RESPONSE_510 = "N\343o Estendido";
+const char *TXT_HTTP_RESPONSE_511 = "Autentica\347\343o de Rede Necess\341ria";
 
 // ARDUINOJSON DESERIALIZATION ERROR CODES
-const char *TXT_DESERIALIZATION_ERROR_OK               = "Desserialização OK";
-const char *TXT_DESERIALIZATION_ERROR_EMPTY_INPUT      = "Entrada Vazia para Desserialização";
-const char *TXT_DESERIALIZATION_ERROR_INCOMPLETE_INPUT = "Entrada Incompleta para Desserialização";
-const char *TXT_DESERIALIZATION_ERROR_INVALID_INPUT    = "Entrada Inválida para Desserialização";
-const char *TXT_DESERIALIZATION_ERROR_NO_MEMORY        = "Sem Memória para Desserialização";
-const char *TXT_DESERIALIZATION_ERROR_TOO_DEEP         = "Desserialização Muito Profunda";
+const char *TXT_DESERIALIZATION_ERROR_OK               = "Desserializa\347\343o OK";
+const char *TXT_DESERIALIZATION_ERROR_EMPTY_INPUT      = "Entrada Vazia para Desserializa\347\343o";
+const char *TXT_DESERIALIZATION_ERROR_INCOMPLETE_INPUT = "Entrada Incompleta para Desserializa\347\343o";
+const char *TXT_DESERIALIZATION_ERROR_INVALID_INPUT    = "Entrada Inv\341lida para Desserializa\347\343o";
+const char *TXT_DESERIALIZATION_ERROR_NO_MEMORY        = "Sem Mem\363ria para Desserializa\347\343o";
+const char *TXT_DESERIALIZATION_ERROR_TOO_DEEP         = "Desserializa\347\343o Muito Profunda";
 
 // WIFI STATUS
-const char *TXT_WL_NO_SHIELD       = "Sem Módulo WiFi";
+const char *TXT_WL_NO_SHIELD       = "Sem M\363dulo WiFi";
 const char *TXT_WL_IDLE_STATUS     = "Em Repouso";
-const char *TXT_WL_NO_SSID_AVAIL   = "Nenhuma Rede Disponível";
+const char *TXT_WL_NO_SSID_AVAIL   = "Nenhuma Rede Dispon\355vel";
 const char *TXT_WL_SCAN_COMPLETED  = "Varredura Completa";
 const char *TXT_WL_CONNECTED       = "Conectado";
-const char *TXT_WL_CONNECT_FAILED  = "Falha na Conexão";
-const char *TXT_WL_CONNECTION_LOST = "Conexão Perdida";
+const char *TXT_WL_CONNECT_FAILED  = "Falha na Conex\343o";
+const char *TXT_WL_CONNECTION_LOST = "Conex\343o Perdida";
 const char *TXT_WL_DISCONNECTED    = "Desconectado";
