@@ -43,10 +43,10 @@ Here are two examples utilizing various configuration options:
 
 ### Hardware
 
-7.5inch (800×480) E-Ink Display
+7.5inch (800×480) E-Paper Display
 
 - Advantages of E-Paper
-  - Ultra Low Power Consumption - E-Paper (or E-Ink) displays are ideal for low-power applications that do not require frequent display refreshes. E-Paper displays only draw power when refreshing the display and do not have a backlight. Images will remain on the screen even when power is removed.
+  - Ultra Low Power Consumption - E-Paper (aka E-Ink) displays are ideal for low-power applications that do not require frequent display refreshes. E-Paper displays only draw power when refreshing the display and do not have a backlight. Images will remain on the screen even when power is removed.
 
 - Limitations of E-Paper:
   - Colors - E-Paper has traditionally been limited to just black and white, but in recent years 3-color E-Paper screens have started showing up.
@@ -74,7 +74,7 @@ DESPI-C02 Adapter Board
 
 - No level converters, which makes it better for low-power use with 3.3V processors compared to the Waveshare HAT.
 
-- The Waveshare started shipping revision 2.3 of their e-paper HAT. Some users are reporting issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62)).
+- Waveshare started shipping revision 2.3 of their e-paper HAT. Some users have reported issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62)).
 
 - https://www.e-paper-display.com/products_detail/productId=403.html
   
