@@ -1,5 +1,5 @@
 /* AQI library definitions for pollutant-concentration-to-aqi.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,7 +56,7 @@ int australia_aqi(float co_8h,  float no2_1h,   float o3_1h, float o3_4h,
   // standard = 9.0ppm * 1000ppb * 1.1456 μg/m^3 = 10310.4
   aqi = max(aqi, compute_nepm_aqi(10310.4, co_8h));
   // no2   μg/m^3, Nitrogen Dioxide (NO2)
-  // standard = 0.12ppm * 1000ppb * 1.8816 μg/m^3 = 10310.4
+  // standard = 0.12ppm * 1000ppb * 1.8816 μg/m^3 = 225.792
   aqi = max(aqi, compute_nepm_aqi(225.792, no2_1h));
   // o3    μg/m^3, Ground-Level Ozone (O3)
   // standard = 0.10ppm * 1000ppb * 1.9632 μg/m^3 = 196.32
