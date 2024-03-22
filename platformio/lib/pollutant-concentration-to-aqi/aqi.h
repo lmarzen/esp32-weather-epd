@@ -1,5 +1,5 @@
 /* AQI library declarations for pollutant-concentration-to-aqi.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -58,7 +58,7 @@ extern "C" {
  * '_Xh', where 'X' is the time period samples are averaged over in hours.
  * (or '_Xmin' for minutes)
  *
- * Ex: 'co_8h' is interpreted as, the X hour moving average concentration of
+ * Ex: 'co_8h' is interpreted as, the 8 hour moving average concentration of
  *             Carbon Monoxide.
  *
  * Useful websites with more information about various aqi scales:
