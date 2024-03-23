@@ -1,5 +1,5 @@
 /* Configuration option declarations for esp32-weather-epd.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,6 +59,7 @@
 //   English (United States)         en_US
 //   French (France)                 fr_FR
 //   Dutch (Belgium)                 nl_BE
+//   Portuguese (Brazil)             pt_BR
 #define LOCALE en_US
 
 // UNITS
@@ -145,7 +146,7 @@
 // #define USE_HTTPS_WITH_CERT_VERIF
 
 // WIND DIRECTION INDICATOR
-// Choose whether the wind direction indicator should be an arrow, number, or 
+// Choose whether the wind direction indicator should be an arrow, number, or
 // expressed in Compass Point Notation (CPN).
 // The arrow indicator can be combined with NUMBER or CPN.
 //
@@ -241,6 +242,7 @@
 //   If defined, enables increase verbosity over the serial port.
 //   level 0: basic status information, assists troubleshooting (default)
 //   level 1: increased verbosity for debugging
+//   level 2: print api responses to serial monitor
 #define DEBUG_LEVEL 0
 
 // Set the below constants in "config.cpp"
@@ -278,10 +280,11 @@ extern const long SLEEP_DURATION;
 extern const int BED_TIME;
 extern const int WAKE_TIME;
 extern const int HOURLY_GRAPH_MAX;
-extern const float BATTERY_WARN_VOLTAGE;
-extern const float LOW_BATTERY_VOLTAGE;
-extern const float VERY_LOW_BATTERY_VOLTAGE;
-extern const float CRIT_LOW_BATTERY_VOLTAGE;
+extern const uint32_t MAX_BATTERY_VOLTAGE;
+extern const uint32_t WARN_BATTERY_VOLTAGE;
+extern const uint32_t LOW_BATTERY_VOLTAGE;
+extern const uint32_t VERY_LOW_BATTERY_VOLTAGE;
+extern const uint32_t CRIT_LOW_BATTERY_VOLTAGE;
 extern const unsigned long LOW_BATTERY_SLEEP_INTERVAL;
 extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 

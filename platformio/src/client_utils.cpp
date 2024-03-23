@@ -1,5 +1,5 @@
 /* Client side utilities for esp32-weather-epd.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@
 wl_status_t startWiFi(int &wifiRSSI)
 {
   WiFi.mode(WIFI_STA);
-  Serial.printf("Connecting to '%s'", WIFI_SSID);
+  Serial.printf("%s '%s'", TXT_CONNECTING_TO, WIFI_SSID);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   // timeout if WiFi does not connect in WIFI_TIMEOUT ms from now
@@ -81,7 +81,7 @@ wl_status_t startWiFi(int &wifiRSSI)
   }
   else
   {
-    Serial.printf("Could not connect to '%s'\n", WIFI_SSID);
+    Serial.printf("%s '%s'\n", TXT_COULD_NOT_CONNECT_TO, WIFI_SSID);
   }
   return connection_status;
 } // startWiFi
@@ -92,7 +92,7 @@ void killWiFi()
 {
   WiFi.disconnect();
   WiFi.mode(WIFI_OFF);
-}
+} // killWiFi
 
 /* Prints the local time to serial monitor.
  *
@@ -103,12 +103,12 @@ bool printLocalTime(tm *timeInfo)
   int attempts = 0;
   while (!getLocalTime(timeInfo) && attempts++ < 3)
   {
-    Serial.println("Failed to obtain time");
+    Serial.println(TXT_FAILED_TO_GET_TIME);
     return false;
   }
   Serial.println(timeInfo, "%A, %B %d, %Y %H:%M:%S");
   return true;
-} // killWiFi
+} // printLocalTime
 
 /* Waits for NTP server time sync, adjusted for the time zone specified in
  * config.cpp.
@@ -124,7 +124,7 @@ bool waitForSNTPSync(tm *timeInfo)
   if ((sntp_get_sync_status() == SNTP_SYNC_STATUS_RESET)
       && (millis() < timeout))
   {
-    Serial.print("Waiting for SNTP synchronization.");
+    Serial.print(TXT_WAITING_FOR_SNTP);
     delay(100); // ms
     while ((sntp_get_sync_status() == SNTP_SYNC_STATUS_RESET)
         && (millis() < timeout))
@@ -166,7 +166,8 @@ bool waitForSNTPSync(tm *timeInfo)
 
   uri += "&appid=" + OWM_APIKEY;
 
-  Serial.println("Attempting HTTP Request: " + sanitizedUri);
+  Serial.print(TXT_ATTEMPTING_HTTP_REQ);
+  Serial.println(": " + sanitizedUri);
   int httpResponse = 0;
   while (!rxSuccess && attempts < 3)
   {
@@ -230,7 +231,8 @@ bool waitForSNTPSync(tm *timeInfo)
                + "&start=" + startStr + "&end=" + endStr
                + "&appid={API key}";
 
-  Serial.println("Attempting HTTP Request: " + sanitizedUri);
+  Serial.print(TXT_ATTEMPTING_HTTP_REQ);
+  Serial.println(": " + sanitizedUri);
   int httpResponse = 0;
   while (!rxSuccess && attempts < 3)
   {
