@@ -1,5 +1,5 @@
 /* AQI library definitions for pollutant-concentration-to-aqi.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,101 @@
 
 #include "aqi.h"
 #include <math.h>
+
+#ifndef AQI_EXTERN_TXT
+const char *AUSTRALIA_AQI_TXT[6] =
+{
+  "Very Good",
+  "Good",
+  "Fair",
+  "Poor",
+  "Very Poor",
+  "Hazardous",
+};
+const char *CANADA_AQHI_TXT[4] =
+{
+  "Low",
+  "Moderate",
+  "High",
+  "Very High",
+};
+const char *EUROPE_CAQI_TXT[5] =
+{
+  "Very Low",
+  "Low",
+  "Medium",
+  "High",
+  "Very High",
+};
+const char *HONG_KONG_AQHI_TXT[5] =
+{
+  "Low",
+  "Moderate",
+  "High",
+  "Very High",
+  "Hazardous",
+};
+const char *INDIA_AQI_TXT[6] =
+{
+  "Good",
+  "Satisfactory",
+  "Moderate",
+  "Poor",
+  "Very Poor",
+  "Severe",
+};
+const char *MAINLAND_CHINA_AQI_TXT[6] =
+{
+  "Excellent",
+  "Good",
+  "Lightly Polluted",
+  "Moderately Polluted",
+  "Heavily Polluted",
+  "Severely Polluted",
+};
+const char *SINGAPORE_PSI_TXT[5] =
+{
+  "Good",
+  "Moderate",
+  "Unhealthy",
+  "Very Unhealthy",
+  "Hazardous",
+};
+const char *SOUTH_KOREA_CAI_TXT[4] =
+{
+  "Good",
+  "Medium",
+  "Unhealthy",
+  "Very Unhealthy",
+};
+const char *UNITED_KINGDOM_DAQI_TXT[4] =
+{
+  "Low",
+  "Moderate",
+  "High",
+  "Very High",
+};
+const char *UNITED_STATES_AQI_TXT[6] =
+{
+  "Good",
+  "Moderate",
+  "Unhealthy for Sensitive Groups",
+  "Unhealthy",
+  "Very Unhealthy",
+  "Hazardous",
+};
+#else
+extern const char *AUSTRALIA_AQI_TXT[6];
+extern const char *CANADA_AQHI_TXT[4];
+extern const char *EUROPE_CAQI_TXT[5];
+extern const char *HONG_KONG_AQHI_TXT[5];
+extern const char *INDIA_AQI_TXT[6];
+extern const char *MAINLAND_CHINA_AQI_TXT[6];
+extern const char *SINGAPORE_PSI_TXT[5];
+extern const char *SOUTH_KOREA_CAI_TXT[4];
+extern const char *UNITED_KINGDOM_DAQI_TXT[4];
+extern const char *UNITED_STATES_AQI_TXT[6];
+#endif // AQI_EXTERN_TXT
 
 int max(int a, int b) { return a >= b ? a : b; }
 int min(int a, int b) { return a <= b ? a : b; }
@@ -56,7 +151,7 @@ int australia_aqi(float co_8h,  float no2_1h,   float o3_1h, float o3_4h,
   // standard = 9.0ppm * 1000ppb * 1.1456 μg/m^3 = 10310.4
   aqi = max(aqi, compute_nepm_aqi(10310.4, co_8h));
   // no2   μg/m^3, Nitrogen Dioxide (NO2)
-  // standard = 0.12ppm * 1000ppb * 1.8816 μg/m^3 = 10310.4
+  // standard = 0.12ppm * 1000ppb * 1.8816 μg/m^3 = 225.792
   aqi = max(aqi, compute_nepm_aqi(225.792, no2_1h));
   // o3    μg/m^3, Ground-Level Ozone (O3)
   // standard = 0.10ppm * 1000ppb * 1.9632 μg/m^3 = 196.32

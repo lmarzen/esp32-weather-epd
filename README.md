@@ -43,10 +43,10 @@ Here are two examples utilizing various configuration options:
 
 ### Hardware
 
-7.5inch (800×480) E-Ink Display
+7.5inch (800×480) E-Paper Display
 
 - Advantages of E-Paper
-  - Ultra Low Power Consumption - E-Paper (or E-Ink) displays are ideal for low-power applications that do not require frequent display refreshes. E-Paper displays only draw power when refreshing the display and do not have a backlight. Images will remain on the screen even when power is removed.
+  - Ultra Low Power Consumption - E-Paper (aka E-Ink) displays are ideal for low-power applications that do not require frequent display refreshes. E-Paper displays only draw power when refreshing the display and do not have a backlight. Images will remain on the screen even when power is removed.
 
 - Limitations of E-Paper:
   - Colors - E-Paper has traditionally been limited to just black and white, but in recent years 3-color E-Paper screens have started showing up.
@@ -74,7 +74,7 @@ DESPI-C02 Adapter Board
 
 - No level converters, which makes it better for low-power use with 3.3V processors compared to the Waveshare HAT.
 
-- The Waveshare started shipping revision 2.3 of their e-paper HAT. Some users are reporting issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62)).
+- Waveshare started shipping revision 2.3 of their e-paper HAT. Some users have reported issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62)).
 
 - https://www.e-paper-display.com/products_detail/productId=403.html
   
@@ -137,12 +137,13 @@ Stand/Frame
 - 3D Printable
   - Here is a list of community designs.
   
-    | Contributor                                               | Link                                                                                      |
-    |-----------------------------------------------------------|-------------------------------------------------------------------------------------------|
-    | [3D Nate](https://www.printables.com/@3DNate_451157)      | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)         |
-    | [Sven F.](https://github.com/Spanholz)                    | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)      |
-    | [Layers Studio](https://www.printables.com/@LayersStudio) | [Printables](https://www.printables.com/model/655768-esp32-e-paper-weather-display-stand) |
-    | [PJ Veltri](https://www.printables.com/@PJVeltri_1590999) | [Printables](https://www.printables.com/model/692944-base-and-display-holder-for-esp-32-e-paper-weather) |
+    | Contributor                                                       | Link                                                                                                     |
+    |-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+    | [Francois Allard](https://www.printables.com/@FrAllard_1585397)   | [Printables](https://www.printables.com/model/791477-weather-station-using-a-esp32)                      |
+    | [3D Nate](https://www.printables.com/@3DNate_451157)              | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)                        |
+    | [Sven F.](https://github.com/Spanholz)                            | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)                     |
+    | [Layers Studio](https://www.printables.com/@LayersStudio)         | [Printables](https://www.printables.com/model/655768-esp32-e-paper-weather-display-stand)                |
+    | [PJ Veltri](https://www.printables.com/@PJVeltri_1590999)         | [Printables](https://www.printables.com/model/692944-base-and-display-holder-for-esp-32-e-paper-weather) |
 
   - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
 - Picture Frame

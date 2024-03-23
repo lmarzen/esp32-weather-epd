@@ -1,5 +1,5 @@
 /* Configuration options for esp32-weather-epd.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +19,24 @@
 #include "config.h"
 
 // PINS
+// The configuration below is intended for use with the project's official 
+// wiring diagrams using the FireBeetle 2 ESP32-E microcontroller board.
+//
+// Note: LED_BUILTIN pin will be disabled to reduce power draw.  Refer to your
+//       board's pinout to ensure you avoid using a pin with this shared 
+//       functionality.
+//
 // ADC pin used to measure battery voltage
 const uint8_t PIN_BAT_ADC  = A2; // A0 for micro-usb firebeetle
-// Pins for Waveshare e-paper Driver Board
-const uint8_t PIN_EPD_BUSY = 13; // 5 for micro-usb firebeetle
-const uint8_t PIN_EPD_CS   =  2;
+// Pins for E-Paper Driver Board
+const uint8_t PIN_EPD_BUSY = 14; // 5 for micro-usb firebeetle
+const uint8_t PIN_EPD_CS   = 13;
 const uint8_t PIN_EPD_RST  = 21;
 const uint8_t PIN_EPD_DC   = 22;
 const uint8_t PIN_EPD_SCK  = 18;
 const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
 const uint8_t PIN_EPD_MOSI = 23;
-const uint8_t PIN_EPD_PWR  = 14; // Irrelevant if directly connected to 3.3V
+const uint8_t PIN_EPD_PWR  = 26; // Irrelevant if directly connected to 3.3V
 // I2C Pins used for BME280
 const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
@@ -125,10 +132,11 @@ const int HOURLY_GRAPH_MAX = 24;
 // minutes). Once the battery voltage has fallen to CRIT_LOW_BATTERY_VOLTAGE,
 // the esp32 will hibernate and a manual press of the reset (RST) button to
 // begin operating again.
-const float BATTERY_WARN_VOLTAGE     = 3.40; // (volts)
-const float LOW_BATTERY_VOLTAGE      = 3.20; // (volts)
-const float VERY_LOW_BATTERY_VOLTAGE = 3.10; // (volts)
-const float CRIT_LOW_BATTERY_VOLTAGE = 3.00; // (volts)
+const uint32_t MAX_BATTERY_VOLTAGE      = 4200; // (millivolts)
+const uint32_t WARN_BATTERY_VOLTAGE     = 3400; // (millivolts)
+const uint32_t LOW_BATTERY_VOLTAGE      = 3200; // (millivolts)
+const uint32_t VERY_LOW_BATTERY_VOLTAGE = 3100; // (millivolts)
+const uint32_t CRIT_LOW_BATTERY_VOLTAGE = 3000; // (millivolts)
 const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 30;  // (minutes)
 const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
 

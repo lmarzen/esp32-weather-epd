@@ -1,5 +1,5 @@
 /* Renderer for esp32-weather-epd.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -287,7 +287,7 @@ void drawCurrentConditions(const owm_current_t &current,
   unitStr = TXT_UNITS_TEMP_FAHRENHEIT;
 #endif
   // FONT_**_temperature fonts only have the character set used for displaying
-  // temperature (0123456789.-\xB0)
+  // temperature (0123456789.-\260)
   display.setFont(&FONT_48pt8b_temperature);
 #if defined(DISP_BW_V2) || defined(DISP_3C_B) || defined(DISP_7C_F)
     drawString(196 + 164 / 2 - 20, 196 / 2 + 69 / 2, dataStr, CENTER);
@@ -306,13 +306,13 @@ void drawCurrentConditions(const owm_current_t &current,
   dataStr = String(TXT_FEELS_LIKE) + ' '
             + String(static_cast<int>(round(
                      kelvin_to_celsius(current.feels_like))))
-            + '\xB0';
+            + '\260';
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
   dataStr = String(TXT_FEELS_LIKE) + ' '
             + String(static_cast<int>(round(
                      kelvin_to_fahrenheit(current.feels_like))))
-            + '\xB0';
+            + '\260';
 #endif
   display.setFont(&FONT_12pt8b);
 #if defined(DISP_BW_V2) || defined(DISP_3C_B) || defined(DISP_7C_F)
@@ -419,7 +419,7 @@ void drawCurrentConditions(const owm_current_t &current,
              unitStr, LEFT);
 
 #if defined(WIND_INDICATOR_NUMBER)
-  dataStr = String(current.wind_deg) + "\xB0";
+  dataStr = String(current.wind_deg) + "\260";
   display.setFont(&FONT_12pt8b);
   drawString(display.getCursorX() + 6, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
              dataStr, LEFT);
@@ -518,7 +518,7 @@ void drawCurrentConditions(const owm_current_t &current,
     dataStr = "--";
   }
 #if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
-  dataStr += "\xB0";
+  dataStr += "\260";
 #endif
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
 #endif // defined(DISP_BW_V2) || defined(DISP_3C_B) || defined(DISP_7C_F)
@@ -672,15 +672,15 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 #endif
 #ifdef UNITS_TEMP_CELSIUS
   hiStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.max)
-                 ))) + "\xB0";
+                 ))) + "\260";
   loStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.min)
-                 ))) + "\xB0";
+                 ))) + "\260";
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
   hiStr = String(static_cast<int>(round(kelvin_to_fahrenheit(daily[i].temp.max)
-                 ))) + "\xB0";
+                 ))) + "\260";
   loStr = String(static_cast<int>(round(kelvin_to_fahrenheit(daily[i].temp.min)
-                 ))) + "\xB0";
+                 ))) + "\260";
 #endif
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
     drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
@@ -962,7 +962,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     // Temperature
     dataStr = String(tempBoundMax - (i * yTempMajorTicks));
 #if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
-    dataStr += "\xB0";
+    dataStr += "\260";
 #endif
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT, ACCENT_COLOR);
 
@@ -1114,7 +1114,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
  * the display.
  */
 void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
-                   int rssi, double batVoltage)
+                   int rssi, uint32_t batVoltage)
 {
   String dataStr;
   uint16_t dataColor = GxEPD_BLACK;
@@ -1124,13 +1124,17 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
 
 #if BATTERY_MONITORING
   // battery
-  int batPercent = calcBatPercent(batVoltage);
-  if (batVoltage < BATTERY_WARN_VOLTAGE) {
+  uint32_t batPercent = calcBatPercent(batVoltage,
+                                       CRIT_LOW_BATTERY_VOLTAGE,
+                                       MAX_BATTERY_VOLTAGE);
+#if defined(DISP_3C_B) || defined(DISP_7C_F)
+  if (batVoltage < WARN_BATTERY_VOLTAGE) {
     dataColor = ACCENT_COLOR;
   }
+#endif
   dataStr = String(batPercent) + "%";
 #if STATUS_BAR_EXTRAS_BAT_VOLTAGE
-  dataStr += " (" + String( round(100.0 * batVoltage) / 100.0, 2 ) + "v)";
+  dataStr += " (" + String( round(batVoltage / 10.f) / 100.f, 2 ) + "v)";
 #endif
   drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
   pos -= getStringWidth(dataStr) + 25;
@@ -1177,17 +1181,29 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
 
 /* This function is responsible for drawing prominent error messages to the
  * screen.
+ *
+ * If error message line 2 (errMsgLn2) is empty, line 1 will be automatically
+ * wrapped.
  */
 void drawError(const uint8_t *bitmap_196x196,
                const String &errMsgLn1, const String &errMsgLn2)
 {
   display.setFont(&FONT_26pt8b);
-  drawString(DISP_WIDTH / 2,
-             DISP_HEIGHT / 2 + 196 / 2 + 21,
-             errMsgLn1, CENTER);
-  drawString(DISP_WIDTH / 2,
-             DISP_HEIGHT / 2 + 196 / 2 + 76,
-             errMsgLn2, CENTER);
+  if (!errMsgLn2.isEmpty())
+  {
+    drawString(DISP_WIDTH / 2,
+               DISP_HEIGHT / 2 + 196 / 2 + 21,
+               errMsgLn1, CENTER);
+    drawString(DISP_WIDTH / 2,
+               DISP_HEIGHT / 2 + 196 / 2 + 21 + 55,
+               errMsgLn2, CENTER);
+  }
+  else
+  {
+    drawMultiLnString(DISP_WIDTH / 2,
+                      DISP_HEIGHT / 2 + 196 / 2 + 21,
+                      errMsgLn1, CENTER, DISP_WIDTH - 200, 2, 55);
+  }
   display.drawInvertedBitmap(DISP_WIDTH / 2 - 196 / 2,
                              DISP_HEIGHT / 2 - 196 / 2 - 21,
                              bitmap_196x196, 196, 196, ACCENT_COLOR);

@@ -1,5 +1,5 @@
 /* Main program for esp32-weather-epd.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
 #include <Arduino.h>
 #include <Adafruit_BME280.h>
 #include <Adafruit_Sensor.h>
-#include <driver/adc.h>
 #include <Preferences.h>
 #include <time.h>
 #include <WiFi.h>
 #include <Wire.h>
 
+#include "_locale.h"
 #include "api_response.h"
 #include "client_utils.h"
 #include "config.h"
 #include "display_utils.h"
 #include "icons/icons_196x196.h"
 #include "renderer.h"
-#ifndef USE_HTTP
+#if defined(USE_HTTPS_WITH_CERT_VERIF) || defined(USE_HTTPS_WITH_CERT_VERIF)
   #include <WiFiClientSecure.h>
 #endif
 #ifdef USE_HTTPS_WITH_CERT_VERIF
@@ -43,15 +43,14 @@ static owm_resp_air_pollution_t owm_air_pollution;
 
 Preferences prefs;
 
-/* Put esp32 into ultra low-power deep-sleep (<11μA).
+/* Put esp32 into ultra low-power deep sleep (<11μA).
  * Aligns wake time to the minute. Sleep times defined in config.cpp.
  */
 void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
 {
   if (!getLocalTime(timeInfo))
   {
-    Serial.println("Failed to obtain time before deep-sleep, referencing " \
-                   "older time.");
+    Serial.println(TXT_REFERENCING_OLDER_TIME_NOTICE);
   }
 
   uint64_t sleepDuration = 0;
@@ -111,9 +110,10 @@ void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
 #endif
 
   esp_sleep_enable_timer_wakeup(sleepDuration * 1000000ULL);
-  Serial.println("Awake for "
-                 + String((millis() - startTime) / 1000.0, 3) + "s");
-  Serial.println("Deep-sleep for " + String(sleepDuration) + "s");
+  Serial.print(TXT_AWAKE_FOR);
+  Serial.println(" "  + String((millis() - startTime) / 1000.0, 3) + "s");
+  Serial.print(TXT_ENTERING_DEEP_SLEEP_FOR);
+  Serial.println(" " + String(sleepDuration) + "s");
   esp_deep_sleep_start();
 } // end beginDeepSleep
 
@@ -134,16 +134,9 @@ void setup()
   prefs.begin(NVS_NAMESPACE, false);
 
 #if BATTERY_MONITORING
-  // GET BATTERY VOLTAGE
-  // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings
-  // are multiplied by 2. Readings are divided by 1000 to convert mV to V.
-  adc_power_acquire();
-  uint16_t batADC = analogRead(PIN_BAT_ADC);
-  adc_power_release();
-  double batteryVoltage = static_cast<double>(batADC) / 1000.0 * (3.5 / 2.0);
-            // use / 1000.0 * (3.3 / 2.0) multiplier above for firebeetle esp32
-            // use / 1000.0 * (3.5 / 2.0) for firebeetle esp32-E
-  Serial.println("Battery voltage: " + String(batteryVoltage, 2));
+  uint32_t batteryVoltage = readBatteryVoltage();
+  Serial.print(TXT_BATTERY_VOLTAGE);
+  Serial.println(": " + String(batteryVoltage) + "mv");
 
   // When the battery is low, the display should be updated to reflect that, but
   // only the first time we detect low voltage. The next time the display will
@@ -151,7 +144,7 @@ void setup()
   // make use of non-volatile storage.
   bool lowBat = prefs.getBool("lowBat", false);
 
-  // low battery, deep-sleep now
+  // low battery, deep sleep now
   if (batteryVoltage <= LOW_BATTERY_VOLTAGE)
   {
     if (lowBat == false)
@@ -161,7 +154,7 @@ void setup()
       initDisplay();
       do
       {
-        drawError(battery_alert_0deg_196x196, "Low Battery", "");
+        drawError(battery_alert_0deg_196x196, TXT_LOW_BATTERY);
       } while (display.nextPage());
       powerOffDisplay();
     }
@@ -170,24 +163,24 @@ void setup()
     { // critically low battery
       // don't set esp_sleep_enable_timer_wakeup();
       // We won't wake up again until someone manually presses the RST button.
-      Serial.println("Critically low battery voltage!");
-      Serial.println("Hibernating without wake time!");
+      Serial.println(TXT_CRIT_LOW_BATTERY_VOLTAGE);
+      Serial.println(TXT_HIBERNATING_INDEFINITELY_NOTICE);
     }
     else if (batteryVoltage <= VERY_LOW_BATTERY_VOLTAGE)
     { // very low battery
       esp_sleep_enable_timer_wakeup(VERY_LOW_BATTERY_SLEEP_INTERVAL
                                     * 60ULL * 1000000ULL);
-      Serial.println("Very low battery voltage!");
-      Serial.println("Deep-sleep for "
-                     + String(VERY_LOW_BATTERY_SLEEP_INTERVAL) + "min");
+      Serial.println(TXT_VERY_LOW_BATTERY_VOLTAGE);
+      Serial.print(TXT_ENTERING_DEEP_SLEEP_FOR);
+      Serial.println(" " + String(VERY_LOW_BATTERY_SLEEP_INTERVAL) + "min");
     }
     else
     { // low battery
       esp_sleep_enable_timer_wakeup(LOW_BATTERY_SLEEP_INTERVAL
                                     * 60ULL * 1000000ULL);
-      Serial.println("Low battery voltage!");
-      Serial.println("Deep-sleep for "
-                    + String(LOW_BATTERY_SLEEP_INTERVAL) + "min");
+      Serial.println(TXT_LOW_BATTERY_VOLTAGE);
+      Serial.print(TXT_ENTERING_DEEP_SLEEP_FOR);
+      Serial.println(" " + String(LOW_BATTERY_SLEEP_INTERVAL) + "min");
     }
     esp_deep_sleep_start();
   }
@@ -197,7 +190,7 @@ void setup()
     prefs.putBool("lowBat", false);
   }
 #else
-  double batteryVoltage = NAN;
+  uint32_t batteryVoltage = UINT32_MAX;
 #endif
 
   String statusStr = {};
@@ -248,18 +241,18 @@ void setup()
     initDisplay();
     if (wifiStatus == WL_NO_SSID_AVAIL)
     {
-      Serial.println("Network Not Available");
+      Serial.println(TXT_NETWORK_NOT_AVAILABLE);
       do
       {
-        drawError(wifi_x_196x196, "Network Not", "Available");
+        drawError(wifi_x_196x196, TXT_NETWORK_NOT_AVAILABLE);
       } while (display.nextPage());
     }
     else
     {
-      Serial.println("WiFi Connection Failed");
+      Serial.println(TXT_WIFI_CONNECTION_FAILED);
       do
       {
-        drawError(wifi_x_196x196, "WiFi Connection", "Failed");
+        drawError(wifi_x_196x196, TXT_WIFI_CONNECTION_FAILED);
       } while (display.nextPage());
     }
     powerOffDisplay();
@@ -270,13 +263,13 @@ void setup()
   configTzTime(TIMEZONE, NTP_SERVER_1, NTP_SERVER_2);
   bool timeConfigured = waitForSNTPSync(&timeInfo);
   if (!timeConfigured)
-  { // Failed To Fetch The Time
-    Serial.println("Time Synchronization Failed");
+  {
+    Serial.println(TXT_TIME_SYNCHRONIZATION_FAILED);
     killWiFi();
     initDisplay();
     do
     {
-      drawError(wi_time_4_196x196, "Time Synchronization", "Failed");
+      drawError(wi_time_4_196x196, TXT_TIME_SYNCHRONIZATION_FAILED);
     } while (display.nextPage());
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
@@ -327,7 +320,7 @@ void setup()
   digitalWrite(PIN_BME_PWR, HIGH);
   float inTemp     = NAN;
   float inHumidity = NAN;
-  Serial.print("Reading from BME280... ");
+  Serial.print(String(TXT_READING_FROM) + " BME280... ");
   TwoWire I2C_bme = TwoWire(0);
   Adafruit_BME280 bme;
 
@@ -343,18 +336,18 @@ void setup()
     //       displayed.
     if (std::isnan(inTemp) || std::isnan(inHumidity))
     {
-      statusStr = "BME read failed";
+      statusStr = "BME " + String(TXT_READ_FAILED);
       Serial.println(statusStr);
     }
     else
     {
       inTemp = inTemp - 7.25;
-      Serial.println("Success");
+      Serial.println(TXT_SUCCESS);
     }
   }
   else
   {
-    statusStr = "BME not found"; // check wiring
+    statusStr = "BME " + String(TXT_NOT_FOUND); // check wiring
     Serial.println(statusStr);
   }
   digitalWrite(PIN_BME_PWR, LOW);
@@ -380,7 +373,7 @@ void setup()
   } while (display.nextPage());
   powerOffDisplay();
 
-  // DEEP-SLEEP
+  // DEEP SLEEP
   beginDeepSleep(startTime, &timeInfo);
 } // end setup
 
