@@ -48,6 +48,11 @@ const char *WIFI_SSID     = "ssid";
 const char *WIFI_PASSWORD = "password";
 const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
+// Pin used for WiFi config AP
+const uint8_t PIN_CONFIGURE_WIFI = 27; // 27 is a HW button on the Firebeetle
+// WIFI 
+const char *WIFI_AP_SSID  = "Weather_Station";
+
 // OPENWEATHERMAP API
 // OpenWeatherMap API key, https://openweathermap.org/
 const String OWM_APIKEY   = "abcdefghijklmnopqrstuvwxyz012345";
