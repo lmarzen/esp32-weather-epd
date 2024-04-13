@@ -10,7 +10,7 @@ This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 
   <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49%" />
 </p>
 
-The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
+The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~15s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
 
 There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
 
@@ -137,13 +137,14 @@ Stand/Frame
 - 3D Printable
   - Here is a list of community designs.
   
-    | Contributor                                                       | Link                                                                                                     |
-    |-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-    | [Francois Allard](https://www.printables.com/@FrAllard_1585397)   | [Printables](https://www.printables.com/model/791477-weather-station-using-a-esp32)                      |
-    | [3D Nate](https://www.printables.com/@3DNate_451157)              | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)                        |
-    | [Sven F.](https://github.com/Spanholz)                            | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)                     |
-    | [Layers Studio](https://www.printables.com/@LayersStudio)         | [Printables](https://www.printables.com/model/655768-esp32-e-paper-weather-display-stand)                |
-    | [PJ Veltri](https://www.printables.com/@PJVeltri_1590999)         | [Printables](https://www.printables.com/model/692944-base-and-display-holder-for-esp-32-e-paper-weather) |
+    | Contributor                                                          | Link                                                                                                     |
+    |----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+    | [Francois Allard](https://www.printables.com/@FrAllard_1585397)      | [Printables](https://www.printables.com/model/791477-weather-station-using-a-esp32)                      |
+    | [3D Nate](https://www.printables.com/@3DNate_451157)                 | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)                        |
+    | [Sven F.](https://github.com/Spanholz)                               | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)                     |
+    | [Layers Studio](https://www.printables.com/@LayersStudio)            | [Printables](https://www.printables.com/model/655768-esp32-e-paper-weather-display-stand)                |
+    | [PJ Veltri](https://www.printables.com/@PJVeltri_1590999)            | [Printables](https://www.printables.com/model/692944-base-and-display-holder-for-esp-32-e-paper-weather) |
+    | [TheMeanCanEHdian](https://www.printables.com/@TheMeanCanEH_1207348) | [Printables](https://www.printables.com/model/841458-weather-display-enclosure)                          |
 
   - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
 - Picture Frame
@@ -274,7 +275,7 @@ In the example shown to the left, "401: Unauthorized" may be the result of an in
 
 ### Time Server Error
 <img src="showcase/demo-error-time.jpg" align="left" width="25%" />
-This error screen appears when the esp32 fails to fetch the time from NTP_SERVER_1/NTP_SERVER_2. This error sometimes occurs immediately after uploading to the esp32; in this case, just hit the reset button or wait for SLEEP_DURATION (default = 30min) and the esp32 to automatically retry.
+This error screen appears when the esp32 fails to fetch the time from NTP_SERVER_1/NTP_SERVER_2. This error sometimes occurs immediately after uploading to the esp32; in this case, just hit the reset button or wait for SLEEP_DURATION (default = 30min) and the esp32 to automatically retry. If the error persists, try selecting closer/lower latency time servers or increasing NTP_TIMEOUT.
 
 <br clear="left"/>
 
