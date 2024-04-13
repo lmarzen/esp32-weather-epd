@@ -341,7 +341,6 @@ void setup()
     }
     else
     {
-      inTemp = inTemp - 7.25;
       Serial.println(TXT_SUCCESS);
     }
   }
