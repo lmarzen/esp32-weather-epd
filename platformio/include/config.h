@@ -60,6 +60,7 @@
 //   French (France)                 fr_FR
 //   Dutch (Belgium)                 nl_BE
 //   Portuguese (Brazil)             pt_BR
+//   Estonian (Estonia)              ee_EE
 #define LOCALE en_US
 
 // UNITS
