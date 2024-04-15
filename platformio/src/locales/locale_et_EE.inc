@@ -1,4 +1,4 @@
-/* American English locale data for esp32-weather-epd.
+/* Estonian Estonian locale data for esp32-weather-epd.
  * Copyright (C) 2022-2024  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,11 +31,11 @@
 //   LC_TIME category.
 //   https://www.gnu.org/software/libc/sources.html
 // D_T_FMT                 string for formatting date and time
-const char *LC_D_T_FMT     = "%a %d %b %Y %r %Z";
+const char *LC_D_T_FMT     = "%a %d %b %Y %T";
 // LC_D_FMT                date format string
-const char *LC_D_FMT       = "%m/%d/%y";
+const char *LC_D_FMT       = "%d.%m.%Y";
 // T_FMT                   time format string
-const char *LC_T_FMT       = "%r";
+const char *LC_T_FMT       = "%T";
 // T_FMT_AMPM              a.m. or p.m. time format string
 const char *LC_T_FMT_AMPM  = "%I:%M:%S %p";
 // AM_STR                  Ante Meridian affix
@@ -48,9 +48,9 @@ const char *LC_DAY[7]      = {"P\xFC""hap\xE4""ev", "Esmasp\xE4""ev", "Teisip\xE
 // ABDAY_{1-7}             abbreviated name of the n-th day of the week
 const char *LC_ABDAY[7]    = {"P", "E", "T", "K", "N", "R", "L"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = {"Jaanuar",    "Veebruar", "M\xE4rts",    "Aprill",
-                               "Mai",       "Juuni",     "Juuli",     "August",
-                               "September", "Oktoober",  "November", "Detsember"};
+const char *LC_MON[12]     = {"Jaanuar",    "Veebruar", "M\xE4rts", "Aprill",
+                               "Mai",       "Juuni",    "Juuli",    "August",
+                               "September", "Oktoober", "November", "Detsember"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
 const char *LC_ABMON[12]   = {"Jaan", "Veebr", "M\xE4rts", "Apr", "Mai", "Juuni",
                               "Juuli", "Aug", "Sept", "Okt", "Nov", "Dets"};
