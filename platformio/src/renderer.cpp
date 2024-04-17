@@ -484,7 +484,15 @@ void drawCurrentConditions(const owm_current_t &current,
   // OpenWeatherMap does not provide pb (lead) conentrations, so we pass NULL.
   int aqi = calc_aqi(AQI_SCALE, c.co, c.nh3, c.no, c.no2, c.o3, NULL, c.so2,
                                 c.pm10, c.pm2_5);
-  dataStr = String(aqi);
+  int aqi_max = aqi_scale_max(AQI_SCALE);
+  if (aqi > aqi_max)
+  {
+    dataStr = "> " + String(aqi_max);
+  }
+  else
+  {
+    dataStr = String(aqi);
+  }
   drawString(48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_7pt8b);
   dataStr = String(aqi_desc(AQI_SCALE, aqi));
