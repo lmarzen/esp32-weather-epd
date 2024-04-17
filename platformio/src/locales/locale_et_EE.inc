@@ -1,4 +1,4 @@
-/* Estonian Estonian locale data for esp32-weather-epd.
+/* Estonian locale data for esp32-weather-epd.
  * Copyright (C) 2022-2024  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,7 +77,8 @@ const char *TXT_WIND               = "Tuul";
 const char *TXT_HUMIDITY           = "\xD5huniiskus";
 const char *TXT_UV_INDEX           = "UV Indeks";
 const char *TXT_PRESSURE           = "R\xF5hk";
-const char *TXT_AIR_QUALITY_INDEX  = "\xD5hu kvaliteet";
+const char *TXT_AIR_QUALITY        = "\xD5hu Kvaliteet";
+const char *TXT_AIR_POLLUTION      = "\xD5husaaste";
 const char *TXT_VISIBILITY         = "N\xE4htavus";
 const char *TXT_INDOOR_TEMPERATURE = "Temperatuur";
 const char *TXT_INDOOR_HUMIDITY    = "\xD5huniiskus";
@@ -230,6 +231,17 @@ const std::vector<String> TERM_STRONG_WIND =
 
 // AIR QUALITY INDEX
 extern "C" {
+// Seemingly every country uses a different scale for Air Quality Index (AQI).
+// I have written a library to calculate many of the most popular AQI scales.
+// Feel free to request the addition of a new AQI scale by opening an Issue.
+// https://github.com/lmarzen/pollutant-concentration-to-aqi
+// Please choose this region's preferred AQI scale.
+//   AUSTRALIA_AQI        CANADA_AQHI          EUROPEAN_UNION_CAQI
+//   HONG_KONG_AQHI       INDIA_AQI            CHINA_AQI
+//   SINGAPORE_PSI        SOUTH_KOREA_CAI      UNITED_KINGDOM_DAQI
+//   UNITED_STATES_AQI
+const aqi_scale_t AQI_SCALE = EUROPEAN_UNION_CAQI;
+
 const char *AUSTRALIA_AQI_TXT[6] =
 {
   "Very Good",
@@ -246,7 +258,7 @@ const char *CANADA_AQHI_TXT[4] =
   "High",
   "Very High",
 };
-const char *EUROPE_CAQI_TXT[5] =
+const char *EUROPEAN_UNION_CAQI_TXT[5] =
 {
   "V\xE4ga hea",
   "Hea",
@@ -271,7 +283,7 @@ const char *INDIA_AQI_TXT[6] =
   "Very Poor",
   "Severe",
 };
-const char *MAINLAND_CHINA_AQI_TXT[6] =
+const char *CHINA_AQI_TXT[6] =
 {
   "Excellent",
   "Good",
