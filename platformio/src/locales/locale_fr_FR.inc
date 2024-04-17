@@ -78,15 +78,15 @@ const char *LC_ERA_T_FMT   = "";
 const String OWM_LANG = "fr";
 
 // CURRENT CONDITIONS
-const char *TXT_FEELS_LIKE         = "Temperature ressentie";
-const char *TXT_SUNRISE            = "Lever de soleil";
-const char *TXT_SUNSET             = "Coucher de soleil";
+const char *TXT_FEELS_LIKE         = "Temperature Ressentie";
+const char *TXT_SUNRISE            = "Lever de Soleil";
+const char *TXT_SUNSET             = "Coucher de Soleil";
 const char *TXT_WIND               = "Vent";
 const char *TXT_HUMIDITY           = "Humidit\351";
 const char *TXT_UV_INDEX           = "Indice UV";
 const char *TXT_PRESSURE           = "Pression";
-const char *TXT_AIR_QUALITY        = "Qualit\351 de l'air";
-const char *TXT_AIR_POLLUTION      = "La pollution de l'air";
+const char *TXT_AIR_QUALITY        = "Qualit\351 de L'air";
+const char *TXT_AIR_POLLUTION      = "La Pollution de L'air";
 const char *TXT_VISIBILITY         = "Visibilit\351";
 const char *TXT_INDOOR_TEMPERATURE = "Temp\351rature";
 const char *TXT_INDOOR_HUMIDITY    = "Humidit\351";
