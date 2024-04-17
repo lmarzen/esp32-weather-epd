@@ -57,10 +57,10 @@
 //   German (Germany)                de_DE
 //   English (United Kingdom)        en_GB
 //   English (United States)         en_US
+//   Estonian (Estonia)              et_EE
 //   French (France)                 fr_FR
 //   Dutch (Belgium)                 nl_BE
 //   Portuguese (Brazil)             pt_BR
-//   Estonian (Estonia)              et_EE
 #define LOCALE en_US
 
 // UNITS
