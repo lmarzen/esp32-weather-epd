@@ -260,11 +260,11 @@ const char *CANADA_AQHI_TXT[4] =
 };
 const char *EUROPEAN_UNION_CAQI_TXT[5] =
 {
-  "V\xE4ga hea",
-  "Hea",
+  "V\xE4ga madal",
+  "Madal",
   "Keskmine",
-  "Halb",  
-  "V\xE4ga halb",
+  "K\xF5rge",  
+  "V\xE4ga k\xF5rge",
 };
 const char *HONG_KONG_AQHI_TXT[5] =
 {
