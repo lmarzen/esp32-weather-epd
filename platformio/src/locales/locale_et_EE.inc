@@ -14,6 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+ 
+/* Special thanks to @Ottr-arch for contributing this translation.
+ *
+ * If you have any feedback or suggestions on translations, please open an issue
+ * on this project's github page:
+ * <https://github.com/lmarzen/esp32-weather-epd/issues>
+ */
 
 #include <vector>
 #include <Arduino.h>
