@@ -85,7 +85,8 @@ const char *TXT_WIND               = "Vento";
 const char *TXT_HUMIDITY           = "Umidade";
 const char *TXT_UV_INDEX           = "\315ndice UV";
 const char *TXT_PRESSURE           = "Press\343o";
-const char *TXT_AIR_QUALITY_INDEX  = "\315ndice de Qualidade do Ar";
+const char *TXT_AIR_QUALITY        = "Qualidade do Ar";
+const char *TXT_AIR_POLLUTION      = "Polui\347\343o do Ar";
 const char *TXT_VISIBILITY         = "Visibilidade";
 const char *TXT_INDOOR_TEMPERATURE = "Temperatura Interna";
 const char *TXT_INDOOR_HUMIDITY    = "Umidade Interna";
@@ -239,6 +240,17 @@ const std::vector<String> TERM_STRONG_WIND =
 
 // AIR QUALITY INDEX
 extern "C" {
+// Seemingly every country uses a different scale for Air Quality Index (AQI).
+// I have written a library to calculate many of the most popular AQI scales.
+// Feel free to request the addition of a new AQI scale by opening an Issue.
+// https://github.com/lmarzen/pollutant-concentration-to-aqi
+// Please choose this region's preferred AQI scale.
+//   AUSTRALIA_AQI        CANADA_AQHI          EUROPEAN_UNION_CAQI
+//   HONG_KONG_AQHI       INDIA_AQI            CHINA_AQI
+//   SINGAPORE_PSI        SOUTH_KOREA_CAI      UNITED_KINGDOM_DAQI
+//   UNITED_STATES_AQI
+const aqi_scale_t AQI_SCALE = UNITED_STATES_AQI;
+
 const char *AUSTRALIA_AQI_TXT[6] =
 {
   "Very Good",
@@ -255,7 +267,7 @@ const char *CANADA_AQHI_TXT[4] =
   "High",
   "Very High",
 };
-const char *EUROPE_CAQI_TXT[5] =
+const char *EUROPEAN_UNION_CAQI_TXT[5] =
 {
   "Very Low",
   "Low",
@@ -280,7 +292,7 @@ const char *INDIA_AQI_TXT[6] =
   "Very Poor",
   "Severe",
 };
-const char *MAINLAND_CHINA_AQI_TXT[6] =
+const char *CHINA_AQI_TXT[6] =
 {
   "Excellent",
   "Good",

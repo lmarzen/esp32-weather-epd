@@ -111,18 +111,6 @@
 // #define UNITS_PRECIP_CENTIMETERS
 // #define UNITS_PRECIP_INCHES
 
-// AIR QUALITY INDEX
-// Seemingly every country uses a different scale for Air Quality Index (AQI).
-// I have written a library to calculate many of the most popular AQI scales.
-// Feel free to request the addition of a new AQI scale by opening an Issue.
-// https://github.com/lmarzen/pollutant-concentration-to-aqi
-// Define your preferred AQI scale.
-//   AUSTRALIA_AQI        CANADA_AQHI          EUROPE_CAQI
-//   HONG_KONG_AQHI       INDIA_AQI            MAINLAND_CHINA_AQI
-//   SINGAPORE_PSI        SOUTH_KOREA_CAI      UNITED_KINGDOM_DAQI
-//   UNITED_STATES_AQI
-#define UNITED_STATES_AQI
-
 // Hypertext Transfer Protocol (HTTP)
 // HTTP
 //   HTTP does not provide encryption or any security measures, making it highly
@@ -143,8 +131,8 @@
 //   2030-12-31 23:59:59.
 // (uncomment exactly one)
 // #define USE_HTTP
-#define USE_HTTPS_NO_CERT_VERIF
-// #define USE_HTTPS_WITH_CERT_VERIF
+// #define USE_HTTPS_NO_CERT_VERIF
+#define USE_HTTPS_WITH_CERT_VERIF
 
 // WIND DIRECTION INDICATOR
 // Choose whether the wind direction indicator should be an arrow, number, or
@@ -231,7 +219,7 @@
 #define STATUS_BAR_EXTRAS_WIFI_RSSI   0
 
 // BATTERY MONITORING
-//   You may choose to power your whether display with or without a battery.
+//   You may choose to power your weather display with or without a battery.
 //   Low power behavior can be controlled in config.cpp.
 //   If you wish to disable battery monitoring set this macro to 0.
 #define BATTERY_MONITORING 1
@@ -335,18 +323,6 @@ extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
       ^ defined(UNITS_PRECIP_CENTIMETERS) \
       ^ defined(UNITS_PRECIP_INCHES))
   #error Invalid configuration. Exactly one precipitation measurement must be selected.
-#endif
-#if !(  defined(AUSTRALIA_AQI)       \
-      ^ defined(CANADA_AQHI)         \
-      ^ defined(EUROPE_CAQI)         \
-      ^ defined(HONG_KONG_AQHI)      \
-      ^ defined(INDIA_AQI)           \
-      ^ defined(MAINLAND_CHINA_AQI)  \
-      ^ defined(SINGAPORE_PSI)       \
-      ^ defined(SOUTH_KOREA_CAI)     \
-      ^ defined(UNITED_KINGDOM_DAQI) \
-      ^ defined(UNITED_STATES_AQI))
-  #error Invalid configuration. Exactly one air quality index scale must be selected.
 #endif
 #if !(  defined(USE_HTTP)                   \
       ^ defined(USE_HTTPS_NO_CERT_VERIF)    \
