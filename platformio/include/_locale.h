@@ -20,6 +20,7 @@
 
 #include <vector>
 #include <Arduino.h>
+#include <aqi.h>
 
 // LC_TIME
 extern const char *LC_D_T_FMT;
@@ -48,7 +49,8 @@ extern const char *TXT_WIND;
 extern const char *TXT_HUMIDITY;
 extern const char *TXT_UV_INDEX;
 extern const char *TXT_PRESSURE;
-extern const char *TXT_AIR_QUALITY_INDEX;
+extern const char *TXT_AIR_QUALITY;
+extern const char *TXT_AIR_POLLUTION;
 extern const char *TXT_VISIBILITY;
 extern const char *TXT_INDOOR_TEMPERATURE;
 extern const char *TXT_INDOOR_HUMIDITY;
@@ -150,12 +152,13 @@ extern const std::vector<String> TERM_STRONG_WIND;
 
 // AIR QUALITY INDEX
 extern "C" {
+extern const aqi_scale_t AQI_SCALE;
 extern const char *AUSTRALIA_AQI_TXT[6];
 extern const char *CANADA_AQHI_TXT[4];
-extern const char *EUROPE_CAQI_TXT[5];
+extern const char *EUROPEAN_UNION_CAQI_TXT[5];
 extern const char *HONG_KONG_AQHI_TXT[5];
 extern const char *INDIA_AQI_TXT[6];
-extern const char *MAINLAND_CHINA_AQI_TXT[6];
+extern const char *CHINA_AQI_TXT[6];
 extern const char *SINGAPORE_PSI_TXT[5];
 extern const char *SOUTH_KOREA_CAI_TXT[4];
 extern const char *UNITED_KINGDOM_DAQI_TXT[4];
