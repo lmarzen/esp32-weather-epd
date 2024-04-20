@@ -19,6 +19,7 @@
 
 #include "aqi.h"
 #include <math.h>
+#include <stddef.h>
 
 #ifndef AQI_EXTERN_TXT
 const char *AUSTRALIA_AQI_TXT[6] =
@@ -37,7 +38,16 @@ const char *CANADA_AQHI_TXT[4] =
   "High",
   "Very High",
 };
-const char *EUROPE_CAQI_TXT[5] =
+const char *CHINA_AQI_TXT[6] =
+{
+  "Excellent",
+  "Good",
+  "Lightly Polluted",
+  "Moderately Polluted",
+  "Heavily Polluted",
+  "Severely Polluted",
+};
+const char *EUROPEAN_UNION_CAQI_TXT[5] =
 {
   "Very Low",
   "Low",
@@ -61,15 +71,6 @@ const char *INDIA_AQI_TXT[6] =
   "Poor",
   "Very Poor",
   "Severe",
-};
-const char *MAINLAND_CHINA_AQI_TXT[6] =
-{
-  "Excellent",
-  "Good",
-  "Lightly Polluted",
-  "Moderately Polluted",
-  "Heavily Polluted",
-  "Severely Polluted",
 };
 const char *SINGAPORE_PSI_TXT[5] =
 {
@@ -105,10 +106,10 @@ const char *UNITED_STATES_AQI_TXT[6] =
 #else
 extern const char *AUSTRALIA_AQI_TXT[6];
 extern const char *CANADA_AQHI_TXT[4];
-extern const char *EUROPE_CAQI_TXT[5];
+extern const char *CHINA_AQI_TXT[6];
+extern const char *EUROPEAN_UNION_CAQI_TXT[5];
 extern const char *HONG_KONG_AQHI_TXT[5];
 extern const char *INDIA_AQI_TXT[6];
-extern const char *MAINLAND_CHINA_AQI_TXT[6];
 extern const char *SINGAPORE_PSI_TXT[5];
 extern const char *SOUTH_KOREA_CAI_TXT[4];
 extern const char *UNITED_KINGDOM_DAQI_TXT[4];
@@ -182,593 +183,16 @@ int canada_aqhi(float no2_3h, float o3_3h, float pm2_5_3h)
                                      + (exp(0.000487 * pm2_5_3h) - 1))));
 } // end canada_aqhi
 
-/* Europe (CAQI)
- *
- * References:
- *   http://airqualitynow.eu/about_indices_definition.php
- *   https://en.wikipedia.org/wiki/Air_quality_index#CAQI
- */
-int europe_caqi(float no2_1h, float o3_1h, float pm10_1h, float pm2_5_1h)
-{
-  int caqi = 0;
-  float i_lo, i_hi;
-  float c_lo, c_hi;
-
-  // no2   μg/m^3, Nitrogen Dioxide (NO2)
-  if (no2_1h <= 50)
-  {
-    i_lo = 0;
-    i_hi = 25;
-    c_lo = 0;
-    c_hi = 50;
-  }
-  else if (no2_1h <= 100)
-  {
-    i_lo = 26;
-    i_hi = 50;
-    c_lo = 50;
-    c_hi = 100;
-  }
-  else if (no2_1h <= 200)
-  {
-    i_lo = 51;
-    i_hi = 75;
-    c_lo = 100;
-    c_hi = 200;
-  }
-  else if (no2_1h <= 400)
-  {
-    i_lo = 76;
-    i_hi = 100;
-    c_lo = 200;
-    c_hi = 400;
-  }
-  else
-  {
-    // index > 100
-    return 101;
-  }
-  caqi = max(caqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, no2_1h));
-
-  // o3    μg/m^3, Ground-Level Ozone (O3)
-  if (o3_1h <= 60)
-  {
-    i_lo = 0;
-    i_hi = 25;
-    c_lo = 0;
-    c_hi = 60;
-  }
-  else if (o3_1h <= 120)
-  {
-    i_lo = 25;
-    i_hi = 50;
-    c_lo = 60;
-    c_hi = 120;
-  }
-  else if (o3_1h <= 180)
-  {
-    i_lo = 51;
-    i_hi = 75;
-    c_lo = 120;
-    c_hi = 180;
-  }
-  else if (o3_1h <= 240)
-  {
-    i_lo = 76;
-    i_hi = 100;
-    c_lo = 180;
-    c_hi = 240;
-  }
-  else
-  {
-    // index > 100
-    return 101;
-  }
-  caqi = max(caqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, o3_1h));
-
-  // pm10  μg/m^3, Coarse Particulate Matter (<10μm)
-  if (pm10_1h <= 25)
-  {
-    i_lo = 0;
-    i_hi = 25;
-    c_lo = 0;
-    c_hi = 25;
-  }
-  else if (pm10_1h <= 50)
-  {
-    i_lo = 26;
-    i_hi = 50;
-    c_lo = 25;
-    c_hi = 50;
-  }
-  else if (pm10_1h <= 90)
-  {
-    i_lo = 51;
-    i_hi = 75;
-    c_lo = 50;
-    c_hi = 90;
-  }
-  else if (pm10_1h <= 180)
-  {
-    i_lo = 76;
-    i_hi = 100;
-    c_lo = 90;
-    c_hi = 180;
-  }
-  else
-  {
-    // index > 100
-    return 101;
-  }
-  caqi = max(caqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm10_1h));
-
-  // pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
-  if (pm2_5_1h <= 15)
-  {
-    i_lo = 0;
-    i_hi = 25;
-    c_lo = 0;
-    c_hi = 15;
-  }
-  else if (pm2_5_1h <= 30)
-  {
-    i_lo = 26;
-    i_hi = 50;
-    c_lo = 15;
-    c_hi = 30;
-  }
-  else if (pm2_5_1h <= 55)
-  {
-    i_lo = 51;
-    i_hi = 75;
-    c_lo = 30;
-    c_hi = 55;
-  }
-  else if (pm2_5_1h <= 110)
-  {
-    i_lo = 76;
-    i_hi = 100;
-    c_lo = 55;
-    c_hi = 110;
-  }
-  else
-  {
-    // index > 100
-    return 101;
-  }
-  caqi = max(caqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_1h));
-
-  return caqi;
-} // end europe_caqi
-
-/* Hong Kong (AQHI)
- *
- * References:
- *   https://www.aqhi.gov.hk/en/what-is-aqhi/faqs.html
- *   https://aqicn.org/faq/2015-06-03/overview-of-hong-kongs-air-quality-health-index/
- */
-int hong_kong_aqhi(float no2_3h,  float o3_3h, float so2_3h,
-                   float pm10_3h, float pm2_5_3h)
-{
-  float ar = ((exp(0.0004462559 * no2_3h) - 1) * 100) + ((exp(0.0001393235 * so2_3h) - 1) * 100) + ((exp(0.0005116328 * o3_3h) - 1) * 100) + fmax(((exp(0.0002821751 * pm10_3h) - 1) * 100), ((exp(0.0002180567 * pm2_5_3h) - 1) * 100));
-  if (ar <= 1.88)
-  {
-    return 1;
-  }
-  else if (ar <= 3.76)
-  {
-    return 2;
-  }
-  else if (ar <= 5.64)
-  {
-    return 3;
-  }
-  else if (ar <= 7.52)
-  {
-    return 4;
-  }
-  else if (ar <= 9.41)
-  {
-    return 5;
-  }
-  else if (ar <= 11.29)
-  {
-    return 6;
-  }
-  else if (ar <= 12.91)
-  {
-    return 7;
-  }
-  else if (ar <= 15.07)
-  {
-    return 8;
-  }
-  else if (ar <= 17.22)
-  {
-    return 9;
-  }
-  else if (ar <= 19.37)
-  {
-    return 10;
-  }
-  else
-  {
-    // index > 10
-    return 11;
-  }
-} // end hong_kong_aqhi
-
-/* India (AQI)
- *
- * References:
- *   https://www.aqi.in/blog/aqi/
- *   https://www.pranaair.com/blog/what-is-air-quality-index-aqi-and-its-calculation/
- */
-int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
-              float pb_24h, float so2_24h, float pm10_24h, float pm2_5_24h)
-{
-  int aqi = 0;
-  float i_lo, i_hi;
-  float c_lo, c_hi;
-
-  // co    μg/m^3, Carbon Monoxide (CO)
-  // 1mg/m^3 = 1000 μg/m^3
-  if (co_8h < 1050)
-  {
-    i_lo = 0;
-    i_hi = 50;
-    c_lo = 0;
-    c_hi = 1000;
-  }
-  else if (co_8h < 2050)
-  {
-    i_lo = 51;
-    i_hi = 100;
-    c_lo = 1100;
-    c_hi = 2000;
-  }
-  else if (co_8h < 10050)
-  {
-    i_lo = 101;
-    i_hi = 200;
-    c_lo = 2100;
-    c_hi = 10000;
-  }
-  else if (co_8h < 17050)
-  {
-    i_lo = 201;
-    i_hi = 300;
-    c_lo = 10100;
-    c_hi = 17000;
-  }
-  else if (co_8h < 34050)
-  {
-    i_lo = 301;
-    i_hi = 400;
-    c_lo = 17100;
-    c_hi = 34000;
-  }
-  else
-  {
-    // index > 400
-    return 401;
-  }
-  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, co_8h));
-
-  // nh3   μg/m^3, Ammonia (NH3)
-  if (nh3_24h < 200.5)
-  {
-    i_lo = 0;
-    i_hi = 50;
-    c_lo = 0;
-    c_hi = 200;
-  }
-  else if (nh3_24h < 400.5)
-  {
-    i_lo = 51;
-    i_hi = 100;
-    c_lo = 201;
-    c_hi = 400;
-  }
-  else if (nh3_24h < 800.5)
-  {
-    i_lo = 101;
-    i_hi = 200;
-    c_lo = 401;
-    c_hi = 800;
-  }
-  else if (nh3_24h < 1200.5)
-  {
-    i_lo = 201;
-    i_hi = 300;
-    c_lo = 801;
-    c_hi = 1200;
-  }
-  else if (nh3_24h < 1800.5)
-  {
-    i_lo = 301;
-    i_hi = 400;
-    c_lo = 1201;
-    c_hi = 1800;
-  }
-  else
-  {
-    // index > 400
-    return 401;
-  }
-  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, nh3_24h));
-
-  // no2   μg/m^3, Nitrogen Dioxide (NO2)
-  if (no2_24h < 40.5)
-  {
-    i_lo = 0;
-    i_hi = 50;
-    c_lo = 0;
-    c_hi = 40;
-  }
-  else if (no2_24h < 80.5)
-  {
-    i_lo = 51;
-    i_hi = 100;
-    c_lo = 41;
-    c_hi = 80;
-  }
-  else if (no2_24h < 180.5)
-  {
-    i_lo = 101;
-    i_hi = 200;
-    c_lo = 81;
-    c_hi = 180;
-  }
-  else if (no2_24h < 280.5)
-  {
-    i_lo = 201;
-    i_hi = 300;
-    c_lo = 181;
-    c_hi = 280;
-  }
-  else if (no2_24h < 400.5)
-  {
-    i_lo = 301;
-    i_hi = 400;
-    c_lo = 281;
-    c_hi = 400;
-  }
-  else
-  {
-    // index > 400
-    return 401;
-  }
-  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, no2_24h));
-
-  // o3    μg/m^3, Ozone (O3)
-  if (o3_8h < 50.5)
-  {
-    i_lo = 0;
-    i_hi = 50;
-    c_lo = 0;
-    c_hi = 50;
-  }
-  else if (o3_8h < 100.5)
-  {
-    i_lo = 51;
-    i_hi = 100;
-    c_lo = 51;
-    c_hi = 100;
-  }
-  else if (o3_8h < 168.5)
-  {
-    i_lo = 101;
-    i_hi = 200;
-    c_lo = 101;
-    c_hi = 168;
-  }
-  else if (o3_8h < 208.5)
-  {
-    i_lo = 201;
-    i_hi = 300;
-    c_lo = 169;
-    c_hi = 208;
-  }
-  else if (o3_8h < 748.5)
-  {
-    i_lo = 301;
-    i_hi = 400;
-    c_lo = 209;
-    c_hi = 748;
-  }
-  else
-  {
-    // index > 400
-    return 401;
-  }
-  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, o3_8h));
-
-  // pb    μg/m^3, Lead (Pb)
-  if (pb_24h < 0.55)
-  {
-    i_lo = 0;
-    i_hi = 50;
-    c_lo = 0;
-    c_hi = 0.5;
-  }
-  else if (pb_24h < 1.05)
-  {
-    i_lo = 51;
-    i_hi = 100;
-    c_lo = 0.6;
-    c_hi = 1.0;
-  }
-  else if (pb_24h < 2.05)
-  {
-    i_lo = 101;
-    i_hi = 200;
-    c_lo = 1.1;
-    c_hi = 2.0;
-  }
-  else if (pb_24h < 3.05)
-  {
-    i_lo = 201;
-    i_hi = 300;
-    c_lo = 2.1;
-    c_hi = 3.0;
-  }
-  else if (pb_24h < 3.55)
-  {
-    i_lo = 301;
-    i_hi = 400;
-    c_lo = 3.1;
-    c_hi = 3.5;
-  }
-  else
-  {
-    // index > 400
-    return 401;
-  }
-  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pb_24h));
-
-  // so2   μg/m^3, Sulfur Dioxide (SO2)
-  if (so2_24h < 40.5)
-  {
-    i_lo = 0;
-    i_hi = 50;
-    c_lo = 0;
-    c_hi = 40;
-  }
-  else if (so2_24h < 80.5)
-  {
-    i_lo = 51;
-    i_hi = 100;
-    c_lo = 41;
-    c_hi = 80;
-  }
-  else if (so2_24h < 380.5)
-  {
-    i_lo = 101;
-    i_hi = 200;
-    c_lo = 81;
-    c_hi = 380;
-  }
-  else if (so2_24h < 800.5)
-  {
-    i_lo = 201;
-    i_hi = 300;
-    c_lo = 381;
-    c_hi = 800;
-  }
-  else if (so2_24h < 1600.5)
-  {
-    i_lo = 301;
-    i_hi = 400;
-    c_lo = 801;
-    c_hi = 1600;
-  }
-  else
-  {
-    // index > 400
-    return 401;
-  }
-  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, so2_24h));
-
-  // pm10  μg/m^3, Coarse Particulate Matter (<10μm)
-  if (pm10_24h < 50.5)
-  {
-    i_lo = 0;
-    i_hi = 50;
-    c_lo = 0;
-    c_hi = 50;
-  }
-  else if (pm10_24h < 100.5)
-  {
-    i_lo = 51;
-    i_hi = 100;
-    c_lo = 51;
-    c_hi = 100;
-  }
-  else if (pm10_24h < 250.5)
-  {
-    i_lo = 101;
-    i_hi = 200;
-    c_lo = 101;
-    c_hi = 250;
-  }
-  else if (pm10_24h < 350.5)
-  {
-    i_lo = 201;
-    i_hi = 300;
-    c_lo = 251;
-    c_hi = 350;
-  }
-  else if (pm10_24h < 430.5)
-  {
-    i_lo = 301;
-    i_hi = 400;
-    c_lo = 351;
-    c_hi = 430;
-  }
-  else
-  {
-    // index > 400
-    return 401;
-  }
-  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm10_24h));
-
-  // pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
-  if (pm2_5_24h < 30.5)
-  {
-    i_lo = 0;
-    i_hi = 50;
-    c_lo = 0;
-    c_hi = 30;
-  }
-  else if (pm2_5_24h < 60.5)
-  {
-    i_lo = 51;
-    i_hi = 100;
-    c_lo = 31;
-    c_hi = 60;
-  }
-  else if (pm2_5_24h < 90.5)
-  {
-    i_lo = 101;
-    i_hi = 200;
-    c_lo = 61;
-    c_hi = 90;
-  }
-  else if (pm2_5_24h < 120.5)
-  {
-    i_lo = 201;
-    i_hi = 300;
-    c_lo = 91;
-    c_hi = 120;
-  }
-  else if (pm2_5_24h < 250.5)
-  {
-    i_lo = 301;
-    i_hi = 400;
-    c_lo = 121;
-    c_hi = 250;
-  }
-  else
-  {
-    // index > 400
-    return 401;
-  }
-  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
-
-  return aqi;
-} // end india_aqi
-
-/* Mainland China (AQI)
+/* China (AQI)
  *
  * References:
  *   https://web.archive.org/web/20180830110324/http://kjs.mep.gov.cn/hjbhbz/bzwb/jcffbz/201203/W020120410332725219541.pdf
  *   https://en.wikipedia.org/wiki/Air_quality_index#Mainland_China
  *   https://datadrivenlab.org/air-quality-2/chinas-new-air-quality-index-how-does-it-measure-up/
  */
-int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,
-                       float o3_1h, float o3_8h,  float so2_1h, float so2_24h,
-                       float pm10_24h, float pm2_5_24h)
+int china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,
+              float o3_1h, float o3_8h,  float so2_1h, float so2_24h,
+              float pm10_24h, float pm2_5_24h)
 {
   int aqi = 0;
   float i_lo, i_hi;
@@ -1307,7 +731,584 @@ int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,
   aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
 
   return aqi;
-} // end mainland_china_aqi
+} // end china_aqi
+
+/* European Union (CAQI)
+ *
+ * References:
+ *   http://airqualitynow.eu/about_indices_definition.php
+ *   https://en.wikipedia.org/wiki/Air_quality_index#CAQI
+ */
+int european_union_caqi(float no2_1h, float o3_1h, float pm10_1h, float pm2_5_1h)
+{
+  int caqi = 0;
+  float i_lo, i_hi;
+  float c_lo, c_hi;
+
+  // no2   μg/m^3, Nitrogen Dioxide (NO2)
+  if (no2_1h <= 50)
+  {
+    i_lo = 0;
+    i_hi = 25;
+    c_lo = 0;
+    c_hi = 50;
+  }
+  else if (no2_1h <= 100)
+  {
+    i_lo = 26;
+    i_hi = 50;
+    c_lo = 50;
+    c_hi = 100;
+  }
+  else if (no2_1h <= 200)
+  {
+    i_lo = 51;
+    i_hi = 75;
+    c_lo = 100;
+    c_hi = 200;
+  }
+  else if (no2_1h <= 400)
+  {
+    i_lo = 76;
+    i_hi = 100;
+    c_lo = 200;
+    c_hi = 400;
+  }
+  else
+  {
+    // index > 100
+    return 101;
+  }
+  caqi = max(caqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, no2_1h));
+
+  // o3    μg/m^3, Ground-Level Ozone (O3)
+  if (o3_1h <= 60)
+  {
+    i_lo = 0;
+    i_hi = 25;
+    c_lo = 0;
+    c_hi = 60;
+  }
+  else if (o3_1h <= 120)
+  {
+    i_lo = 25;
+    i_hi = 50;
+    c_lo = 60;
+    c_hi = 120;
+  }
+  else if (o3_1h <= 180)
+  {
+    i_lo = 51;
+    i_hi = 75;
+    c_lo = 120;
+    c_hi = 180;
+  }
+  else if (o3_1h <= 240)
+  {
+    i_lo = 76;
+    i_hi = 100;
+    c_lo = 180;
+    c_hi = 240;
+  }
+  else
+  {
+    // index > 100
+    return 101;
+  }
+  caqi = max(caqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, o3_1h));
+
+  // pm10  μg/m^3, Coarse Particulate Matter (<10μm)
+  if (pm10_1h <= 25)
+  {
+    i_lo = 0;
+    i_hi = 25;
+    c_lo = 0;
+    c_hi = 25;
+  }
+  else if (pm10_1h <= 50)
+  {
+    i_lo = 26;
+    i_hi = 50;
+    c_lo = 25;
+    c_hi = 50;
+  }
+  else if (pm10_1h <= 90)
+  {
+    i_lo = 51;
+    i_hi = 75;
+    c_lo = 50;
+    c_hi = 90;
+  }
+  else if (pm10_1h <= 180)
+  {
+    i_lo = 76;
+    i_hi = 100;
+    c_lo = 90;
+    c_hi = 180;
+  }
+  else
+  {
+    // index > 100
+    return 101;
+  }
+  caqi = max(caqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm10_1h));
+
+  // pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
+  if (pm2_5_1h <= 15)
+  {
+    i_lo = 0;
+    i_hi = 25;
+    c_lo = 0;
+    c_hi = 15;
+  }
+  else if (pm2_5_1h <= 30)
+  {
+    i_lo = 26;
+    i_hi = 50;
+    c_lo = 15;
+    c_hi = 30;
+  }
+  else if (pm2_5_1h <= 55)
+  {
+    i_lo = 51;
+    i_hi = 75;
+    c_lo = 30;
+    c_hi = 55;
+  }
+  else if (pm2_5_1h <= 110)
+  {
+    i_lo = 76;
+    i_hi = 100;
+    c_lo = 55;
+    c_hi = 110;
+  }
+  else
+  {
+    // index > 100
+    return 101;
+  }
+  caqi = max(caqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_1h));
+
+  return caqi;
+} // end european_union_caqi
+
+/* Hong Kong (AQHI)
+ *
+ * References:
+ *   https://www.aqhi.gov.hk/en/what-is-aqhi/faqs.html
+ *   https://aqicn.org/faq/2015-06-03/overview-of-hong-kongs-air-quality-health-index/
+ */
+int hong_kong_aqhi(float no2_3h,  float o3_3h, float so2_3h,
+                   float pm10_3h, float pm2_5_3h)
+{
+  float ar = ((exp(0.0004462559 * no2_3h) - 1) * 100) + ((exp(0.0001393235 * so2_3h) - 1) * 100) + ((exp(0.0005116328 * o3_3h) - 1) * 100) + fmax(((exp(0.0002821751 * pm10_3h) - 1) * 100), ((exp(0.0002180567 * pm2_5_3h) - 1) * 100));
+  if (ar <= 1.88)
+  {
+    return 1;
+  }
+  else if (ar <= 3.76)
+  {
+    return 2;
+  }
+  else if (ar <= 5.64)
+  {
+    return 3;
+  }
+  else if (ar <= 7.52)
+  {
+    return 4;
+  }
+  else if (ar <= 9.41)
+  {
+    return 5;
+  }
+  else if (ar <= 11.29)
+  {
+    return 6;
+  }
+  else if (ar <= 12.91)
+  {
+    return 7;
+  }
+  else if (ar <= 15.07)
+  {
+    return 8;
+  }
+  else if (ar <= 17.22)
+  {
+    return 9;
+  }
+  else if (ar <= 19.37)
+  {
+    return 10;
+  }
+  else
+  {
+    // index > 10
+    return 11;
+  }
+} // end hong_kong_aqhi
+
+/* India (AQI)
+ *
+ * References:
+ *   https://www.aqi.in/blog/aqi/
+ *   https://www.pranaair.com/blog/what-is-air-quality-index-aqi-and-its-calculation/
+ */
+int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
+              float pb_24h, float so2_24h, float pm10_24h, float pm2_5_24h)
+{
+  int aqi = 0;
+  float i_lo, i_hi;
+  float c_lo, c_hi;
+
+  // co    μg/m^3, Carbon Monoxide (CO)
+  // 1mg/m^3 = 1000 μg/m^3
+  if (co_8h < 1050)
+  {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 1000;
+  }
+  else if (co_8h < 2050)
+  {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 1100;
+    c_hi = 2000;
+  }
+  else if (co_8h < 10050)
+  {
+    i_lo = 101;
+    i_hi = 200;
+    c_lo = 2100;
+    c_hi = 10000;
+  }
+  else if (co_8h < 17050)
+  {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 10100;
+    c_hi = 17000;
+  }
+  else if (co_8h < 34050)
+  {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 17100;
+    c_hi = 34000;
+  }
+  else
+  {
+    // index > 400
+    return 401;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, co_8h));
+
+  // nh3   μg/m^3, Ammonia (NH3)
+  if (nh3_24h < 200.5)
+  {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 200;
+  }
+  else if (nh3_24h < 400.5)
+  {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 201;
+    c_hi = 400;
+  }
+  else if (nh3_24h < 800.5)
+  {
+    i_lo = 101;
+    i_hi = 200;
+    c_lo = 401;
+    c_hi = 800;
+  }
+  else if (nh3_24h < 1200.5)
+  {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 801;
+    c_hi = 1200;
+  }
+  else if (nh3_24h < 1800.5)
+  {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 1201;
+    c_hi = 1800;
+  }
+  else
+  {
+    // index > 400
+    return 401;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, nh3_24h));
+
+  // no2   μg/m^3, Nitrogen Dioxide (NO2)
+  if (no2_24h < 40.5)
+  {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 40;
+  }
+  else if (no2_24h < 80.5)
+  {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 41;
+    c_hi = 80;
+  }
+  else if (no2_24h < 180.5)
+  {
+    i_lo = 101;
+    i_hi = 200;
+    c_lo = 81;
+    c_hi = 180;
+  }
+  else if (no2_24h < 280.5)
+  {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 181;
+    c_hi = 280;
+  }
+  else if (no2_24h < 400.5)
+  {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 281;
+    c_hi = 400;
+  }
+  else
+  {
+    // index > 400
+    return 401;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, no2_24h));
+
+  // o3    μg/m^3, Ozone (O3)
+  if (o3_8h < 50.5)
+  {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 50;
+  }
+  else if (o3_8h < 100.5)
+  {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 51;
+    c_hi = 100;
+  }
+  else if (o3_8h < 168.5)
+  {
+    i_lo = 101;
+    i_hi = 200;
+    c_lo = 101;
+    c_hi = 168;
+  }
+  else if (o3_8h < 208.5)
+  {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 169;
+    c_hi = 208;
+  }
+  else if (o3_8h < 748.5)
+  {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 209;
+    c_hi = 748;
+  }
+  else
+  {
+    // index > 400
+    return 401;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, o3_8h));
+
+  // pb    μg/m^3, Lead (Pb)
+  if (pb_24h < 0.55)
+  {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 0.5;
+  }
+  else if (pb_24h < 1.05)
+  {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 0.6;
+    c_hi = 1.0;
+  }
+  else if (pb_24h < 2.05)
+  {
+    i_lo = 101;
+    i_hi = 200;
+    c_lo = 1.1;
+    c_hi = 2.0;
+  }
+  else if (pb_24h < 3.05)
+  {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 2.1;
+    c_hi = 3.0;
+  }
+  else if (pb_24h < 3.55)
+  {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 3.1;
+    c_hi = 3.5;
+  }
+  else
+  {
+    // index > 400
+    return 401;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pb_24h));
+
+  // so2   μg/m^3, Sulfur Dioxide (SO2)
+  if (so2_24h < 40.5)
+  {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 40;
+  }
+  else if (so2_24h < 80.5)
+  {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 41;
+    c_hi = 80;
+  }
+  else if (so2_24h < 380.5)
+  {
+    i_lo = 101;
+    i_hi = 200;
+    c_lo = 81;
+    c_hi = 380;
+  }
+  else if (so2_24h < 800.5)
+  {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 381;
+    c_hi = 800;
+  }
+  else if (so2_24h < 1600.5)
+  {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 801;
+    c_hi = 1600;
+  }
+  else
+  {
+    // index > 400
+    return 401;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, so2_24h));
+
+  // pm10  μg/m^3, Coarse Particulate Matter (<10μm)
+  if (pm10_24h < 50.5)
+  {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 50;
+  }
+  else if (pm10_24h < 100.5)
+  {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 51;
+    c_hi = 100;
+  }
+  else if (pm10_24h < 250.5)
+  {
+    i_lo = 101;
+    i_hi = 200;
+    c_lo = 101;
+    c_hi = 250;
+  }
+  else if (pm10_24h < 350.5)
+  {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 251;
+    c_hi = 350;
+  }
+  else if (pm10_24h < 430.5)
+  {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 351;
+    c_hi = 430;
+  }
+  else
+  {
+    // index > 400
+    return 401;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm10_24h));
+
+  // pm2_5 μg/m^3, Fine Particulate Matter (<2.5μm)
+  if (pm2_5_24h < 30.5)
+  {
+    i_lo = 0;
+    i_hi = 50;
+    c_lo = 0;
+    c_hi = 30;
+  }
+  else if (pm2_5_24h < 60.5)
+  {
+    i_lo = 51;
+    i_hi = 100;
+    c_lo = 31;
+    c_hi = 60;
+  }
+  else if (pm2_5_24h < 90.5)
+  {
+    i_lo = 101;
+    i_hi = 200;
+    c_lo = 61;
+    c_hi = 90;
+  }
+  else if (pm2_5_24h < 120.5)
+  {
+    i_lo = 201;
+    i_hi = 300;
+    c_lo = 91;
+    c_hi = 120;
+  }
+  else if (pm2_5_24h < 250.5)
+  {
+    i_lo = 301;
+    i_hi = 400;
+    c_lo = 121;
+    c_hi = 250;
+  }
+  else
+  {
+    // index > 400
+    return 401;
+  }
+  aqi = max(aqi, compute_piecewise_aqi(i_lo, i_hi, c_lo, c_hi, pm2_5_24h));
+
+  return aqi;
+} // end india_aqi
 
 /* Singapore (PSI)
  *
@@ -2436,29 +2437,60 @@ const char *canada_aqhi_desc(int aqhi)
 /*
  * Indicates Air Pollution
  */
-const char *europe_caqi_desc(int caqi)
+const char *china_aqi_desc(int aqi)
 {
-  if (caqi <= 25)
+  if (aqi <= 50)
   {
-    return EUROPE_CAQI_TXT[0];
+    return CHINA_AQI_TXT[0];
   }
-  else if (caqi <= 50)
+  else if (aqi <= 100)
   {
-    return EUROPE_CAQI_TXT[1];
+    return CHINA_AQI_TXT[1];
   }
-  else if (caqi <= 75)
+  else if (aqi <= 150)
   {
-    return EUROPE_CAQI_TXT[2];
+    return CHINA_AQI_TXT[2];
   }
-  else if (caqi <= 100)
+  else if (aqi <= 200)
   {
-    return EUROPE_CAQI_TXT[3];
+    return CHINA_AQI_TXT[3];
+  }
+  else if (aqi <= 300)
+  {
+    return CHINA_AQI_TXT[4];
   }
   else
   {
-    return EUROPE_CAQI_TXT[4];
+    return CHINA_AQI_TXT[5];
   }
-} // end europe_caqi_desc
+} // end china_aqi_desc
+
+/*
+ * Indicates Air Pollution
+ */
+const char *european_union_caqi_desc(int caqi)
+{
+  if (caqi <= 25)
+  {
+    return EUROPEAN_UNION_CAQI_TXT[0];
+  }
+  else if (caqi <= 50)
+  {
+    return EUROPEAN_UNION_CAQI_TXT[1];
+  }
+  else if (caqi <= 75)
+  {
+    return EUROPEAN_UNION_CAQI_TXT[2];
+  }
+  else if (caqi <= 100)
+  {
+    return EUROPEAN_UNION_CAQI_TXT[3];
+  }
+  else
+  {
+    return EUROPEAN_UNION_CAQI_TXT[4];
+  }
+} // end european_union_caqi_desc
 
 /*
  * Indicates Health Risk
@@ -2517,37 +2549,6 @@ const char *india_aqi_desc(int aqi)
     return INDIA_AQI_TXT[5];
   }
 } // end india_aqi_desc
-
-/*
- * Indicates Air Pollution
- */
-const char *mainland_china_aqi_desc(int aqi)
-{
-  if (aqi <= 50)
-  {
-    return MAINLAND_CHINA_AQI_TXT[0];
-  }
-  else if (aqi <= 100)
-  {
-    return MAINLAND_CHINA_AQI_TXT[1];
-  }
-  else if (aqi <= 150)
-  {
-    return MAINLAND_CHINA_AQI_TXT[2];
-  }
-  else if (aqi <= 200)
-  {
-    return MAINLAND_CHINA_AQI_TXT[3];
-  }
-  else if (aqi <= 300)
-  {
-    return MAINLAND_CHINA_AQI_TXT[4];
-  }
-  else
-  {
-    return MAINLAND_CHINA_AQI_TXT[5];
-  }
-} // end mainland_china_aqi_desc
 
 /*
  * Indicates Health Risk
@@ -2652,3 +2653,268 @@ const char *united_states_aqi_desc(int aqi)
     return UNITED_STATES_AQI_TXT[5];
   }
 } // end united_states_aqi_desc
+
+/* Returns the average pollutant concentration over a given number of previous
+ * hours.
+ *
+ * 'pollutant' is an array of hourly concentrations. The last element in
+ * pollutant is the most recent hourly concentration. 'hours' must be a positive
+ * integer.
+ *
+ * Passing NULL will return 0.
+ */
+float avg_conc(const float pollutant[24], int hours)
+{
+  if (pollutant == NULL)
+  {
+    return 0.f;
+  }
+
+  float avg = 0;
+  // index (size - 1) is most recent hourly concentration
+  for (int h = (24 - 1) - (hours - 1) ; h < 24 ; ++h)
+  {
+    avg += pollutant[h];
+  }
+
+  avg = avg / (float) hours;
+  return avg;
+}
+
+int calc_australia_aqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float co_8h     = avg_conc(co,     8);
+  float no2_1h    = avg_conc(no2,    1);
+  float o3_1h     = avg_conc(o3,     1);
+  float o3_4h     = avg_conc(o3,     4);
+  float so2_1h    = avg_conc(so2,    1);
+  float pm10_24h  = avg_conc(pm10,  24);
+  float pm2_5_24h = avg_conc(pm2_5, 24);
+  return australia_aqi(co_8h, no2_1h, o3_1h, o3_4h, so2_1h, pm10_24h,
+                       pm2_5_24h);
+} // end calc_australia_aqi
+
+int calc_canada_aqhi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float no2_3h    = avg_conc(no2,    3);
+  float o3_3h     = avg_conc(o3,     3);
+  float pm2_5_3h  = avg_conc(pm2_5,  3);
+  return canada_aqhi(no2_3h, o3_3h, pm2_5_3h);
+} // end calc_canada_aqhi
+
+int calc_china_aqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float co_1h     = avg_conc(co,     1);
+  float co_24h    = avg_conc(co,    24);
+  float no2_1h    = avg_conc(no2,    1);
+  float no2_24h   = avg_conc(no2,   24);
+  float o3_1h     = avg_conc(o3,     1);
+  float o3_8h     = avg_conc(o3,     8);
+  float so2_1h    = avg_conc(so2,    1);
+  float so2_24h   = avg_conc(so2,   24);
+  float pm10_24h  = avg_conc(pm10,  24);
+  float pm2_5_24h = avg_conc(pm2_5, 24);
+  return china_aqi(co_1h, co_24h, no2_1h, no2_24h, o3_1h, o3_8h, so2_1h,
+                   so2_24h, pm10_24h, pm2_5_24h);
+} // end calc_china_aqi
+
+int calc_european_union_caqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float no2_1h    = avg_conc(no2,    1);
+  float o3_1h     = avg_conc(o3,     1);
+  float pm10_1h   = avg_conc(pm10,   1);
+  float pm2_5_1h  = avg_conc(pm2_5,  1);
+  return european_union_caqi(no2_1h, o3_1h, pm10_1h, pm2_5_1h);
+} // end calc_european_union_caqi
+
+int calc_hong_kong_aqhi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float no2_3h    = avg_conc(no2,    3);
+  float o3_3h     = avg_conc(o3,     3);
+  float so2_3h    = avg_conc(so2,    3);
+  float pm10_3h   = avg_conc(pm10,   3);
+  float pm2_5_3h  = avg_conc(pm2_5,  3);
+  return hong_kong_aqhi(no2_3h,  o3_3h, so2_3h, pm10_3h, pm2_5_3h);
+} // end calc_hong_kong_aqhi
+
+int calc_india_aqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float co_8h     = avg_conc(co,     8);
+  float nh3_24h   = avg_conc(nh3,   24);
+  float no2_24h   = avg_conc(no2,   24);
+  float o3_8h     = avg_conc(o3,     8);
+  float pb_24h    = avg_conc(pb,    24);
+  float so2_24h   = avg_conc(so2,   24);
+  float pm10_24h  = avg_conc(pm10,  24);
+  float pm2_5_24h = avg_conc(pm2_5, 24);
+  return india_aqi(co_8h, nh3_24h, no2_24h, o3_8h, pb_24h, so2_24h, pm10_24h,
+                   pm2_5_24h);
+} // end calc_india_aqi
+
+int calc_singapore_psi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float co_8h     = avg_conc(co,     8);
+  float no2_1h    = avg_conc(no2,    1);
+  float o3_1h     = avg_conc(o3,     1);
+  float o3_8h     = avg_conc(o3,     8);
+  float so2_24h   = avg_conc(so2,   24);
+  float pm10_24h  = avg_conc(pm10,  24);
+  float pm2_5_24h = avg_conc(pm2_5, 24);
+  return singapore_psi(co_8h, no2_1h, o3_1h, o3_8h, so2_24h, pm10_24h,
+                       pm2_5_24h);
+} // end calc_singapore_psi
+
+int calc_south_korea_cai(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float co_1h     = avg_conc(co,     1);
+  float no2_1h    = avg_conc(no2,    1);
+  float o3_1h     = avg_conc(o3,     1);
+  float so2_1h    = avg_conc(so2,    1);
+  float pm10_24h  = avg_conc(pm10,  24);
+  float pm2_5_24h = avg_conc(pm2_5, 24);
+  return south_korea_cai(co_1h, no2_1h, o3_1h, so2_1h, pm10_24h, pm2_5_24h);
+} // end calc_south_korea_cai
+
+int calc_united_kingdom_daqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float no2_1h    = avg_conc(no2,    1);
+  float o3_8h     = avg_conc(o3,     8);
+  float so2_15min = avg_conc(so2,    1); // USING LAST HOURLY CONCENTRATION!!!
+  float pm10_24h  = avg_conc(pm10,  24);
+  float pm2_5_24h = avg_conc(pm2_5, 24);
+  return united_kingdom_daqi(no2_1h, o3_8h, so2_15min, pm10_24h, pm2_5_24h);
+} // end calc_united_kingdom_daqi
+
+int calc_united_states_aqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  float co_8h     = avg_conc(co,     8);
+  float no2_1h    = avg_conc(no2,    1);
+  float o3_1h     = avg_conc(o3,     1);
+  float o3_8h     = avg_conc(o3,     8);
+  float so2_1h    = avg_conc(so2,    1);
+  float so2_24h   = avg_conc(so2,   24);
+  float pm10_24h  = avg_conc(pm10,  24);
+  float pm2_5_24h = avg_conc(pm2_5, 24);
+  return united_states_aqi(co_8h, no2_1h, o3_1h, o3_8h, so2_1h, so2_24h,
+                           pm10_24h, pm2_5_24h);
+} // end calc_united_states_aqi
+
+/* Fast lookup for calc_aqi functions. Organized alphabetically
+ * (same order as aqi_scale_t enums).
+ */
+static int (*CALC_AQI_LOOKUP_TABLE[NUM_AQI_SCALES])(
+                          const float[24], const float[24], const float[24],
+                          const float[24], const float[24], const float[24],
+                          const float[24], const float[24], const float[24]) = {
+  calc_australia_aqi,
+  calc_canada_aqhi,
+  calc_china_aqi,
+  calc_european_union_caqi,
+  calc_hong_kong_aqhi,
+  calc_india_aqi,
+  calc_singapore_psi,
+  calc_south_korea_cai,
+  calc_united_kingdom_daqi,
+  calc_united_states_aqi,
+};
+
+int calc_aqi(aqi_scale_t scale,
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24])
+{
+  return CALC_AQI_LOOKUP_TABLE[scale](co, nh3, no, no2, o3, pb, so2, pm10,
+                                      pm2_5);
+} // end calc_aqi
+
+/* Fast lookup for AQI scale max values. Organized alphabetically
+ * (same order as aqi_scale_t enums).
+ */
+static const int AQI_MAX_LOOKUP_TABLE[NUM_AQI_SCALES] = {
+  AUSTRALIA_AQI_MAX,
+  CANADA_AQHI_MAX,
+  CHINA_AQI_MAX,
+  EUROPEAN_UNION_CAQI_MAX,
+  HONG_KONG_AQHI_MAX,
+  INDIA_AQI_MAX,
+  SINGAPORE_PSI_MAX,
+  SOUTH_KOREA_CAI_MAX,
+  UNITED_KINGDOM_DAQI_MAX,
+  UNITED_STATES_AQI_MAX,
+};
+
+int aqi_scale_max(aqi_scale_t scale) {
+  return AQI_MAX_LOOKUP_TABLE[scale];
+} // end aqi_scale_max
+
+/* Fast lookup for AQI descriptor functions. Organized alphabetically
+ * (same order as aqi_scale_t enums).
+ */
+static const char *(*AQI_DESC_LOOKUP_TABLE[NUM_AQI_SCALES])(int) = {
+  australia_aqi_desc,
+  canada_aqhi_desc,
+  china_aqi_desc,
+  european_union_caqi_desc,
+  hong_kong_aqhi_desc,
+  india_aqi_desc,
+  singapore_psi_desc,
+  south_korea_cai_desc,
+  united_kingdom_daqi_desc,
+  united_states_aqi_desc,
+};
+
+const char *aqi_desc(aqi_scale_t scale, int val)
+{
+  return AQI_DESC_LOOKUP_TABLE[scale](val);
+} // end aqi_desc
+
+/* Fast lookup for AQI scale descriptor types. Organized alphabetically
+ * (same order as aqi_scale_t enums).
+ */
+static const aqi_desc_type_t AQI_DESC_TYPE_LOOKUP_TABLE[NUM_AQI_SCALES] = {
+  AUSTRALIA_AQI_DESC_TYPE,
+  CANADA_AQHI_DESC_TYPE,
+  CHINA_AQI_DESC_TYPE,
+  EUROPEAN_UNION_CAQI_DESC_TYPE,
+  HONG_KONG_AQHI_DESC_TYPE,
+  INDIA_AQI_DESC_TYPE,
+  SINGAPORE_PSI_DESC_TYPE,
+  SOUTH_KOREA_CAI_DESC_TYPE,
+  UNITED_KINGDOM_DAQI_DESC_TYPE,
+  UNITED_STATES_AQI_DESC_TYPE,
+};
+
+aqi_desc_type_t aqi_desc_type(aqi_scale_t scale)
+{
+  return AQI_DESC_TYPE_LOOKUP_TABLE[scale];
+} // aqi_desc_type
