@@ -34,6 +34,10 @@
 // #define DISP_BW_V1
 
 // E-PAPER DRIVER BOARD
+// The DESPI-C02 is the only officially supported driver board.
+// Support for the Waveshare rev2.2 and rev2.3 is deprecated.
+// The Waveshare rev2.2 is no longer in production.
+// Users of the Waveshare rev2.3 have reported experiencing low contrast issues.
 // Uncomment the macro that identifies your driver board hardware.
 #define DRIVER_DESPI_C02
 // #define DRIVER_WAVESHARE
