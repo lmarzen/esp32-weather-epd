@@ -15,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// -*- coding: utf-8 -*-
 #include <vector>
 #include <Arduino.h>
 #include "_locale.h"
@@ -32,13 +31,13 @@
 //   LC_TIME category.
 //   https://www.gnu.org/software/libc/sources.html
 // D_T_FMT                 string for formatting date and time
-const char *LC_D_T_FMT     = "%a %d %b %Y %r %Z";
+const char *LC_D_T_FMT     = "%a %e. %Bta %Y %H.%M.%S";
 // LC_D_FMT                date format string
-const char *LC_D_FMT       = "%d/%m/%y";
+const char *LC_D_FMT       = "%d.%m.%Y";
 // T_FMT                   time format string
-const char *LC_T_FMT       = "%r";
+const char *LC_T_FMT       = "%H.%M.%S";
 // T_FMT_AMPM              a.m. or p.m. time format string
-const char *LC_T_FMT_AMPM  = "%I:%M:%S %p";
+const char *LC_T_FMT_AMPM  = "%H.%M.%S %p";
 // AM_STR                  Ante Meridian affix
 const char *LC_AM_STR      = "AM";
 // PM_STR                  Post Meridian affix
