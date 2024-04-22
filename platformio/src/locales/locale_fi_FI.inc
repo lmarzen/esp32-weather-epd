@@ -49,7 +49,7 @@ const char *LC_DAY[7]      = {"Sunnuntai", "Maanantai", "Tiistai", "Keskiviikko"
 const char *LC_ABDAY[7]    = {"Su", "Ma", "Ti", "Ke", "To", "Pe", "La"};
 // MON_{1-12}              name of the n-th month of the year
 const char *LC_MON[12]     = {"Tammikuu",    "Helmikuu", "Maaliskuu",    "Huhtikuu",
-                               "Toukokuu",       "Kes\xE4""kuu",     "Hein\xE4""kuu",     "Elokuu",
+                               "Toukokuu",       "Kes\xE4kuu",     "Hein\xE4kuu",     "Elokuu",
                                "Syyskuu", "Lokakuu",  "Marraskuu", "Joulukuu"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
 const char *LC_ABMON[12]   = {"Tammi", "Helmi", "Maalis", "Huhti", "Touko", "Kes\xE4",
@@ -78,28 +78,28 @@ const char *TXT_HUMIDITY           = "Ilmankosteus";
 const char *TXT_UV_INDEX           = "UV-indeksi";
 const char *TXT_PRESSURE           = "Ilmanpaine";
 const char *TXT_AIR_QUALITY_INDEX  = "Ilmanlaatuindeksi";
-const char *TXT_VISIBILITY         = "N\xE4""kyvyys";
-const char *TXT_INDOOR_TEMPERATURE = "L\xE4""mp\xF6""tila";
+const char *TXT_VISIBILITY         = "N\xE4kyvyys";
+const char *TXT_INDOOR_TEMPERATURE = "L\xE4mp\xF6tila";
 const char *TXT_INDOOR_HUMIDITY    = "Ilmankosteus";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Matala";
 const char *TXT_UV_MODERATE  = "Kohtalainen";
 const char *TXT_UV_HIGH      = "Korkea";
-const char *TXT_UV_VERY_HIGH = "Eritt\xE4""in korkea";
-const char *TXT_UV_EXTREME   = "\xC4""\xE4""rimm\xE4""inen";
+const char *TXT_UV_VERY_HIGH = "Eritt\xE4in korkea";
+const char *TXT_UV_EXTREME   = "\xC4\xE4rimm\xE4inen";
 
 // WIFI
 const char *TXT_WIFI_EXCELLENT     = "Erinomainen";
 const char *TXT_WIFI_GOOD          = "Hyv\xE4";
-const char *TXT_WIFI_FAIR          = "Tyydytt\xE4""v\xE4";
+const char *TXT_WIFI_FAIR          = "Tyydytt\xE4v\xE4";
 const char *TXT_WIFI_WEAK          = "Heikko";
 const char *TXT_WIFI_NO_CONNECTION = "Ei yhteytt\xE4";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
-const char *TXT_UNITS_TEMP_CELSIUS    = "\xB0""C";
-const char *TXT_UNITS_TEMP_FAHRENHEIT = "\xB0""F";
+const char *TXT_UNITS_TEMP_CELSIUS    = "\xB0C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "\xB0F";
 // UNIT SYMBOLS - WIND SPEED
 const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
 const char *TXT_UNITS_SPEED_FEETPERSECOND     = "ft/s";
@@ -170,7 +170,7 @@ const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Critically low battery voltage!";
 // Here are a few examples, uncomment the array for your region (or create your
 // own).
 // const std::vector<String> ALERT_URGENCY = {"statement", "watch", "advisory", "warning", "emergency"}; // US National Weather Service
-   const std::vector<String> ALERT_URGENCY = {"yellow", "amber", "red"};                 // United Kingdom's national weather service (MET Office)
+const std::vector<String> ALERT_URGENCY = {"yellow", "amber", "red"};                 // United Kingdom's national weather service (MET Office)
 // const std::vector<String> ALERT_URGENCY = {"minor", "moderate", "severe", "extreme"}; // METEO
 // const std::vector<String> ALERT_URGENCY = {}; // Disable urgency interpretation (algorithm will fallback to only prefer the most recently issued alerts)
 
@@ -232,11 +232,11 @@ const std::vector<String> TERM_STRONG_WIND =
 extern "C" {
 const char *AUSTRALIA_AQI_TXT[6] =
 {
-  "Eritt\xE4""in hyv\xE4",
+  "Eritt\xE4in hyv\xE4",
   "Hyv\xE4",
-  "Tyydytt\xE4""v\xE4",
+  "Tyydytt\xE4v\xE4",
   "Huono",
-  "Eritt\xE4""in huono",
+  "Eritt\xE4in huono",
   "Vaarallinen",
 };
 const char *CANADA_AQHI_TXT[4] =
@@ -244,71 +244,71 @@ const char *CANADA_AQHI_TXT[4] =
   "Matala",
   "Kohtalainen",
   "Korkea",
-  "Eritt\xE4""in korkea",
+  "Eritt\xE4in korkea",
 };
 const char *EUROPE_CAQI_TXT[5] =
 {
-  "Eritt\xE4""in matala",
+  "Eritt\xE4in matala",
   "Matala",
   "Keskitaso",
   "Korkea",
-  "Eritt\xE4""in korkea",
+  "Eritt\xE4in korkea",
 };
 const char *HONG_KONG_AQHI_TXT[5] =
 {
   "Matala",
   "Kohtalainen",
   "Korkea",
-  "Eritt\xE4""in korkea",
+  "Eritt\xE4in korkea",
   "Vaarallinen",
 };
 const char *INDIA_AQI_TXT[6] =
 {
   "Hyv\xE4",
-  "Tyydytt\xE4""v\xE4",
+  "Tyydytt\xE4v\xE4",
   "Kohtalainen",
   "Huono",
-  "Eritt\xE4""in huono",
+  "Eritt\xE4in huono",
   "Vakava",
 };
 const char *MAINLAND_CHINA_AQI_TXT[6] =
 {
   "Erinomainen",
   "Hyv\xE4",
-  "V\xE4""h\xE4""n saastunut",
+  "V\xE4h\xE4n saastunut",
   "Kohtuullisesti saastunut",
   "Voimakkaasti saastunut",
-  "Eritt\xE4""in voimakkaasti saastunut",
+  "Eritt\xE4in voimakkaasti saastunut",
 };
 const char *SINGAPORE_PSI_TXT[5] =
 {
   "Hyv\xE4",
   "Kohtalainen",
-  "Ep\xE4""terveellinen",
-  "Eritt\xE4""in ep\xE4""terveellinen",
+  "Ep\xE4terveellinen",
+  "Eritt\xE4in ep\xE4terveellinen",
   "Vaarallinen",
 };
 const char *SOUTH_KOREA_CAI_TXT[4] =
 {
   "Hyv\xE4",
   "Keskitaso",
-  "Ep\xE4""terveellinen",
-  "Eritt\xE4""in ep\xE4""terveellinen",
+  "Ep\xE4terveellinen",
+  "Eritt\xE4in ep\xE4terveellinen",
 };
 const char *UNITED_KINGDOM_DAQI_TXT[4] =
 {
   "Matala",
   "Kohtalainen",
   "Korkea",
-  "Eritt\xE4""in korkea",
+  "Eritt\xE4in korkea",
 };
 const char *UNITED_STATES_AQI_TXT[6] =
 {
   "Hyv\xE4",
   "Kohtalainen",
-  "Ep\xE4""terveellinen herkille ryhmille",
-  "Ep\xE4""terveellinen",
-  "Eritt\xE4""in ep\xE4""terveellinen",
+  "Ep\xE4terveellinen herkille ryhmille",
+  "Ep\xE4terveellinen",
+  "Eritt\xE4in ep\xE4terveellinen",
   "Vaarallinen",
 };
 } // end extern "C"
