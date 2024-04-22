@@ -23,9 +23,9 @@
  * <https://github.com/lmarzen/esp32-weather-epd/issues>
  */
 
+#include "_locale.h"
 #include <vector>
 #include <Arduino.h>
-#include "_locale.h"
 
 // LC_TIME
 // locale-based information,
@@ -85,7 +85,8 @@ const char *TXT_WIND               = "Tuuli";
 const char *TXT_HUMIDITY           = "Ilmankosteus";
 const char *TXT_UV_INDEX           = "UV-indeksi";
 const char *TXT_PRESSURE           = "Ilmanpaine";
-const char *TXT_AIR_QUALITY_INDEX  = "Ilmanlaatuindeksi";
+const char *TXT_AIR_QUALITY        = "Ilman Laatu";
+const char *TXT_AIR_POLLUTION      = "Ilmansaaste";
 const char *TXT_VISIBILITY         = "N\xE4kyvyys";
 const char *TXT_INDOOR_TEMPERATURE = "L\xE4mp\xF6tila";
 const char *TXT_INDOOR_HUMIDITY    = "Ilmankosteus";
@@ -106,8 +107,8 @@ const char *TXT_WIFI_NO_CONNECTION = "Ei yhteytt\xE4";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
-const char *TXT_UNITS_TEMP_CELSIUS    = "\xB0C";
-const char *TXT_UNITS_TEMP_FAHRENHEIT = "\xB0F";
+const char *TXT_UNITS_TEMP_CELSIUS    = "\260C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "\260F";
 // UNIT SYMBOLS - WIND SPEED
 const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
 const char *TXT_UNITS_SPEED_FEETPERSECOND     = "ft/s";
@@ -122,8 +123,8 @@ const char *TXT_UNITS_PRES_MILLIMETERSOFMERCURY     = "mmHg";
 const char *TXT_UNITS_PRES_INCHESOFMERCURY          = "inHg";
 const char *TXT_UNITS_PRES_MILLIBARS                = "mbar";
 const char *TXT_UNITS_PRES_ATMOSPHERES              = "atm";
-const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "g/cm\xB2";
-const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/in\xB2";
+const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "g/cm\262";
+const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/in\262";
 // UNITS - VISIBILITY DISTANCE
 const char *TXT_UNITS_DIST_KILOMETERS = "km";
 const char *TXT_UNITS_DIST_MILES      = "mi";
@@ -151,14 +152,14 @@ const char *TXT_READ_FAILED = "read failed";
 // Complete Sentences
 const char *TXT_FAILED_TO_GET_TIME = "Failed to get the time!";
 const char *TXT_HIBERNATING_INDEFINITELY_NOTICE = "Hibernating without wake time!";
-const char *TXT_REFERENCING_OLDER_TIME_NOTICE = "Failed to syncronize time before deep-sleep, referencing older time.";
+const char *TXT_REFERENCING_OLDER_TIME_NOTICE = "Failed to synchronize time before deep-sleep, referencing older time.";
 const char *TXT_WAITING_FOR_SNTP = "Waiting for SNTP synchronization.";
 const char *TXT_LOW_BATTERY_VOLTAGE = "Low battery voltage!";
 const char *TXT_VERY_LOW_BATTERY_VOLTAGE = "Very low battery voltage!";
 const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Critically low battery voltage!";
 
 // ALERTS
-// The display can show up to 2 alerts, but alerts can be unpredictible in
+// The display can show up to 2 alerts, but alerts can be unpredictable in
 // severity and number. If more than 2 alerts are active, the esp32 will attempt
 // to interpret the urgency of each alert and prefer to display the most urgent
 // and recently issued alerts of each event type. Depending on your region
@@ -172,7 +173,7 @@ const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Critically low battery voltage!";
 //   OpenWeatherMap returns alerts in English regardless of the OWM LANGUAGE
 //   option or territory. For this reason it is preferred that you do not
 //   translate text related to Alerts. Understandably, it may be undesirable to
-//   see English alerts in territories where English is uncommon. To satisify
+//   see English alerts in territories where English is uncommon. To satisfy
 //   this, users should set the DISPLAY_ALERTS macro to 0 in config.h.
 //
 // Here are a few examples, uncomment the array for your region (or create your
@@ -238,6 +239,17 @@ const std::vector<String> TERM_STRONG_WIND =
 
 // AIR QUALITY INDEX
 extern "C" {
+// Seemingly every country uses a different scale for Air Quality Index (AQI).
+// I have written a library to calculate many of the most popular AQI scales.
+// Feel free to request the addition of a new AQI scale by opening an Issue.
+// https://github.com/lmarzen/pollutant-concentration-to-aqi
+// Please choose this region's preferred AQI scale.
+//   AUSTRALIA_AQI        CANADA_AQHI          EUROPEAN_UNION_CAQI
+//   HONG_KONG_AQHI       INDIA_AQI            CHINA_AQI
+//   SINGAPORE_PSI        SOUTH_KOREA_CAI      UNITED_KINGDOM_DAQI
+//   UNITED_STATES_AQI
+const aqi_scale_t AQI_SCALE = UNITED_STATES_AQI;
+
 const char *AUSTRALIA_AQI_TXT[6] =
 {
   "Eritt\xE4in hyv\xE4",
@@ -254,7 +266,7 @@ const char *CANADA_AQHI_TXT[4] =
   "Korkea",
   "Eritt\xE4in korkea",
 };
-const char *EUROPE_CAQI_TXT[5] =
+const char *EUROPEAN_UNION_CAQI_TXT[5] =
 {
   "Eritt\xE4in matala",
   "Matala",
@@ -279,7 +291,7 @@ const char *INDIA_AQI_TXT[6] =
   "Eritt\xE4in huono",
   "Vakava",
 };
-const char *MAINLAND_CHINA_AQI_TXT[6] =
+const char *CHINA_AQI_TXT[6] =
 {
   "Erinomainen",
   "Hyv\xE4",
