@@ -62,6 +62,7 @@
 //   English (United Kingdom)        en_GB
 //   English (United States)         en_US
 //   Estonian (Estonia)              et_EE
+//   Finnish (Finland)               fi_FI
 //   French (France)                 fr_FR
 //   Dutch (Belgium)                 nl_BE
 //   Portuguese (Brazil)             pt_BR
