@@ -116,6 +116,17 @@
 // #define UNITS_PRECIP_CENTIMETERS
 // #define UNITS_PRECIP_INCHES
 
+// UNITS - DAILY PRECIPITATION
+// Measure of daily precipitation.
+// This can either be Probability of Precipitation (PoP), hourly volume, or none (hidden).
+//   Metric   : Millimeters
+//   Imperial : Inches
+#define DAILY_PRECIP_NONE
+// #define UNITS_DAILY_PRECIP_POP
+// #define UNITS_DAILY_PRECIP_MILLIMETERS
+// #define UNITS_DAILY_PRECIP_CENTIMETERS
+// #define UNITS_DAILY_PRECIP_INCHES
+
 // Hypertext Transfer Protocol (HTTP)
 // HTTP
 //   HTTP does not provide encryption or any security measures, making it highly

@@ -704,6 +704,45 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 #endif
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
     drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
+
+// daily forecast precipitation
+#ifndef DAILY_PRECIP_NONE
+      float dailyPrecipValue;
+      String precip_unit;
+      int dailyDecimals;
+#ifdef UNITS_DAILY_PRECIP_POP
+      dailyPrecipValue = static_cast<int>(daily[i].pop * 100);
+      precip_unit = "%";
+      dailyDecimals = 0;
+#else
+    dailyPrecipValue = daily[i].snow + daily[i].rain;
+#ifdef UNITS_DAILY_PRECIP_MILLIMETERS
+    dailyPrecipValue = static_cast<int>(std::ceil(dailyPrecipValue)); // Round up to nearest mm
+    precip_unit = "mm";
+    dailyDecimals = 0;
+#endif
+#ifdef UNITS_DAILY_PRECIP_CENTIMETERS
+    dailyPrecipValue = millimeters_to_centimeters(dailyPrecipValue);
+    // Round up to nearest 0.1 cm
+    dailyPrecipValue = std::ceil(dailyPrecipValue * 10) / 10.0f;
+    precip_unit = "cm";
+    dailyDecimals = 1;
+#endif
+#ifdef UNITS_DAILY_PRECIP_INCHES
+    dailyPrecipValue = millimeters_to_inches(dailyPrecipValue);
+    // Round up to nearest 0.1 inch
+    dailyPrecipValue = std::ceil(dailyPrecipValue * 10) / 10.0f;
+    precip_unit = "in";
+    dailyDecimals = 1;
+#endif
+#endif
+      if (dailyPrecipValue > 0)
+      {
+        display.setFont(&FONT_6pt8b);
+        drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 26, String(dailyPrecipValue, dailyDecimals) + precip_unit, CENTER);
+      }
+#endif
+
   }
 
   return;
