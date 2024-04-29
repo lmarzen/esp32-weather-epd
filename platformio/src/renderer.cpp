@@ -718,24 +718,24 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 // daily forecast precipitation
 #if DISPLAY_DAILY_PRECIP
     float dailyPrecip;
-#if defined(UNITS_PRECIP_POP)
+#if defined(UNITS_DAILY_PRECIP_POP)
     dailyPrecip = daily[i].pop * 100;
     dataStr = String(static_cast<int>(dailyPrecip));
     unitStr = "%";
 #else
     dailyPrecip = daily[i].snow + daily[i].rain;
-#if defined(UNITS_PRECIP_MILLIMETERS)
+#if defined(UNITS_DAILY_PRECIP_MILLIMETERS)
     // Round up to nearest mm
     dailyPrecip = std::round(dailyPrecip);
     dataStr = String(static_cast<int>(dailyPrecip));
     unitStr = "mm";
-#elif defined(UNITS_PRECIP_CENTIMETERS)
+#elif defined(UNITS_DAILY_PRECIP_CENTIMETERS)
     // Round up to nearest 0.1 cm
     dailyPrecip = millimeters_to_centimeters(dailyPrecip);
     dailyPrecip = std::round(dailyPrecip * 10) / 10.0f;
     dataStr = String(dailyPrecip, 1);
     unitStr = "cm";
-#elif defined(UNITS_PRECIP_INCHES)
+#elif defined(UNITS_DAILY_PRECIP_INCHES)
     // Round up to nearest 0.1 inch
     dailyPrecip = millimeters_to_inches(dailyPrecip);
     dailyPrecip = std::round(dailyPrecip * 10) / 10.0f;
@@ -918,7 +918,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   float tempMin = kelvin_to_fahrenheit(hourly[0].temp);
 #endif
   float tempMax = tempMin;
-#ifdef UNITS_PRECIP_POP
+#ifdef UNITS_HOURLY_PRECIP_POP
   float precipMax = hourly[0].pop;
 #else
   float precipMax = hourly[0].rain_1h + hourly[0].snow_1h;
@@ -938,7 +938,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #endif
     tempMin = std::min(tempMin, newTemp);
     tempMax = std::max(tempMax, newTemp);
-#ifdef UNITS_PRECIP_POP
+#ifdef UNITS_HOURLY_PRECIP_POP
     precipMax = std::max<float>(precipMax, hourly[i].pop);
 #else
     precipMax = std::max<float>(
@@ -973,7 +973,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     }
   }
 
-#ifdef UNITS_PRECIP_POP
+#ifdef UNITS_HOURLY_PRECIP_POP
   float precipBoundMax;
   if (precipMax > 0)
   {
@@ -984,11 +984,11 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     precipBoundMax = 0.0f;
   }
 #else
-#ifdef UNITS_PRECIP_MILLIMETERS
+#ifdef UNITS_HOURLY_PRECIP_MILLIMETERS
   float precipBoundMax = std::ceil(precipMax); // Round up to nearest mm
   int yPrecipMajorTickDecimals = (precipBoundMax < 10);
 #endif
-#ifdef UNITS_PRECIP_CENTIMETERS
+#ifdef UNITS_HOURLY_PRECIP_CENTIMETERS
   precipMax = millimeters_to_centimeters(precipMax);
   // Round up to nearest 0.1 cm
   float precipBoundMax = std::ceil(precipMax * 10) / 10.0f;
@@ -1010,7 +1010,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     yPrecipMajorTickDecimals = 0;
   }
 #endif
-#ifdef UNITS_PRECIP_INCHES
+#ifdef UNITS_HOURLY_PRECIP_INCHES
   precipMax = millimeters_to_inches(precipMax);
   // Round up to nearest 0.1 inch
   float precipBoundMax = std::ceil(precipMax * 10) / 10.0f;
@@ -1057,7 +1057,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 
     if (precipBoundMax > 0)
     { // don't labels if precip is 0
-#ifdef UNITS_PRECIP_POP
+#ifdef UNITS_HOURLY_PRECIP_POP
       // PoP
       dataStr = String(100 - (i * 20));
       String precipUnit = "%";
@@ -1067,13 +1067,13 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
       precipTick = std::round(precipTick * precipRoundingMultiplier)
                               / precipRoundingMultiplier;
       dataStr = String(precipTick, yPrecipMajorTickDecimals);
-#ifdef UNITS_PRECIP_MILLIMETERS
+#ifdef UNITS_HOURLY_PRECIP_MILLIMETERS
       String precipUnit = "mm";
 #endif
-#ifdef UNITS_PRECIP_CENTIMETERS
+#ifdef UNITS_HOURLY_PRECIP_CENTIMETERS
       String precipUnit = "cm";
 #endif
-#ifdef UNITS_PRECIP_INCHES
+#ifdef UNITS_HOURLY_PRECIP_INCHES
       String precipUnit = "in";
 #endif
 #endif
@@ -1142,14 +1142,14 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
       display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , ACCENT_COLOR);
     }
 
-#ifdef UNITS_PRECIP_POP
+#ifdef UNITS_HOURLY_PRECIP_POP
     float precipVal = hourly[i].pop * 100;
 #else
     float precipVal = hourly[i].rain_1h + hourly[i].snow_1h;
-#ifdef UNITS_PRECIP_CENTIMETERS
+#ifdef UNITS_HOURLY_PRECIP_CENTIMETERS
     precipVal = millimeters_to_centimeters(precipVal);
 #endif
-#ifdef UNITS_PRECIP_INCHES
+#ifdef UNITS_HOURLY_PRECIP_INCHES
     precipVal = millimeters_to_inches(precipVal);
 #endif
 #endif
