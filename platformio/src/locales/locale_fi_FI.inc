@@ -178,7 +178,7 @@ const char *TXT_CRIT_LOW_BATTERY_VOLTAGE = "Critically low battery voltage!";
 //
 // Here are a few examples, uncomment the array for your region (or create your
 // own).
-// const std::vector<String> ALERT_URGENCY = {"statement", "watch", "advisory", "warning", "emergency"}; // US National Weather Service
+// const std::vector<String> ALERT_URGENCY = {"outlook", "statement", "watch", "advisory", "warning", "emergency"}; // US National Weather Service
 const std::vector<String> ALERT_URGENCY = {"yellow", "amber", "red"};                 // United Kingdom's national weather service (MET Office)
 // const std::vector<String> ALERT_URGENCY = {"minor", "moderate", "severe", "extreme"}; // METEO
 // const std::vector<String> ALERT_URGENCY = {}; // Disable urgency interpretation (algorithm will fallback to only prefer the most recently issued alerts)
@@ -200,7 +200,7 @@ const std::vector<String> TERM_BIOHAZARD =
 const std::vector<String> TERM_EARTHQUAKE =
     {"earthquake"};
 const std::vector<String> TERM_TSUNAMI =
-    {"tsunami"};
+    {"tsunami", "surf"};
 const std::vector<String> TERM_FIRE =
     {"fire", "red flag"};
 const std::vector<String> TERM_HEAT =
@@ -215,7 +215,7 @@ const std::vector<String> TERM_SANDSTORM =
     {"sandstorm", "blowing dust", "dust storm"};
 const std::vector<String> TERM_FLOOD =
     {"flood", "storm surge", "seiche", "swell", "high seas", "high tides",
-     "tidal surge"};
+     "tidal surge", "hydrologic"};
 const std::vector<String> TERM_VOLCANO =
     {"volcanic", "ash", "volcano", "eruption"};
 const std::vector<String> TERM_AIR_QUALITY =
