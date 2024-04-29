@@ -632,10 +632,12 @@ void drawCurrentConditions(const owm_current_t &current,
     dataStr = String(static_cast<int>(std::round(vis)));
   }
 #ifdef UNITS_DIST_KILOMETERS
-  if (vis >= 10) {
+  if (vis >= 10)
+  {
 #endif
 #ifdef UNITS_DIST_MILES
-  if (vis >= 6) {
+  if (vis >= 6)
+  {
 #endif
     dataStr = "> " + dataStr;
   }
@@ -994,7 +996,8 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   if (precipBoundMax < 1)
   {
     yPrecipMajorTickDecimals = 2;
-    if (precipBoundMax > 0) {
+    if (precipBoundMax > 0)
+    {
       xPos1 -= 6; // needs extra room
     }
   }
@@ -1052,11 +1055,12 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 #endif
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT, ACCENT_COLOR);
 
-    if (precipBoundMax > 0) { // don't labels if precip is 0
+    if (precipBoundMax > 0)
+    { // don't labels if precip is 0
 #ifdef UNITS_PRECIP_POP
-    // PoP
-    dataStr = String(100 - (i * 20));
-    String precipUnit = "%";
+      // PoP
+      dataStr = String(100 - (i * 20));
+      String precipUnit = "%";
 #else
       // Precipitation volume
       float precipTick = precipBoundMax - (i * yPrecipMajorTickValue);
@@ -1217,7 +1221,8 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
                                        CRIT_LOW_BATTERY_VOLTAGE,
                                        MAX_BATTERY_VOLTAGE);
 #if defined(DISP_3C_B) || defined(DISP_7C_F)
-  if (batVoltage < WARN_BATTERY_VOLTAGE) {
+  if (batVoltage < WARN_BATTERY_VOLTAGE)
+  {
     dataColor = ACCENT_COLOR;
   }
 #endif
