@@ -208,6 +208,14 @@
 //   other artifacts.
 #define FONT_HEADER "fonts/FreeSans.h"
 
+// DAILY PRECIPITATION
+// Daily precipitation indicated under Hi|Lo can optionally be configured using
+// the following options.
+//   0 : Disable (hide always)
+//   1 : Enable (show always)
+//   2 : Smart (show only when precipitation is forecasted)
+#define DISPLAY_DAILY_PRECIP 2
+
 // ALERTS
 //   The handling of alerts is complex. Each country has a unique national alert
 //   system that receives alerts from many different government agencies. This
@@ -355,6 +363,9 @@ extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 #endif
 #if !(defined(FONT_HEADER))
   #error Invalid configuration. Font not selected.
+#endif
+#if !(defined(DISPLAY_DAILY_PRECIP))
+  #error Invalid configuration. DISPLAY_DAILY_PRECIP not defined.
 #endif
 #if !(defined(DISPLAY_ALERTS))
   #error Invalid configuration. DISPLAY_ALERTS not defined.
