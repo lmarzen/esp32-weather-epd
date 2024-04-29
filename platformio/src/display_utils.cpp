@@ -1438,32 +1438,22 @@ const char *getCompassPointNotation(int windDeg)
  * ArduinoJson DeserializationError codes are also included here and are given a
  * negative 100 offset to distinguish them from other client error codes.
  *
- * HTTP response status codes (100 to 511)
+ * HTTP response status codes [100, 599]
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
  *
- * HTTP client errors (-1 to -11)
+ * HTTP client errors [0, -255]
  * https://github.com/espressif/arduino-esp32/blob/master/libraries/HTTPClient/src/HTTPClient.h
  *
- * ArduinoJson DeserializationError codes (-100 to -105)
+ * ArduinoJson DeserializationError codes [-256, -511]
  * https://arduinojson.org/v6/api/misc/deserializationerror/
+ * 
+ * WiFi Status codes [-512, -767]
+ * https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/src/WiFiType.h
  */
 const char *getHttpResponsePhrase(int code)
 {
   switch (code)
   {
-  // HTTP client errors
-  case HTTPC_ERROR_CONNECTION_REFUSED:  return TXT_HTTPC_ERROR_CONNECTION_REFUSED;
-  case HTTPC_ERROR_SEND_HEADER_FAILED:  return TXT_HTTPC_ERROR_SEND_HEADER_FAILED;
-  case HTTPC_ERROR_SEND_PAYLOAD_FAILED: return TXT_HTTPC_ERROR_SEND_PAYLOAD_FAILED;
-  case HTTPC_ERROR_NOT_CONNECTED:       return TXT_HTTPC_ERROR_NOT_CONNECTED;
-  case HTTPC_ERROR_CONNECTION_LOST:     return TXT_HTTPC_ERROR_CONNECTION_LOST;
-  case HTTPC_ERROR_NO_STREAM:           return TXT_HTTPC_ERROR_NO_STREAM;
-  case HTTPC_ERROR_NO_HTTP_SERVER:      return TXT_HTTPC_ERROR_NO_HTTP_SERVER;
-  case HTTPC_ERROR_TOO_LESS_RAM:        return TXT_HTTPC_ERROR_TOO_LESS_RAM;
-  case HTTPC_ERROR_ENCODING:            return TXT_HTTPC_ERROR_ENCODING;
-  case HTTPC_ERROR_STREAM_WRITE:        return TXT_HTTPC_ERROR_STREAM_WRITE;
-  case HTTPC_ERROR_READ_TIMEOUT:        return TXT_HTTPC_ERROR_READ_TIMEOUT;
-
   // 1xx - Informational Responses
   case 100: return TXT_HTTP_RESPONSE_100;
   case 101: return TXT_HTTP_RESPONSE_101;
@@ -1536,13 +1526,37 @@ const char *getHttpResponsePhrase(int code)
   case 510: return TXT_HTTP_RESPONSE_510;
   case 511: return TXT_HTTP_RESPONSE_511;
 
-  // ArduinoJson DeserializationError codes
-  case -100 - (DeserializationError::Code::Ok):              return TXT_DESERIALIZATION_ERROR_OK;
-  case -100 - (DeserializationError::Code::EmptyInput):      return TXT_DESERIALIZATION_ERROR_EMPTY_INPUT;
-  case -100 - (DeserializationError::Code::IncompleteInput): return TXT_DESERIALIZATION_ERROR_INCOMPLETE_INPUT;
-  case -100 - (DeserializationError::Code::InvalidInput):    return TXT_DESERIALIZATION_ERROR_INVALID_INPUT;
-  case -100 - (DeserializationError::Code::NoMemory):        return TXT_DESERIALIZATION_ERROR_NO_MEMORY;
-  case -100 - (DeserializationError::Code::TooDeep):         return TXT_DESERIALIZATION_ERROR_TOO_DEEP;
+  // HTTP client errors [0, -255]
+  case HTTPC_ERROR_CONNECTION_REFUSED:  return TXT_HTTPC_ERROR_CONNECTION_REFUSED;
+  case HTTPC_ERROR_SEND_HEADER_FAILED:  return TXT_HTTPC_ERROR_SEND_HEADER_FAILED;
+  case HTTPC_ERROR_SEND_PAYLOAD_FAILED: return TXT_HTTPC_ERROR_SEND_PAYLOAD_FAILED;
+  case HTTPC_ERROR_NOT_CONNECTED:       return TXT_HTTPC_ERROR_NOT_CONNECTED;
+  case HTTPC_ERROR_CONNECTION_LOST:     return TXT_HTTPC_ERROR_CONNECTION_LOST;
+  case HTTPC_ERROR_NO_STREAM:           return TXT_HTTPC_ERROR_NO_STREAM;
+  case HTTPC_ERROR_NO_HTTP_SERVER:      return TXT_HTTPC_ERROR_NO_HTTP_SERVER;
+  case HTTPC_ERROR_TOO_LESS_RAM:        return TXT_HTTPC_ERROR_TOO_LESS_RAM;
+  case HTTPC_ERROR_ENCODING:            return TXT_HTTPC_ERROR_ENCODING;
+  case HTTPC_ERROR_STREAM_WRITE:        return TXT_HTTPC_ERROR_STREAM_WRITE;
+  case HTTPC_ERROR_READ_TIMEOUT:        return TXT_HTTPC_ERROR_READ_TIMEOUT;
+
+  // ArduinoJson DeserializationError codes  [-256, -511]
+  case -256 - (DeserializationError::Code::Ok):              return TXT_DESERIALIZATION_ERROR_OK;
+  case -256 - (DeserializationError::Code::EmptyInput):      return TXT_DESERIALIZATION_ERROR_EMPTY_INPUT;
+  case -256 - (DeserializationError::Code::IncompleteInput): return TXT_DESERIALIZATION_ERROR_INCOMPLETE_INPUT;
+  case -256 - (DeserializationError::Code::InvalidInput):    return TXT_DESERIALIZATION_ERROR_INVALID_INPUT;
+  case -256 - (DeserializationError::Code::NoMemory):        return TXT_DESERIALIZATION_ERROR_NO_MEMORY;
+  case -256 - (DeserializationError::Code::TooDeep):         return TXT_DESERIALIZATION_ERROR_TOO_DEEP;
+
+  // WiFi Status codes [-512, -767]
+  case -512 - WL_NO_SHIELD:       return TXT_WL_NO_SHIELD;
+  // case -512 - WL_STOPPED:       return TXT_WL_STOPPED; // future
+  case -512 - WL_IDLE_STATUS:     return TXT_WL_IDLE_STATUS;
+  case -512 - WL_NO_SSID_AVAIL:   return TXT_WL_NO_SSID_AVAIL;
+  case -512 - WL_SCAN_COMPLETED:  return TXT_WL_SCAN_COMPLETED;
+  case -512 - WL_CONNECTED:       return TXT_WL_CONNECTED;
+  case -512 - WL_CONNECT_FAILED:  return TXT_WL_CONNECT_FAILED;
+  case -512 - WL_CONNECTION_LOST: return TXT_WL_CONNECTION_LOST;
+  case -512 - WL_DISCONNECTED:    return TXT_WL_DISCONNECTED;
 
   default:  return "";
   }
@@ -1560,6 +1574,7 @@ const char *getWifiStatusPhrase(wl_status_t status)
   switch (status)
   {
   case WL_NO_SHIELD:       return TXT_WL_NO_SHIELD;
+  // case WL_STOPPED:       return TXT_WL_STOPPED; // future
   case WL_IDLE_STATUS:     return TXT_WL_IDLE_STATUS;
   case WL_NO_SSID_AVAIL:   return TXT_WL_NO_SSID_AVAIL;
   case WL_SCAN_COMPLETED:  return TXT_WL_SCAN_COMPLETED;
