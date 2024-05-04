@@ -111,20 +111,20 @@
 // This can either be Probability of Precipitation (PoP) or hourly volume.
 //   Metric   : Millimeters
 //   Imperial : Inches
-// #define UNITS_HOURLY_PRECIP_POP
+#define UNITS_HOURLY_PRECIP_POP
 // #define UNITS_HOURLY_PRECIP_MILLIMETERS
 // #define UNITS_HOURLY_PRECIP_CENTIMETERS
-#define UNITS_HOURLY_PRECIP_INCHES
+// #define UNITS_HOURLY_PRECIP_INCHES
 
 // UNITS - PRECIPITATION (DAILY)
 // Measure of precipitation.
 // This can either be Probability of Precipitation (PoP) or daily volume.
 //   Metric   : Millimeters
 //   Imperial : Inches
-#define UNITS_DAILY_PRECIP_POP
+// #define UNITS_DAILY_PRECIP_POP
 // #define UNITS_DAILY_PRECIP_MILLIMETERS
 // #define UNITS_DAILY_PRECIP_CENTIMETERS
-// #define UNITS_DAILY_PRECIP_INCHES
+#define UNITS_DAILY_PRECIP_INCHES
 
 // Hypertext Transfer Protocol (HTTP)
 // HTTP
@@ -274,6 +274,7 @@ extern const uint8_t BME_ADDRESS;
 extern const char *WIFI_SSID;
 extern const char *WIFI_PASSWORD;
 extern const unsigned long WIFI_TIMEOUT;
+extern const unsigned HTTP_CLIENT_TCP_TIMEOUT;
 extern const String OWM_APIKEY;
 extern const String OWM_ENDPOINT;
 extern const String OWM_ONECALL_VERSION;

@@ -48,6 +48,14 @@ const char *WIFI_SSID     = "ssid";
 const char *WIFI_PASSWORD = "password";
 const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
+// HTTP
+// The following errors are likely the result of insuffient http client tcp 
+// timeout:
+//   -1   Connection Refused
+//   -11  Read Timeout
+//   -258 Deserialization Incomplete Input
+const unsigned HTTP_CLIENT_TCP_TIMEOUT = 10000; // ms
+
 // OPENWEATHERMAP API
 // OpenWeatherMap API key, https://openweathermap.org/
 const String OWM_APIKEY   = "abcdefghijklmnopqrstuvwxyz012345";

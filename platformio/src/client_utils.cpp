@@ -179,6 +179,8 @@ bool waitForSNTPSync(tm *timeInfo)
     }
 
     HTTPClient http;
+    http.setConnectTimeout(HTTP_CLIENT_TCP_TIMEOUT); // default 5000ms
+    http.setTimeout(HTTP_CLIENT_TCP_TIMEOUT); // default 5000ms
     http.begin(client, OWM_ENDPOINT, OWM_PORT, uri);
     httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK)
@@ -250,6 +252,8 @@ bool waitForSNTPSync(tm *timeInfo)
     }
 
     HTTPClient http;
+    http.setConnectTimeout(HTTP_CLIENT_TCP_TIMEOUT); // default 5000ms
+    http.setTimeout(HTTP_CLIENT_TCP_TIMEOUT); // default 5000ms
     http.begin(client, OWM_ENDPOINT, OWM_PORT, uri);
     httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK)
