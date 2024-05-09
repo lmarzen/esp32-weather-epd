@@ -689,7 +689,7 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
     drawString(x + 31 - 2, 98 + 69 / 2 - 32 - 26 - 6 + 16, dayBuffer, CENTER);
     timeInfo.tm_wday = (timeInfo.tm_wday + 1) % 7; // increment to next day
 
-    // high | low
+    // low | high
     display.setFont(&FONT_8pt8b);
     drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 12, "|", CENTER);
 #ifdef UNITS_TEMP_KELVIN
@@ -712,8 +712,8 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
                 std::round(kelvin_to_fahrenheit(daily[i].temp.min)))) +
             "\260";
 #endif
-    drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
-    drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
+    drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, loStr, RIGHT);
+    drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, hiStr, LEFT);
 
 // daily forecast precipitation
 #if DISPLAY_DAILY_PRECIP
