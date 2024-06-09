@@ -42,8 +42,8 @@ def printData(data, showPub = True):
     name = re.sub('[^a-zA-Z0-9_]', '_', cn)
     print('// CN: {} => name: {}'.format(cn, name))
 
-    print('// not valid before:', xcert.not_valid_before)
-    print('// not valid after: ', xcert.not_valid_after)
+    print('// not valid before:', xcert.not_valid_before_utc)
+    print('// not valid after: ', xcert.not_valid_after_utc)
 
     if showPub:
 
