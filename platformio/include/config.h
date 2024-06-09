@@ -106,15 +106,25 @@
 // #define UNITS_DIST_KILOMETERS
 #define UNITS_DIST_MILES
 
-// UNITS - PRECIPITATION
+// UNITS - PRECIPITATION (HOURLY)
 // Measure of precipitation.
 // This can either be Probability of Precipitation (PoP) or hourly volume.
 //   Metric   : Millimeters
 //   Imperial : Inches
-#define UNITS_PRECIP_POP
-// #define UNITS_PRECIP_MILLIMETERS
-// #define UNITS_PRECIP_CENTIMETERS
-// #define UNITS_PRECIP_INCHES
+#define UNITS_HOURLY_PRECIP_POP
+// #define UNITS_HOURLY_PRECIP_MILLIMETERS
+// #define UNITS_HOURLY_PRECIP_CENTIMETERS
+// #define UNITS_HOURLY_PRECIP_INCHES
+
+// UNITS - PRECIPITATION (DAILY)
+// Measure of precipitation.
+// This can either be Probability of Precipitation (PoP) or daily volume.
+//   Metric   : Millimeters
+//   Imperial : Inches
+// #define UNITS_DAILY_PRECIP_POP
+// #define UNITS_DAILY_PRECIP_MILLIMETERS
+// #define UNITS_DAILY_PRECIP_CENTIMETERS
+#define UNITS_DAILY_PRECIP_INCHES
 
 // Hypertext Transfer Protocol (HTTP)
 // HTTP
@@ -208,6 +218,14 @@
 //   other artifacts.
 #define FONT_HEADER "fonts/FreeSans.h"
 
+// DAILY PRECIPITATION
+// Daily precipitation indicated under Hi|Lo can optionally be configured using
+// the following options.
+//   0 : Disable (hide always)
+//   1 : Enable (show always)
+//   2 : Smart (show only when precipitation is forecasted)
+#define DISPLAY_DAILY_PRECIP 2
+
 // ALERTS
 //   The handling of alerts is complex. Each country has a unique national alert
 //   system that receives alerts from many different government agencies. This
@@ -256,6 +274,7 @@ extern const uint8_t BME_ADDRESS;
 extern const char *WIFI_SSID;
 extern const char *WIFI_PASSWORD;
 extern const unsigned long WIFI_TIMEOUT;
+extern const unsigned HTTP_CLIENT_TCP_TIMEOUT;
 extern const String OWM_APIKEY;
 extern const String OWM_ENDPOINT;
 extern const String OWM_ONECALL_VERSION;
@@ -323,11 +342,17 @@ extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
       ^ defined(UNITS_DIST_MILES))
   #error Invalid configuration. Exactly one distance unit must be selected.
 #endif
-#if !(  defined(UNITS_PRECIP_POP)         \
-      ^ defined(UNITS_PRECIP_MILLIMETERS) \
-      ^ defined(UNITS_PRECIP_CENTIMETERS) \
-      ^ defined(UNITS_PRECIP_INCHES))
-  #error Invalid configuration. Exactly one precipitation measurement must be selected.
+#if !(  defined(UNITS_HOURLY_PRECIP_POP)         \
+      ^ defined(UNITS_HOURLY_PRECIP_MILLIMETERS) \
+      ^ defined(UNITS_HOURLY_PRECIP_CENTIMETERS) \
+      ^ defined(UNITS_HOURLY_PRECIP_INCHES))
+  #error Invalid configuration. Exactly one houly precipitation measurement must be selected.
+#endif
+#if !(  defined(UNITS_DAILY_PRECIP_POP)         \
+      ^ defined(UNITS_DAILY_PRECIP_MILLIMETERS) \
+      ^ defined(UNITS_DAILY_PRECIP_CENTIMETERS) \
+      ^ defined(UNITS_DAILY_PRECIP_INCHES))
+  #error Invalid configuration. Exactly one daily precipitation measurement must be selected.
 #endif
 #if !(  defined(USE_HTTP)                   \
       ^ defined(USE_HTTPS_NO_CERT_VERIF)    \
@@ -355,6 +380,9 @@ extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 #endif
 #if !(defined(FONT_HEADER))
   #error Invalid configuration. Font not selected.
+#endif
+#if !(defined(DISPLAY_DAILY_PRECIP))
+  #error Invalid configuration. DISPLAY_DAILY_PRECIP not defined.
 #endif
 #if !(defined(DISPLAY_ALERTS))
   #error Invalid configuration. DISPLAY_ALERTS not defined.
