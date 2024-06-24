@@ -66,6 +66,7 @@
 //   French (France)                 fr_FR
 //   Dutch (Belgium)                 nl_BE
 //   Portuguese (Brazil)             pt_BR
+//   Italiano (Italia)               it_IT
 #define LOCALE en_US
 
 // UNITS
