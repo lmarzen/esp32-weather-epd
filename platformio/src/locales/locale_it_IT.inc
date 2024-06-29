@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/* Special thanks to Luc Sanchez (ColonelMoutarde) for contributing this
+/* Special thanks to Massimo Saccani (Supergiovane) for contributing this
  * translation.
  *
  * If you have any feedback or suggestions on translations, please open an issue
@@ -39,7 +39,7 @@
 //   LC_TIME category.
 //   https://www.gnu.org/software/libc/sources.html
 // D_T_FMT                 string for formatting date and time
-const char *LC_D_T_FMT     = "%a %d %b %Y %T";
+const char *LC_D_T_FMT     = "%a %-d %b %Y, %T";
 // LC_D_FMT                date format string
 const char *LC_D_FMT       = "%d/%m/%y";
 // T_FMT                   time format string
@@ -51,14 +51,14 @@ const char *LC_AM_STR      = "";
 // PM_STR                  Post Meridian affix
 const char *LC_PM_STR      = "";
 // DAY_{1-7}               name of the n-th day of the week
-const char *LC_DAY[7]      = {"domenica", "lunedi", "martedi", "mercoledi", 
-                              "giovedi", "venerdi", "sabato"};
+const char *LC_DAY[7]      = {"domenica",   "luned\354",  "marted\354", "mercoled\354", 
+                              "gioved\354", "venerd\354", "sabato"};
 // ABDAY_{1-7}             abbreviated ame of the n-th day of the week
-const char *LC_ABDAY[7]    = {"dom.", "lun.", "mar.", "mer.", "gio.", "ven.", "sab."};
+const char *LC_ABDAY[7]    = {"dom", "lun", "mar", "mer", "gio", "ven", "sab"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = {"gennaio", "febbraio", "marzo", "aprile", 
-                               "maggio",       "giugno",     "luglio",     "agosto", 
-                               "settembre", "ottobre",  "novembre", "dicembre"};
+const char *LC_MON[12]     = {"gennaio",   "febbraio", "marzo",    "aprile", 
+                              "maggio",    "giugno",   "luglio",   "agosto", 
+                              "settembre", "ottobre",  "novembre", "dicembre"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
 const char *LC_ABMON[12]   = {"gen", "feb", "mar", "apr", "mag", "giu", 
                               "lug", "ago", "set", "ott", "nov", "dic"};
@@ -75,7 +75,7 @@ const char *LC_ERA_T_FMT   = "";
 // For full list of languages, see 
 // https://openweathermap.org/api/one-call-api#multi
 // Note: "[only] The contents of the 'description' field will be translated."
-const String OWM_LANG = "fr";
+const String OWM_LANG = "it";
 
 // CURRENT CONDITIONS
 const char *TXT_FEELS_LIKE         = "Temp. percepita";
@@ -107,8 +107,8 @@ const char *TXT_WIFI_NO_CONNECTION = "Disconnesso";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
-const char *TXT_UNITS_TEMP_CELSIUS    = "\260" "C";
-const char *TXT_UNITS_TEMP_FAHRENHEIT = "\260" "F";
+const char *TXT_UNITS_TEMP_CELSIUS    = "\260C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "\260F";
 // UNIT SYMBOLS - WIND SPEED
 const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
 const char *TXT_UNITS_SPEED_FEETPERSECOND     = "ft/s";
