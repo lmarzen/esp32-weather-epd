@@ -106,8 +106,8 @@ const char *TXT_WIFI_NO_CONNECTION = "Sem Conex\343o";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
-const char *TXT_UNITS_TEMP_CELSIUS    = "\xB0""C";
-const char *TXT_UNITS_TEMP_FAHRENHEIT = "\xB0""F";
+const char *TXT_UNITS_TEMP_CELSIUS    = "\260C";
+const char *TXT_UNITS_TEMP_FAHRENHEIT = "\260F";
 
 // UNIT SYMBOLS - WIND SPEED
 const char *TXT_UNITS_SPEED_METERSPERSECOND   = "m/s";
