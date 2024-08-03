@@ -64,6 +64,7 @@
 //   Estonian (Estonia)              et_EE
 //   Finnish (Finland)               fi_FI
 //   French (France)                 fr_FR
+//   Italiano (Italia)               it_IT
 //   Dutch (Belgium)                 nl_BE
 //   Portuguese (Brazil)             pt_BR
 #define LOCALE en_US
