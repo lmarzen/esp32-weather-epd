@@ -902,7 +902,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 {
 
   const int xPos0 = 350;
-  int xPos1 = DISP_WIDTH - 23; // may be moved to make room for decimal places
+  int xPos1 = DISP_WIDTH;
   const int yPos0 = 216;
   const int yPos1 = DISP_HEIGHT - 46;
 
@@ -974,6 +974,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   }
 
 #ifdef UNITS_HOURLY_PRECIP_POP
+  xPos1 = DISP_WIDTH - 23;
   float precipBoundMax;
   if (precipMax > 0)
   {
@@ -985,10 +986,12 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   }
 #else
 #ifdef UNITS_HOURLY_PRECIP_MILLIMETERS
+  xPos1 = DISP_WIDTH - 24;
   float precipBoundMax = std::ceil(precipMax); // Round up to nearest mm
   int yPrecipMajorTickDecimals = (precipBoundMax < 10);
 #endif
 #ifdef UNITS_HOURLY_PRECIP_CENTIMETERS
+  xPos1 = DISP_WIDTH - 25;
   precipMax = millimeters_to_centimeters(precipMax);
   // Round up to nearest 0.1 cm
   float precipBoundMax = std::ceil(precipMax * 10) / 10.0f;
@@ -1011,6 +1014,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   }
 #endif
 #ifdef UNITS_HOURLY_PRECIP_INCHES
+  xPos1 = DISP_WIDTH - 25;
   precipMax = millimeters_to_inches(precipMax);
   // Round up to nearest 0.1 inch
   float precipBoundMax = std::ceil(precipMax * 10) / 10.0f;
@@ -1068,13 +1072,13 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
                               / precipRoundingMultiplier;
       dataStr = String(precipTick, yPrecipMajorTickDecimals);
 #ifdef UNITS_HOURLY_PRECIP_MILLIMETERS
-      String precipUnit = "mm";
+      String precipUnit = String(" ") + TXT_UNITS_PRECIP_MILLIMETERS;
 #endif
 #ifdef UNITS_HOURLY_PRECIP_CENTIMETERS
-      String precipUnit = "cm";
+      String precipUnit = String(" ") + TXT_UNITS_PRECIP_CENTIMETERS;
 #endif
 #ifdef UNITS_HOURLY_PRECIP_INCHES
-      String precipUnit = "in";
+      String precipUnit = String(" ") + TXT_UNITS_PRECIP_INCHES;
 #endif
 #endif
 
