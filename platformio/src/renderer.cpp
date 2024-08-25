@@ -228,16 +228,16 @@ void initDisplay()
   digitalWrite(PIN_EPD_PWR, HIGH);
 #ifdef DRIVER_WAVESHARE
   display.init(115200, true, 2, false);
-  // remap spi for waveshare
+#endif
+#ifdef DRIVER_DESPI_C02
+  display.init(115200, true, 10, false);
+#endif
+  // remap spi
   SPI.end();
   SPI.begin(PIN_EPD_SCK,
             PIN_EPD_MISO,
             PIN_EPD_MOSI,
             PIN_EPD_CS);
-#endif
-#ifdef DRIVER_DESPI_C02
-  display.init(115200, true, 10, false);
-#endif
 
   display.setRotation(0);
   display.setTextSize(1);
