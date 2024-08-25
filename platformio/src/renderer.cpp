@@ -267,7 +267,6 @@ void drawCurrentConditions(const owm_current_t &current,
                            const owm_resp_air_pollution_t &owm_air_pollution,
                            float inTemp, float inHumidity)
 {
-  const int sp_unit = 4;
   String dataStr, unitStr;
   // current weather icon
   display.drawInvertedBitmap(0, 0,
@@ -298,7 +297,7 @@ void drawCurrentConditions(const owm_current_t &current,
     drawString(156 + 164 / 2 - 20, 196 / 2 + 69 / 2, dataStr, CENTER);
 #endif
   display.setFont(&FONT_14pt8b);
-  drawString(display.getCursorX() + sp_unit, 196 / 2 - 69 / 2 + 20, unitStr, LEFT);
+  drawString(display.getCursorX(), 196 / 2 - 69 / 2 + 20, unitStr, LEFT);
 
   // current feels like
 #ifdef UNITS_TEMP_KELVIN
@@ -309,13 +308,13 @@ void drawCurrentConditions(const owm_current_t &current,
   dataStr = String(TXT_FEELS_LIKE) + ' '
             + String(static_cast<int>(std::round(
                      kelvin_to_celsius(current.feels_like))))
-            + " \260";
+            + '\260';
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
   dataStr = String(TXT_FEELS_LIKE) + ' '
             + String(static_cast<int>(std::round(
                      kelvin_to_fahrenheit(current.feels_like))))
-            + " \260";
+            + '\260';
 #endif
   display.setFont(&FONT_12pt8b);
 #ifndef DISP_BW_V1
@@ -394,31 +393,31 @@ void drawCurrentConditions(const owm_current_t &current,
 #endif
 #ifdef UNITS_SPEED_METERSPERSECOND
   dataStr = String(static_cast<int>(std::round(current.wind_speed)));
-  unitStr = TXT_UNITS_SPEED_METERSPERSECOND;
+  unitStr = String(" ") + TXT_UNITS_SPEED_METERSPERSECOND;
 #endif
 #ifdef UNITS_SPEED_FEETPERSECOND
   dataStr = String(static_cast<int>(std::round(
                    meterspersecond_to_feetpersecond(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_FEETPERSECOND;
+  unitStr = String(" ") + TXT_UNITS_SPEED_FEETPERSECOND;
 #endif
 #ifdef UNITS_SPEED_KILOMETERSPERHOUR
   dataStr = String(static_cast<int>(std::round(
                    meterspersecond_to_kilometersperhour(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_KILOMETERSPERHOUR;
+  unitStr = String(" ") + TXT_UNITS_SPEED_KILOMETERSPERHOUR;
 #endif
 #ifdef UNITS_SPEED_MILESPERHOUR
   dataStr = String(static_cast<int>(std::round(
                    meterspersecond_to_milesperhour(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_MILESPERHOUR;
+  unitStr = String(" ") + TXT_UNITS_SPEED_MILESPERHOUR;
 #endif
 #ifdef UNITS_SPEED_KNOTS
   dataStr = String(static_cast<int>(std::round(
                    meterspersecond_to_knots(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_KNOTS;
+  unitStr = String(" ") + TXT_UNITS_SPEED_KNOTS;
 #endif
 #ifdef UNITS_SPEED_BEAUFORT
   dataStr = String(meterspersecond_to_beaufort(current.wind_speed));
-  unitStr = TXT_UNITS_SPEED_BEAUFORT;
+  unitStr = String(" ") + TXT_UNITS_SPEED_BEAUFORT;
 #endif
 
 #ifdef WIND_INDICATOR_ARROW
@@ -427,7 +426,7 @@ void drawCurrentConditions(const owm_current_t &current,
   drawString(48     , 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
 #endif
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX() + sp_unit, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
              unitStr, LEFT);
 
 #if defined(WIND_INDICATOR_NUMBER)
@@ -542,7 +541,7 @@ void drawCurrentConditions(const owm_current_t &current,
     dataStr = "--";
   }
 #if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
-  dataStr += " \260";
+  dataStr += "\260";
 #endif
   drawString(48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
 #endif // defined(DISP_BW_V2) || defined(DISP_3C_B) || defined(DISP_7C_F)
@@ -558,57 +557,57 @@ void drawCurrentConditions(const owm_current_t &current,
   dataStr = String(current.humidity);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX() + sp_unit, 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 1 + 48 / 2,
              "%", LEFT);
 
   // pressure
 #ifdef UNITS_PRES_HECTOPASCALS
   dataStr = String(current.pressure);
-  unitStr = TXT_UNITS_PRES_HECTOPASCALS;
+  unitStr = String(" ") + TXT_UNITS_PRES_HECTOPASCALS;
 #endif
 #ifdef UNITS_PRES_PASCALS
   dataStr = String(static_cast<int>(std::round(
                    hectopascals_to_pascals(current.pressure) )));
-  unitStr = TXT_UNITS_PRES_PASCALS;
+  unitStr = String(" ") + TXT_UNITS_PRES_PASCALS;
 #endif
 #ifdef UNITS_PRES_MILLIMETERSOFMERCURY
   dataStr = String(static_cast<int>(std::round(
                    hectopascals_to_millimetersofmercury(current.pressure) )));
-  unitStr = TXT_UNITS_PRES_MILLIMETERSOFMERCURY;
+  unitStr = String(" ") + TXT_UNITS_PRES_MILLIMETERSOFMERCURY;
 #endif
 #ifdef UNITS_PRES_INCHESOFMERCURY
   dataStr = String(std::round(1e1f *
                    hectopascals_to_inchesofmercury(current.pressure)
                    ) / 1e1f, 1);
-  unitStr = TXT_UNITS_PRES_INCHESOFMERCURY;
+  unitStr = String(" ") + TXT_UNITS_PRES_INCHESOFMERCURY;
 #endif
 #ifdef UNITS_PRES_MILLIBARS
   dataStr = String(static_cast<int>(std::round(
                    hectopascals_to_millibars(current.pressure) )));
-  unitStr = TXT_UNITS_PRES_MILLIBARS;
+  unitStr = String(" ") + TXT_UNITS_PRES_MILLIBARS;
 #endif
 #ifdef UNITS_PRES_ATMOSPHERES
   dataStr = String(std::round(1e3f *
                    hectopascals_to_atmospheres(current.pressure) )
                    / 1e3f, 3);
-  unitStr = TXT_UNITS_PRES_ATMOSPHERES;
+  unitStr = String(" ") + TXT_UNITS_PRES_ATMOSPHERES;
 #endif
 #ifdef UNITS_PRES_GRAMSPERSQUARECENTIMETER
   dataStr = String(static_cast<int>(std::round(
                    hectopascals_to_gramspersquarecentimeter(current.pressure)
                    )));
-  unitStr = TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER;
+  unitStr = String(" ") + TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER;
 #endif
 #ifdef UNITS_PRES_POUNDSPERSQUAREINCH
   dataStr = String(std::round(1e2f *
                    hectopascals_to_poundspersquareinch(current.pressure)
                    ) / 1e2f, 2);
-  unitStr = TXT_UNITS_PRES_POUNDSPERSQUAREINCH;
+  unitStr = String(" ") + TXT_UNITS_PRES_POUNDSPERSQUAREINCH;
 #endif
   display.setFont(&FONT_12pt8b);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX() + sp_unit, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2,
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2,
              unitStr, LEFT);
 
 #ifndef DISP_BW_V1
@@ -616,11 +615,11 @@ void drawCurrentConditions(const owm_current_t &current,
   display.setFont(&FONT_12pt8b);
 #ifdef UNITS_DIST_KILOMETERS
   float vis = meters_to_kilometers(current.visibility);
-  unitStr = TXT_UNITS_DIST_KILOMETERS;
+  unitStr = String(" ") + TXT_UNITS_DIST_KILOMETERS;
 #endif
 #ifdef UNITS_DIST_MILES
   float vis = meters_to_miles(current.visibility);
-  unitStr = TXT_UNITS_DIST_MILES;
+  unitStr = String(" ") + TXT_UNITS_DIST_MILES;
 #endif
   // if visibility is less than 1.95, round to 1 decimal place
   // else round to int
@@ -644,7 +643,7 @@ void drawCurrentConditions(const owm_current_t &current,
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX() + sp_unit, 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2,
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2,
              unitStr, LEFT);
 
   // indoor humidity
@@ -659,7 +658,7 @@ void drawCurrentConditions(const owm_current_t &current,
   }
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_8pt8b);
-  drawString(display.getCursorX() + sp_unit, 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2,
+  drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 4 + 48 / 2,
              "%", LEFT);
 #endif // defined(DISP_BW_V2) || defined(DISP_3C_B) || defined(DISP_7C_F)
   return;
@@ -700,18 +699,18 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 #ifdef UNITS_TEMP_CELSIUS
     hiStr = String(static_cast<int>(
                 std::round(kelvin_to_celsius(daily[i].temp.max)))) +
-            " \260";
+            "\260";
     loStr = String(static_cast<int>(
                 std::round(kelvin_to_celsius(daily[i].temp.min)))) +
-            " \260";
+            "\260";
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
     hiStr = String(static_cast<int>(
                 std::round(kelvin_to_fahrenheit(daily[i].temp.max)))) +
-            " \260";
+            "\260";
     loStr = String(static_cast<int>(
                 std::round(kelvin_to_fahrenheit(daily[i].temp.min)))) +
-            " \260";
+            "\260";
 #endif
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
     drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
@@ -729,19 +728,19 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
     // Round up to nearest mm
     dailyPrecip = std::round(dailyPrecip);
     dataStr = String(static_cast<int>(dailyPrecip));
-    unitStr = "mm";
+    unitStr = String(" ") + TXT_UNITS_PRECIP_MILLIMETERS;
 #elif defined(UNITS_DAILY_PRECIP_CENTIMETERS)
     // Round up to nearest 0.1 cm
     dailyPrecip = millimeters_to_centimeters(dailyPrecip);
     dailyPrecip = std::round(dailyPrecip * 10) / 10.0f;
     dataStr = String(dailyPrecip, 1);
-    unitStr = "cm";
+    unitStr = String(" ") + TXT_UNITS_PRECIP_CENTIMETERS;
 #elif defined(UNITS_DAILY_PRECIP_INCHES)
     // Round up to nearest 0.1 inch
     dailyPrecip = millimeters_to_inches(dailyPrecip);
     dailyPrecip = std::round(dailyPrecip * 10) / 10.0f;
     dataStr = String(dailyPrecip, 1);
-    unitStr = "in";
+    unitStr = String(" ") + TXT_UNITS_PRECIP_INCHES;
 #endif
 #endif
 #if (DISPLAY_DAILY_PRECIP == 2) // smart
@@ -750,7 +749,7 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 #endif
         display.setFont(&FONT_6pt8b);
         drawString(x + 31, 98 + 69 / 2 + 38 - 6 + 26,
-                   dataStr + " " + unitStr, CENTER);
+                   dataStr + unitStr, CENTER);
 #if (DISPLAY_DAILY_PRECIP == 2) // smart
       }
 #endif
@@ -906,7 +905,6 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   int xPos1 = DISP_WIDTH - 23; // may be moved to make room for decimal places
   const int yPos0 = 216;
   const int yPos1 = DISP_HEIGHT - 46;
-  const int sp_unit = 4;
 
   // calculate y max/min and intervals
   int yMajorTicks = 5;
@@ -1036,7 +1034,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 
   if (precipBoundMax > 0)
   { // fill need extra room for labels
-    xPos1 -= 23 + sp_unit;
+    xPos1 -= 23;
   }
 
   // draw x axis
@@ -1053,7 +1051,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     // Temperature
     dataStr = String(tempBoundMax - (i * yTempMajorTicks));
 #if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
-    dataStr += " \260";
+    dataStr += "\260";
 #endif
     drawString(xPos0 - 8, yTick + 4, dataStr, RIGHT, ACCENT_COLOR);
 
@@ -1082,7 +1080,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 
       drawString(xPos1 + 8, yTick + 4, dataStr, LEFT);
       display.setFont(&FONT_5pt8b);
-      drawString(display.getCursorX() + sp_unit, yTick + 4, precipUnit, LEFT);
+      drawString(display.getCursorX(), yTick + 4, precipUnit, LEFT);
     } // end draw labels if precip is >0
 
     // draw dotted line

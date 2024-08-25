@@ -124,9 +124,13 @@ const char *TXT_UNITS_PRES_MILLIBARS                = "mbar";
 const char *TXT_UNITS_PRES_ATMOSPHERES              = "atm";
 const char *TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER = "g/cm\262";
 const char *TXT_UNITS_PRES_POUNDSPERSQUAREINCH      = "lb/in\262";
-// UNITS - VISIBILITY DISTANCE
+// UNITS SYMBOLS - VISIBILITY DISTANCE
 const char *TXT_UNITS_DIST_KILOMETERS = "km";
 const char *TXT_UNITS_DIST_MILES      = "mi";
+// UNITS SYMBOLS - PRECIPITATION
+const char *TXT_UNITS_PRECIP_MILLIMETERS = "mm";
+const char *TXT_UNITS_PRECIP_CENTIMETERS = "cm";
+const char *TXT_UNITS_PRECIP_INCHES      = "in";
 
 // MISCELLANEOUS MESSAGES
 // Title Case
