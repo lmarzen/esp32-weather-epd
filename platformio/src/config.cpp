@@ -135,13 +135,15 @@ const int HOURLY_GRAPH_MAX = 24;
 // minutes). Once the battery voltage has fallen to CRIT_LOW_BATTERY_VOLTAGE,
 // the esp32 will hibernate and a manual press of the reset (RST) button to
 // begin operating again.
-const uint32_t MAX_BATTERY_VOLTAGE      = 4200; // (millivolts)
-const uint32_t WARN_BATTERY_VOLTAGE     = 3400; // (millivolts)
-const uint32_t LOW_BATTERY_VOLTAGE      = 3200; // (millivolts)
-const uint32_t VERY_LOW_BATTERY_VOLTAGE = 3100; // (millivolts)
-const uint32_t CRIT_LOW_BATTERY_VOLTAGE = 3000; // (millivolts)
+const uint32_t WARN_BATTERY_VOLTAGE     = 3535; // (millivolts) ~20%
+const uint32_t LOW_BATTERY_VOLTAGE      = 3462; // (millivolts) ~10%
+const uint32_t VERY_LOW_BATTERY_VOLTAGE = 3442; // (millivolts)  ~8%
+const uint32_t CRIT_LOW_BATTERY_VOLTAGE = 3404; // (millivolts)  ~5%
 const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 30;  // (minutes)
 const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
+// Battery voltage calculations are based on a typical 3.7v LiPo.
+const uint32_t MAX_BATTERY_VOLTAGE = 4200; // (millivolts)
+const uint32_t MIN_BATTERY_VOLTAGE = 3000; // (millivolts)
 
 // See config.h for the below options
 // E-PAPER PANEL
