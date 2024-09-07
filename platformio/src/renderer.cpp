@@ -228,16 +228,16 @@ void initDisplay()
   digitalWrite(PIN_EPD_PWR, HIGH);
 #ifdef DRIVER_WAVESHARE
   display.init(115200, true, 2, false);
-  // remap spi for waveshare
+#endif
+#ifdef DRIVER_DESPI_C02
+  display.init(115200, true, 10, false);
+#endif
+  // remap spi
   SPI.end();
   SPI.begin(PIN_EPD_SCK,
             PIN_EPD_MISO,
             PIN_EPD_MOSI,
             PIN_EPD_CS);
-#endif
-#ifdef DRIVER_DESPI_C02
-  display.init(115200, true, 10, false);
-#endif
 
   display.setRotation(0);
   display.setTextSize(1);
@@ -393,31 +393,31 @@ void drawCurrentConditions(const owm_current_t &current,
 #endif
 #ifdef UNITS_SPEED_METERSPERSECOND
   dataStr = String(static_cast<int>(std::round(current.wind_speed)));
-  unitStr = TXT_UNITS_SPEED_METERSPERSECOND;
+  unitStr = String(" ") + TXT_UNITS_SPEED_METERSPERSECOND;
 #endif
 #ifdef UNITS_SPEED_FEETPERSECOND
   dataStr = String(static_cast<int>(std::round(
                    meterspersecond_to_feetpersecond(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_FEETPERSECOND;
+  unitStr = String(" ") + TXT_UNITS_SPEED_FEETPERSECOND;
 #endif
 #ifdef UNITS_SPEED_KILOMETERSPERHOUR
   dataStr = String(static_cast<int>(std::round(
                    meterspersecond_to_kilometersperhour(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_KILOMETERSPERHOUR;
+  unitStr = String(" ") + TXT_UNITS_SPEED_KILOMETERSPERHOUR;
 #endif
 #ifdef UNITS_SPEED_MILESPERHOUR
   dataStr = String(static_cast<int>(std::round(
                    meterspersecond_to_milesperhour(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_MILESPERHOUR;
+  unitStr = String(" ") + TXT_UNITS_SPEED_MILESPERHOUR;
 #endif
 #ifdef UNITS_SPEED_KNOTS
   dataStr = String(static_cast<int>(std::round(
                    meterspersecond_to_knots(current.wind_speed) )));
-  unitStr = TXT_UNITS_SPEED_KNOTS;
+  unitStr = String(" ") + TXT_UNITS_SPEED_KNOTS;
 #endif
 #ifdef UNITS_SPEED_BEAUFORT
   dataStr = String(meterspersecond_to_beaufort(current.wind_speed));
-  unitStr = TXT_UNITS_SPEED_BEAUFORT;
+  unitStr = String(" ") + TXT_UNITS_SPEED_BEAUFORT;
 #endif
 
 #ifdef WIND_INDICATOR_ARROW
@@ -563,46 +563,46 @@ void drawCurrentConditions(const owm_current_t &current,
   // pressure
 #ifdef UNITS_PRES_HECTOPASCALS
   dataStr = String(current.pressure);
-  unitStr = TXT_UNITS_PRES_HECTOPASCALS;
+  unitStr = String(" ") + TXT_UNITS_PRES_HECTOPASCALS;
 #endif
 #ifdef UNITS_PRES_PASCALS
   dataStr = String(static_cast<int>(std::round(
                    hectopascals_to_pascals(current.pressure) )));
-  unitStr = TXT_UNITS_PRES_PASCALS;
+  unitStr = String(" ") + TXT_UNITS_PRES_PASCALS;
 #endif
 #ifdef UNITS_PRES_MILLIMETERSOFMERCURY
   dataStr = String(static_cast<int>(std::round(
                    hectopascals_to_millimetersofmercury(current.pressure) )));
-  unitStr = TXT_UNITS_PRES_MILLIMETERSOFMERCURY;
+  unitStr = String(" ") + TXT_UNITS_PRES_MILLIMETERSOFMERCURY;
 #endif
 #ifdef UNITS_PRES_INCHESOFMERCURY
   dataStr = String(std::round(1e1f *
                    hectopascals_to_inchesofmercury(current.pressure)
                    ) / 1e1f, 1);
-  unitStr = TXT_UNITS_PRES_INCHESOFMERCURY;
+  unitStr = String(" ") + TXT_UNITS_PRES_INCHESOFMERCURY;
 #endif
 #ifdef UNITS_PRES_MILLIBARS
   dataStr = String(static_cast<int>(std::round(
                    hectopascals_to_millibars(current.pressure) )));
-  unitStr = TXT_UNITS_PRES_MILLIBARS;
+  unitStr = String(" ") + TXT_UNITS_PRES_MILLIBARS;
 #endif
 #ifdef UNITS_PRES_ATMOSPHERES
   dataStr = String(std::round(1e3f *
                    hectopascals_to_atmospheres(current.pressure) )
                    / 1e3f, 3);
-  unitStr = TXT_UNITS_PRES_ATMOSPHERES;
+  unitStr = String(" ") + TXT_UNITS_PRES_ATMOSPHERES;
 #endif
 #ifdef UNITS_PRES_GRAMSPERSQUARECENTIMETER
   dataStr = String(static_cast<int>(std::round(
                    hectopascals_to_gramspersquarecentimeter(current.pressure)
                    )));
-  unitStr = TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER;
+  unitStr = String(" ") + TXT_UNITS_PRES_GRAMSPERSQUARECENTIMETER;
 #endif
 #ifdef UNITS_PRES_POUNDSPERSQUAREINCH
   dataStr = String(std::round(1e2f *
                    hectopascals_to_poundspersquareinch(current.pressure)
                    ) / 1e2f, 2);
-  unitStr = TXT_UNITS_PRES_POUNDSPERSQUAREINCH;
+  unitStr = String(" ") + TXT_UNITS_PRES_POUNDSPERSQUAREINCH;
 #endif
   display.setFont(&FONT_12pt8b);
   drawString(170 + 48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
@@ -615,11 +615,11 @@ void drawCurrentConditions(const owm_current_t &current,
   display.setFont(&FONT_12pt8b);
 #ifdef UNITS_DIST_KILOMETERS
   float vis = meters_to_kilometers(current.visibility);
-  unitStr = TXT_UNITS_DIST_KILOMETERS;
+  unitStr = String(" ") + TXT_UNITS_DIST_KILOMETERS;
 #endif
 #ifdef UNITS_DIST_MILES
   float vis = meters_to_miles(current.visibility);
-  unitStr = TXT_UNITS_DIST_MILES;
+  unitStr = String(" ") + TXT_UNITS_DIST_MILES;
 #endif
   // if visibility is less than 1.95, round to 1 decimal place
   // else round to int
@@ -728,19 +728,19 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
     // Round up to nearest mm
     dailyPrecip = std::round(dailyPrecip);
     dataStr = String(static_cast<int>(dailyPrecip));
-    unitStr = "mm";
+    unitStr = String(" ") + TXT_UNITS_PRECIP_MILLIMETERS;
 #elif defined(UNITS_DAILY_PRECIP_CENTIMETERS)
     // Round up to nearest 0.1 cm
     dailyPrecip = millimeters_to_centimeters(dailyPrecip);
     dailyPrecip = std::round(dailyPrecip * 10) / 10.0f;
     dataStr = String(dailyPrecip, 1);
-    unitStr = "cm";
+    unitStr = String(" ") + TXT_UNITS_PRECIP_CENTIMETERS;
 #elif defined(UNITS_DAILY_PRECIP_INCHES)
     // Round up to nearest 0.1 inch
     dailyPrecip = millimeters_to_inches(dailyPrecip);
     dailyPrecip = std::round(dailyPrecip * 10) / 10.0f;
     dataStr = String(dailyPrecip, 1);
-    unitStr = "in";
+    unitStr = String(" ") + TXT_UNITS_PRECIP_INCHES;
 #endif
 #endif
 #if (DISPLAY_DAILY_PRECIP == 2) // smart
@@ -902,7 +902,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
 {
 
   const int xPos0 = 350;
-  int xPos1 = DISP_WIDTH - 23; // may be moved to make room for decimal places
+  int xPos1 = DISP_WIDTH;
   const int yPos0 = 216;
   const int yPos1 = DISP_HEIGHT - 46;
 
@@ -974,6 +974,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   }
 
 #ifdef UNITS_HOURLY_PRECIP_POP
+  xPos1 = DISP_WIDTH - 23;
   float precipBoundMax;
   if (precipMax > 0)
   {
@@ -985,10 +986,12 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   }
 #else
 #ifdef UNITS_HOURLY_PRECIP_MILLIMETERS
+  xPos1 = DISP_WIDTH - 24;
   float precipBoundMax = std::ceil(precipMax); // Round up to nearest mm
   int yPrecipMajorTickDecimals = (precipBoundMax < 10);
 #endif
 #ifdef UNITS_HOURLY_PRECIP_CENTIMETERS
+  xPos1 = DISP_WIDTH - 25;
   precipMax = millimeters_to_centimeters(precipMax);
   // Round up to nearest 0.1 cm
   float precipBoundMax = std::ceil(precipMax * 10) / 10.0f;
@@ -1011,6 +1014,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   }
 #endif
 #ifdef UNITS_HOURLY_PRECIP_INCHES
+  xPos1 = DISP_WIDTH - 25;
   precipMax = millimeters_to_inches(precipMax);
   // Round up to nearest 0.1 inch
   float precipBoundMax = std::ceil(precipMax * 10) / 10.0f;
@@ -1068,13 +1072,13 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
                               / precipRoundingMultiplier;
       dataStr = String(precipTick, yPrecipMajorTickDecimals);
 #ifdef UNITS_HOURLY_PRECIP_MILLIMETERS
-      String precipUnit = "mm";
+      String precipUnit = String(" ") + TXT_UNITS_PRECIP_MILLIMETERS;
 #endif
 #ifdef UNITS_HOURLY_PRECIP_CENTIMETERS
-      String precipUnit = "cm";
+      String precipUnit = String(" ") + TXT_UNITS_PRECIP_CENTIMETERS;
 #endif
 #ifdef UNITS_HOURLY_PRECIP_INCHES
-      String precipUnit = "in";
+      String precipUnit = String(" ") + TXT_UNITS_PRECIP_INCHES;
 #endif
 #endif
 
@@ -1216,9 +1220,9 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   const int sp = 2;
 
 #if BATTERY_MONITORING
-  // battery
+  // battery - (expecting 3.7v LiPo)
   uint32_t batPercent = calcBatPercent(batVoltage,
-                                       CRIT_LOW_BATTERY_VOLTAGE,
+                                       MIN_BATTERY_VOLTAGE,
                                        MAX_BATTERY_VOLTAGE);
 #if defined(DISP_3C_B) || defined(DISP_7C_F)
   if (batVoltage < WARN_BATTERY_VOLTAGE)

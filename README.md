@@ -60,7 +60,7 @@ Here are two examples utilizing various configuration options:
   | Panel                                   | Resolution | Colors          | Notes                                                                                                                 |
   |-----------------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
   | Waveshare 7.5in e-paper (v2)            | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper.htm). (recommended)                                |
-  | Good Display 7.5in e-paper (GDEY075T7)  | 800x480px  | Black/White     | Available [here](https://www.aliexpress.com/item/3256802683908868.html). (recommended)                                 |
+  | Good Display 7.5in e-paper (GDEY075T7)  | 800x480px  | Black/White     | Currently unavailable as of Sept 2024? (recommended)                                 |
   | Waveshare 7.5in e-Paper (B)             | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-b.htm).                                            |
   | Good Display 7.5in e-paper (GDEY075Z08) | 800x480px  | Red/Black/White | Available [here](https://www.aliexpress.com/item/3256803540460035.html).                                               |
   | Waveshare 7.3in ACeP e-Paper (F)        | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-f.htm).                  |
@@ -246,12 +246,7 @@ Sign up here to get an API key; it's free. <https://openweathermap.org/api>
 
 This project will make calls to 2 different APIs ("One Call" and "Air Pollution").
 
-> **Note**
-> OpenWeatherMap One Call 2.5 API has been deprecated for all new free users (accounts created after Summer 2022). Fortunately, you can make 1,000 calls/day to the One Call 3.0 API for free by following the steps below.
-
-- If you have an account created before Summer 2022, you can simply use the One Call 2.5 API by setting `OWM_ONECALL_VERSION = "2.5";` in config.cpp.
-
-- Otherwise, the One Call API 3.0 is only included in the "One Call by Call" subscription. This separate subscription includes 1,000 calls/day for free and allows you to pay only for the number of API calls made to this product.
+- The One Call API 3.0 is only included in the "One Call by Call" subscription. This separate subscription includes 1,000 calls/day for free and allows you to pay only for the number of API calls made to this product.
 
 Here's how to subscribe and avoid any credit card changes:
    - Go to <https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30>
