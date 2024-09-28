@@ -46,60 +46,57 @@ Preferences prefs;
 /* Put esp32 into ultra low-power deep sleep (<11μA).
  * Aligns wake time to the minute. Sleep times defined in config.cpp.
  */
-void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
+void beginDeepSleep(unsigned long startTime, tm *timeInfo)
 {
   if (!getLocalTime(timeInfo))
   {
     Serial.println(TXT_REFERENCING_OLDER_TIME_NOTICE);
   }
 
-  uint64_t sleepDuration = 0;
-  int extraHoursUntilWake = 0;
-  int curHour = timeInfo->tm_hour;
-
-  if (timeInfo->tm_min >= 58)
-  { // if we are within 2 minutes of the next hour, then round up for the
-    // purposes of bed time
-    curHour = (curHour + 1) % 24;
-    extraHoursUntilWake += 1;
+  // To simplify sleep time calculations, the current time stored by timeInfo
+  // will be converted to time relative to the WAKE_TIME. This way if a
+  // SLEEP_DURATION is not a multiple of 60 minutes it can be more trivially,
+  // aligned and it can easily be deterimined whether we must sleep for
+  // additional time due to bedtime.
+  // i.e. when curHour == 0, then timeInfo->tm_hour == WAKE_TIME
+  int bedtimeHour = INT_MAX;
+  if (BED_TIME != WAKE_TIME) {
+    bedtimeHour = (BED_TIME - WAKE_TIME + 24) % 24;
   }
 
-  if (BED_TIME < WAKE_TIME && curHour >= BED_TIME && curHour < WAKE_TIME)
-  { // 0              B   v  W  24
-    // |--------------zzzzZzz---|
-    extraHoursUntilWake += WAKE_TIME - curHour;
-  }
-  else if (BED_TIME > WAKE_TIME && curHour < WAKE_TIME)
-  { // 0 v W               B    24
-    // |zZz----------------zzzzz|
-    extraHoursUntilWake += WAKE_TIME - curHour;
-  }
-  else if (BED_TIME > WAKE_TIME && curHour >= BED_TIME)
-  { // 0   W               B  v 24
-    // |zzz----------------zzzZz|
-    extraHoursUntilWake += WAKE_TIME - (curHour - 24);
-  }
-  else // This feature is disabled (BED_TIME == WAKE_TIME)
-  {    // OR it is not past BED_TIME
-    extraHoursUntilWake = 0;
+  // time is relative to wake time
+  int curHour = (timeInfo->tm_hour - WAKE_TIME + 24) % 24;
+  const int curMinute = curHour * 60 + timeInfo->tm_min;
+  const int curSecond = curHour * 3600
+                      + timeInfo->tm_min * 60
+                      + timeInfo->tm_sec;
+  const int desiredSleepSeconds = SLEEP_DURATION * 60;
+  const int offsetMinutes = curMinute % SLEEP_DURATION;
+  const int offsetSeconds = curSecond % desiredSleepSeconds;
+
+  // align wake time to nearest multiple of SLEEP_DURATION
+  int sleepMinutes = SLEEP_DURATION - offsetMinutes;
+  if (offsetSeconds < 120
+   || offsetSeconds / (float)desiredSleepSeconds > 0.95f)
+  { // if we have a sleep time less than 2 minutes OR less 5% SLEEP_DURATION,
+    // skip to next alignment
+    sleepMinutes += SLEEP_DURATION;
   }
 
-  if (extraHoursUntilWake == 0)
-  { // align wake time to nearest multiple of SLEEP_DURATION
-    sleepDuration = SLEEP_DURATION * 60ULL
-                    - ((timeInfo->tm_min % SLEEP_DURATION) * 60ULL
-                        + timeInfo->tm_sec);
+  // estimated wake time, if this falls in a sleep period then sleepDuration
+  // must be adjusted
+  const int predictedWakeHour = ((curMinute + sleepMinutes) / 60) % 24;
+
+  uint64_t sleepDuration;
+  if (predictedWakeHour < bedtimeHour)
+  {
+    sleepDuration = sleepMinutes * 60 - timeInfo->tm_sec;
   }
   else
-  { // align wake time to the hour
-    sleepDuration = extraHoursUntilWake * 3600ULL
-                    - (timeInfo->tm_min * 60ULL + timeInfo->tm_sec);
-  }
-
-  // if we are within 2 minutes of the next alignment.
-  if (sleepDuration <= 120ULL)
   {
-    sleepDuration += SLEEP_DURATION * 60ULL;
+    const int hoursUntilWake = 24 - curHour;
+    sleepDuration = hoursUntilWake * 3600ULL
+                    - (timeInfo->tm_min * 60ULL + timeInfo->tm_sec);
   }
 
   // add extra delay to compensate for esp32's with fast RTCs.
