@@ -60,7 +60,8 @@ void beginDeepSleep(unsigned long startTime, tm *timeInfo)
   // additional time due to bedtime.
   // i.e. when curHour == 0, then timeInfo->tm_hour == WAKE_TIME
   int bedtimeHour = INT_MAX;
-  if (BED_TIME != WAKE_TIME) {
+  if (BED_TIME != WAKE_TIME)
+  {
     bedtimeHour = (BED_TIME - WAKE_TIME + 24) % 24;
   }
 
