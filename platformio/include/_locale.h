@@ -272,5 +272,4 @@ extern const char *TXT_WL_CONNECT_FAILED;
 extern const char *TXT_WL_CONNECTION_LOST;
 extern const char *TXT_WL_DISCONNECTED;
 
-
 #endif

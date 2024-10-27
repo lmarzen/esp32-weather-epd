@@ -200,7 +200,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
 5. Configure Options.
 
-   - Most configuration options are located in [config.cpp](platformio/src/config.cpp), with a few  in [config.h](platformio/include/config.h). Locale/language options can also be found in locales/locale_**.cpp.
+   - Most configuration options are located in [config.cpp](platformio/src/config.cpp), with a few  in [config.h](platformio/include/config.h). Locale/language options can also be found in include/locales/locale_*.inc.
 
    - Important settings to configure in config.cpp:
 
