@@ -74,7 +74,7 @@ DESPI-C02 Adapter Board
 
 - No level converters, which makes it better for low-power use with 3.3V processors compared to the Waveshare HAT.
 
-- The Waveshare HATs (rev 2.2/2.3) are not recommended, and their compatibility with this project is not regularly tested.
+- The Waveshare HATs (rev 2.2/2.3) are not recommended. Their compatibility with this project is not regularly tested.
 
 - https://www.e-paper-display.com/products_detail/productId=403.html
   
