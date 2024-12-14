@@ -74,7 +74,7 @@ DESPI-C02 Adapter Board
 
 - No level converters, which makes it better for low-power use with 3.3V processors compared to the Waveshare HAT.
 
-- Waveshare started shipping revision 2.3 of their e-paper HAT. Some users have reported issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62)).
+- Waveshare started shipping revision 2.3 of their e-paper HAT. Some users have reported issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62), [#119](https://github.com/lmarzen/esp32-weather-epd/issues/119)).
 
 - https://www.e-paper-display.com/products_detail/productId=403.html
   
