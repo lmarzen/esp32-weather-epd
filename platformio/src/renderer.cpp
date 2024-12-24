@@ -1103,7 +1103,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
                                            / static_cast<float>(xMaxTicks)));
   float xInterval = (xPos1 - xPos0 - 1) / static_cast<float>(HOURLY_GRAPH_MAX);
   display.setFont(&FONT_8pt8b);
-  for (int i = 0; i < HOURLY_GRAPH_MAX; ++i)
+  for (int i = 0; i <= HOURLY_GRAPH_MAX; ++i)
   {
     int xTick = static_cast<int>(xPos0 + (i * xInterval));
     int x0_t, x1_t, y0_t, y1_t;
@@ -1112,10 +1112,8 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     if (i > 0)
     {
       // temperature
-      x0_t = static_cast<int>(std::round(xPos0 + ((i - 1) * xInterval)
-                                    + (0.5 * xInterval) ));
-      x1_t = static_cast<int>(std::round(xPos0 + (i * xInterval)
-                                    + (0.5 * xInterval) ));
+      x0_t = static_cast<int>(std::round(xPos0 + ((i - 1) * xInterval)));
+      x1_t = static_cast<int>(std::round(xPos0 + (i * xInterval)));
       yPxPerUnit = (yPos1 - yPos0)
                    / static_cast<float>(tempBoundMax - tempBoundMin);
 #ifdef UNITS_TEMP_KELVIN

@@ -135,7 +135,7 @@ const int WAKE_TIME = 06; // Hour of first update after BED_TIME, 06:00.
 // setting both BED_TIME and WAKE_TIME to the hour you want it to update.
 
 // HOURLY OUTLOOK GRAPH
-// Number of hours to display on the outlook graph. (range: [8-48])
+// Number of hours to display on the outlook graph. (range: [8-47])
 const int HOURLY_GRAPH_MAX = 24;
 
 // BATTERY
