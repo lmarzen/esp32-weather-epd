@@ -1145,6 +1145,17 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
       display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , ACCENT_COLOR);
       display.drawLine(x0_t    , y0_t + 1, x1_t    , y1_t + 1, ACCENT_COLOR);
       display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , ACCENT_COLOR);
+
+      // Draw hourly bitmap
+      #ifdef DISPLAY_HOURLY_ICONS
+        #ifdef DISP_BW_V2
+          if (i != 0 && i != HOURLY_GRAPH_MAX && (i % hourInterval) == 0) // Skip first and last tick
+          {
+            const uint8_t *bitmap = getForecastBitmap32(hourly[i]);
+            display.drawInvertedBitmap(x0_t, y1_t - 32, bitmap, 32, 32, GxEPD_BLACK);
+          }
+        #endif
+      #endif
     }
 
 #ifdef UNITS_HOURLY_PRECIP_POP

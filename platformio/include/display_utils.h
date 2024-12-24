@@ -65,6 +65,7 @@ const char *getAQIdesc(int aqi);
 const char *getWiFidesc(int rssi);
 const uint8_t *getWiFiBitmap16(int rssi);
 const uint8_t *getForecastBitmap64(const owm_daily_t &daily);
+const uint8_t *getForecastBitmap32(const owm_hourly_t &hourly);
 const uint8_t *getCurrentConditionsBitmap196(const owm_current_t &current,
                                              const owm_daily_t   &today);
 const uint8_t *getAlertBitmap32(const owm_alerts_t &alert);
