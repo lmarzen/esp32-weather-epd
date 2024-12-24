@@ -72,7 +72,7 @@ void beginDeepSleep(unsigned long startTime, tm *timeInfo)
                       + timeInfo->tm_min * 60
                       + timeInfo->tm_sec;
   const int desiredSleepSeconds = SLEEP_DURATION * 60;
-  const int offsetMinutes = curMinute % SLEEP_DURATION;
+  const int offsetMinutes = curMinute % SLEEP_DURATION - 1;
   const int offsetSeconds = curSecond % desiredSleepSeconds;
 
   // align wake time to nearest multiple of SLEEP_DURATION
