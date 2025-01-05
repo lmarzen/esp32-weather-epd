@@ -451,7 +451,8 @@ void drawCurrentConditions(const owm_current_t &current,
 
   // uv index
   display.setFont(&FONT_12pt8b);
-  uint uvi = static_cast<uint>(std::max(std::round(current.uvi), 0.0f));
+  unsigned int uvi = static_cast<unsigned int>(
+                                std::max(std::round(current.uvi), 0.0f));
   dataStr = String(uvi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_7pt8b);
