@@ -101,7 +101,7 @@ void beginDeepSleep(unsigned long startTime, tm *timeInfo)
   }
 
   // add extra delay to compensate for esp32's with fast RTCs.
-  sleepDuration += 1ULL;
+  sleepDuration += 2ULL;
   sleepDuration *= 1.0015f;
 
 #if DEBUG_LEVEL >= 1
