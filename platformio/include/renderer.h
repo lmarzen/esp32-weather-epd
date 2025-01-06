@@ -1,5 +1,5 @@
 /* Renderer declarations for esp32-weather-epd.
- * Copyright (C) 2022-2024  Luke Marzen
+ * Copyright (C) 2022-2025  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,11 +74,12 @@ void drawCurrentConditions(const owm_current_t &current,
                            const owm_daily_t &today,
                            const owm_resp_air_pollution_t &owm_air_pollution,
                            float inTemp, float inHumidity);
-void drawForecast(owm_daily_t *const daily, tm timeInfo);
+void drawForecast(const owm_daily_t *daily, tm timeInfo);
 void drawAlerts(std::vector<owm_alerts_t> &alerts,
                 const String &city, const String &date);
 void drawLocationDate(const String &city, const String &date);
-void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo);
+void drawOutlookGraph(const owm_hourly_t *hourly, const owm_daily_t *daily,
+                      tm timeInfo);
 void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
                    int rssi, uint32_t batVoltage);
 void drawError(const uint8_t *bitmap_196x196,

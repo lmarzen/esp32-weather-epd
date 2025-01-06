@@ -121,11 +121,11 @@ DeserializationError deserializeOneCall(WiFiClient &json,
     r.hourly[i].pop        = hourly["pop"]       .as<float>();
     r.hourly[i].rain_1h    = hourly["rain"]["1h"].as<float>();
     r.hourly[i].snow_1h    = hourly["snow"]["1h"].as<float>();
-    // JsonObject hourly_weather = hourly["weather"][0];
-    // r.hourly[i].weather.id          = hourly_weather["id"]         .as<int>();
-    // r.hourly[i].weather.main        = hourly_weather["main"]       .as<const char *>();
-    // r.hourly[i].weather.description = hourly_weather["description"].as<const char *>();
-    // r.hourly[i].weather.icon        = hourly_weather["icon"]       .as<const char *>();
+    JsonObject hourly_weather = hourly["weather"][0];
+    r.hourly[i].weather.id          = hourly_weather["id"]         .as<int>();
+    r.hourly[i].weather.main        = hourly_weather["main"]       .as<const char *>();
+    r.hourly[i].weather.description = hourly_weather["description"].as<const char *>();
+    r.hourly[i].weather.icon        = hourly_weather["icon"]       .as<const char *>();
 
     if (i == OWM_NUM_HOURLY - 1)
     {

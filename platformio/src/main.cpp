@@ -1,5 +1,5 @@
 /* Main program for esp32-weather-epd.
- * Copyright (C) 2022-2024  Luke Marzen
+ * Copyright (C) 2022-2025  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,7 +101,7 @@ void beginDeepSleep(unsigned long startTime, tm *timeInfo)
   }
 
   // add extra delay to compensate for esp32's with fast RTCs.
-  sleepDuration += 1ULL;
+  sleepDuration += 3ULL;
   sleepDuration *= 1.0015f;
 
 #if DEBUG_LEVEL >= 1
@@ -329,9 +329,9 @@ void setup()
   {
     drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0],
                           owm_air_pollution, inTemp, inHumidity);
+    drawOutlookGraph(owm_onecall.hourly, owm_onecall.daily, timeInfo);
     drawForecast(owm_onecall.daily, timeInfo);
     drawLocationDate(CITY_STRING, dateStr);
-    drawOutlookGraph(owm_onecall.hourly, timeInfo);
 #if DISPLAY_ALERTS
     drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
 #endif

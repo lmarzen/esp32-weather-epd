@@ -1,5 +1,5 @@
 /* Configuration option declarations for esp32-weather-epd.
- * Copyright (C) 2022-2024  Luke Marzen
+ * Copyright (C) 2022-2025  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -227,6 +227,13 @@
 //   2 : Smart (show only when precipitation is forecasted)
 #define DISPLAY_DAILY_PRECIP 2
 
+// HOURLY WEATHER ICONS
+// Weather icons to be displayed on the temperature and precipitation chart.
+// They are drawn at the the x-axis tick marks just above the temperature line
+//   0 : Disable
+//   1 : Enable
+#define DISPLAY_HOURLY_ICONS 1
+
 // ALERTS
 //   The handling of alerts is complex. Each country has a unique national alert
 //   system that receives alerts from many different government agencies. This
@@ -385,6 +392,9 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
 #endif
 #if !(defined(DISPLAY_DAILY_PRECIP))
   #error Invalid configuration. DISPLAY_DAILY_PRECIP not defined.
+#endif
+#if !(defined(DISPLAY_HOURLY_ICONS))
+  #error Invalid configuration. DISPLAY_HOURLY_ICONS not defined.
 #endif
 #if !(defined(DISPLAY_ALERTS))
   #error Invalid configuration. DISPLAY_ALERTS not defined.
