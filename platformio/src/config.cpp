@@ -1,5 +1,5 @@
 /* Configuration options for esp32-weather-epd.
- * Copyright (C) 2022-2024  Luke Marzen
+ * Copyright (C) 2022-2025  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,7 +135,7 @@ const int WAKE_TIME = 06; // Hour of first update after BED_TIME, 06:00.
 // setting both BED_TIME and WAKE_TIME to the hour you want it to update.
 
 // HOURLY OUTLOOK GRAPH
-// Number of hours to display on the outlook graph. (range: [8-47])
+// Number of hours to display on the outlook graph. (range: [8-48])
 const int HOURLY_GRAPH_MAX = 24;
 
 // BATTERY
