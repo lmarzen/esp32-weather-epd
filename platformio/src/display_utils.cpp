@@ -575,73 +575,53 @@ const uint8_t *getForecastBitmap64(const owm_daily_t &daily)
   switch (id)
   {
   // Group 2xx: Thunderstorm
-  case 200: // Thunderstorm  thunderstorm with light rain     11d
-  case 201: // Thunderstorm  thunderstorm with rain           11d
-  case 202: // Thunderstorm  thunderstorm with heavy rain     11d
-  case 210: // Thunderstorm  light thunderstorm               11d
-  case 211: // Thunderstorm  thunderstorm                     11d
-  case 212: // Thunderstorm  heavy thunderstorm               11d
-  case 221: // Thunderstorm  ragged thunderstorm              11d
+  case 95: // Thunderstorm  thunderstorm with light rain     11d
     if (!cloudy) {return wi_day_thunderstorm_64x64;}
     return wi_thunderstorm_64x64;
-  case 230: // Thunderstorm  thunderstorm with light drizzle  11d
-  case 231: // Thunderstorm  thunderstorm with drizzle        11d
-  case 232: // Thunderstorm  thunderstorm with heavy drizzle  11d
+  case 96: // Thunderstorm  thunderstorm with heavy drizzle  11d
     if (!cloudy) {return wi_day_storm_showers_64x64;}
     return wi_storm_showers_64x64;
   // Group 3xx: Drizzle
-  case 300: // Drizzle       light intensity drizzle          09d
-  case 301: // Drizzle       drizzle                          09d
-  case 302: // Drizzle       heavy intensity drizzle          09d
-  case 310: // Drizzle       light intensity drizzle rain     09d
-  case 311: // Drizzle       drizzle rain                     09d
-  case 312: // Drizzle       heavy intensity drizzle rain     09d
-  case 313: // Drizzle       shower rain and drizzle          09d
-  case 314: // Drizzle       heavy shower rain and drizzle    09d
-  case 321: // Drizzle       shower drizzle                   09d
+  case 51: // Drizzle       light intensity drizzle          09d
+  case 53: // Drizzle       drizzle                          09d
+  case 55: // Drizzle       heavy intensity drizzle          09d
+  case 56: // Drizzle       heavy shower rain and drizzle    09d
+  case 57: // Drizzle       shower drizzle                   09d
     if (!cloudy) {return wi_day_showers_64x64;}
     return wi_showers_64x64;
   // Group 5xx: Rain
-  case 500: // Rain          light rain                       10d
-  case 501: // Rain          moderate rain                    10d
-  case 502: // Rain          heavy intensity rain             10d
-  case 503: // Rain          very heavy rain                  10d
-  case 504: // Rain          extreme rain                     10d
+  case 61: // Rain          light rain                       10d
+  case 62: // Rain          moderate rain                    10d
+  case 63: // Rain          heavy intensity rain             10d
     if (!cloudy && windy) {return wi_day_rain_wind_64x64;}
     if (!cloudy)          {return wi_day_rain_64x64;}
     if (windy)            {return wi_rain_wind_64x64;}
     return wi_rain_64x64;
-  case 511: // Rain          freezing rain                    13d
-    if (!cloudy) {return wi_day_rain_mix_64x64;}
+  case 66: // Rain          freezing rain                    13d
+  case 67: // Rain          freezing rain                    13d    if (!cloudy) {return wi_day_rain_mix_64x64;}
     return wi_rain_mix_64x64;
-  case 520: // Rain          light intensity shower rain      09d
-  case 521: // Rain          shower rain                      09d
-  case 522: // Rain          heavy intensity shower rain      09d
-  case 531: // Rain          ragged shower rain               09d
+  case 80: // Rain          light intensity shower rain      09d
+  case 81: // Rain          shower rain                      09d
+  case 82: // Rain          heavy intensity shower rain      09d
     if (!cloudy) {return wi_day_showers_64x64;}
     return wi_showers_64x64;
   // Group 6xx: Snow
-  case 600: // Snow          light snow                       13d
-  case 601: // Snow          Snow                             13d
-  case 602: // Snow          Heavy snow                       13d
+  case 71: // Snow          light snow                       13d
+  case 73: // Snow          Snow                             13d
+  case 75: // Snow          Heavy snow                       13d
     if (!cloudy && windy) {return wi_day_snow_wind_64x64;}
     if (!cloudy)          {return wi_day_snow_64x64;}
     if (windy)            {return wi_snow_wind_64x64;}
     return wi_snow_64x64;
-  case 611: // Snow          Sleet                            13d
-  case 612: // Snow          Light shower sleet               13d
-  case 613: // Snow          Shower sleet                     13d
+  case 77: // Snow          light snow                       13d
     if (!cloudy) {return wi_day_sleet_64x64;}
     return wi_sleet_64x64;
-  case 615: // Snow          Light rain and snow              13d
-  case 616: // Snow          Rain and snow                    13d
-  case 620: // Snow          Light shower snow                13d
-  case 621: // Snow          Shower snow                      13d
-  case 622: // Snow          Heavy shower snow                13d
+  case 85: // Snow          Light rain and snow              13d
+  case 86: // Snow          Rain and snow                    13d
     if (!cloudy) {return wi_day_rain_mix_64x64;}
     return wi_rain_mix_64x64;
   // Group 7xx: Atmosphere
-  case 701: // Mist          mist                             50d
+  case 48: // Mist          mist                             50d
     if (!cloudy) {return wi_day_fog_64x64;}
     return wi_fog_64x64;
   case 711: // Smoke         Smoke                            50d
@@ -652,7 +632,7 @@ const uint8_t *getForecastBitmap64(const owm_daily_t &daily)
     return wi_dust_196x196;
   case 731: // Dust          sand/dust whirls                 50d
     return wi_sandstorm_64x64;
-  case 741: // Fog           fog                              50d
+  case 45: // Fog           fog                              50d
     if (!cloudy) {return wi_day_fog_64x64;}
     return wi_fog_64x64;
   case 751: // Sand          sand                             50d
@@ -666,18 +646,17 @@ const uint8_t *getForecastBitmap64(const owm_daily_t &daily)
   case 781: // Tornado       tornado                          50d
     return wi_tornado_64x64;
   // Group 800: Clear
-  case 800: // Clear         clear sky                        01d 01n
+  case 0: // Clear         clear sky                        01d 01n
     if (windy) {return wi_strong_wind_64x64;}
     return wi_day_sunny_64x64;
   // Group 80x: Clouds
-  case 801: // Clouds        few clouds: 11-25%               02d 02n
+  case 1: // Clouds        few clouds: 11-25%               02d 02n
     if (windy) {return wi_day_cloudy_gusts_64x64;}
     return wi_day_sunny_overcast_64x64;
-  case 802: // Clouds        scattered clouds: 25-50%         03d 03n
-  case 803: // Clouds        broken clouds: 51-84%            04d 04n
+  case 2: // Clouds        scattered clouds: 25-50%         03d 03n
     if (windy) {return wi_day_cloudy_gusts_64x64;}
     return wi_day_cloudy_64x64;
-  case 804: // Clouds        overcast clouds: 85-100%         04d 04n
+  case 3: // Clouds        overcast clouds: 85-100%         04d 04n
     if (windy) {return wi_cloudy_gusts_64x64;}
     return wi_cloudy_64x64;
   default:
@@ -721,87 +700,71 @@ const uint8_t *getCurrentConditionsBitmap196(const owm_current_t &current,
   bool windy = (current.wind_speed >= 32.2 /*m/s*/
              || current.wind_gust  >= 40.2 /*m/s*/);
 
+  Serial.print("id: "); Serial.println(id);
+
   switch (id)
   {
   // Group 2xx: Thunderstorm
-  case 200: // Thunderstorm  thunderstorm with light rain     11d
-  case 201: // Thunderstorm  thunderstorm with rain           11d
-  case 202: // Thunderstorm  thunderstorm with heavy rain     11d
-  case 210: // Thunderstorm  light thunderstorm               11d
-  case 211: // Thunderstorm  thunderstorm                     11d
-  case 212: // Thunderstorm  heavy thunderstorm               11d
-  case 221: // Thunderstorm  ragged thunderstorm              11d
+  case 95: // Thunderstorm  thunderstorm with light rain     11d
     if (!cloudy && day)          {return wi_day_thunderstorm_196x196;}
     if (!cloudy && !day && moon) {return wi_night_alt_thunderstorm_196x196;}
     return wi_thunderstorm_196x196;
-  case 230: // Thunderstorm  thunderstorm with light drizzle  11d
-  case 231: // Thunderstorm  thunderstorm with drizzle        11d
-  case 232: // Thunderstorm  thunderstorm with heavy drizzle  11d
+  case 96: // Thunderstorm  thunderstorm with light drizzle  11d 
     if (!cloudy && day)          {return wi_day_storm_showers_196x196;}
     if (!cloudy && !day && moon) {return wi_night_alt_storm_showers_196x196;}
     return wi_storm_showers_196x196;
   // Group 3xx: Drizzle
-  case 300: // Drizzle       light intensity drizzle          09d
-  case 301: // Drizzle       drizzle                          09d
-  case 302: // Drizzle       heavy intensity drizzle          09d
-  case 310: // Drizzle       light intensity drizzle rain     09d
-  case 311: // Drizzle       drizzle rain                     09d
-  case 312: // Drizzle       heavy intensity drizzle rain     09d
-  case 313: // Drizzle       shower rain and drizzle          09d
-  case 314: // Drizzle       heavy shower rain and drizzle    09d
-  case 321: // Drizzle       shower drizzle                   09d
+  case 51: // Drizzle       light intensity drizzle          09d
+  case 53: // Drizzle       drizzle                          09d
+  case 55: // Drizzle       heavy intensity drizzle          09d
+  case 56: // Drizzle       heavy shower rain and drizzle    09d
+  case 57: // Drizzle       shower drizzle                   09d
     if (!cloudy && day)          {return wi_day_showers_196x196;}
     if (!cloudy && !day && moon) {return wi_night_alt_showers_196x196;}
     return wi_showers_196x196;
   // Group 5xx: Rain
-  case 500: // Rain          light rain                       10d
-  case 501: // Rain          moderate rain                    10d
-  case 502: // Rain          heavy intensity rain             10d
-  case 503: // Rain          very heavy rain                  10d
-  case 504: // Rain          extreme rain                     10d
+  case 61: // Rain          light rain                       10d
+  case 62: // Rain          moderate rain                    10d
+  case 63: // Rain          heavy intensity rain             10d
     if (!cloudy && day && windy)          {return wi_day_rain_wind_196x196;}
     if (!cloudy && day)                   {return wi_day_rain_196x196;}
     if (!cloudy && !day && moon && windy) {return wi_night_alt_rain_wind_196x196;}
     if (!cloudy && !day && moon)          {return wi_night_alt_rain_196x196;}
     if (windy)                            {return wi_rain_wind_196x196;}
+    Serial.println("wi_rain_196x196");
     return wi_rain_196x196;
-  case 511: // Rain          freezing rain                    13d
+  case 66: // Rain          freezing rain                    13d
+  case 67: // Rain          freezing rain                    13d
     if (!cloudy && day)          {return wi_day_rain_mix_196x196;}
     if (!cloudy && !day && moon) {return wi_night_alt_rain_mix_196x196;}
     return wi_rain_mix_196x196;
-  case 520: // Rain          light intensity shower rain      09d
-  case 521: // Rain          shower rain                      09d
-  case 522: // Rain          heavy intensity shower rain      09d
-  case 531: // Rain          ragged shower rain               09d
+  case 80: // Rain          light intensity shower rain      09d
+  case 81: // Rain          shower rain                      09d
+  case 82: // Rain          heavy intensity shower rain      09d
     if (!cloudy && day)          {return wi_day_showers_196x196;}
     if (!cloudy && !day && moon) {return wi_night_alt_showers_196x196;}
     return wi_showers_196x196;
   // Group 6xx: Snow
-  case 600: // Snow          light snow                       13d
-  case 601: // Snow          Snow                             13d
-  case 602: // Snow          Heavy snow                       13d
+  case 71: // Snow          light snow                       13d
+  case 73: // Snow          Snow                             13d
+  case 75: // Snow          Heavy snow                       13d
     if (!cloudy && day && windy)          {return wi_day_snow_wind_196x196;}
     if (!cloudy && day)                   {return wi_day_snow_196x196;}
     if (!cloudy && !day && moon && windy) {return wi_night_alt_snow_wind_196x196;}
     if (!cloudy && !day && moon)          {return wi_night_alt_snow_196x196;}
     if (windy)                            {return wi_snow_wind_196x196;}
     return wi_snow_196x196;
-  case 611: // Snow          Sleet                            13d
-  case 612: // Snow          Light shower sleet               13d
-  case 613: // Snow          Shower sleet                     13d
+  case 77: // Snow          Sleet                            13d
     if (!cloudy && day)          {return wi_day_sleet_196x196;}
     if (!cloudy && !day && moon) {return wi_night_alt_sleet_196x196;}
     return wi_sleet_196x196;
-  case 615: // Snow          Light rain and snow              13d
-  case 616: // Snow          Rain and snow                    13d
-  case 620: // Snow          Light shower snow                13d
-  case 621: // Snow          Shower snow                      13d
-  case 622: // Snow          Heavy shower snow                13d
+  case 85: // Snow          Light rain and snow              13d
+  case 86: // Snow          Rain and snow                    13d
     if (!cloudy && day)          {return wi_day_rain_mix_196x196;}
     if (!cloudy && !day && moon) {return wi_night_alt_rain_mix_196x196;}
     return wi_rain_mix_196x196;
   // Group 7xx: Atmosphere
-  case 701: // Mist          mist                             50d
+  case 48: // Mist          mist                             50d
     if (!cloudy && day)          {return wi_day_fog_196x196;}
     if (!cloudy && !day && moon) {return wi_night_fog_196x196;}
     return wi_fog_196x196;
@@ -812,7 +775,7 @@ const uint8_t *getCurrentConditionsBitmap196(const owm_current_t &current,
     return wi_dust_196x196;
   case 731: // Dust          sand/dust whirls                 50d
     return wi_sandstorm_196x196;
-  case 741: // Fog           fog                              50d
+  case 45: // Fog           fog                              50d
     if (!cloudy && day)          {return wi_day_fog_196x196;}
     if (!cloudy && !day && moon) {return wi_night_fog_196x196;}
     return wi_fog_196x196;
@@ -827,26 +790,25 @@ const uint8_t *getCurrentConditionsBitmap196(const owm_current_t &current,
   case 781: // Tornado       tornado                          50d
     return wi_tornado_196x196;
   // Group 800: Clear
-  case 800: // Clear         clear sky                        01d 01n
+  case 0: // Clear         clear sky                        01d 01n
     if (windy)         {return wi_strong_wind_196x196;}
     if (!day && moon)  {return wi_night_clear_196x196;}
     if (!day && !moon) {return wi_stars_196x196;}
     return wi_day_sunny_196x196;
   // Group 80x: Clouds
-  case 801: // Clouds        few clouds: 11-25%               02d 02n
+  case 1: // Clouds        few clouds: 11-25%               02d 02n
     if (windy)         {return wi_strong_wind_196x196;}
     if (!day && moon)  {return wi_night_alt_partly_cloudy_196x196;}
     if (!day && !moon) {return wi_stars_196x196;}
     return wi_day_sunny_overcast_196x196;
-  case 802: // Clouds        scattered clouds: 25-50%         03d 03n
-  case 803: // Clouds        broken clouds: 51-84%            04d 04n
+  case 2: // Clouds        scattered clouds: 25-50%         03d 03n
     if (windy && day)           {return wi_day_cloudy_gusts_196x196;}
     if (windy && !day && moon)  {return wi_night_alt_cloudy_gusts_196x196;}
     if (windy && !day && !moon) {return wi_cloudy_gusts_196x196;}
     if (!day && moon)           {return wi_night_alt_cloudy_196x196;}
     if (!day && !moon)          {return wi_cloud_196x196;}
     return wi_day_cloudy_196x196;
-  case 804: // Clouds        overcast clouds: 85-100%         04d 04n
+  case 3: // Clouds        overcast clouds: 85-100%         04d 04n
     if (windy) {return wi_cloudy_gusts_196x196;}
     return wi_cloudy_196x196;
   default:

@@ -220,15 +220,22 @@ void drawMultiLnString(int16_t x, int16_t y, const String &text,
   return;
 } // end drawMultiLnString
 
+// SPIClass hspi(HSPI);
+
 /* Initialize e-paper display
  */
 void initDisplay()
 {
+  // hspi.begin(PIN_EPD_SCK, PIN_EPD_MISO, PIN_EPD_MOSI, PIN_EPD_CS); 
+
   display.init(115200, true, 2, false);
-  SPI.begin(PIN_EPD_SCK,
-            PIN_EPD_MISO,
-            PIN_EPD_MOSI,
-            PIN_EPD_CS);
+  // SPI.begin(PIN_EPD_SCK,
+  //           PIN_EPD_MISO,
+  //           PIN_EPD_MOSI,
+  //           PIN_EPD_CS);
+
+  // display.epd2.selectSPI(hspi, SPISettings(4000000, MSBFIRST, SPI_MODE0));
+  
 
   display.setRotation(0);
   display.setTextSize(1);
@@ -259,7 +266,8 @@ void drawCurrentConditions(const owm_current_t &current,
   unitStr = TXT_UNITS_TEMP_KELVIN;
 #endif
 #ifdef UNITS_TEMP_CELSIUS
-  dataStr = String(static_cast<int>(round(kelvin_to_celsius(current.temp))));
+  // dataStr = String(static_cast<int>(round(kelvin_to_celsius(current.temp))));
+  dataStr = String(static_cast<int>(round(current.temp)));
   unitStr = TXT_UNITS_TEMP_CELSIUS;
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
@@ -283,10 +291,12 @@ void drawCurrentConditions(const owm_current_t &current,
             + String(static_cast<int>(round(current.feels_like)));
 #endif
 #ifdef UNITS_TEMP_CELSIUS
+  // dataStr = String(TXT_FEELS_LIKE) + ' '
+  //           + String(static_cast<int>(round(
+  //                    kelvin_to_celsius(current.feels_like))))
+  //           + '\xB0';
   dataStr = String(TXT_FEELS_LIKE) + ' '
-            + String(static_cast<int>(round(
-                     kelvin_to_celsius(current.feels_like))))
-            + '\xB0';
+            + String(static_cast<int>(round(current.feels_like)));
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
   dataStr = String(TXT_FEELS_LIKE) + ' '
@@ -628,10 +638,21 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
   loStr = String(static_cast<int>(round(daily[i].temp.min)));
 #endif
 #ifdef UNITS_TEMP_CELSIUS
-  hiStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.max)
-                 ))) + "\xB0";
-  loStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.min)
-                 ))) + "\xB0";
+  // hiStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.max)
+  //                ))) + "\xB0";
+  // loStr = String(static_cast<int>(round(kelvin_to_celsius(daily[i].temp.min)
+  //                ))) + "\xB0";
+
+  hiStr = String(static_cast<int>(round(daily[i].temp.max))) + "\xB0";
+  loStr = String(static_cast<int>(round(daily[i].temp.min))) + "\xB0";
+
+  Serial.println("hiStr: " + hiStr);
+  Serial.println("loStr: " + loStr);
+
+  Serial.println("daily[i].temp.max: " + String(daily[i].temp.max));
+  Serial.println("daily[i].temp.min: " + String(daily[i].temp.min));
+
+
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
   hiStr = String(static_cast<int>(round(kelvin_to_fahrenheit(daily[i].temp.max)
@@ -807,7 +828,8 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
   float tempMin = hourly[0].temp;
 #endif
 #ifdef UNITS_TEMP_CELSIUS
-  float tempMin = kelvin_to_celsius(hourly[0].temp);
+  // float tempMin = kelvin_to_celsius(hourly[0].temp);
+  float tempMin = hourly[0].temp;
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
   float tempMin = kelvin_to_fahrenheit(hourly[0].temp);
@@ -824,7 +846,8 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     newTemp = hourly[i].temp;
 #endif
 #ifdef UNITS_TEMP_CELSIUS
-    newTemp = kelvin_to_celsius(hourly[i].temp);
+    // newTemp = kelvin_to_celsius(hourly[i].temp);
+    newTemp = hourly[i].temp;
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
     newTemp = kelvin_to_fahrenheit(hourly[i].temp);
@@ -985,12 +1008,16 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
                 yPos1 - (yPxPerUnit * ((hourly[i    ].temp) - tempBoundMin)) ));
 #endif
 #ifdef UNITS_TEMP_CELSIUS
+      // y0_t = static_cast<int>(round(
+      //           yPos1 - (yPxPerUnit * (kelvin_to_celsius(hourly[i - 1].temp)
+      //                    - tempBoundMin)) ));
+      // y1_t = static_cast<int>(round(
+      //           yPos1 - (yPxPerUnit * (kelvin_to_celsius(hourly[i    ].temp)
+      //                    - tempBoundMin)) ));
       y0_t = static_cast<int>(round(
-                yPos1 - (yPxPerUnit * (kelvin_to_celsius(hourly[i - 1].temp)
-                         - tempBoundMin)) ));
+                yPos1 - (yPxPerUnit * ((hourly[i - 1].temp) - tempBoundMin)) ));
       y1_t = static_cast<int>(round(
-                yPos1 - (yPxPerUnit * (kelvin_to_celsius(hourly[i    ].temp)
-                         - tempBoundMin)) ));
+                yPos1 - (yPxPerUnit * ((hourly[i    ].temp) - tempBoundMin)) ));
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
       y0_t = static_cast<int>(round(
@@ -1008,7 +1035,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     }
 
 #ifdef UNITS_PRECIP_POP
-    float precipVal = hourly[i].pop * 100;
+    float precipVal = hourly[i].pop; // * 100;
 #else
     float precipVal = hourly[i].rain_1h + hourly[i].snow_1h;
 #ifdef UNITS_PRECIP_CENTIMETERS

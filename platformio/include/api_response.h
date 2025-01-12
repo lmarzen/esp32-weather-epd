@@ -211,7 +211,7 @@ typedef struct owm_resp_air_pollution
   int64_t          dt[OWM_NUM_AIR_POLLUTION];         // Date and time, Unix, UTC;
 } owm_resp_air_pollution_t;
 
-DeserializationError deserializeOneCall(WiFiClient &json,
+DeserializationError deserializeOneCall(const char* string,
                                         owm_resp_onecall_t &r);
 DeserializationError deserializeAirQuality(WiFiClient &json,
                                            owm_resp_air_pollution_t &r);

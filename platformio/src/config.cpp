@@ -20,29 +20,50 @@
 
 // PINS
 // ADC pin used to measure battery voltage
-const uint8_t PIN_BAT_ADC  = A2; // A0 for micro-usb firebeetle
+// const uint8_t PIN_BAT_ADC  = A2; // A0 for micro-usb firebeetle
 // Pins for Waveshare e-paper Driver Board
-const uint8_t PIN_EPD_BUSY = 13; // 5 for micro-usb firebeetle
-const uint8_t PIN_EPD_CS   =  2;
-const uint8_t PIN_EPD_RST  = 21;
-const uint8_t PIN_EPD_DC   = 22;
-const uint8_t PIN_EPD_SCK  = 18;
-const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
-const uint8_t PIN_EPD_MOSI = 23;
+// const uint8_t PIN_EPD_BUSY = 13; // 5 for micro-usb firebeetle
+// const uint8_t PIN_EPD_CS   =  2;
+// const uint8_t PIN_EPD_RST  = 21;
+// const uint8_t PIN_EPD_DC   = 22;
+// const uint8_t PIN_EPD_SCK  = 18;
+// const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
+// const uint8_t PIN_EPD_MOSI = 23;
+
+// const uint8_t PIN_EPD_BUSY = 25; 
+// const uint8_t PIN_EPD_CS   = 15;
+// const uint8_t PIN_EPD_RST  = 26;
+// const uint8_t PIN_EPD_DC   = 27;
+// const uint8_t PIN_EPD_SCK  = 13;
+// const uint8_t PIN_EPD_MISO = 18; // 19 Master-In Slave-Out not used, as no data from display
+// const uint8_t PIN_EPD_MOSI = 14;
+
+// esp32 lolin pico
+const uint8_t PIN_EPD_RST  = 10;
+const uint8_t PIN_EPD_DC   = 8;
+const uint8_t PIN_EPD_CS   = 5; 
+const uint8_t PIN_EPD_BUSY = 0;
+const uint8_t PIN_EPD_MOSI  = 4;
+const uint8_t PIN_EPD_MISO  = 3;
+const uint8_t PIN_EPD_SCK   = 2;
+
 // I2C Pins used for BME280
 const uint8_t PIN_BME_SDA = 17;   // 27 for micro-usb firebeetle
 const uint8_t PIN_BME_SCL = 16;   // 26 for micro-usb firebeetle
 const uint8_t BME_ADDRESS = 0x76; // if sensor does not work, try 0x77
 
 // WIFI
-const char *WIFI_SSID     = "ssid";
-const char *WIFI_PASSWORD = "password";
+const char *WIFI_SSID = "";
+const char *WIFI_PASSWORD = "";
+
 const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
 // OPENWEATHERMAP API
 // OpenWeatherMap API key, https://openweathermap.org/
-const String OWM_APIKEY   = "abcdefghijklmnopqrstuvwxyz012345";
-const String OWM_ENDPOINT = "api.openweathermap.org";
+const String OWM_APIKEY = "";
+// const String OWM_ENDPOINT = "api.openweathermap.org";
+const String OWM_ENDPOINT = "api.open-meteo.com";
+// https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m
 // OpenWeatherMap One Call 2.5 API is deprecated for all new free users
 // (accounts created after Summer 2022).
 //
@@ -57,20 +78,20 @@ const String OWM_ENDPOINT = "api.openweathermap.org";
 // - Go to https://home.openweathermap.org/subscriptions and set the "Calls per
 //   day (no more than)" to 1,000. This ensures you will never overrun the free
 //   calls.
-const String OWM_ONECALL_VERSION = "3.0";
+const String OWM_ONECALL_VERSION = "2.5";
 
 // LOCATION
 // Set your latitude and longitude.
 // (used to get weather data as part of API requests to OpenWeatherMap)
-const String LAT = "40.7128";
-const String LON = "-74.0060";
+const String LAT = "50.946389"; 
+const String LON = "6.918333"; 
 // City name that will be shown in the top-right corner of the display.
-const String CITY_STRING = "New York";
+const String CITY_STRING = "Ehrenfeld";
 
 // TIME
 // For list of time zones see
 // https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv
-const char *TIMEZONE = "EST5EDT,M3.2.0,M11.1.0";
+const char *TIMEZONE = "CET-1CEST,M3.5.0,M10.5.0/3";
 // Time format used when displaying sunrise/set times. (Max 11 characters)
 // For more information about formatting see
 // https://man7.org/linux/man-pages/man3/strftime.3.html

@@ -21,6 +21,9 @@
 #include <cstdint>
 #include <Arduino.h>
 
+#define INDOOR 0
+#define AIR_POLLUTION 0
+
 // E-PAPER PANEL
 // This project supports the following E-Paper panels:
 //   DISP_BW_V2 - 7.5in e-paper (v2)      800x480px  Black/White
@@ -28,9 +31,9 @@
 //   DISP_7C_F  - 7.3in ACeP e-Paper (F)  800x480px  7-Color
 //   DISP_BW_V1 - 7.5in e-paper (v1)      640x384px  Black/White
 // Uncomment the macro that identifies your physical panel.
-#define DISP_BW_V2
+// #define DISP_BW_V2
 // #define DISP_3C_B
-// #define DISP_7C_F
+#define DISP_7C_F
 // #define DISP_BW_V1
 
 // 3 COLOR E-INK ACCENT COLOR
@@ -54,7 +57,7 @@
 //   English (United States)         en_US
 //   French (France)                 fr_FR
 //   Dutch (Belgium)                 nl_BE
-#define LOCALE en_US
+#define LOCALE de_DE
 
 // UNITS
 // Define exactly one macro for each measurement type below.
@@ -63,8 +66,8 @@
 //   Metric   : Celsius
 //   Imperial : Fahrenheit
 // #define UNITS_TEMP_KELVIN
-// #define UNITS_TEMP_CELSIUS
-#define UNITS_TEMP_FAHRENHEIT
+#define UNITS_TEMP_CELSIUS
+// #define UNITS_TEMP_FAHRENHEIT
 
 // UNITS - WIND SPEED
 //   Metric   : Kilometers per Hour
@@ -72,17 +75,17 @@
 // #define UNITS_SPEED_METERSPERSECOND
 // #define UNITS_SPEED_FEETPERSECOND
 // #define UNITS_SPEED_KILOMETERSPERHOUR
-#define UNITS_SPEED_MILESPERHOUR
+// #define UNITS_SPEED_MILESPERHOUR
 // #define UNITS_SPEED_KNOTS
-// #define UNITS_SPEED_BEAUFORT
+#define UNITS_SPEED_BEAUFORT
 
 // UNITS - PRESSURE
 //   Metric   : Millibars
 //   Imperial : Inches of Mercury
-// #define UNITS_PRES_HECTOPASCALS
+#define UNITS_PRES_HECTOPASCALS
 // #define UNITS_PRES_PASCALS
 // #define UNITS_PRES_MILLIMETERSOFMERCURY
-#define UNITS_PRES_INCHESOFMERCURY
+// #define UNITS_PRES_INCHESOFMERCURY
 // #define UNITS_PRES_MILLIBARS
 // #define UNITS_PRES_ATMOSPHERES
 // #define UNITS_PRES_GRAMSPERSQUARECENTIMETER
@@ -91,8 +94,8 @@
 // UNITS - VISIBILITY DISTANCE
 //   Metric   : Kilometers
 //   Imperial : Miles
-// #define UNITS_DIST_KILOMETERS
-#define UNITS_DIST_MILES
+#define UNITS_DIST_KILOMETERS
+// #define UNITS_DIST_MILES
 
 // UNITS - PRECIPITATION
 // Measure of precipitation.
@@ -197,13 +200,13 @@
 //   provides alerts in English only. Any combination of these factors may make
 //   it undesirable to display alerts in some regions.
 //   Disable alerts by changing the DISPLAY_ALERTS macro to 0.
-#define DISPLAY_ALERTS 1
+#define DISPLAY_ALERTS 0
 
 // BATTERY MONITORING
 //   You may choose to power your whether display with or without a battery.
 //   Low power behavior can be controlled in config.cpp.
 //   If you wish to disable battery monitoring set this macro to 0.
-#define BATTERY_MONITORING 1
+#define BATTERY_MONITORING 0
 
 // NON-VOLATILE STORAGE (NVS) NAMESPACE
 #define NVS_NAMESPACE "weather_epd"
@@ -212,7 +215,7 @@
 //   If defined, enables increase verbosity over the serial port.
 //   level 0: basic status information, assists troubleshooting (default)
 //   level 1: increased verbosity for debugging
-#define DEBUG_LEVEL 0
+#define DEBUG_LEVEL 1
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;

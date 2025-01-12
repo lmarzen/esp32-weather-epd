@@ -269,25 +269,30 @@ void setup()
     display.powerOff();
     beginDeepSleep(startTime, &timeInfo);
   }
-  rxStatus = getOWMairpollution(client, owm_air_pollution);
-  if (rxStatus != HTTP_CODE_OK)
-  {
-    killWiFi();
-    statusStr = "Air Pollution API";
-    tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
-    initDisplay();
-    do
+
+#if AIR_POLLUTION
+    rxStatus = getOWMairpollution(client, owm_air_pollution);
+    if (rxStatus != HTTP_CODE_OK)
     {
-      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
-    } while (display.nextPage());
-    display.powerOff();
-    beginDeepSleep(startTime, &timeInfo);
-  }
-  killWiFi(); // WiFi no longer needed
+      killWiFi();
+      statusStr = "Air Pollution API";
+      tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
+      initDisplay();
+      do
+      {
+        drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+      } while (display.nextPage());
+      display.powerOff();
+      beginDeepSleep(startTime, &timeInfo);
+    }
+    killWiFi(); // WiFi no longer needed
+#endif
 
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
   float inTemp     = NAN;
   float inHumidity = NAN;
+
+#if INDOOR
   Serial.print("Reading from BME280... ");
   TwoWire I2C_bme = TwoWire(0);
   Adafruit_BME280 bme;
@@ -317,6 +322,8 @@ void setup()
     statusStr = "BME not found"; // check wiring
     Serial.println(statusStr);
   }
+
+#endif
 
   String refreshTimeStr;
   getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);

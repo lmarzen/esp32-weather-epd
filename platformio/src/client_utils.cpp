@@ -152,19 +152,26 @@ bool waitForSNTPSync(tm *timeInfo)
   int attempts = 0;
   bool rxSuccess = false;
   DeserializationError jsonErr = {};
-  String uri = "/data/" + OWM_ONECALL_VERSION
-               + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG
-               + "&units=standard&exclude=minutely";
+  // String uri = "/data/" + OWM_ONECALL_VERSION
+  //              + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG
+  //              + "&units=standard&exclude=minutely";
+
+  String uri = "/v1/forecast?latitude=" + LAT + "&longitude=" + LON + "&"+
+    "current=temperature_2m,relative_humidity_2m,apparent_temperature,rain,snowfall,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&"+
+    "hourly=temperature_2m,precipitation_probability,rain,snowfall&"+
+    "daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,daylight_duration,sunshine_duration,uv_index_max,uv_index_clear_sky_max,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration&"+
+    "timezone=Europe%2FBerlin&timeformat=unixtime";
+  // https://api.open-meteo.com/v1/forecast?latitude=50.946389&longitude=6.918333&current=temperature_2m,relative_humidity_2m,apparent_temperature,rain,snowfall,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=dew_point_2m,visibility&daily=sunrise,sunset,uv_index_max&timezone=Europe%2FBerlin
 #if !DISPLAY_ALERTS
   // exclude alerts
-  uri += ",alerts";
+  // uri += ",alerts";
 #endif
 
   // This string is printed to terminal to help with debugging. The API key is
   // censored to reduce the risk of users exposing their key.
-  String sanitizedUri = OWM_ENDPOINT + uri + "&appid={API key}";
+  String sanitizedUri = OWM_ENDPOINT + uri; // + "&appid={API key}";
 
-  uri += "&appid=" + OWM_APIKEY;
+  // uri += "&appid=" + OWM_APIKEY;
 
   Serial.println("Attempting HTTP Request: " + sanitizedUri);
   int httpResponse = 0;
@@ -175,7 +182,10 @@ bool waitForSNTPSync(tm *timeInfo)
     httpResponse = http.GET();
     if (httpResponse == HTTP_CODE_OK)
     {
-      jsonErr = deserializeOneCall(http.getStream(), r);
+      // Stream& stream = http.getStream();
+      DynamicJsonDocument doc(1024);
+      String string = http.getString();
+      jsonErr = deserializeOneCall(string.c_str(), r); // Convert String to const char*
       if (jsonErr)
       {
         rxSuccess = false;
