@@ -30,23 +30,14 @@
 // ADC pin used to measure battery voltage
 const uint8_t PIN_BAT_ADC = A2; // A0 for micro-usb firebeetle
 // Pins for E-Paper Driver Board
-// const uint8_t PIN_EPD_BUSY = 14; // 5 for micro-usb firebeetle
-// const uint8_t PIN_EPD_CS = 13;
-// const uint8_t PIN_EPD_RST = 21;
-// const uint8_t PIN_EPD_DC = 22;
-// const uint8_t PIN_EPD_SCK = 18;
-// const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
-// const uint8_t PIN_EPD_MOSI = 23;
-// const uint8_t PIN_EPD_PWR = 26; // Irrelevant if directly connected to 3.3V
-// esp32 lolin pico
-const uint8_t PIN_EPD_RST = 10;
-const uint8_t PIN_EPD_DC = 8;
-const uint8_t PIN_EPD_CS = 5;
-const uint8_t PIN_EPD_BUSY = 0;
-const uint8_t PIN_EPD_MOSI = 4;
-const uint8_t PIN_EPD_MISO = 3;
-const uint8_t PIN_EPD_SCK = 2;
-const uint8_t PIN_EPD_PWR = 7; // Irrelevant if directly connected to 3.3V
+const uint8_t PIN_EPD_BUSY = 14; // 5 for micro-usb firebeetle
+const uint8_t PIN_EPD_CS = 13;
+const uint8_t PIN_EPD_RST = 21;
+const uint8_t PIN_EPD_DC = 22;
+const uint8_t PIN_EPD_SCK = 18;
+const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
+const uint8_t PIN_EPD_MOSI = 23;
+const uint8_t PIN_EPD_PWR = 26; // Irrelevant if directly connected to 3.3V
 // I2C Pins used for BME280
 const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
@@ -77,7 +68,11 @@ const unsigned HTTP_CLIENT_TCP_TIMEOUT = 10000; // ms
 // - Go to https://home.openweathermap.org/subscriptions and set the "Calls per
 //   day (no more than)" to 1,000. This ensures you will never overrun the free
 //   calls.
-const String OWM_ONECALL_VERSION = "2.5";
+const String OWM_ONECALL_VERSION = "3.0";
+
+// OPENWEATHERMAP API
+// OpenWeatherMap API key, https://openweathermap.org/
+const String OWM_ENDPOINT = "api.openweathermap.org";
 
 // OPENMETEO API
 // Open Meteo API, https://open-meteo.com/

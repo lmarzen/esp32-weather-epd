@@ -31,9 +31,9 @@
 //   DISP_7C_F  - 7.3in ACeP e-Paper (F)  800x480px  7-Color
 //   DISP_BW_V1 - 7.5in e-Paper (v1)      640x384px  Black/White
 // Uncomment the macro that identifies your physical panel.
-// #define DISP_BW_V2
+#define DISP_BW_V2
 // #define DISP_3C_B
-#define DISP_7C_F
+// #define DISP_7C_F
 // #define DISP_BW_V1
 
 // E-PAPER DRIVER BOARD
@@ -42,8 +42,8 @@
 // The Waveshare rev2.2 is no longer in production.
 // Users of the Waveshare rev2.3 have reported experiencing low contrast issues.
 // Uncomment the macro that identifies your driver board hardware.
-// #define DRIVER_DESPI_C02
-#define DRIVER_WAVESHARE
+#define DRIVER_DESPI_C02
+// #define DRIVER_WAVESHARE
 
 // 3 COLOR E-INK ACCENT COLOR
 // Defines the 3rd color to be used when a 3+ color display is selected.
@@ -70,10 +70,10 @@
 //   Italiano (Italia)               it_IT
 //   Dutch (Belgium)                 nl_BE
 //   Portuguese (Brazil)             pt_BR
-#define LOCALE de_DE
+#define LOCALE en_US
 
-// #define USE_OPEN_WEATHER_MAP
-#define USE_OPEN_METEO
+#define USE_OPEN_WEATHER_MAP
+// #define USE_OPEN_METEO
 
 // UNITS
 // Define exactly one macro for each measurement type below.
@@ -82,8 +82,8 @@
 //   Metric   : Celsius
 //   Imperial : Fahrenheit
 // #define UNITS_TEMP_KELVIN
-#define UNITS_TEMP_CELSIUS
-// #define UNITS_TEMP_FAHRENHEIT
+// #define UNITS_TEMP_CELSIUS
+#define UNITS_TEMP_FAHRENHEIT
 
 // UNITS - WIND SPEED
 //   Metric   : Kilometers per Hour
@@ -91,17 +91,17 @@
 // #define UNITS_SPEED_METERSPERSECOND
 // #define UNITS_SPEED_FEETPERSECOND
 // #define UNITS_SPEED_KILOMETERSPERHOUR
-// #define UNITS_SPEED_MILESPERHOUR
+#define UNITS_SPEED_MILESPERHOUR
 // #define UNITS_SPEED_KNOTS
-#define UNITS_SPEED_BEAUFORT
+// #define UNITS_SPEED_BEAUFORT
 
 // UNITS - PRESSURE
 //   Metric   : Millibars
 //   Imperial : Inches of Mercury
-#define UNITS_PRES_HECTOPASCALS
+// #define UNITS_PRES_HECTOPASCALS
 // #define UNITS_PRES_PASCALS
 // #define UNITS_PRES_MILLIMETERSOFMERCURY
-// #define UNITS_PRES_INCHESOFMERCURY
+#define UNITS_PRES_INCHESOFMERCURY
 // #define UNITS_PRES_MILLIBARS
 // #define UNITS_PRES_ATMOSPHERES
 // #define UNITS_PRES_GRAMSPERSQUARECENTIMETER
@@ -110,8 +110,8 @@
 // UNITS - VISIBILITY DISTANCE
 //   Metric   : Kilometers
 //   Imperial : Miles
-#define UNITS_DIST_KILOMETERS
-// #define UNITS_DIST_MILES
+// #define UNITS_DIST_KILOMETERS
+#define UNITS_DIST_MILES
 
 // UNITS - PRECIPITATION (HOURLY)
 // Measure of precipitation.
@@ -130,8 +130,8 @@
 //   Imperial : Inches
 // #define UNITS_DAILY_PRECIP_POP
 // #define UNITS_DAILY_PRECIP_MILLIMETERS
-#define UNITS_DAILY_PRECIP_CENTIMETERS
-// #define UNITS_DAILY_PRECIP_INCHES
+// #define UNITS_DAILY_PRECIP_CENTIMETERS
+#define UNITS_DAILY_PRECIP_INCHES
 
 // Hypertext Transfer Protocol (HTTP)
 // HTTP
@@ -153,8 +153,8 @@
 //   2030-12-31 23:59:59.
 // (uncomment exactly one)
 // #define USE_HTTP
-#define USE_HTTPS_NO_CERT_VERIF
-// #define USE_HTTPS_WITH_CERT_VERIF
+// #define USE_HTTPS_NO_CERT_VERIF
+#define USE_HTTPS_WITH_CERT_VERIF
 
 // WIND DIRECTION INDICATOR
 // Choose whether the wind direction indicator should be an arrow, number, or
@@ -247,7 +247,7 @@
 //   provides alerts in English only. Any combination of these factors may make
 //   it undesirable to display alerts in some regions.
 //   Disable alerts by changing the DISPLAY_ALERTS macro to 0.
-#define DISPLAY_ALERTS 0
+#define DISPLAY_ALERTS 1
 
 // STATUS BAR EXTRAS
 //   Extra information that can be displayed on the status bar. Set to 1 to
@@ -259,7 +259,7 @@
 //   You may choose to power your weather display with or without a battery.
 //   Low power behavior can be controlled in config.cpp.
 //   If you wish to disable battery monitoring set this macro to 0.
-#define BATTERY_MONITORING 0
+#define BATTERY_MONITORING 1
 
 // NON-VOLATILE STORAGE (NVS) NAMESPACE
 #define NVS_NAMESPACE "weather_epd"
@@ -269,7 +269,7 @@
 //   level 0: basic status information, assists troubleshooting (default)
 //   level 1: increased verbosity for debugging
 //   level 2: print api responses to serial monitor
-#define DEBUG_LEVEL 2
+#define DEBUG_LEVEL 0
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;
