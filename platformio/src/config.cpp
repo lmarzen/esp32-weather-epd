@@ -46,6 +46,7 @@ const uint8_t PIN_EPD_BUSY = 0;
 const uint8_t PIN_EPD_MOSI = 4;
 const uint8_t PIN_EPD_MISO = 3;
 const uint8_t PIN_EPD_SCK = 2;
+const uint8_t PIN_EPD_PWR = 7; // Irrelevant if directly connected to 3.3V
 // I2C Pins used for BME280
 const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
