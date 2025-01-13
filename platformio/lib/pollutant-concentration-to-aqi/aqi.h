@@ -1,5 +1,5 @@
 /* AQI library declarations for pollutant-concentration-to-aqi.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2024  Luke Marzen
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,19 +24,25 @@
 extern "C" {
 #endif
 
-/* Each AQI scale has a maximum value, above which AQI is typically denoted by
- * ">{AQI_MAX}" or "{AQI_MAX}+".
- */
-#define AUSTRALIA_AQI_MAX       200
-#define CANADA_AQHI_MAX          10
-#define EUROPE_CAQI_MAX         100
-#define HONG_KONG_AQHI_MAX       10
-#define INDIA_AQI_MAX           400
-#define MAINLAND_CHINA_AQI_MAX  500
-#define SINGAPORE_PSI_MAX       500
-#define SOUTH_KOREA_CAI_MAX     500
-#define UNITED_KINGDOM_DAQI_MAX  10
-#define UNITED_STATES_AQI_MAX   500
+typedef enum {
+  AUSTRALIA_AQI,
+  CANADA_AQHI,
+  CHINA_AQI,
+  EUROPEAN_UNION_CAQI,
+  HONG_KONG_AQHI,
+  INDIA_AQI,
+  SINGAPORE_PSI,
+  SOUTH_KOREA_CAI,
+  UNITED_KINGDOM_DAQI,
+  UNITED_STATES_AQI,
+  NUM_AQI_SCALES
+} aqi_scale_t;
+
+typedef enum {
+  AIR_QUALITY_DESC,
+  AIR_POLLUTION_DESC,
+} aqi_desc_type_t;
+
 
 /* Returns the Air Quality Index, rounded to the nearest integer
  *
@@ -58,20 +64,23 @@ extern "C" {
  * '_Xh', where 'X' is the time period samples are averaged over in hours.
  * (or '_Xmin' for minutes)
  *
- * Ex: 'co_8h' is interpreted as, the X hour moving average concentration of
+ * Ex: 'co_8h' is interpreted as, the 8 hour moving average concentration of
  *             Carbon Monoxide.
  *
  * Useful websites with more information about various aqi scales:
  * https://en.wikipedia.org/wiki/Air_quality_index
  * https://atmotube.com/blog/standards-for-air-quality-indices-in-different-countries-aqi
  */
-
 int australia_aqi(float co_8h,  float no2_1h,   float o3_1h, float o3_4h,
                   float so2_1h, float pm10_24h, float pm2_5_24h);
 
 int canada_aqhi(float no2_3h, float o3_3h, float pm2_5_3h);
 
-int europe_caqi(float no2_1h, float o3_1h, float pm10_1h, float pm2_5_1h);
+int china_aqi(float co_1h,    float co_24h, float no2_1h, float no2_24h,
+              float o3_1h,    float o3_8h,  float so2_1h, float so2_24h,
+              float pm10_24h, float pm2_5_24h);
+
+int european_union_caqi(float no2_1h, float o3_1h, float pm10_1h, float pm2_5_1h);
 
 int hong_kong_aqhi(float no2_3h,  float o3_3h, float so2_3h,
                    float pm10_3h, float pm2_5_3h);
@@ -79,9 +88,6 @@ int hong_kong_aqhi(float no2_3h,  float o3_3h, float so2_3h,
 int india_aqi(float co_8h,  float nh3_24h, float no2_24h,  float o3_8h,
               float pb_24h, float so2_24h, float pm10_24h, float pm2_5_24h);
 
-int mainland_china_aqi(float co_1h, float co_24h, float no2_1h, float no2_24h,
-                       float o3_1h, float o3_8h,  float so2_1h, float so2_24h,
-                       float pm10_24h, float pm2_5_24h);
 
 int singapore_psi(float co_8h,   float no2_1h,   float o3_1h, float o3_8h,
                   float so2_24h, float pm10_24h, float pm2_5_24h);
@@ -97,124 +103,135 @@ int united_states_aqi(float co_8h,    float no2_1h,
                       float so2_1h,   float so2_24h,
                       float pm10_24h, float pm2_5_24h);
 
-/* Returns the descriptor/category of an aqi value.
+/* Given an hourly pollutant concentration samples, will return the Air Quality
+ * Index, rounded to the nearest integer. The array of pollutant concentration
+ * samples should be organized from least recent (index 0) to most recent
+ * (index 23). This is important when calculating average pollutant
+ * concentrations for scales that require the most recent X hours of samples.
+ *
+ * Pass NULL (or an array of 0's) to indicate that a concentration is not
+ * available.
+ *
+ * Warning: The United Kingdom DAQI requires a 15min average concentration for
+ *          so2. The UK's DAQI is the only scale that requires a 15min average
+ *          concentration. (why!?) In this case the most recent hourly
+ *          concentration will be used instead.
+ */
+int calc_australia_aqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+int calc_canada_aqhi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+int calc_china_aqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+int calc_european_union_caqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+int calc_hong_kong_aqhi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+int calc_india_aqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+int calc_singapore_psi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+int calc_south_korea_cai(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+int calc_united_kingdom_daqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+int calc_united_states_aqi(
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+
+/* Given a scale and hourly pollutant concentrations returns the Air Quality
+ * Index.
+ */
+int calc_aqi(aqi_scale_t scale,
+             const float co[24],  const float nh3[24],  const float no[24],
+             const float no2[24], const float o3[24],   const float pb[24],
+             const float so2[24], const float pm10[24], const float pm2_5[24]);
+
+/* Each AQI scale has a maximum value, above which AQI is typically denoted by
+ * ">{AQI_MAX}" or "{AQI_MAX}+".
+ */
+#define AUSTRALIA_AQI_MAX       200
+#define CANADA_AQHI_MAX          10
+#define CHINA_AQI_MAX           500
+#define EUROPEAN_UNION_CAQI_MAX 100
+#define HONG_KONG_AQHI_MAX       10
+#define INDIA_AQI_MAX           400
+#define SINGAPORE_PSI_MAX       500
+#define SOUTH_KOREA_CAI_MAX     500
+#define UNITED_KINGDOM_DAQI_MAX  10
+#define UNITED_STATES_AQI_MAX   500
+
+/* Returns the maximum value for the given AQI scale.
+ */
+int aqi_scale_max(aqi_scale_t scale);
+
+/* Returns the descriptor/category of an AQI value.
  *
  * Usage Example:
  *   united_states_aqi_desc(52);
  *   returns "Moderate"
  */
-
 const char *australia_aqi_desc(      int aqi);
 const char *canada_aqhi_desc(        int aqhi);
-const char *europe_caqi_desc(        int caqi);
+const char *china_aqi_desc(          int aqi);
+const char *european_union_caqi_desc(int caqi);
 const char *hong_kong_aqhi_desc(     int aqhi);
 const char *india_aqi_desc(          int aqi);
-const char *mainland_china_aqi_desc( int aqi);
 const char *singapore_psi_desc(      int psi);
 const char *south_korea_cai_desc(    int cai);
 const char *united_kingdom_daqi_desc(int daqi);
 const char *united_states_aqi_desc(  int aqi);
 
+/* Given an AQI scale and an index value, returns a pointer the corresponding
+ * descriptor.
+ */
+const char *aqi_desc(aqi_scale_t scale, int val);
 
-/* If you do not want to use the default descriptors below can define the
- * AQI_EXTERN_TXT macro below and define them elsewhere.
+/* The descriptors for an AQI scale generally describe either
+ *   (0) Air Quality
+ * or
+ *   (1) Air Pollution
+ */
+#define AUSTRALIA_AQI_DESC_TYPE       AIR_QUALITY_DESC
+#define CANADA_AQHI_DESC_TYPE         AIR_POLLUTION_DESC
+#define CHINA_AQI_DESC_TYPE           AIR_QUALITY_DESC
+#define EUROPEAN_UNION_CAQI_DESC_TYPE AIR_POLLUTION_DESC
+#define HONG_KONG_AQHI_DESC_TYPE      AIR_POLLUTION_DESC
+#define INDIA_AQI_DESC_TYPE           AIR_QUALITY_DESC
+#define SINGAPORE_PSI_DESC_TYPE       AIR_QUALITY_DESC
+#define SOUTH_KOREA_CAI_DESC_TYPE     AIR_QUALITY_DESC
+#define UNITED_KINGDOM_DAQI_DESC_TYPE AIR_POLLUTION_DESC
+#define UNITED_STATES_AQI_DESC_TYPE   AIR_QUALITY_DESC
+
+/* Given a AQI scale, returns what the descriptor text indicates air quality or
+ * air pollution.
+ */
+aqi_desc_type_t aqi_desc_type(aqi_scale_t scale);
+
+/* If you do not want to use the default descriptors, you may define the
+ * AQI_EXTERN_TXT macro below and define the descriptor strings externally.
  */
 #define AQI_EXTERN_TXT
 
-#ifndef AQI_EXTERN_TXT
-static const char *AUSTRALIA_AQI_TXT[6] =
-{
-  "Very Good",
-  "Good",
-  "Fair",
-  "Poor",
-  "Very Poor",
-  "Hazardous",
-};
-static const char *CANADA_AQHI_TXT[4] =
-{
-  "Low",
-  "Moderate",
-  "High",
-  "Very High",
-};
-static const char *EUROPE_CAQI_TXT[5] =
-{
-  "Very Low",
-  "Low",
-  "Medium",
-  "High",
-  "Very High",
-};
-static const char *HONG_KONG_AQHI_TXT[5] =
-{
-  "Low",
-  "Moderate",
-  "High",
-  "Very High",
-  "Hazardous",
-};
-static const char *INDIA_AQI_TXT[6] =
-{
-  "Good",
-  "Satisfactory",
-  "Moderate",
-  "Poor",
-  "Very Poor",
-  "Severe",
-};
-static const char *MAINLAND_CHINA_AQI_TXT[6] =
-{
-  "Excellent",
-  "Good",
-  "Lightly Polluted",
-  "Moderately Polluted",
-  "Heavily Polluted",
-  "Severely Polluted",
-};
-static const char *SINGAPORE_PSI_TXT[5] =
-{
-  "Good",
-  "Moderate",
-  "Unhealthy",
-  "Very Unhealthy",
-  "Hazardous",
-};
-static const char *SOUTH_KOREA_CAI_TXT[4] =
-{
-  "Good",
-  "Medium",
-  "Unhealthy",
-  "Very Unhealthy",
-};
-static const char *UNITED_KINGDOM_DAQI_TXT[4] =
-{
-  "Low",
-  "Moderate",
-  "High",
-  "Very High",
-};
-static const char *UNITED_STATES_AQI_TXT[6] =
-{
-  "Good",
-  "Moderate",
-  "Unhealthy for Sensitive Groups",
-  "Unhealthy",
-  "Very Unhealthy",
-  "Hazardous",
-};
-#else
-extern const char *AUSTRALIA_AQI_TXT[6];
-extern const char *CANADA_AQHI_TXT[4];
-extern const char *EUROPE_CAQI_TXT[5];
-extern const char *HONG_KONG_AQHI_TXT[5];
-extern const char *INDIA_AQI_TXT[6];
-extern const char *MAINLAND_CHINA_AQI_TXT[6];
-extern const char *SINGAPORE_PSI_TXT[5];
-extern const char *SOUTH_KOREA_CAI_TXT[4];
-extern const char *UNITED_KINGDOM_DAQI_TXT[4];
-extern const char *UNITED_STATES_AQI_TXT[6];
-#endif // AQI_EXTERN_TXT
 
 #ifdef __cplusplus
 }

@@ -1,0 +1,2 @@
+cert.h is generated with the following command,
+python cert.py -s api.openweathermap.org -p 443 -n openweathermap > cert.h

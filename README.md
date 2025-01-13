@@ -10,7 +10,7 @@ This is a weather display powered by a wifi-enabled ESP32 microcontroller and a 
   <img src="showcase/assembled-demo-bottom-cover-removed.jpg" width="49%" />
 </p>
 
-The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~10s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
+The project draws ~14μA when sleeping and an estimated average of ~83mA during its ~15s wake period. The display can be configured to update as frequently as desired. When the refresh interval is set to 30 minutes, the device will run for >6 months on a single 5000mAh battery. The project displays accurate battery life percentage and can be recharged via a USB-C cable connected to a wall adapter or computer.
 
 There are configuration options for everything from location, time/date formats, units, and language to air quality index scale and hourly outlook graph bounds.
 
@@ -23,14 +23,30 @@ Here are two examples utilizing various configuration options:
   <img src="showcase/demo-london.jpg" width="49%" />
 </p>
 
+
+## Contents
+
+-   [Setup Guide](#setup-guide)
+    -   [Hardware](#hardware)
+    -   [Wiring](#wiring)
+    -   [Configuration, Compilation, and Upload](#configuration-compilation-and-upload)
+    -   [OpenWeatherMap API Key](#openweathermap-api-key)
+-   [Error Messages and Troubleshooting](#error-messages-and-troubleshooting)
+    -   [Low Battery](#low-battery)
+    -   [WiFi Connection](#wifi-connection)
+    -   [API Error](#api-error)
+    -   [Time Server Error](#time-server-error)
+-   [Licensing](#licensing)
+
+
 ## Setup Guide
 
 ### Hardware
 
-7.5inch (800×480) E-Ink Display
+7.5inch (800×480) E-Paper Display
 
 - Advantages of E-Paper
-  - Ultra Low Power Consumption - E-Paper (or E-Ink) displays are ideal for low-power applications that do not require frequent display refreshes. E-Paper displays only draw power when refreshing the display and do not have a backlight. Images will remain on the screen even when power is removed.
+  - Ultra Low Power Consumption - E-Paper (aka E-Ink) displays are ideal for low-power applications that do not require frequent display refreshes. E-Paper displays only draw power when refreshing the display and do not have a backlight. Images will remain on the screen even when power is removed.
 
 - Limitations of E-Paper:
   - Colors - E-Paper has traditionally been limited to just black and white, but in recent years 3-color E-Paper screens have started showing up.
@@ -44,11 +60,11 @@ Here are two examples utilizing various configuration options:
   | Panel                                   | Resolution | Colors          | Notes                                                                                                                 |
   |-----------------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
   | Waveshare 7.5in e-paper (v2)            | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper.htm). (recommended)                                |
-  | Good Display 7.5in e-paper (GDEY075T7)  | 800x480px  | Black/White     | Available [here](https://www.aliexpress.com/item/3256802683908868.html). (recommended)                                 |
+  | Good Display 7.5in e-paper (GDEY075T7)  | 800x480px  | Black/White     | Available [here](https://www.aliexpress.com/item/3256802683908868.html). (recommended)                                |
   | Waveshare 7.5in e-Paper (B)             | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-b.htm).                                            |
-  | Good Display 7.5in e-paper (GDEY075Z08) | 800x480px  | Red/Black/White | Available [here](https://www.aliexpress.com/item/3256803540460035.html).                                               |
+  | Good Display 7.5in e-paper (GDEY075Z08) | 800x480px  | Red/Black/White | Available [here](https://www.aliexpress.com/item/3256803540460035.html).                                              |
   | Waveshare 7.3in ACeP e-Paper (F)        | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-f.htm).                  |
-  | Good Display 7.3in e-paper (GDEY073D46) | 800x480px  | 7-Color         | Available [here](https://www.aliexpress.com/item/3256805485098421.html).                                               |
+  | Good Display 7.3in e-paper (GDEY073D46) | 800x480px  | 7-Color         | Available [here](https://www.aliexpress.com/item/3256805485098421.html).                                              |
   | Waveshare 7.5in e-paper (v1)            | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
   | Good Display 7.5in e-paper (GDEW075T8)  | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
 
@@ -58,7 +74,7 @@ DESPI-C02 Adapter Board
 
 - No level converters, which makes it better for low-power use with 3.3V processors compared to the Waveshare HAT.
 
-- The Waveshare started shipping revision 2.3 of their e-paper HAT. Some users are reporting issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62)).
+- The Waveshare HATs (rev 2.2/2.3) are not recommended. Their compatibility with this project is not regularly tested.
 
 - https://www.e-paper-display.com/products_detail/productId=403.html
   
@@ -100,7 +116,7 @@ BME280 - Pressure, Temperature, and Humidity Sensor
 3.7V Lipo Battery w/ 2 Pin JST Connector
 
 
-- Size is up to you. I used a 10000mah battery so that the device can operate on a single charge for >1 year.
+- Size is up to you. I used a 5000mah battery so that the device can operate on a single charge for >6 months.
 
 
 - The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
@@ -119,7 +135,19 @@ Stand/Frame
       screen angle = 80deg <br>
       screen is 15mm from the front
 - 3D Printable
-  - Community-contributed designs can be found here [3d_models](3d_models).
+  - Here is a list of community designs.
+  
+    | Contributor                                                          | Link                                                                                                     |
+    |----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+    | [Kingfisher](https://www.printables.com/@Kingfisher_32821)           | [Printables](https://www.printables.com/model/1139047-weather-station-e-ink-frame)                       |
+    | [Francois Allard](https://www.printables.com/@FrAllard_1585397)      | [Printables](https://www.printables.com/model/791477-weather-station-using-a-esp32)                      |
+    | [3D Nate](https://www.printables.com/@3DNate_451157)                 | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)                        |
+    | [Sven F.](https://github.com/Spanholz)                               | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)                     |
+    | [Layers Studio](https://www.printables.com/@LayersStudio)            | [Printables](https://www.printables.com/model/655768-esp32-e-paper-weather-display-stand)                |
+    | [PJ Veltri](https://www.printables.com/@PJVeltri_1590999)            | [Printables](https://www.printables.com/model/692944-base-and-display-holder-for-esp-32-e-paper-weather) |
+    | [TheMeanCanEHdian](https://www.printables.com/@TheMeanCanEH_1207348) | [Printables](https://www.printables.com/model/841458-weather-display-enclosure)                          |
+    | [MPHarms](https://www.thingiverse.com/mpharms/designs)               | [Thingiverse](https://www.thingiverse.com/thing:6666148)                                                 |
+
   - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
 - Picture Frame
 
@@ -132,6 +160,8 @@ If you are using the FireBeetle 2 ESP32-E, you can use the connections I used or
 
 I have included 2 wiring diagrams. One for the Waveshare HAT rev2.2 and another using the recommended DESPI-C02.
 
+NOTE: Waveshare now ships revision 2.3 of their e-paper HAT (no longer rev 2.2 ). Rev 2.3 has an additional `PWR` pin (not depicted in the wiring diagrams below); connect this pin to 3.3V.
+
 IMPORTANT: The Waveshare E-Paper Driver HAT has two physical switches that MUST be set correctly for the display to work.
 
 - Display Config: Set switch to position B.
@@ -140,7 +170,7 @@ IMPORTANT: The Waveshare E-Paper Driver HAT has two physical switches that MUST 
 
 IMPORTANT: The DESPI-C02 adapter has one physical switch that MUST be set correctly for the display to work.
 
-- RESE: Set switch to position 3.
+- RESE: Set switch to position 0.47.
 
 Cut the low power pad for even longer battery life.
 
@@ -173,7 +203,7 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
 5. Configure Options.
 
-   - Most configuration options are located in [config.cpp](platformio/src/config.cpp), with a few  in [config.h](platformio/include/config.h). Locale/language options can also be found in locales/locale_**.cpp.
+   - Most configuration options are located in [config.cpp](platformio/src/config.cpp), with a few  in [config.h](platformio/include/config.h). Locale/language options can also be found in include/locales/locale_*.inc.
 
    - Important settings to configure in config.cpp:
 
@@ -213,12 +243,7 @@ Sign up here to get an API key; it's free. <https://openweathermap.org/api>
 
 This project will make calls to 2 different APIs ("One Call" and "Air Pollution").
 
-> **Note**
-> OpenWeatherMap One Call 2.5 API has been deprecated for all new free users (accounts created after Summer 2022). Fortunately, you can make 1,000 calls/day to the One Call 3.0 API for free by following the steps below.
-
-- If you have an account created before Summer 2022, you can simply use the One Call 2.5 API by setting `OWM_ONECALL_VERSION = "2.5";` in config.cpp.
-
-- Otherwise, the One Call API 3.0 is only included in the "One Call by Call" subscription. This separate subscription includes 1,000 calls/day for free and allows you to pay only for the number of API calls made to this product.
+- The One Call API 3.0 is only included in the "One Call by Call" subscription. This separate subscription includes 1,000 calls/day for free and allows you to pay only for the number of API calls made to this product.
 
 Here's how to subscribe and avoid any credit card changes:
    - Go to <https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30>
@@ -249,7 +274,7 @@ In the example shown to the left, "401: Unauthorized" may be the result of an in
 
 ### Time Server Error
 <img src="showcase/demo-error-time.jpg" align="left" width="25%" />
-This error screen appears when the esp32 fails to fetch the time from NTP_SERVER_1/NTP_SERVER_2. This error sometimes occurs immediately after uploading to the esp32; in this case, just hit the reset button or wait for SLEEP_DURATION (default = 30min) and the esp32 to automatically retry.
+This error screen appears when the esp32 fails to fetch the time from NTP_SERVER_1/NTP_SERVER_2. This error sometimes occurs immediately after uploading to the esp32; in this case, just hit the reset button or wait for SLEEP_DURATION (default = 30min) and the esp32 to automatically retry. If the error persists, try selecting closer/lower latency time servers or increasing NTP_TIMEOUT.
 
 <br clear="left"/>
 

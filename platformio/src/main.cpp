@@ -1,5 +1,5 @@
 /* Main program for esp32-weather-epd.
- * Copyright (C) 2022-2023  Luke Marzen
+ * Copyright (C) 2022-2025  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,96 +23,92 @@
 #include <WiFi.h>
 #include <Wire.h>
 
+#include "_locale.h"
 #include "api_response.h"
 #include "client_utils.h"
 #include "config.h"
 #include "display_utils.h"
 #include "icons/icons_196x196.h"
 #include "renderer.h"
-#ifndef USE_HTTP
-  #include <WiFiClientSecure.h>
+#if defined(USE_HTTPS_WITH_CERT_VERIF) || defined(USE_HTTPS_WITH_CERT_VERIF)
+#include <WiFiClientSecure.h>
 #endif
 #ifdef USE_HTTPS_WITH_CERT_VERIF
-  #include "cert.h"
+#include "cert.h"
 #endif
 
 // too large to allocate locally on stack
-static owm_resp_onecall_t       owm_onecall;
+static owm_resp_onecall_t owm_onecall;
 static owm_resp_air_pollution_t owm_air_pollution;
 
 Preferences prefs;
 
-/* Put esp32 into ultra low-power deep-sleep (<11μA).
+/* Put esp32 into ultra low-power deep sleep (<11μA).
  * Aligns wake time to the minute. Sleep times defined in config.cpp.
  */
-void beginDeepSleep(unsigned long &startTime, tm *timeInfo)
+void beginDeepSleep(unsigned long startTime, tm *timeInfo)
 {
   if (!getLocalTime(timeInfo))
   {
-    Serial.println("Failed to obtain time before deep-sleep, referencing " \
-                   "older time.");
+    Serial.println(TXT_REFERENCING_OLDER_TIME_NOTICE);
   }
 
-  uint64_t sleepDuration = 0;
-  int extraHoursUntilWake = 0;
-  int curHour = timeInfo->tm_hour;
-
-  if (timeInfo->tm_min >= 58)
-  { // if we are within 2 minutes of the next hour, then round up for the
-    // purposes of bed time
-    curHour = (curHour + 1) % 24;
-    extraHoursUntilWake += 1;
+  // To simplify sleep time calculations, the current time stored by timeInfo
+  // will be converted to time relative to the WAKE_TIME. This way if a
+  // SLEEP_DURATION is not a multiple of 60 minutes it can be more trivially,
+  // aligned and it can easily be deterimined whether we must sleep for
+  // additional time due to bedtime.
+  // i.e. when curHour == 0, then timeInfo->tm_hour == WAKE_TIME
+  int bedtimeHour = INT_MAX;
+  if (BED_TIME != WAKE_TIME)
+  {
+    bedtimeHour = (BED_TIME - WAKE_TIME + 24) % 24;
   }
 
-  if (BED_TIME < WAKE_TIME && curHour >= BED_TIME && curHour < WAKE_TIME)
-  { // 0              B   v  W  24
-    // |--------------zzzzZzz---|
-    extraHoursUntilWake += WAKE_TIME - curHour;
-  }
-  else if (BED_TIME > WAKE_TIME && curHour < WAKE_TIME)
-  { // 0 v W               B    24
-    // |zZz----------------zzzzz|
-    extraHoursUntilWake += WAKE_TIME - curHour;
-  }
-  else if (BED_TIME > WAKE_TIME && curHour >= BED_TIME)
-  { // 0   W               B  v 24
-    // |zzz----------------zzzZz|
-    extraHoursUntilWake += WAKE_TIME - (curHour - 24);
-  }
-  else // This feature is disabled (BED_TIME == WAKE_TIME)
-  {    // OR it is not past BED_TIME
-    extraHoursUntilWake = 0;
+  // time is relative to wake time
+  int curHour = (timeInfo->tm_hour - WAKE_TIME + 24) % 24;
+  const int curMinute = curHour * 60 + timeInfo->tm_min;
+  const int curSecond = curHour * 3600 + timeInfo->tm_min * 60 + timeInfo->tm_sec;
+  const int desiredSleepSeconds = SLEEP_DURATION * 60;
+  const int offsetMinutes = curMinute % SLEEP_DURATION;
+  const int offsetSeconds = curSecond % desiredSleepSeconds;
+
+  // align wake time to nearest multiple of SLEEP_DURATION
+  int sleepMinutes = SLEEP_DURATION - offsetMinutes;
+  if (desiredSleepSeconds - offsetSeconds < 120 || offsetSeconds / (float)desiredSleepSeconds > 0.95f)
+  { // if we have a sleep time less than 2 minutes OR less 5% SLEEP_DURATION,
+    // skip to next alignment
+    sleepMinutes += SLEEP_DURATION;
   }
 
-  if (extraHoursUntilWake == 0)
-  { // align wake time to nearest multiple of SLEEP_DURATION
-    sleepDuration = SLEEP_DURATION * 60ULL
-                    - ((timeInfo->tm_min % SLEEP_DURATION) * 60ULL
-                        + timeInfo->tm_sec);
+  // estimated wake time, if this falls in a sleep period then sleepDuration
+  // must be adjusted
+  const int predictedWakeHour = ((curMinute + sleepMinutes) / 60) % 24;
+
+  uint64_t sleepDuration;
+  if (predictedWakeHour < bedtimeHour)
+  {
+    sleepDuration = sleepMinutes * 60 - timeInfo->tm_sec;
   }
   else
-  { // align wake time to the hour
-    sleepDuration = extraHoursUntilWake * 3600ULL
-                    - (timeInfo->tm_min * 60ULL + timeInfo->tm_sec);
-  }
-
-  // if we are within 2 minutes of the next alignment.
-  if (sleepDuration <= 120ULL)
   {
-    sleepDuration += SLEEP_DURATION * 60ULL;
+    const int hoursUntilWake = 24 - curHour;
+    sleepDuration = hoursUntilWake * 3600ULL - (timeInfo->tm_min * 60ULL + timeInfo->tm_sec);
   }
 
   // add extra delay to compensate for esp32's with fast RTCs.
-  sleepDuration += 10ULL;
+  sleepDuration += 3ULL;
+  sleepDuration *= 1.0015f;
 
 #if DEBUG_LEVEL >= 1
   printHeapUsage();
 #endif
 
   esp_sleep_enable_timer_wakeup(sleepDuration * 1000000ULL);
-  Serial.println("Awake for "
-                 + String((millis() - startTime) / 1000.0, 3) + "s");
-  Serial.println("Deep-sleep for " + String(sleepDuration) + "s");
+  Serial.print(TXT_AWAKE_FOR);
+  Serial.println(" " + String((millis() - startTime) / 1000.0, 3) + "s");
+  Serial.print(TXT_ENTERING_DEEP_SLEEP_FOR);
+  Serial.println(" " + String(sleepDuration) + "s");
   esp_deep_sleep_start();
 } // end beginDeepSleep
 
@@ -127,18 +123,15 @@ void setup()
   printHeapUsage();
 #endif
 
+  disableBuiltinLED();
+
   // Open namespace for read/write to non-volatile storage
   prefs.begin(NVS_NAMESPACE, false);
 
 #if BATTERY_MONITORING
-  // GET BATTERY VOLTAGE
-  // DFRobot FireBeetle Esp32-E V1.0 has voltage divider (1M+1M), so readings
-  // are multiplied by 2. Readings are divided by 1000 to convert mV to V.
-  double batteryVoltage =
-            static_cast<double>(analogRead(PIN_BAT_ADC)) / 1000.0 * (3.5 / 2.0);
-            // use / 1000.0 * (3.3 / 2.0) multiplier above for firebeetle esp32
-            // use / 1000.0 * (3.5 / 2.0) for firebeetle esp32-E
-  Serial.println("Battery voltage: " + String(batteryVoltage, 2));
+  uint32_t batteryVoltage = readBatteryVoltage();
+  Serial.print(TXT_BATTERY_VOLTAGE);
+  Serial.println(": " + String(batteryVoltage) + "mv");
 
   // When the battery is low, the display should be updated to reflect that, but
   // only the first time we detect low voltage. The next time the display will
@@ -146,7 +139,7 @@ void setup()
   // make use of non-volatile storage.
   bool lowBat = prefs.getBool("lowBat", false);
 
-  // low battery, deep-sleep now
+  // low battery, deep sleep now
   if (batteryVoltage <= LOW_BATTERY_VOLTAGE)
   {
     if (lowBat == false)
@@ -156,33 +149,31 @@ void setup()
       initDisplay();
       do
       {
-        drawError(battery_alert_0deg_196x196, "Low Battery", "");
+        drawError(battery_alert_0deg_196x196, TXT_LOW_BATTERY);
       } while (display.nextPage());
-      display.powerOff();
+      powerOffDisplay();
     }
 
     if (batteryVoltage <= CRIT_LOW_BATTERY_VOLTAGE)
     { // critically low battery
       // don't set esp_sleep_enable_timer_wakeup();
       // We won't wake up again until someone manually presses the RST button.
-      Serial.println("Critically low battery voltage!");
-      Serial.println("Hibernating without wake time!");
+      Serial.println(TXT_CRIT_LOW_BATTERY_VOLTAGE);
+      Serial.println(TXT_HIBERNATING_INDEFINITELY_NOTICE);
     }
     else if (batteryVoltage <= VERY_LOW_BATTERY_VOLTAGE)
     { // very low battery
-      esp_sleep_enable_timer_wakeup(VERY_LOW_BATTERY_SLEEP_INTERVAL
-                                    * 60ULL * 1000000ULL);
-      Serial.println("Very low battery voltage!");
-      Serial.println("Deep-sleep for "
-                     + String(VERY_LOW_BATTERY_SLEEP_INTERVAL) + "min");
+      esp_sleep_enable_timer_wakeup(VERY_LOW_BATTERY_SLEEP_INTERVAL * 60ULL * 1000000ULL);
+      Serial.println(TXT_VERY_LOW_BATTERY_VOLTAGE);
+      Serial.print(TXT_ENTERING_DEEP_SLEEP_FOR);
+      Serial.println(" " + String(VERY_LOW_BATTERY_SLEEP_INTERVAL) + "min");
     }
     else
     { // low battery
-      esp_sleep_enable_timer_wakeup(LOW_BATTERY_SLEEP_INTERVAL
-                                    * 60ULL * 1000000ULL);
-      Serial.println("Low battery voltage!");
-      Serial.println("Deep-sleep for "
-                    + String(LOW_BATTERY_SLEEP_INTERVAL) + "min");
+      esp_sleep_enable_timer_wakeup(LOW_BATTERY_SLEEP_INTERVAL * 60ULL * 1000000ULL);
+      Serial.println(TXT_LOW_BATTERY_VOLTAGE);
+      Serial.print(TXT_ENTERING_DEEP_SLEEP_FOR);
+      Serial.println(" " + String(LOW_BATTERY_SLEEP_INTERVAL) + "min");
     }
     esp_deep_sleep_start();
   }
@@ -192,7 +183,7 @@ void setup()
     prefs.putBool("lowBat", false);
   }
 #else
-  double batteryVoltage = NAN;
+  uint32_t batteryVoltage = UINT32_MAX;
 #endif
 
   // All data should have been loaded from NVS. Close filesystem.
@@ -211,21 +202,21 @@ void setup()
     initDisplay();
     if (wifiStatus == WL_NO_SSID_AVAIL)
     {
-      Serial.println("Network Not Available");
+      Serial.println(TXT_NETWORK_NOT_AVAILABLE);
       do
       {
-        drawError(wifi_x_196x196, "Network Not", "Available");
+        drawError(wifi_x_196x196, TXT_NETWORK_NOT_AVAILABLE);
       } while (display.nextPage());
     }
     else
     {
-      Serial.println("WiFi Connection Failed");
+      Serial.println(TXT_WIFI_CONNECTION_FAILED);
       do
       {
-        drawError(wifi_x_196x196, "WiFi Connection", "Failed");
+        drawError(wifi_x_196x196, TXT_WIFI_CONNECTION_FAILED);
       } while (display.nextPage());
     }
-    display.powerOff();
+    powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   }
 
@@ -233,15 +224,15 @@ void setup()
   configTzTime(TIMEZONE, NTP_SERVER_1, NTP_SERVER_2);
   bool timeConfigured = waitForSNTPSync(&timeInfo);
   if (!timeConfigured)
-  { // Failed To Fetch The Time
-    Serial.println("Time Synchronization Failed");
+  {
+    Serial.println(TXT_TIME_SYNCHRONIZATION_FAILED);
     killWiFi();
     initDisplay();
     do
     {
-      drawError(wi_time_4_196x196, "Time Synchronization", "Failed");
+      drawError(wi_time_4_196x196, TXT_TIME_SYNCHRONIZATION_FAILED);
     } while (display.nextPage());
-    display.powerOff();
+    powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   }
 
@@ -255,6 +246,7 @@ void setup()
   WiFiClientSecure client;
   client.setCACert(cert_Sectigo_RSA_Domain_Validation_Secure_Server_CA);
 #endif
+#if defined(USE_OPEN_WEATHER_MAP)
   int rxStatus = getOWMonecall(client, owm_onecall);
   if (rxStatus != HTTP_CODE_OK)
   {
@@ -266,42 +258,64 @@ void setup()
     {
       drawError(wi_cloud_down_196x196, statusStr, tmpStr);
     } while (display.nextPage());
-    display.powerOff();
+    powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   }
 
 #if AIR_POLLUTION
-    rxStatus = getOWMairpollution(client, owm_air_pollution);
-    if (rxStatus != HTTP_CODE_OK)
+  rxStatus = getOWMairpollution(client, owm_air_pollution);
+  if (rxStatus != HTTP_CODE_OK)
+  {
+    killWiFi();
+    statusStr = "Air Pollution API";
+    tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
+    initDisplay();
+    do
     {
-      killWiFi();
-      statusStr = "Air Pollution API";
-      tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
-      initDisplay();
-      do
-      {
-        drawError(wi_cloud_down_196x196, statusStr, tmpStr);
-      } while (display.nextPage());
-      display.powerOff();
-      beginDeepSleep(startTime, &timeInfo);
-    }
-    killWiFi(); // WiFi no longer needed
+      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+    } while (display.nextPage());
+    powerOffDisplay();
+    beginDeepSleep(startTime, &timeInfo);
+  }
 #endif
 
+#elif defined(USE_OPEN_METEO)
+  int rxStatus = getOMCall(client, owm_onecall);
+  if (rxStatus != HTTP_CODE_OK)
+  {
+    killWiFi();
+    statusStr = "Open Meteo API";
+    tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
+    initDisplay();
+    do
+    {
+      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+    } while (display.nextPage());
+    powerOffDisplay();
+    beginDeepSleep(startTime, &timeInfo);
+  }
+#endif
+
+  killWiFi(); // WiFi no longer needed
+
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
-  float inTemp     = NAN;
+  pinMode(PIN_BME_PWR, OUTPUT);
+  digitalWrite(PIN_BME_PWR, HIGH);
+
+  float inTemp = NAN;
   float inHumidity = NAN;
 
 #if INDOOR
-  Serial.print("Reading from BME280... ");
+
+  Serial.print(String(TXT_READING_FROM) + " BME280... ");
   TwoWire I2C_bme = TwoWire(0);
   Adafruit_BME280 bme;
 
   I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
-  if(bme.begin(BME_ADDRESS, &I2C_bme))
+  if (bme.begin(BME_ADDRESS, &I2C_bme))
   {
-    inTemp     = bme.readTemperature(); // Celsius
-    inHumidity = bme.readHumidity();    // %
+    inTemp = bme.readTemperature();  // Celsius
+    inHumidity = bme.readHumidity(); // %
 
     // check if BME readings are valid
     // note: readings are checked again before drawing to screen. If a reading
@@ -309,20 +323,20 @@ void setup()
     //       displayed.
     if (std::isnan(inTemp) || std::isnan(inHumidity))
     {
-      statusStr = "BME read failed";
+      statusStr = "BME " + String(TXT_READ_FAILED);
       Serial.println(statusStr);
     }
     else
     {
-      Serial.println("Success");
+      Serial.println(TXT_SUCCESS);
     }
   }
   else
   {
-    statusStr = "BME not found"; // check wiring
+    statusStr = "BME " + String(TXT_NOT_FOUND); // check wiring
     Serial.println(statusStr);
   }
-
+  digitalWrite(PIN_BME_PWR, LOW);
 #endif
 
   String refreshTimeStr;
@@ -336,17 +350,21 @@ void setup()
   {
     drawCurrentConditions(owm_onecall.current, owm_onecall.daily[0],
                           owm_air_pollution, inTemp, inHumidity);
+    Serial.println("Drawing current conditions");
+    drawOutlookGraph(owm_onecall.hourly, owm_onecall.daily, timeInfo);
+    Serial.println("Drawing outlook graph");
     drawForecast(owm_onecall.daily, timeInfo);
+    Serial.println("Drawing forecast");
     drawLocationDate(CITY_STRING, dateStr);
-    drawOutlookGraph(owm_onecall.hourly, timeInfo);
-#if !DISPLAY_ALERTS
+    Serial.println("Drawing location and date");
+#if DISPLAY_ALERTS
     drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
 #endif
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
   } while (display.nextPage());
-  display.powerOff();
+  powerOffDisplay();
 
-  // DEEP-SLEEP
+  // DEEP SLEEP
   beginDeepSleep(startTime, &timeInfo);
 } // end setup
 
@@ -355,4 +373,3 @@ void setup()
 void loop()
 {
 } // end loop
-
