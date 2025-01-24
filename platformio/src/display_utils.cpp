@@ -812,10 +812,6 @@ enum alert_category getAlertCategory(const owm_alerts_t &alert)
   {
     return alert_category::EARTHQUAKE;
   }
-  if (containsTerminology(alert.event, TERM_TSUNAMI))
-  {
-    return alert_category::TSUNAMI;
-  }
   if (containsTerminology(alert.event, TERM_FIRE))
   {
     return alert_category::FIRE;
@@ -827,6 +823,10 @@ enum alert_category getAlertCategory(const owm_alerts_t &alert)
   if (containsTerminology(alert.event, TERM_WINTER))
   {
     return alert_category::WINTER;
+  }
+  if (containsTerminology(alert.event, TERM_TSUNAMI))
+  {
+    return alert_category::TSUNAMI;
   }
   if (containsTerminology(alert.event, TERM_LIGHTNING))
   {
