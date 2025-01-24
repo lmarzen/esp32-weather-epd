@@ -22,23 +22,24 @@
 #include "api_response.h"
 #include "config.h"
 #ifdef USE_HTTP
-  #include <WiFiClient.h>
+#include <WiFiClient.h>
 #else
-  #include <WiFiClientSecure.h>
+#include <WiFiClientSecure.h>
 #endif
 
 wl_status_t startWiFi(int &wifiRSSI);
 void killWiFi();
 bool waitForSNTPSync(tm *timeInfo);
 bool printLocalTime(tm *timeInfo);
+
 #ifdef USE_HTTP
-  int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r);
-  int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r);
+int getOWMonecall(WiFiClient &client, owm_resp_onecall_t &r);
+int getOWMairpollution(WiFiClient &client, owm_resp_air_pollution_t &r);
+int getOMCall(WiFiClient &client, owm_resp_onecall_t &r);
 #else
-  int getOWMonecall(WiFiClientSecure &client, owm_resp_onecall_t &r);
-  int getOWMairpollution(WiFiClientSecure &client, owm_resp_air_pollution_t &r);
+int getOWMonecall(WiFiClientSecure &client, owm_resp_onecall_t &r);
+int getOWMairpollution(WiFiClientSecure &client, owm_resp_air_pollution_t &r);
+int getOMCall(WiFiClientSecure &client, owm_resp_onecall_t &r);
 #endif
 
-
 #endif
-
