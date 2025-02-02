@@ -279,8 +279,6 @@ extern const uint8_t PIN_BME_SDA;
 extern const uint8_t PIN_BME_SCL;
 extern const uint8_t PIN_BME_PWR;
 extern const uint8_t BME_ADDRESS;
-extern const char *WIFI_SSID;
-extern const char *WIFI_PASSWORD;
 extern const unsigned long WIFI_TIMEOUT;
 extern const unsigned HTTP_CLIENT_TCP_TIMEOUT;
 extern const String OWM_APIKEY;
@@ -309,6 +307,12 @@ extern const unsigned long LOW_BATTERY_SLEEP_INTERVAL;
 extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 extern const uint32_t MAX_BATTERY_VOLTAGE;
 extern const uint32_t MIN_BATTERY_VOLTAGE;
+extern uint8_t WIFI_NETWORKS_COUNT;
+struct wifi_network_t {
+    const char *ssid;
+    const char *password;
+};
+extern struct wifi_network_t wifi_networks[];
 
 // CONFIG VALIDATION - DO NOT MODIFY
 #if !(  defined(DISP_BW_V2)  \

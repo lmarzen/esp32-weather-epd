@@ -55,11 +55,11 @@
  *
  * Returns WiFi status.
  */
-wl_status_t startWiFi(int &wifiRSSI)
+wl_status_t startWiFi(int &wifiRSSI, wifi_network_t wifi)
 {
   WiFi.mode(WIFI_STA);
-  Serial.printf("%s '%s'", TXT_CONNECTING_TO, WIFI_SSID);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  Serial.printf("%s '%s'", TXT_CONNECTING_TO, wifi.ssid);
+  WiFi.begin(wifi.ssid, wifi.password);
 
   // timeout if WiFi does not connect in WIFI_TIMEOUT ms from now
   unsigned long timeout = millis() + WIFI_TIMEOUT;
@@ -81,7 +81,7 @@ wl_status_t startWiFi(int &wifiRSSI)
   }
   else
   {
-    Serial.printf("%s '%s'\n", TXT_COULD_NOT_CONNECT_TO, WIFI_SSID);
+    Serial.printf("%s '%s'\n", TXT_COULD_NOT_CONNECT_TO, wifi.ssid);
   }
   return connection_status;
 } // startWiFi

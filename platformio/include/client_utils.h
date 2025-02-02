@@ -27,7 +27,7 @@
   #include <WiFiClientSecure.h>
 #endif
 
-wl_status_t startWiFi(int &wifiRSSI);
+wl_status_t startWiFi(int &wifiRSSI, wifi_network_t wifi);
 void killWiFi();
 bool waitForSNTPSync(tm *timeInfo);
 bool printLocalTime(tm *timeInfo);
