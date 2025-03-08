@@ -238,16 +238,13 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
       - If using a FireBeetle 2 ESP32-E and you receive the error `Wrong boot mode detected (0x13)! The chip needs to be in download mode.` unplug the power from the board, connect GPIO0 ([labeled 0/D5](https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654#target_5)) to GND, and power it back up to put the board in download mode.
 
-<<<<<<< HEAD
 7. Boot options.
 
   - To support a change in WiFi networks without requiring a change in code and re-upload, [WiFi Manager](https://github.com/tzapu/WiFiManager) has been integrated.  To use this feature, pull HW pin 27 `PIN_CONFIGURE_WIFI` down and press and release the reset button.  This will cause the weather station to create an ad-hoc wifi network named "Weather_Station" `WIFI_AP_SSID`.  Connect to this network to configure the WiFi network. Visit the WiFi Manger site for further details.
     > **Note** 
     > Each time you reset using this method the previously configured WiFi network will be lost.  After you perform this reset the compiled defaults can still be used by performing a normal reset without connecting to the ad-hoc network and configuring the WiFi.
 
-=======
-      - If you are getting other errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
->>>>>>> main
+  - If you are getting other errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
 ### OpenWeatherMap API Key
 
 Sign up here to get an API key; it's free. <https://openweathermap.org/api>
