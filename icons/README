@@ -15,7 +15,11 @@ Dependencies:
   Python3 - to run png_to_header.py (in this folder)
 
 To regenerate all icons execute the following command:
-bash svg_to_headers.sh 16 & bash svg_to_headers.sh 24 & bash svg_to_headers.sh 32 & bash svg_to_headers.sh 48 & bash svg_to_headers.sh 64 & bash svg_to_headers.sh 96 & bash svg_to_headers.sh 128 & bash svg_to_headers.sh 160 & bash svg_to_headers.sh 196
+  $ make
+
+Don't run `make -j`, Inkscape has a known bug when running svg to png
+conversions in parallel.
+  https://gitlab.com/inkscape/inkscape/-/issues/4716
 
 THE ICONS IN THE SUB-DIRECTORY ENTITLED 'svg' REMAIN LICENSED UNDER THEIR
 ORIGINAL LICENSE AGREEMENTS. SEE CITATIONS BELOW FOR MORE DETAILS.

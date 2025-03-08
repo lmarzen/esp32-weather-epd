@@ -74,7 +74,7 @@ DESPI-C02 Adapter Board
 
 - No level converters, which makes it better for low-power use with 3.3V processors compared to the Waveshare HAT.
 
-- Waveshare started shipping revision 2.3 of their e-paper HAT. Some users have reported issues with this HAT ([#62](https://github.com/lmarzen/esp32-weather-epd/issues/62)).
+- The Waveshare HATs (rev 2.2/2.3) are not recommended. Their compatibility with this project is not regularly tested.
 
 - https://www.e-paper-display.com/products_detail/productId=403.html
   
@@ -139,6 +139,7 @@ Stand/Frame
   
     | Contributor                                                          | Link                                                                                                     |
     |----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+    | [Kingfisher](https://www.printables.com/@Kingfisher_32821)           | [Printables](https://www.printables.com/model/1139047-weather-station-e-ink-frame)                       |
     | [Francois Allard](https://www.printables.com/@FrAllard_1585397)      | [Printables](https://www.printables.com/model/791477-weather-station-using-a-esp32)                      |
     | [3D Nate](https://www.printables.com/@3DNate_451157)                 | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)                        |
     | [Sven F.](https://github.com/Spanholz)                               | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)                     |
@@ -146,6 +147,7 @@ Stand/Frame
     | [PJ Veltri](https://www.printables.com/@PJVeltri_1590999)            | [Printables](https://www.printables.com/model/692944-base-and-display-holder-for-esp-32-e-paper-weather) |
     | [TheMeanCanEHdian](https://www.printables.com/@TheMeanCanEH_1207348) | [Printables](https://www.printables.com/model/841458-weather-display-enclosure)                          |
     | [MPHarms](https://www.thingiverse.com/mpharms/designs)               | [Thingiverse](https://www.thingiverse.com/thing:6666148)                                                 |
+    | [Plaste-Metz](https://www.printables.com/@PlasteMetz_576567)         | [Printables](https://www.printables.com/model/1160924-weather-station-case)                              |
 
   - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
 - Picture Frame
@@ -158,6 +160,8 @@ Pin connections are defined in [config.cpp](platformio/src/config.cpp).
 If you are using the FireBeetle 2 ESP32-E, you can use the connections I used or change them how you would like.
 
 I have included 2 wiring diagrams. One for the Waveshare HAT rev2.2 and another using the recommended DESPI-C02.
+
+NOTE: Waveshare now ships revision 2.3 of their e-paper HAT (no longer rev 2.2 ). Rev 2.3 has an additional `PWR` pin (not depicted in the wiring diagrams below); connect this pin to 3.3V.
 
 IMPORTANT: The Waveshare E-Paper Driver HAT has two physical switches that MUST be set correctly for the display to work.
 
@@ -232,14 +236,18 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
       - You will only see this if you have the PlatformIO extension installed.
 
-      - If you are getting errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
+      - If using a FireBeetle 2 ESP32-E and you receive the error `Wrong boot mode detected (0x13)! The chip needs to be in download mode.` unplug the power from the board, connect GPIO0 ([labeled 0/D5](https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654#target_5)) to GND, and power it back up to put the board in download mode.
 
+<<<<<<< HEAD
 7. Boot options.
 
   - To support a change in WiFi networks without requiring a change in code and re-upload, [WiFi Manager](https://github.com/tzapu/WiFiManager) has been integrated.  To use this feature, pull HW pin 27 `PIN_CONFIGURE_WIFI` down and press and release the reset button.  This will cause the weather station to create an ad-hoc wifi network named "Weather_Station" `WIFI_AP_SSID`.  Connect to this network to configure the WiFi network. Visit the WiFi Manger site for further details.
     > **Note** 
     > Each time you reset using this method the previously configured WiFi network will be lost.  After you perform this reset the compiled defaults can still be used by performing a normal reset without connecting to the ad-hoc network and configuring the WiFi.
 
+=======
+      - If you are getting other errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
+>>>>>>> main
 ### OpenWeatherMap API Key
 
 Sign up here to get an API key; it's free. <https://openweathermap.org/api>

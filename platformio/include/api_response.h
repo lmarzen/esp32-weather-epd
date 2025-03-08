@@ -116,7 +116,7 @@ typedef struct owm_hourly
   float   pop;              // Probability of precipitation. The values of the parameter vary between 0 and 1, where 0 is equal to 0%, 1 is equal to 100%
   float   rain_1h;          // (where available) Rain volume for last hour, mm
   float   snow_1h;          // (where available) Snow volume for last hour, mm
-  // owm_weather_t         weather;
+  owm_weather_t         weather;
 } owm_hourly_t;
 
 /*
