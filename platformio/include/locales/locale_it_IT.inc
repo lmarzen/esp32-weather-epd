@@ -203,15 +203,15 @@ const std::vector<String> TERM_BIOHAZARD =
     {"biohazard", "biological hazard"};
 const std::vector<String> TERM_EARTHQUAKE =
     {"earthquake"};
-const std::vector<String> TERM_TSUNAMI =
-    {"tsunami", "surf"};
 const std::vector<String> TERM_FIRE =
     {"fire", "red flag"};
 const std::vector<String> TERM_HEAT =
     {"heat"};
 const std::vector<String> TERM_WINTER =
-    {"blizzard", "winter", "ice", "snow", "sleet", "cold", "freezing rain",
-     "wind chill", "freeze", "frost", "hail"};
+    {"blizzard", "winter", "ice", "icy", "snow", "sleet", "cold",
+     "freezing rain", "wind chill", "freeze", "frost", "hail"};
+const std::vector<String> TERM_TSUNAMI =
+    {"tsunami", "surf"};
 const std::vector<String> TERM_LIGHTNING =
     {"thunderstorm", "storm cell", "pulse storm", "squall line", "supercell",
      "lightning"};

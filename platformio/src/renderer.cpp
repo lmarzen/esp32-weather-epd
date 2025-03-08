@@ -1,5 +1,5 @@
 /* Renderer for esp32-weather-epd.
- * Copyright (C) 2022-2024  Luke Marzen
+ * Copyright (C) 2022-2025  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -451,7 +451,8 @@ void drawCurrentConditions(const owm_current_t &current,
 
   // uv index
   display.setFont(&FONT_12pt8b);
-  uint uvi = static_cast<uint>(std::max(std::round(current.uvi), 0.0f));
+  unsigned int uvi = static_cast<unsigned int>(
+                                std::max(std::round(current.uvi), 0.0f));
   dataStr = String(uvi);
   drawString(48, 204 + 17 / 2 + (48 + 8) * 2 + 48 / 2, dataStr, LEFT);
   display.setFont(&FONT_7pt8b);
@@ -666,7 +667,7 @@ void drawCurrentConditions(const owm_current_t &current,
 
 /* This function is responsible for drawing the five day forecast.
  */
-void drawForecast(owm_daily_t *const daily, tm timeInfo)
+void drawForecast(const owm_daily_t *daily, tm timeInfo)
 {
   // 5 day, forecast
   String hiStr, loStr;
@@ -680,7 +681,7 @@ void drawForecast(owm_daily_t *const daily, tm timeInfo)
 #endif
     // icons
     display.drawInvertedBitmap(x, 98 + 69 / 2 - 32 - 6,
-                               getForecastBitmap64(daily[i]),
+                               getDailyForecastBitmap64(daily[i]),
                                64, 64, GxEPD_BLACK);
     // day of week label
     display.setFont(&FONT_11pt8b);
@@ -895,12 +896,31 @@ inline int modulo(int a, int b)
   return result >= 0 ? result : result + b;
 }
 
-/* This function is responsible for drawing the outlook graph for the specified
- * number of hours(up to 47).
+/* Convert temperature in kelvin to the display y coordinate to be plotted.
  */
-void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
+int kelvin_to_plot_y(float kelvin, int tempBoundMin, float yPxPerUnit,
+                     int yBoundMin)
 {
+#ifdef UNITS_TEMP_KELVIN
+  return static_cast<int>(std::round(
+    yBoundMin - (yPxPerUnit * (kelvin - tempBoundMin)) ));
+#endif
+#ifdef UNITS_TEMP_CELSIUS
+  return static_cast<int>(std::round(
+    yBoundMin - (yPxPerUnit * (kelvin_to_celsius(kelvin) - tempBoundMin)) ));
+#endif
+#ifdef UNITS_TEMP_FAHRENHEIT
+  return static_cast<int>(std::round(
+    yBoundMin - (yPxPerUnit * (kelvin_to_fahrenheit(kelvin) - tempBoundMin)) ));
+#endif
+}
 
+/* This function is responsible for drawing the outlook graph for the specified
+ * number of hours(up to 48).
+ */
+void drawOutlookGraph(const owm_hourly_t *hourly, const owm_daily_t *daily,
+                      tm timeInfo)
+{
   const int xPos0 = 350;
   int xPos1 = DISP_WIDTH;
   const int yPos0 = 216;
@@ -959,7 +979,7 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
     tempBoundMax = static_cast<int>(tempMax + 1) + (yTempMajorTicks
                       - modulo(static_cast<int>(tempMax + 1), yTempMajorTicks));
   }
-  // while we have not enough major ticks add to either bound
+  // while we have not enough major ticks, add to either bound
   while ((tempBoundMax - tempBoundMin) / yTempMajorTicks < yMajorTicks)
   {
     // add to whatever bound is closer to the actual min/max
@@ -1102,48 +1122,79 @@ void drawOutlookGraph(owm_hourly_t *const hourly, tm timeInfo)
                                            / static_cast<float>(xMaxTicks)));
   float xInterval = (xPos1 - xPos0 - 1) / static_cast<float>(HOURLY_GRAPH_MAX);
   display.setFont(&FONT_8pt8b);
+  
+  // precalculate all x and y coordinates for temperature values
+  float yPxPerUnit = (yPos1 - yPos0)
+                     / static_cast<float>(tempBoundMax - tempBoundMin);
+  std::vector<int> x_t;
+  std::vector<int> y_t;
+  x_t.reserve(HOURLY_GRAPH_MAX);
+  y_t.reserve(HOURLY_GRAPH_MAX);
+    for (int i = 0; i < HOURLY_GRAPH_MAX; ++i)
+  {
+    y_t[i] = kelvin_to_plot_y(hourly[i].temp, tempBoundMin, yPxPerUnit, yPos1);
+    x_t[i] = static_cast<int>(std::round(xPos0 + (i * xInterval)
+                                          + (0.5 * xInterval) ));
+  }
+
+#if DISPLAY_HOURLY_ICONS
+  int day_idx = 0;
+#endif
+  display.setFont(&FONT_8pt8b);
   for (int i = 0; i < HOURLY_GRAPH_MAX; ++i)
   {
     int xTick = static_cast<int>(xPos0 + (i * xInterval));
     int x0_t, x1_t, y0_t, y1_t;
-    float yPxPerUnit;
 
     if (i > 0)
     {
       // temperature
-      x0_t = static_cast<int>(std::round(xPos0 + ((i - 1) * xInterval)
-                                    + (0.5 * xInterval) ));
-      x1_t = static_cast<int>(std::round(xPos0 + (i * xInterval)
-                                    + (0.5 * xInterval) ));
-      yPxPerUnit = (yPos1 - yPos0)
-                   / static_cast<float>(tempBoundMax - tempBoundMin);
-#ifdef UNITS_TEMP_KELVIN
-      y0_t = static_cast<int>(std::round(
-                yPos1 - (yPxPerUnit * ((hourly[i - 1].temp) - tempBoundMin)) ));
-      y1_t = static_cast<int>(std::round(
-                yPos1 - (yPxPerUnit * ((hourly[i    ].temp) - tempBoundMin)) ));
-#endif
-#ifdef UNITS_TEMP_CELSIUS
-      y0_t = static_cast<int>(std::round(
-                yPos1 - (yPxPerUnit * (kelvin_to_celsius(hourly[i - 1].temp)
-                         - tempBoundMin)) ));
-      y1_t = static_cast<int>(std::round(
-                yPos1 - (yPxPerUnit * (kelvin_to_celsius(hourly[i    ].temp)
-                         - tempBoundMin)) ));
-#endif
-#ifdef UNITS_TEMP_FAHRENHEIT
-      y0_t = static_cast<int>(std::round(
-                yPos1 - (yPxPerUnit * (kelvin_to_fahrenheit(hourly[i - 1].temp)
-                         - tempBoundMin)) ));
-      y1_t = static_cast<int>(std::round(
-                yPos1 - (yPxPerUnit * (kelvin_to_fahrenheit(hourly[i    ].temp)
-                         - tempBoundMin)) ));
-#endif
-
+      x0_t = x_t[i - 1];
+      x1_t = x_t[i    ];
+      y0_t = y_t[i - 1];
+      y1_t = y_t[i    ];
       // graph temperature
       display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , ACCENT_COLOR);
       display.drawLine(x0_t    , y0_t + 1, x1_t    , y1_t + 1, ACCENT_COLOR);
       display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , ACCENT_COLOR);
+
+      // draw hourly bitmap
+#if DISPLAY_HOURLY_ICONS
+      if (daily[day_idx].dt + 86400 <= hourly[i].dt) {
+        ++day_idx;
+      }
+      if ((i % hourInterval) == 0) // skip first and last tick
+      {
+        int y_b = INT_MAX;
+        // find the highest (lowest in coordinate value) temperature point that
+        // exists within the width of the icon.
+        // find closest point above the temperature line where the icon won't
+        // interect the temperature line.
+        // y = mx + b
+        int span = static_cast<int>(std::round(16 / xInterval));
+        int l_idx = std::max(i - 1 - span, 0);
+        int r_idx = std::min(i + span, HOURLY_GRAPH_MAX - 1);
+        // left intersecting slope
+        float m_l = (y_t[l_idx + 1] - y_t[l_idx]) / xInterval;
+        int x_l = xTick - 16 - x_t[l_idx];
+        int y_l = static_cast<int>(std::round(m_l * x_l + y_t[l_idx]));
+        y_b = std::min(y_l, y_b);
+        // right intersecting slope
+        float m_r = (y_t[r_idx] - y_t[r_idx - 1]) / xInterval;
+        int x_r = xTick + 16 - x_t[r_idx - 1];
+        int y_r = static_cast<int>(std::round(m_r * x_r + y_t[r_idx - 1]));
+        y_b = std::min(y_r, y_b);
+        // any peaks in between
+        for (int idx = l_idx + 1; idx < r_idx; ++idx)
+        {
+          y_b = std::min(y_t[idx], y_b);
+        }
+        const uint8_t *bitmap = getHourlyForecastBitmap32(hourly[i],
+                                                          daily[day_idx]);
+        display.drawInvertedBitmap(xTick - 16, y_b - 32,
+                                   bitmap, 32, 32, GxEPD_BLACK);
+      }
+#endif
     }
 
 #ifdef UNITS_HOURLY_PRECIP_POP
