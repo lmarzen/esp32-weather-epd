@@ -298,6 +298,7 @@ extern const char *NTP_SERVER_1;
 extern const char *NTP_SERVER_2;
 extern const unsigned long NTP_TIMEOUT;
 extern const int SLEEP_DURATION;
+extern const int ERROR_SLEEP_DURATION;
 extern const int BED_TIME;
 extern const int WAKE_TIME;
 extern const int HOURLY_GRAPH_MAX;
