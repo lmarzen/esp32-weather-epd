@@ -201,7 +201,14 @@ void setup()
 
   // START WIFI
   int wifiRSSI = 0; // “Received Signal Strength Indicator"
-  wl_status_t wifiStatus = startWiFi(wifiRSSI);
+  wl_status_t wifiStatus = WL_DISCONNECTED;
+  for(int i = 0; i < WIFI_NETWORKS_COUNT; i++) {
+    wifiStatus = startWiFi(wifiRSSI, wifi_networks[i]);
+    if (wifiStatus == WL_CONNECTED) {
+      break;
+    }
+  }
+
   if (wifiStatus != WL_CONNECTED)
   { // WiFi Connection Failed
     killWiFi();
