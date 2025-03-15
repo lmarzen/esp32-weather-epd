@@ -28,6 +28,8 @@
 #endif
 
 wl_status_t startWiFi(int &wifiRSSI);
+wl_status_t startDefaultWiFi(int &wifiRSSI);
+wl_status_t configureWiFi(int &wifiRSSI);
 void killWiFi();
 bool waitForSNTPSync(tm *timeInfo);
 bool printLocalTime(tm *timeInfo);
