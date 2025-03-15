@@ -144,11 +144,11 @@
 //   update the certificates in cert.h and reflash this software.
 //   Running cert.py will generate an updated cert.h file.
 //   The current certificate for api.openweathermap.org is valid until
-//   2030-12-31 23:59:59.
+//   2026-04-10 23:59:59+00:00
 // (uncomment exactly one)
 // #define USE_HTTP
 // #define USE_HTTPS_NO_CERT_VERIF
-#define USE_HTTPS_WITH_CERT_VERIF
+#define USE_HTTPS_WITH_CERT_VERIF // REQUIRES MANUAL UPDATE WHEN CERT EXPIRES
 
 // WIND DIRECTION INDICATOR
 // Choose whether the wind direction indicator should be an arrow, number, or
