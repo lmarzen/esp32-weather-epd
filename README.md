@@ -124,7 +124,7 @@ This project can be completed without any soldering, if you choose your componen
 
 ### Wiring
 
-- The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
+The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
 
   > **Warning**
   > The polarity of JST-PH2.0 connectors is not standardized! You may need to swap the order of the wires in the connector.
