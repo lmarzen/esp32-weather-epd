@@ -258,6 +258,11 @@
 // NON-VOLATILE STORAGE (NVS) NAMESPACE
 #define NVS_NAMESPACE "weather_epd"
 
+// BME sensor selection
+// Uncomment only one SENSOR_BME280 or SENSOR_BME680
+#define SENSOR_BME280
+// #define SENSOR_BME680
+
 // DEBUG
 //   If defined, enables increase verbosity over the serial port.
 //   level 0: basic status information, assists troubleshooting (default)
