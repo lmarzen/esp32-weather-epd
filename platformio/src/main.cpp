@@ -18,10 +18,10 @@
 #include "config.h"
 #include <Arduino.h>
 #if defined(SENSOR_BME280)
-#include <Adafruit_BME280.h>
+  #include <Adafruit_BME280.h>
 #endif
 #if defined(SENSOR_BME680)
-#include <Adafruit_BME680.h>
+  #include <Adafruit_BME680.h>
 #endif
 #include <Adafruit_Sensor.h>
 #include <Preferences.h>
@@ -294,20 +294,20 @@ void setup()
   I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
   float inTemp     = NAN;
   float inHumidity = NAN;
-#if defined(SENSOR_BME280)  
+#if defined(SENSOR_BME280)
   Serial.print(String(TXT_READING_FROM) + " BME280... ");
   Adafruit_BME280 bme;
 
   if(bme.begin(BME_ADDRESS, &I2C_bme))
   {
-#endif    
+#endif
 #if defined(SENSOR_BME680)
   Serial.print(String(TXT_READING_FROM) + " BME680... ");
   Adafruit_BME680 bme(&I2C_bme);
 
   if(bme.begin(BME_ADDRESS))
   {
-#endif  
+#endif
     inTemp     = bme.readTemperature(); // Celsius
     inHumidity = bme.readHumidity();    // %
 

@@ -41,7 +41,7 @@ const uint8_t PIN_EPD_PWR  = 26; // Irrelevant if directly connected to 3.3V
 const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
 const uint8_t PIN_BME_PWR =  4;   // Irrelevant if directly connected to 3.3V
-const uint8_t BME_ADDRESS = 0x77; // If SDO is grounded (often on 4pin platins) use 0x76 instead
+const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
 
 // WIFI
 const char *WIFI_SSID     = "ssid";
