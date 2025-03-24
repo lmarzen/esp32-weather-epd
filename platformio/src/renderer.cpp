@@ -527,14 +527,13 @@ void drawCurrentConditions(const owm_current_t &current,
   if (!std::isnan(inTemp))
   {
 #ifdef UNITS_TEMP_KELVIN
-    dataStr = String(static_cast<int>(std::round(celsius_to_kelvin(inTemp))));
+    dataStr = String(celsius_to_kelvin(inTemp),1);
 #endif
 #ifdef UNITS_TEMP_CELSIUS
-    dataStr = String(static_cast<int>(std::round(inTemp)));
+    dataStr = String(inTemp,1);
 #endif
 #ifdef UNITS_TEMP_FAHRENHEIT
-    dataStr = String(static_cast<int>(
-              std::round(celsius_to_fahrenheit(inTemp))));
+    dataStr = String(celsius_to_fahrenheit(inTemp),1);
 #endif
   }
   else
