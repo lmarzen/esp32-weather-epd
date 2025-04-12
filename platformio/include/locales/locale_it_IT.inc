@@ -78,18 +78,18 @@ const char *LC_ERA_T_FMT   = "";
 const String OWM_LANG = "it";
 
 // CURRENT CONDITIONS
-const char *TXT_FEELS_LIKE         = "Temp. percepita";
+const char *TXT_FEELS_LIKE         = "Percepiti";
 const char *TXT_SUNRISE            = "Alba";
 const char *TXT_SUNSET             = "Tramonto";
 const char *TXT_WIND               = "Vento";
-const char *TXT_HUMIDITY           = "Umidita'";
+const char *TXT_HUMIDITY           = "Umidit\340";
 const char *TXT_UV_INDEX           = "Indice UV";
-const char *TXT_PRESSURE           = "Pressionr";
-const char *TXT_AIR_QUALITY        = "Qualita' dell'aria";
+const char *TXT_PRESSURE           = "Pressione";
+const char *TXT_AIR_QUALITY        = "Qualit\340 dell'aria";
 const char *TXT_AIR_POLLUTION      = "Inquinamento aria";
-const char *TXT_VISIBILITY         = "Visibilita'";
+const char *TXT_VISIBILITY         = "Visibilit\340";
 const char *TXT_INDOOR_TEMPERATURE = "Temperatura int.";
-const char *TXT_INDOOR_HUMIDITY    = "Umidita' int.";
+const char *TXT_INDOOR_HUMIDITY    = "Umidit\340 int.";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Basso";
@@ -135,10 +135,10 @@ const char *TXT_UNITS_PRECIP_INCHES      = "in";
 
 // MISCELLANEOUS MESSAGES
 // Title Case
-const char *TXT_LOW_BATTERY = "Low Battery";
-const char *TXT_NETWORK_NOT_AVAILABLE = "Network Not Available";
-const char *TXT_TIME_SYNCHRONIZATION_FAILED = "Time Synchronization Failed";
-const char *TXT_WIFI_CONNECTION_FAILED = "WiFi Connection Failed";
+const char *TXT_LOW_BATTERY = "Batteria quasi scarica";
+const char *TXT_NETWORK_NOT_AVAILABLE = "Rete non disponibile";
+const char *TXT_TIME_SYNCHRONIZATION_FAILED = "Sincronizzazione data e ora fallita";
+const char *TXT_WIFI_CONNECTION_FAILED = "Connessione Wi-Fi non riuscita";
 // First Word Capitalized
 const char *TXT_ATTEMPTING_HTTP_REQ = "Attempting HTTP request";
 const char *TXT_AWAKE_FOR = "Awake for";
@@ -273,7 +273,7 @@ const char *CANADA_AQHI_TXT[4] =
 const char *EUROPEAN_UNION_CAQI_TXT[5] =
 {
   "Molto basso",
-  "Baso",
+  "Basso",
   "Medio",
   "Alto",
   "Molto alto",

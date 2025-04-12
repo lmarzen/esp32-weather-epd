@@ -42,7 +42,7 @@ const uint8_t PIN_EPD_PWR = 26; // Irrelevant if directly connected to 3.3V
 const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
 const uint8_t PIN_BME_PWR = 4;    // Irrelevant if directly connected to 3.3V
-const uint8_t BME_ADDRESS = 0x76; // If sensor does not work, try 0x77
+const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
 
 // WIFI
 const char *WIFI_SSID = "ssid";
@@ -151,11 +151,11 @@ const int HOURLY_GRAPH_MAX = 24;
 // minutes). Once the battery voltage has fallen to CRIT_LOW_BATTERY_VOLTAGE,
 // the esp32 will hibernate and a manual press of the reset (RST) button to
 // begin operating again.
-const uint32_t WARN_BATTERY_VOLTAGE     = 3535; // (millivolts) ~20%
-const uint32_t LOW_BATTERY_VOLTAGE      = 3462; // (millivolts) ~10%
-const uint32_t VERY_LOW_BATTERY_VOLTAGE = 3442; // (millivolts)  ~8%
-const uint32_t CRIT_LOW_BATTERY_VOLTAGE = 3404; // (millivolts)  ~5%
-const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 30;  // (minutes)
+const uint32_t WARN_BATTERY_VOLTAGE = 3535;                // (millivolts) ~20%
+const uint32_t LOW_BATTERY_VOLTAGE = 3462;                 // (millivolts) ~10%
+const uint32_t VERY_LOW_BATTERY_VOLTAGE = 3442;            // (millivolts)  ~8%
+const uint32_t CRIT_LOW_BATTERY_VOLTAGE = 3404;            // (millivolts)  ~5%
+const unsigned long LOW_BATTERY_SLEEP_INTERVAL = 30;       // (minutes)
 const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
 // Battery voltage calculations are based on a typical 3.7v LiPo.
 const uint32_t MAX_BATTERY_VOLTAGE = 4200; // (millivolts)

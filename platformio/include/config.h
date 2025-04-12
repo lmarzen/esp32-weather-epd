@@ -42,6 +42,11 @@
 #define DRIVER_DESPI_C02
 // #define DRIVER_WAVESHARE
 
+// INDOOR ENVIRONMENT SENSOR
+// Uncomment the macro that identifies your sensor.
+#define SENSOR_BME280
+// #define SENSOR_BME680
+
 // 3 COLOR E-INK ACCENT COLOR
 // Defines the 3rd color to be used when a 3+ color display is selected.
 #if defined(DISP_3C_B) || defined(DISP_7C_F)
@@ -322,6 +327,10 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
 #if !(  defined(DRIVER_WAVESHARE) \
       ^ defined(DRIVER_DESPI_C02))
   #error Invalid configuration. Exactly one driver board must be selected.
+#endif
+#if !(  defined(SENSOR_BME280) \
+      ^ defined(SENSOR_BME680))
+  #error Invalid configuration. Exactly one sensor must be selected.
 #endif
 #if !(defined(LOCALE))
   #error Invalid configuration. Locale not selected.

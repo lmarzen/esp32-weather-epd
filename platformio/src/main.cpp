@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include <Arduino.h>
-#include <Adafruit_BME280.h>
 #include <Adafruit_Sensor.h>
 #include <Preferences.h>
 #include <time.h>
@@ -30,6 +30,13 @@
 #include "display_utils.h"
 #include "icons/icons_196x196.h"
 #include "renderer.h"
+
+#if defined(SENSOR_BME280)
+  #include <Adafruit_BME280.h>
+#endif
+#if defined(SENSOR_BME680)
+  #include <Adafruit_BME680.h>
+#endif
 #if defined(USE_HTTPS_WITH_CERT_VERIF) || defined(USE_HTTPS_WITH_CERT_VERIF)
   #include <WiFiClientSecure.h>
 #endif
@@ -314,18 +321,27 @@ void setup()
   }
   killWiFi(); // WiFi no longer needed
 
-  // GET INDOOR TEMPERATURE AND HUMIDITY, start BME280...
+  // GET INDOOR TEMPERATURE AND HUMIDITY, start BMEx80...
   pinMode(PIN_BME_PWR, OUTPUT);
   digitalWrite(PIN_BME_PWR, HIGH);
+  TwoWire I2C_bme = TwoWire(0);
+  I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
   float inTemp     = NAN;
   float inHumidity = NAN;
+#if defined(SENSOR_BME280)
   Serial.print(String(TXT_READING_FROM) + " BME280... ");
-  TwoWire I2C_bme = TwoWire(0);
   Adafruit_BME280 bme;
 
-  I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
   if(bme.begin(BME_ADDRESS, &I2C_bme))
   {
+#endif
+#if defined(SENSOR_BME680)
+  Serial.print(String(TXT_READING_FROM) + " BME680... ");
+  Adafruit_BME680 bme(&I2C_bme);
+
+  if(bme.begin(BME_ADDRESS))
+  {
+#endif
     inTemp     = bme.readTemperature(); // Celsius
     inHumidity = bme.readHumidity();    // %
 
