@@ -41,7 +41,7 @@ const uint8_t PIN_EPD_PWR  = 26; // Irrelevant if directly connected to 3.3V
 const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
 const uint8_t PIN_BME_PWR =  4;   // Irrelevant if directly connected to 3.3V
-const uint8_t BME_ADDRESS = 0x76; // If sensor does not work, try 0x77
+const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
 
 // WIFI
 const char *WIFI_SSID     = "ssid";
