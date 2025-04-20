@@ -199,16 +199,48 @@ void setup()
   uint32_t batteryVoltage = UINT32_MAX;
 #endif
 
-  // All data should have been loaded from NVS. Close filesystem.
-  prefs.end();
-
   String statusStr = {};
   String tmpStr = {};
   tm timeInfo = {};
 
   // START WIFI
+  wl_status_t wifiStatus;
   int wifiRSSI = 0; // “Received Signal Strength Indicator"
-  wl_status_t wifiStatus = startWiFi(wifiRSSI);
+
+  pinMode(PIN_CONFIGURE_WIFI, INPUT_PULLUP);
+  if (digitalRead(PIN_CONFIGURE_WIFI) == LOW) 
+  {
+    prefs.putBool("prev_configured", false);
+    Serial.println("WIFI config pin detected");
+    initDisplay();
+    do
+    {
+      drawError(wifi_x_196x196, "Weather Station is in", "WIFI configuration mode");
+    } while (display.nextPage());
+    // Configure WIFI
+    Serial.println("Entering config mode");
+    wifiStatus = configureWiFi(wifiRSSI);
+    if (wifiStatus == WL_CONNECTED)
+    {
+      prefs.putBool("prev_configured", true); 
+    }
+  }
+  else
+  {
+    if (prefs.getBool("prev_configured", false))
+    {
+      wifiStatus = startWiFi(wifiRSSI);
+    } 
+    else 
+    {
+      wifiStatus = startDefaultWiFi(wifiRSSI);
+    }
+  }
+
+
+  // All data should have been loaded from NVS. Close filesystem.
+  prefs.end();
+
   if (wifiStatus != WL_CONNECTED)
   { // WiFi Connection Failed
     killWiFi();
@@ -231,7 +263,7 @@ void setup()
     }
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
-  }
+  } 
 
   // TIME SYNCHRONIZATION
   configTzTime(TIMEZONE, NTP_SERVER_1, NTP_SERVER_2);
