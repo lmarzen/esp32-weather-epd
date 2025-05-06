@@ -30,6 +30,7 @@
 #include "display_utils.h"
 #include "icons/icons_196x196.h"
 #include "renderer.h"
+#include "schedule_utils.h"
 
 #if defined(SENSOR_BME280)
   #include <Adafruit_BME280.h>
@@ -60,52 +61,7 @@ void beginDeepSleep(unsigned long startTime, tm *timeInfo)
     Serial.println(TXT_REFERENCING_OLDER_TIME_NOTICE);
   }
 
-  // To simplify sleep time calculations, the current time stored by timeInfo
-  // will be converted to time relative to the WAKE_TIME. This way if a
-  // SLEEP_DURATION is not a multiple of 60 minutes it can be more trivially,
-  // aligned and it can easily be deterimined whether we must sleep for
-  // additional time due to bedtime.
-  // i.e. when curHour == 0, then timeInfo->tm_hour == WAKE_TIME
-  int bedtimeHour = INT_MAX;
-  if (BED_TIME != WAKE_TIME)
-  {
-    bedtimeHour = (BED_TIME - WAKE_TIME + 24) % 24;
-  }
-
-  // time is relative to wake time
-  int curHour = (timeInfo->tm_hour - WAKE_TIME + 24) % 24;
-  const int curMinute = curHour * 60 + timeInfo->tm_min;
-  const int curSecond = curHour * 3600
-                      + timeInfo->tm_min * 60
-                      + timeInfo->tm_sec;
-  const int desiredSleepSeconds = SLEEP_DURATION * 60;
-  const int offsetMinutes = curMinute % SLEEP_DURATION;
-  const int offsetSeconds = curSecond % desiredSleepSeconds;
-
-  // align wake time to nearest multiple of SLEEP_DURATION
-  int sleepMinutes = SLEEP_DURATION - offsetMinutes;
-  if (desiredSleepSeconds - offsetSeconds < 120
-   || offsetSeconds / (float)desiredSleepSeconds > 0.95f)
-  { // if we have a sleep time less than 2 minutes OR less 5% SLEEP_DURATION,
-    // skip to next alignment
-    sleepMinutes += SLEEP_DURATION;
-  }
-
-  // estimated wake time, if this falls in a sleep period then sleepDuration
-  // must be adjusted
-  const int predictedWakeHour = ((curMinute + sleepMinutes) / 60) % 24;
-
-  uint64_t sleepDuration;
-  if (predictedWakeHour < bedtimeHour)
-  {
-    sleepDuration = sleepMinutes * 60 - timeInfo->tm_sec;
-  }
-  else
-  {
-    const int hoursUntilWake = 24 - curHour;
-    sleepDuration = hoursUntilWake * 3600ULL
-                    - (timeInfo->tm_min * 60ULL + timeInfo->tm_sec);
-  }
+  uint64_t sleepDuration = getSleepDurationSeconds(mktime(timeInfo));
 
   // add extra delay to compensate for esp32's with fast RTCs.
   sleepDuration += 3ULL;
@@ -363,5 +319,4 @@ void setup()
  */
 void loop()
 {
-} // end loop
-
+} // end loop 
