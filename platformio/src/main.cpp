@@ -22,6 +22,8 @@
 #include <time.h>
 #include <WiFi.h>
 #include <Wire.h>
+#include <ElegantOTA.h>
+#include <WebServer.h>
 
 #include "_locale.h"
 #include "api_response.h"
@@ -49,6 +51,10 @@ static owm_resp_onecall_t       owm_onecall;
 static owm_resp_air_pollution_t owm_air_pollution;
 
 Preferences prefs;
+
+// HTTP server listens on port 80
+WebServer server(80);
+bool otaMode = false;
 
 /* Put esp32 into ultra low-power deep sleep (<11μA).
  * Aligns wake time to the minute. Sleep times defined in config.cpp.
@@ -134,7 +140,18 @@ void setup()
   printHeapUsage();
 #endif
 
-  disableBuiltinLED();
+  pinMode(BTN_ENABLE_OTA_SERVER, INPUT_PULLUP);
+  if(digitalRead(BTN_ENABLE_OTA_SERVER) == LOW)
+  { // Light LED to noify user that OTA server will be started (otaMode).
+    Serial.println("Starting OTA Server");
+    otaMode = true;
+    
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+  } else
+  { // Disable all LEDs if not in otaMode.
+    disableBuiltinLED();
+  }
 
   // Open namespace for read/write to non-volatile storage
   prefs.begin(NVS_NAMESPACE, false);
@@ -247,6 +264,25 @@ void setup()
     } while (display.nextPage());
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
+  }
+
+  // Start OTA server if button was pressed on start time
+  if (otaMode)
+  {
+    // Redirect / to /update as this is the only route beeing used.
+    server.on("/", []() {
+      server.sendHeader("Location", "/update");
+      server.send(302, "text/plain", "");
+    });
+    ElegantOTA.begin(&server);
+    server.begin();
+
+    Serial.println("OTA server started.");
+    Serial.printf("OTA server will be automatically shut down after ~%i seconds.", OTA_SERVER_TIMEOUT_SECONDS);
+    Serial.println();
+
+    // Exit setup() and immediately run loop().
+    return;
   }
 
   // MAKE API REQUESTS
@@ -362,9 +398,20 @@ void setup()
   beginDeepSleep(startTime, &timeInfo);
 } // end setup
 
-/* This will never run
+/* This will only run if the OTA server runs
  */
 void loop()
 {
+  if (otaMode)
+  {
+    server.handleClient();
+    ElegantOTA.loop();
+
+    if (OTA_SERVER_TIMEOUT_SECONDS != 0 && millis() > OTA_SERVER_TIMEOUT_SECONDS * 1000)
+    {
+      Serial.println("Shutting down OTA Server & rebooting into normal operation mode.");
+      ESP.restart();
+    }
+  }
 } // end loop
 
