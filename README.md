@@ -207,6 +207,22 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
       - If you are getting other errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
 
+   c. **After** the initial upload via USB you can make use of the OTA (over the air) implementation in this project.
+
+      - Click the check mark (✔) along the bottom of the VSCode window to build the firmware using the PlatformIO plugin. (Should say "PlatformIO: Build" if you hover over it.)
+
+      - Restart/Reset the ESP32 board using the reset button while holding down the `User Button` (IO27/D4 for the FireBeetle 2 ESP32-E). The button can be configured via the variable `BTN_ENABLE_OTA_SERVER` in `config.ccp`.
+
+      - This will run a OTA server on the ESP over which the firmware can be updated without a wired connection. Per default the server will run for 90 seconds. The value can be adjusted via the `OTA_SERVER_TIMEOUT_SECONDS` variable in `config.cpp`. After this given time the ESP will reboot into the normal operation mode without OTA capabilities.
+
+      - Hold the `User Button` until the onboard LED (besides the USB-C connector) lights up.
+
+      - Open a webbrowser and enter your ESP32 IP address and hit enter. (You sould be redirected to `http://<ip-address>/upload`.)
+
+      - Upload the built firmware located at `/<esp32-weather-epd-directory>/platformio/.pio/build/dfrobot_firebeetle2_esp32e/firmware.bin` through the webui.
+
+      - The ESP board will reboot into normal operation mode.
+
 ### OpenWeatherMap API Key
 
 Sign up here to get an API key; it's free. <https://openweathermap.org/api>
