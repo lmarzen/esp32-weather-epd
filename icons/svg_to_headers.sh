@@ -61,7 +61,7 @@ if [ ! -e "$HEADER_PATH" ]; then
   for f in $PNG_FILES
   do
     echo "Generating header for $f..."
-    out="${HEADER_PATH}/$(basename $f .png | tr -s -c [:alnum:] _)${1}x${1}"
+    out="${HEADER_PATH}/$(basename $f .png | tr -s -c [:alnum:] _)${1}x${1}.h"
     python3 png_to_header.py -i $f -o $out
   done
 
