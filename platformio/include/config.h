@@ -72,6 +72,7 @@
 //   Italiano (Italia)               it_IT
 //   Dutch (Belgium)                 nl_BE
 //   Portuguese (Brazil)             pt_BR
+//   Slovak (Slovakia)               sk_SK
 #define LOCALE en_US
 
 // UNITS
