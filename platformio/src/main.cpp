@@ -354,6 +354,13 @@ void setup()
 #if DISPLAY_ALERTS
     drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
 #endif
+#if DISPLAY_NEXT_HOUR_PRECIP
+    // Display next hour precipitations at the alerts location if none
+    if (owm_onecall.alerts.size() == 0)
+    {
+      drawNextHourPrecip(owm_onecall.minutely, CITY_STRING, dateStr);
+    }
+#endif
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
   } while (display.nextPage());
   powerOffDisplay();
