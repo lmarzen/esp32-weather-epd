@@ -165,11 +165,11 @@ const int WIND_POS[2]                 = {0 ,1} ;
 const int UV_INDEX_POS[2]             = {0 ,2} ;
 const int AIR_QUALITY_POS[2]          = {0 ,3} ;
 const int INDOOR_TEMPERATURE_POS[2]   = {0 ,4} ;
-const int SUNSET_POS[2]               = {1 ,1} ;
-const int HUMIDITY_POS[2]             = {1 ,2} ;
-const int PRESSURE_POS[2]             = {1 ,3} ;
-const int VISIBILITY_POS[2]           = {1 ,4} ;
-const int INDOOR_HUMIDITY_POS[2]      = {1 ,5} ;
+const int SUNSET_POS[2]               = {1 ,0} ;
+const int HUMIDITY_POS[2]             = {1 ,1} ;
+const int PRESSURE_POS[2]             = {1 ,2} ;
+const int VISIBILITY_POS[2]           = {1 ,3} ;
+const int INDOOR_HUMIDITY_POS[2]      = {1 ,4} ;
 
 // See config.h for the below options
 // E-PAPER PANEL
