@@ -155,6 +155,22 @@ const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
 const uint32_t MAX_BATTERY_VOLTAGE = 4200; // (millivolts)
 const uint32_t MIN_BATTERY_VOLTAGE = 3000; // (millivolts)
 
+// ICON POSITION
+// Allow the relocation of icons on the left side of the panel
+// Location of icon represented by { column , row }
+// Column can be 0 or 1
+// Row can be 0 to 4
+const int SUNRISE_POS[2]              = {0 ,0} ;
+const int WIND_POS[2]                 = {0 ,1} ;
+const int UV_INDEX_POS[2]             = {0 ,2} ;
+const int AIR_QUALITY_POS[2]          = {0 ,3} ;
+const int INDOOR_TEMPERATURE_POS[2]   = {0 ,4} ;
+const int SUNSET_POS[2]               = {1 ,1} ;
+const int HUMIDITY_POS[2]             = {1 ,2} ;
+const int PRESSURE_POS[2]             = {1 ,3} ;
+const int VISIBILITY_POS[2]           = {1 ,4} ;
+const int INDOOR_HUMIDITY_POS[2]      = {1 ,5} ;
+
 // See config.h for the below options
 // E-PAPER PANEL
 // LOCALE
