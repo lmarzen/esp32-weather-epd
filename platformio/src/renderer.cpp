@@ -721,6 +721,7 @@ void drawForecast(const owm_daily_t *daily, tm timeInfo)
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, loStr, RIGHT);
     drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, hiStr, LEFT);
 #endif
+    
 // daily forecast precipitation
 #if DISPLAY_DAILY_PRECIP
     float dailyPrecip;
