@@ -233,6 +233,13 @@
 //   2 : Smart (show only when precipitation is forecasted)
 #define DISPLAY_DAILY_PRECIP 2
 
+// Forecast Tempterature Order
+//   HL   : High | Low
+//   LH   : Low | High
+// #define TEMP_ORDER_HL
+#define TEMP_ORDER_LH
+
+
 // HOURLY WEATHER ICONS
 // Weather icons to be displayed on the temperature and precipitation chart.
 // They are drawn at the the x-axis tick marks just above the temperature line
@@ -374,6 +381,10 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
       ^ defined(UNITS_DAILY_PRECIP_CENTIMETERS) \
       ^ defined(UNITS_DAILY_PRECIP_INCHES))
   #error Invalid configuration. Exactly one daily precipitation measurement must be selected.
+#endif
+#if !(  defined(TEMP_ORDER_HL)      \
+      ^ defined(TEMP_ORDER_LH))
+  #error Invalid configuration. Exactly one temperature order must be selected.
 #endif
 #if !(  defined(USE_HTTP)                   \
       ^ defined(USE_HTTPS_NO_CERT_VERIF)    \
