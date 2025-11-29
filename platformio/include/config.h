@@ -225,6 +225,15 @@
 //   other artifacts.
 #define FONT_HEADER "fonts/FreeSans.h"
 
+// FORECAST TEMPERATURE ORDER
+// The order of temperture Hi|Lo can optionally be configured using
+// the following options.
+//   HL   : High | Low
+//   LH   : Low | High
+//
+#define TEMP_ORDER_HL
+// #define TEMP_ORDER_LH
+
 // DAILY PRECIPITATION
 // Daily precipitation indicated under Hi|Lo can optionally be configured using
 // the following options.
@@ -368,6 +377,10 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
       ^ defined(UNITS_HOURLY_PRECIP_CENTIMETERS) \
       ^ defined(UNITS_HOURLY_PRECIP_INCHES))
   #error Invalid configuration. Exactly one houly precipitation measurement must be selected.
+#endif
+#if !(  defined(TEMP_ORDER_HL)      \
+      ^ defined(TEMP_ORDER_LH))
+  #error Invalid configuration. Exactly one temperature order must be selected.
 #endif
 #if !(  defined(UNITS_DAILY_PRECIP_POP)         \
       ^ defined(UNITS_DAILY_PRECIP_MILLIMETERS) \
