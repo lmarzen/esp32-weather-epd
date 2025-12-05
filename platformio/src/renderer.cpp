@@ -1157,8 +1157,8 @@ void drawOutlookGraph(const owm_hourly_t *hourly, const owm_daily_t *daily,
       display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , ACCENT_COLOR);
       display.drawLine(x0_t    , y0_t + 1, x1_t    , y1_t + 1, ACCENT_COLOR);
       display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , ACCENT_COLOR);
-      // draw vertical line at specefic hour interval
-      
+
+	 // draw vertical line at specefic hour interval
 #ifdef OUTLOOK_VERTICAL_LINE_INTERVAL
         time_t ts = hourly[i].dt;
         tm *timeInfo = localtime(&ts);
