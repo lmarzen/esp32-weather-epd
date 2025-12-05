@@ -1157,7 +1157,20 @@ void drawOutlookGraph(const owm_hourly_t *hourly, const owm_daily_t *daily,
       display.drawLine(x0_t    , y0_t    , x1_t    , y1_t    , ACCENT_COLOR);
       display.drawLine(x0_t    , y0_t + 1, x1_t    , y1_t + 1, ACCENT_COLOR);
       display.drawLine(x0_t - 1, y0_t    , x1_t - 1, y1_t    , ACCENT_COLOR);
-
+      // draw vertical line at specefic hour interval
+      
+#ifdef OUTLOOK_VERTICAL_LINE_INTERVAL
+        time_t ts = hourly[i].dt;
+        tm *timeInfo = localtime(&ts);
+	      if ((  timeInfo->tm_hour  %  OUTLOOK_VERTICAL_LINE_INTERVAL ) == 0)
+	      {
+		     for (int y = std::floor((y0_t + y1_t)/2) ; y <= yPos1 ; y += 3)            // draw dotted line
+        	{
+    	      display.drawPixel(xPos0 + (i * xInterval) , y, GxEPD_BLACK);
+     	    }
+	      }
+#endif
+      
       // draw hourly bitmap
 #if DISPLAY_HOURLY_ICONS
       if (daily[day_idx].dt + 86400 <= hourly[i].dt) {
