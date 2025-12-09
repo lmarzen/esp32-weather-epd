@@ -240,6 +240,21 @@
 //   1 : Enable
 #define DISPLAY_HOURLY_ICONS 1
 
+// LEFT PANEL WIDGETS
+// Enable displaying the air quality widget.
+// According to your location this information may be inaccurate or not available.
+// When using the DISP_BW_V1 panel, this widget is not displayed.
+//   0 : Disable
+//   1 : Enable
+#define DISPLAY_AIR_QUALITY 1
+
+// Enable displaying the visibity widget.
+// According to your location this information may be inaccurate or not available.
+// When using the DISP_BW_V1 panel, this widget is not displayed.
+//   0 : Disable
+//   1 : Enable
+#define DISPLAY_VISIBILITY 1
+
 // ALERTS
 //   The handling of alerts is complex. Each country has a unique national alert
 //   system that receives alerts from many different government agencies. This
@@ -407,6 +422,12 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
 #endif
 #if !(defined(DISPLAY_HOURLY_ICONS))
   #error Invalid configuration. DISPLAY_HOURLY_ICONS not defined.
+#endif
+#if !(defined(DISPLAY_AIR_QUALITY))
+  #error Invalid configuration. DISPLAY_AIR_QUALITY not defined.
+#endif
+#if !(defined(DISPLAY_VISIBILITY))
+  #error Invalid configuration. DISPLAY_VISIBILITY not defined.
 #endif
 #if !(defined(DISPLAY_ALERTS))
   #error Invalid configuration. DISPLAY_ALERTS not defined.
