@@ -273,6 +273,7 @@ void setup()
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   }
+#if DISPLAY_AIR_QUALITY
   rxStatus = getOWMairpollution(client, owm_air_pollution);
   if (rxStatus != HTTP_CODE_OK)
   {
@@ -287,6 +288,7 @@ void setup()
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   }
+#endif
   killWiFi(); // WiFi no longer needed
 
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BMEx80...

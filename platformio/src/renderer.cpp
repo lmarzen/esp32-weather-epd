@@ -333,8 +333,10 @@ void drawCurrentConditions(const owm_current_t &current,
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 2,
                              wi_day_sunny_48x48, 48, 48, GxEPD_BLACK);
 #ifndef DISP_BW_V1
+#if DISPLAY_AIR_QUALITY
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 3,
                              air_filter_48x48, 48, 48, GxEPD_BLACK);
+#endif
   display.drawInvertedBitmap(0, 204 + (48 + 8) * 4,
                              house_thermometer_48x48, 48, 48, GxEPD_BLACK);
 #endif
@@ -345,8 +347,10 @@ void drawCurrentConditions(const owm_current_t &current,
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 2,
                              wi_barometer_48x48, 48, 48, GxEPD_BLACK);
 #ifndef DISP_BW_V1
+#if DISPLAY_VISIBILITY
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 3,
                              visibility_icon_48x48, 48, 48, GxEPD_BLACK);
+#endif                             
   display.drawInvertedBitmap(170, 204 + (48 + 8) * 4,
                              house_humidity_48x48, 48, 48, GxEPD_BLACK);
 #endif
@@ -357,6 +361,7 @@ void drawCurrentConditions(const owm_current_t &current,
   drawString(48, 204 + 10 + (48 + 8) * 1, TXT_WIND, LEFT);
   drawString(48, 204 + 10 + (48 + 8) * 2, TXT_UV_INDEX, LEFT);
 #ifndef DISP_BW_V1
+#if DISPLAY_AIR_QUALITY
   const char *air_quality_index_label;
   if (aqi_desc_type(AQI_SCALE) == AIR_QUALITY_DESC)
   {
@@ -367,13 +372,16 @@ void drawCurrentConditions(const owm_current_t &current,
     air_quality_index_label = TXT_AIR_POLLUTION;
   }
   drawString(48, 204 + 10 + (48 + 8) * 3, air_quality_index_label, LEFT);
+#endif
   drawString(48, 204 + 10 + (48 + 8) * 4, TXT_INDOOR_TEMPERATURE, LEFT);
 #endif
   drawString(170 + 48, 204 + 10 + (48 + 8) * 0, TXT_SUNSET, LEFT);
   drawString(170 + 48, 204 + 10 + (48 + 8) * 1, TXT_HUMIDITY, LEFT);
   drawString(170 + 48, 204 + 10 + (48 + 8) * 2, TXT_PRESSURE, LEFT);
 #ifndef DISP_BW_V1
+#if DISPLAY_VISIBILITY
   drawString(170 + 48, 204 + 10 + (48 + 8) * 3, TXT_VISIBILITY, LEFT);
+#endif
   drawString(170 + 48, 204 + 10 + (48 + 8) * 4, TXT_INDOOR_HUMIDITY, LEFT);
 #endif
 
@@ -481,6 +489,7 @@ void drawCurrentConditions(const owm_current_t &current,
   }
 
 #ifndef DISP_BW_V1
+#if DISPLAY_AIR_QUALITY
   // air quality index
   display.setFont(&FONT_12pt8b);
   const owm_components_t &c = owm_air_pollution.components;
@@ -521,6 +530,7 @@ void drawCurrentConditions(const owm_current_t &current,
                         dataStr, LEFT, max_w, 2, 10);
     }
   }
+#endif
 
   // indoor temperature
   display.setFont(&FONT_12pt8b);
@@ -612,6 +622,7 @@ void drawCurrentConditions(const owm_current_t &current,
              unitStr, LEFT);
 
 #ifndef DISP_BW_V1
+#if DISPLAY_VISIBILITY
   // visibility
   display.setFont(&FONT_12pt8b);
 #ifdef UNITS_DIST_KILOMETERS
@@ -646,6 +657,7 @@ void drawCurrentConditions(const owm_current_t &current,
   display.setFont(&FONT_8pt8b);
   drawString(display.getCursorX(), 204 + 17 / 2 + (48 + 8) * 3 + 48 / 2,
              unitStr, LEFT);
+#endif
 
   // indoor humidity
   display.setFont(&FONT_12pt8b);
