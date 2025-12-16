@@ -195,6 +195,38 @@
 // #define WIND_ICONS_TERTIARY_INTERCARDINAL
 // #define WIND_ICONS_360
 
+// Set the order of current condition you want to display
+// in the following order
+//  0   1
+//  2   3
+//  4   5
+//  6   7
+//  8   9
+// if DISP_BW_V1 is used, 6,7,8,9 are not available
+
+#define POS_SUNRISE     0
+#define POS_SUNSET      1
+#define POS_WIND        2
+#define POS_HUMIDITY    3
+#define POS_UVI         4
+#define POS_PRESSURE    5
+#define POS_AIR_QULITY  6
+#define POS_VISIBILITY  7
+#define POS_INTEMP      8
+#define POS_INHUMIDITY  9
+// #define POS_MOONRISE    2
+// #define POS_MOONSET     3
+// #define POS_MOONPHASE   4
+
+
+// Choose the style of moon phase icon you like
+//   Primary     : dark color means where the moon is
+//   Alternative : dark color means where the shadow is
+// Uncomment your preferred moon phase style.
+// #define MOONPHASE_PRIMARY
+#define MOONPHASE_ALTERNATIVE
+
+
 // FONTS
 // A handful of popular Open Source typefaces have been included with this
 // project for your convenience. Change the font by selecting its corresponding
@@ -416,6 +448,10 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
 #endif
 #if !(defined(DEBUG_LEVEL))
   #error Invalid configuration. DEBUG_LEVEL not defined.
+#endif
+#if !(  defined(MOONPHASE_PRIMARY)  \
+      ^ defined(MOONPHASE_ALTERNATIVE))
+  #error Invalid configuration. Exactly one moon phase style must be selected.
 #endif
 
 #endif
