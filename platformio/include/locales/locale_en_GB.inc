@@ -73,6 +73,8 @@ const String OWM_LANG = "en";
 const char *TXT_FEELS_LIKE         = "Feels Like";
 const char *TXT_SUNRISE            = "Sunrise";
 const char *TXT_SUNSET             = "Sunset";
+const char *TXT_MOONRISE           = "Moonrise";
+const char *TXT_MOONSET            = "Moonset";
 const char *TXT_WIND               = "Wind";
 const char *TXT_HUMIDITY           = "Humidity";
 const char *TXT_UV_INDEX           = "UV Index";
@@ -82,6 +84,18 @@ const char *TXT_AIR_POLLUTION      = "Air Pollution";
 const char *TXT_VISIBILITY         = "Visibility";
 const char *TXT_INDOOR_TEMPERATURE = "Temperature";
 const char *TXT_INDOOR_HUMIDITY    = "Humidity";
+
+// MOON PHASE
+const char *TXT_MOONPHASE           = "Moon Phase";
+const char *TXT_NEW_MOON			= "New Moon";
+const char *TXT_WAXING_CRESCENT		= "Waxing Crescent";
+const char *TXT_FIRST_QUARTER 		= "First Quarter";
+const char *TXT_WAXING_GIBBOUS		= "Waxing Gibbous";
+const char *TXT_FULL_MOON 			= "Full Moon";
+const char *TXT_WANING_GIBBOUS		= "Waning Gibbous";
+const char *TXT_THIRD_QUARTER   	= "Last Quarter";
+const char *TXT_WANING_CRESCENT  	= "Waning Crescent";
+  
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Low";
@@ -231,7 +245,7 @@ const std::vector<String> TERM_HURRICANE =
 const std::vector<String> TERM_DUST =
     {"dust", "sand"};
 const std::vector<String> TERM_STRONG_WIND =
-    {"wind"};
+    {"wind", "monsoon"};
 
 // AIR QUALITY INDEX
 extern "C" {
@@ -244,7 +258,7 @@ extern "C" {
 //   HONG_KONG_AQHI       INDIA_AQI            CHINA_AQI
 //   SINGAPORE_PSI        SOUTH_KOREA_CAI      UNITED_KINGDOM_DAQI
 //   UNITED_STATES_AQI
-const aqi_scale_t AQI_SCALE = UNITED_KINGDOM_DAQI;
+const aqi_scale_t AQI_SCALE = HONG_KONG_AQHI;
 
 const char *AUSTRALIA_AQI_TXT[6] =
 {

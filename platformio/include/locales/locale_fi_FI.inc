@@ -81,6 +81,8 @@ const String OWM_LANG = "fi";
 const char *TXT_FEELS_LIKE         = "Tuntuu kuin";
 const char *TXT_SUNRISE            = "Auringon nousu";
 const char *TXT_SUNSET             = "Auringon lasku";
+const char *TXT_MOONRISE		   = "Kuut\xF5usu";			
+const char *TXT_MOONSET			   = "Kuunlasku";	
 const char *TXT_WIND               = "Tuuli";
 const char *TXT_HUMIDITY           = "Ilmankosteus";
 const char *TXT_UV_INDEX           = "UV-indeksi";
@@ -90,6 +92,17 @@ const char *TXT_AIR_POLLUTION      = "Ilmansaaste";
 const char *TXT_VISIBILITY         = "N\xE4kyvyys";
 const char *TXT_INDOOR_TEMPERATURE = "L\xE4mp\xF6tila";
 const char *TXT_INDOOR_HUMIDITY    = "Ilmankosteus";
+
+// MOON PHASE
+const char *TXT_MOONPHASE			= "Kuunvaihe";			
+const char *TXT_NEW_MOON			= "Uusikuu";			
+const char *TXT_WAXING_CRESCENT		= "Kasvava puolikuu";			
+const char *TXT_FIRST_QUARTER		= "Ensimm\xE4inen nelj\xE4nnes";			
+const char *TXT_WAXING_GIBBOUS		= "Kasvava kupera kuu";			
+const char *TXT_FULL_MOON			= "T\xE4ysikuu";			
+const char *TXT_WANING_GIBBOUS		= "V\xE4henev kupera kuu";			
+const char *TXT_THIRD_QUARTER		= "Viimeinen nelj\xE4nnes";			
+const char *TXT_WANING_CRESCENT		= "V\xE4henev puolikuu";		
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Matala";
@@ -239,7 +252,7 @@ const std::vector<String> TERM_HURRICANE =
 const std::vector<String> TERM_DUST =
     {"dust", "sand"};
 const std::vector<String> TERM_STRONG_WIND =
-    {"wind"};
+    {"wind", "monsoon"};
 
 // AIR QUALITY INDEX
 extern "C" {

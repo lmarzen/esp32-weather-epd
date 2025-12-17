@@ -80,6 +80,8 @@ const String OWM_LANG = "en";
 const char *TXT_FEELS_LIKE         = "Tunnetuslik";
 const char *TXT_SUNRISE            = "P\xE4ikeset\xF5us";
 const char *TXT_SUNSET             = "Loojang";
+const char *TXT_MOONRISE		   = "Kuut\xF5us";			
+const char *TXT_MOONSET			   = "Kuuloojang";
 const char *TXT_WIND               = "Tuul";
 const char *TXT_HUMIDITY           = "\xD5huniiskus";
 const char *TXT_UV_INDEX           = "UV Indeks";
@@ -89,6 +91,17 @@ const char *TXT_AIR_POLLUTION      = "\xD5husaaste";
 const char *TXT_VISIBILITY         = "N\xE4htavus";
 const char *TXT_INDOOR_TEMPERATURE = "Temperatuur";
 const char *TXT_INDOOR_HUMIDITY    = "\xD5huniiskus";
+
+// MOON PHASE
+const char *TXT_MOONPHASE			= "Kuufaas";			
+const char *TXT_NEW_MOON			= "Noorkuu";			
+const char *TXT_WAXING_CRESCENT		= "Kasvav poolkuu";			
+const char *TXT_FIRST_QUARTER		= "Esimene veerand";			
+const char *TXT_WAXING_GIBBOUS		= "Kasvav k\xFC\xFCrus kuu";			
+const char *TXT_FULL_MOON			= "T\xE4iskuu";			
+const char *TXT_WANING_GIBBOUS		= "Kahanev k\xFC\xFCrus kuu";			
+const char *TXT_THIRD_QUARTER		= "Viimane veerand";			
+const char *TXT_WANING_CRESCENT		= "Kahanev poolkuu";	
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Madal";
@@ -238,7 +251,7 @@ const std::vector<String> TERM_HURRICANE =
 const std::vector<String> TERM_DUST =
     {"dust", "sand"};
 const std::vector<String> TERM_STRONG_WIND =
-    {"wind"};
+    {"wind", "monsoon"};
 
 // AIR QUALITY INDEX
 extern "C" {
