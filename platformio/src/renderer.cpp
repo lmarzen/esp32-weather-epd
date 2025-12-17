@@ -839,7 +839,7 @@ void drawCurrentMoonphase(const owm_daily_t &daily)
   
   // moonphase
   const int sp = 8;
-  //dataStr = String(getMoonPhaseStr(daily));
+  dataStr = String(getMoonPhaseStr(daily));
   int max_w = (162 + (PosX * 162) - sp) - (48 + (PosX * 162));
   if (getStringWidth(dataStr) <= max_w)
   { // Fits on a single line, draw along bottom
