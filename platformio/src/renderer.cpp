@@ -1281,20 +1281,30 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
     dataColor = ACCENT_COLOR;
   }
 #endif
-  dataStr = String(batPercent) + "%";
+#if STATUS_BAR_EXTRAS_BAT_PERCENTAGE || STATUS_BAR_EXTRAS_BAT_VOLTAGE
+  dataStr = "";
+#if STATUS_BAR_EXTRAS_BAT_PERCENTAGE
+  dataStr += String(batPercent) + "%";
+#endif
 #if STATUS_BAR_EXTRAS_BAT_VOLTAGE
   dataStr += " (" + String( std::round(batVoltage / 10.f) / 100.f, 2 ) + "v)";
 #endif
   drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
-  pos -= getStringWidth(dataStr) + 25;
+  pos -= getStringWidth(dataStr) + 1;
+#endif
+  pos -= 24;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 17,
                              getBatBitmap24(batPercent), 24, 24, dataColor);
   pos -= sp + 9;
 #endif
 
   // WiFi
-  dataStr = String(getWiFidesc(rssi));
   dataColor = rssi >= -70 ? GxEPD_BLACK : ACCENT_COLOR;
+#if STATUS_BAR_EXTRAS_WIFI_STRENGTH || STATUS_BAR_EXTRAS_WIFI_RSSI
+  dataStr = "";
+#if STATUS_BAR_EXTRAS_WIFI_STRENGTH
+  dataStr += String(getWiFidesc(rssi));
+#endif
 #if STATUS_BAR_EXTRAS_WIFI_RSSI
   if (rssi != 0)
   {
@@ -1302,7 +1312,9 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   }
 #endif
   drawString(pos, DISP_HEIGHT - 1 - 2, dataStr, RIGHT, dataColor);
-  pos -= getStringWidth(dataStr) + 19;
+  pos -= getStringWidth(dataStr) + 1;
+#endif
+  pos -= 18;
   display.drawInvertedBitmap(pos, DISP_HEIGHT - 1 - 13, getWiFiBitmap16(rssi),
                              16, 16, dataColor);
   pos -= sp + 8;

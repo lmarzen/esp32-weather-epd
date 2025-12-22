@@ -86,14 +86,14 @@ const char *TXT_HUMIDITY           = "Humidit\351";
 const char *TXT_UV_INDEX           = "Indice UV";
 const char *TXT_PRESSURE           = "Pression";
 const char *TXT_AIR_QUALITY        = "Qualit\351 de L'air";
-const char *TXT_AIR_POLLUTION      = "La Pollution de L'air";
+const char *TXT_AIR_POLLUTION      = "Pollution de L'air";
 const char *TXT_VISIBILITY         = "Visibilit\351";
 const char *TXT_INDOOR_TEMPERATURE = "Temp\351rature";
 const char *TXT_INDOOR_HUMIDITY    = "Humidit\351";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Bas";
-const char *TXT_UV_MODERATE  = "Moderat\351";
+const char *TXT_UV_MODERATE  = "Mod\351r\351";
 const char *TXT_UV_HIGH      = "Haut";
 const char *TXT_UV_VERY_HIGH = "Tr\350s haut";
 const char *TXT_UV_EXTREME   = "Extr\352me";
@@ -103,7 +103,7 @@ const char *TXT_WIFI_EXCELLENT     = "Excellent";
 const char *TXT_WIFI_GOOD          = "Bon";
 const char *TXT_WIFI_FAIR          = "Juste";
 const char *TXT_WIFI_WEAK          = "Faible";
-const char *TXT_WIFI_NO_CONNECTION = "Pas de Connection";
+const char *TXT_WIFI_NO_CONNECTION = "Pas de Connexion";
 
 // UNIT SYMBOLS - TEMPERATURE
 const char *TXT_UNITS_TEMP_KELVIN     = "K";
@@ -135,10 +135,10 @@ const char *TXT_UNITS_PRECIP_INCHES      = "in";
 
 // MISCELLANEOUS MESSAGES
 // Title Case
-const char *TXT_LOW_BATTERY = "Low Battery";
-const char *TXT_NETWORK_NOT_AVAILABLE = "Network Not Available";
-const char *TXT_TIME_SYNCHRONIZATION_FAILED = "Time Synchronization Failed";
-const char *TXT_WIFI_CONNECTION_FAILED = "WiFi Connection Failed";
+const char *TXT_LOW_BATTERY = "Batterie Faible";
+const char *TXT_NETWORK_NOT_AVAILABLE = "R\351seau Non Disponible";
+const char *TXT_TIME_SYNCHRONIZATION_FAILED = "\311chec de la Synchronisation Horaire";
+const char *TXT_WIFI_CONNECTION_FAILED = "\311chec de la Connexion WiFi";
 // First Word Capitalized
 const char *TXT_ATTEMPTING_HTTP_REQ = "Attempting HTTP request";
 const char *TXT_AWAKE_FOR = "Awake for";
