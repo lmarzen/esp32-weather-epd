@@ -195,6 +195,7 @@
 // #define WIND_ICONS_TERTIARY_INTERCARDINAL
 // #define WIND_ICONS_360
 
+// WIDGET POSITIONS
 // Set the order of current condition you want to display
 // in the following order
 //  0   1
@@ -203,7 +204,6 @@
 //  6   7
 //  8   9
 // if DISP_BW_V1 is used, 6,7,8,9 are not available
-
 #define POS_SUNRISE     0
 #define POS_SUNSET      1
 #define POS_WIND        2

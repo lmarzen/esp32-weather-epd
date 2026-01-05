@@ -81,8 +81,8 @@ const String OWM_LANG = "de";
 const char *TXT_FEELS_LIKE         = "Gef\374hlt";
 const char *TXT_SUNRISE            = "Aufgang";
 const char *TXT_SUNSET             = "Untergang";
-const char *TXT_MOONRISE           = "Mondaufgang";			
-const char *TXT_MOONSET            = "Monduntergang";		
+const char *TXT_MOONRISE           = "Mondaufgang";
+const char *TXT_MOONSET            = "Monduntergang";
 const char *TXT_WIND               = "Wind";
 const char *TXT_HUMIDITY           = "Feuchtigkeit";
 const char *TXT_UV_INDEX           = "UV Index";
@@ -94,15 +94,15 @@ const char *TXT_INDOOR_TEMPERATURE = "Temperatur";
 const char *TXT_INDOOR_HUMIDITY    = "Feuchtigkeit";
 
 // MOON PHASE
-const char *TXT_MOONPHASE			= "Mondphase";			
-const char *TXT_NEW_MOON		    = "Neumond";			
-const char *TXT_WAXING_CRESCENT		= "Zunehmende Sichel";			
-const char *TXT_FIRST_QUARTER		= "Erstes Viertel";			
-const char *TXT_WAXING_GIBBOUS		= "Zunehmender Gibbous";			
-const char *TXT_FULL_MOON			= "Vollmond";			
-const char *TXT_WANING_GIBBOUS		= "Abnehmender Gibbous";			
-const char *TXT_THIRD_QUARTER		= "Letztes Viertel";			
-const char *TXT_WANING_CRESCENT		= "Abnehmende Sichel";		
+const char *TXT_MOONPHASE       = "Mondphase";
+const char *TXT_NEW_MOON        = "Neumond";
+const char *TXT_WAXING_CRESCENT = "Zunehmende Sichel";
+const char *TXT_FIRST_QUARTER   = "Erstes Viertel";
+const char *TXT_WAXING_GIBBOUS  = "Zunehmender Gibbous";
+const char *TXT_FULL_MOON       = "Vollmond";
+const char *TXT_WANING_GIBBOUS  = "Abnehmender Gibbous";
+const char *TXT_THIRD_QUARTER   = "Letztes Viertel";
+const char *TXT_WANING_CRESCENT = "Abnehmende Sichel";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Schwach";

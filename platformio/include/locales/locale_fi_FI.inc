@@ -56,12 +56,12 @@ const char *LC_DAY[7]      = {"Sunnuntai", "Maanantai", "Tiistai", "Keskiviikko"
 // ABDAY_{1-7}             abbreviated name of the n-th day of the week
 const char *LC_ABDAY[7]    = {"Su", "Ma", "Ti", "Ke", "To", "Pe", "La"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = {"Tammikuu",    "Helmikuu", "Maaliskuu",    "Huhtikuu",
-                               "Toukokuu",       "Kes\xE4kuu",     "Hein\xE4kuu",     "Elokuu",
-                               "Syyskuu", "Lokakuu",  "Marraskuu", "Joulukuu"};
+const char *LC_MON[12]     = {"Tammikuu",  "Helmikuu",   "Maaliskuu",   "Huhtikuu",
+                               "Toukokuu", "Kes\xE4kuu", "Hein\xE4kuu", "Elokuu",
+                               "Syyskuu",  "Lokakuu",    "Marraskuu",   "Joulukuu"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
-const char *LC_ABMON[12]   = {"Tammi", "Helmi", "Maalis", "Huhti", "Touko", "Kes\xE4",
-                              "Hein\xE4", "Elo", "Syys", "Loka", "Marras", "Joulu"};
+const char *LC_ABMON[12]   = {"Tammi",   "Helmi", "Maalis", "Huhti", "Touko",  "Kes\xE4",
+                              "Hein\xE4", "Elo",  "Syys",   "Loka",  "Marras", "Joulu"};
 // ERA                     era description segments
 const char *LC_ERA         = "";
 // ERA_D_FMT               era date format string
@@ -81,8 +81,8 @@ const String OWM_LANG = "fi";
 const char *TXT_FEELS_LIKE         = "Tuntuu kuin";
 const char *TXT_SUNRISE            = "Auringon nousu";
 const char *TXT_SUNSET             = "Auringon lasku";
-const char *TXT_MOONRISE		   = "Kuut\xF5usu";			
-const char *TXT_MOONSET			   = "Kuunlasku";	
+const char *TXT_MOONRISE           = "Kuut\xF5usu";
+const char *TXT_MOONSET	           = "Kuunlasku";
 const char *TXT_WIND               = "Tuuli";
 const char *TXT_HUMIDITY           = "Ilmankosteus";
 const char *TXT_UV_INDEX           = "UV-indeksi";
@@ -94,15 +94,15 @@ const char *TXT_INDOOR_TEMPERATURE = "L\xE4mp\xF6tila";
 const char *TXT_INDOOR_HUMIDITY    = "Ilmankosteus";
 
 // MOON PHASE
-const char *TXT_MOONPHASE			= "Kuunvaihe";			
-const char *TXT_NEW_MOON			= "Uusikuu";			
-const char *TXT_WAXING_CRESCENT		= "Kasvava puolikuu";			
-const char *TXT_FIRST_QUARTER		= "Ensimm\xE4inen nelj\xE4nnes";			
-const char *TXT_WAXING_GIBBOUS		= "Kasvava kupera kuu";			
-const char *TXT_FULL_MOON			= "T\xE4ysikuu";			
-const char *TXT_WANING_GIBBOUS		= "V\xE4henev kupera kuu";			
-const char *TXT_THIRD_QUARTER		= "Viimeinen nelj\xE4nnes";			
-const char *TXT_WANING_CRESCENT		= "V\xE4henev puolikuu";		
+const char *TXT_MOONPHASE       = "Kuunvaihe";
+const char *TXT_NEW_MOON        = "Uusikuu";
+const char *TXT_WAXING_CRESCENT = "Kasvava puolikuu";
+const char *TXT_FIRST_QUARTER   = "Ensimm\xE4inen nelj\xE4nnes";
+const char *TXT_WAXING_GIBBOUS  = "Kasvava kupera kuu";
+const char *TXT_FULL_MOON       = "T\xE4ysikuu";
+const char *TXT_WANING_GIBBOUS  = "V\xE4henev kupera kuu";
+const char *TXT_THIRD_QUARTER   = "Viimeinen nelj\xE4nnes";
+const char *TXT_WANING_CRESCENT = "V\xE4henev puolikuu";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Matala";

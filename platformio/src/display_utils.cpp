@@ -76,10 +76,10 @@ uint32_t readBatteryVoltage()
 /* Returns battery percentage, rounded to the nearest integer.
  * Takes a voltage in millivolts and uses a sigmoidal approximation to find an
  * approximation of the battery life percentage remaining.
- * 
- * This function contains LGPLv3 code from 
+ *
+ * This function contains LGPLv3 code from
  * <https://github.com/rlogiacco/BatterySense>.
- * 
+ *
  * Symmetric sigmoidal approximation
  * <https://www.desmos.com/calculator/7m9lu26vpy>
  *
@@ -423,7 +423,7 @@ const uint8_t *getWiFiBitmap16(int rssi)
 
 /* Returns true if icon is a daytime icon, false otherwise.
  */
-bool isDay(String icon) 
+bool isDay(String icon)
 {
   // OpenWeatherMap indicates sun is up with d otherwise n for night
   return icon.endsWith("d");
@@ -653,7 +653,7 @@ const uint8_t *getDailyForecastBitmap64(const owm_daily_t &daily)
 /* Takes the current weather and today's daily weather forcast (from
  * OpenWeatherMap API response) and returns a pointer to the icon's 196x196
  * bitmap.
- * 
+ *
  * The daily weather forcast of today is needed for moonrise and moonset times.
  */
 const uint8_t *getCurrentConditionsBitmap196(const owm_current_t &current,
@@ -1359,7 +1359,7 @@ const char *getCompassPointNotation(int windDeg)
 #endif
 
   windDeg %= 360; // enforce domain
-  int arr_offset = (int) (windDeg / ( 360 / (float) precision )) 
+  int arr_offset = (int) (windDeg / ( 360 / (float) precision ))
                          * ( 32 / precision) ;
 
   return COMPASS_POINT_NOTATION[arr_offset];
@@ -1378,7 +1378,7 @@ const char *getCompassPointNotation(int windDeg)
  *
  * ArduinoJson DeserializationError codes [-256, -511]
  * https://arduinojson.org/v6/api/misc/deserializationerror/
- * 
+ *
  * WiFi Status codes [-512, -767]
  * https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/src/WiFiType.h
  */
@@ -1534,69 +1534,69 @@ void disableBuiltinLED()
 // Define the set of moon phase icon base on the chosen moon phase style
 #ifdef MOONPHASE_PRIMARY
 static const unsigned char *moon_phase_icon_arr[] = {
-wi_moon_new_48x48,
-wi_moon_waxing_crescent_1_48x48,
-wi_moon_waxing_crescent_2_48x48,
-wi_moon_waxing_crescent_3_48x48,
-wi_moon_waxing_crescent_4_48x48,
-wi_moon_waxing_crescent_5_48x48,
-wi_moon_waxing_6_48x48,
-wi_moon_first_quarter_48x48,
-wi_moon_waxing_gibbous_1_48x48,
-wi_moon_waxing_gibbous_2_48x48,
-wi_moon_waxing_gibbous_3_48x48,
-wi_moon_waxing_gibbous_4_48x48,
-wi_moon_waxing_gibbous_5_48x48,
-wi_moon_waxing_gibbous_6_48x48,
-wi_moon_full_48x48,
-wi_moon_waning_gibbous_1_48x48,
-wi_moon_waning_gibbous_2_48x48,
-wi_moon_waning_gibbous_3_48x48,
-wi_moon_waning_gibbous_4_48x48,
-wi_moon_waning_gibbous_5_48x48,
-wi_moon_waning_gibbous_6_48x48,
-wi_moon_third_quarter_48x48,
-wi_moon_waning_crescent_1_48x48,
-wi_moon_waning_crescent_2_48x48,
-wi_moon_waning_crescent_3_48x48,
-wi_moon_waning_crescent_4_48x48,
-wi_moon_waning_crescent_5_48x48,
-wi_moon_waning_crescent_6_48x48,
-wi_moon_new_48x48 }; 
+  wi_moon_new_48x48,
+  wi_moon_waxing_crescent_1_48x48,
+  wi_moon_waxing_crescent_2_48x48,
+  wi_moon_waxing_crescent_3_48x48,
+  wi_moon_waxing_crescent_4_48x48,
+  wi_moon_waxing_crescent_5_48x48,
+  wi_moon_waxing_6_48x48,
+  wi_moon_first_quarter_48x48,
+  wi_moon_waxing_gibbous_1_48x48,
+  wi_moon_waxing_gibbous_2_48x48,
+  wi_moon_waxing_gibbous_3_48x48,
+  wi_moon_waxing_gibbous_4_48x48,
+  wi_moon_waxing_gibbous_5_48x48,
+  wi_moon_waxing_gibbous_6_48x48,
+  wi_moon_full_48x48,
+  wi_moon_waning_gibbous_1_48x48,
+  wi_moon_waning_gibbous_2_48x48,
+  wi_moon_waning_gibbous_3_48x48,
+  wi_moon_waning_gibbous_4_48x48,
+  wi_moon_waning_gibbous_5_48x48,
+  wi_moon_waning_gibbous_6_48x48,
+  wi_moon_third_quarter_48x48,
+  wi_moon_waning_crescent_1_48x48,
+  wi_moon_waning_crescent_2_48x48,
+  wi_moon_waning_crescent_3_48x48,
+  wi_moon_waning_crescent_4_48x48,
+  wi_moon_waning_crescent_5_48x48,
+  wi_moon_waning_crescent_6_48x48,
+  wi_moon_new_48x48 };
 #endif
 // end MOONPHASE_PRIMARY
 
 #ifdef MOONPHASE_ALTERNATIVE
 static const unsigned char *moon_phase_icon_arr[] = {
-wi_moon_alt_new_48x48,
-wi_moon_alt_waxing_crescent_1_48x48,
-wi_moon_alt_waxing_crescent_2_48x48,
-wi_moon_alt_waxing_crescent_3_48x48,
-wi_moon_alt_waxing_crescent_4_48x48,
-wi_moon_alt_waxing_crescent_5_48x48,
-wi_moon_alt_waxing_crescent_6_48x48,
-wi_moon_alt_first_quarter_48x48,
-wi_moon_alt_waxing_gibbous_1_48x48,
-wi_moon_alt_waxing_gibbous_2_48x48,
-wi_moon_alt_waxing_gibbous_3_48x48,
-wi_moon_alt_waxing_gibbous_4_48x48,
-wi_moon_alt_waxing_gibbous_5_48x48,
-wi_moon_alt_waxing_gibbous_6_48x48,
-wi_moon_alt_full_48x48,
-wi_moon_alt_waning_gibbous_1_48x48,
-wi_moon_alt_waning_gibbous_2_48x48,
-wi_moon_alt_waning_gibbous_3_48x48,
-wi_moon_alt_waning_gibbous_4_48x48,
-wi_moon_alt_waning_gibbous_5_48x48,
-wi_moon_alt_waning_gibbous_6_48x48,
-wi_moon_alt_third_quarter_48x48,
-wi_moon_alt_waning_crescent_1_48x48,
-wi_moon_alt_waning_crescent_2_48x48,
-wi_moon_alt_waning_crescent_3_48x48,
-wi_moon_alt_waning_crescent_4_48x48,
-wi_moon_alt_waning_crescent_5_48x48,
-wi_moon_alt_waning_crescent_6_48x48,
-wi_moon_alt_new_48x48 }; 
+  wi_moon_alt_new_48x48,
+  wi_moon_alt_waxing_crescent_1_48x48,
+  wi_moon_alt_waxing_crescent_2_48x48,
+  wi_moon_alt_waxing_crescent_3_48x48,
+  wi_moon_alt_waxing_crescent_4_48x48,
+  wi_moon_alt_waxing_crescent_5_48x48,
+  wi_moon_alt_waxing_crescent_6_48x48,
+  wi_moon_alt_first_quarter_48x48,
+  wi_moon_alt_waxing_gibbous_1_48x48,
+  wi_moon_alt_waxing_gibbous_2_48x48,
+  wi_moon_alt_waxing_gibbous_3_48x48,
+  wi_moon_alt_waxing_gibbous_4_48x48,
+  wi_moon_alt_waxing_gibbous_5_48x48,
+  wi_moon_alt_waxing_gibbous_6_48x48,
+  wi_moon_alt_full_48x48,
+  wi_moon_alt_waning_gibbous_1_48x48,
+  wi_moon_alt_waning_gibbous_2_48x48,
+  wi_moon_alt_waning_gibbous_3_48x48,
+  wi_moon_alt_waning_gibbous_4_48x48,
+  wi_moon_alt_waning_gibbous_5_48x48,
+  wi_moon_alt_waning_gibbous_6_48x48,
+  wi_moon_alt_third_quarter_48x48,
+  wi_moon_alt_waning_crescent_1_48x48,
+  wi_moon_alt_waning_crescent_2_48x48,
+  wi_moon_alt_waning_crescent_3_48x48,
+  wi_moon_alt_waning_crescent_4_48x48,
+  wi_moon_alt_waning_crescent_5_48x48,
+  wi_moon_alt_waning_crescent_6_48x48,
+  wi_moon_alt_new_48x48 };
 #endif
 // end MOONPHASE_ALTERNATIVE
 
@@ -1613,41 +1613,41 @@ const uint8_t *getMoonPhaseBitmap48(const owm_daily_t &daily)
 } // end getMoonPhaseBitmap48
 
 
-// Returns the current moon phase string 
+// Returns the current moon phase string
   const char *getMoonPhaseStr(const owm_daily_t &daily)
 {
   int n = static_cast<int>(daily.moon_phase * 28 + 0.5);
   switch(n)
-{
-case 0 : return TXT_NEW_MOON;
-case 1 : return TXT_WAXING_CRESCENT;
-case 2 : return TXT_WAXING_CRESCENT;
-case 3 : return TXT_WAXING_CRESCENT;
-case 4 : return TXT_WAXING_CRESCENT;
-case 5 : return TXT_WAXING_CRESCENT;
-case 6 : return TXT_WAXING_CRESCENT;
-case 7 : return TXT_FIRST_QUARTER ;
-case 8 : return TXT_WAXING_GIBBOUS;
-case 9 : return TXT_WAXING_GIBBOUS ;
-case 10 : return TXT_WAXING_GIBBOUS ;
-case 11 : return TXT_WAXING_GIBBOUS ;
-case 12 : return TXT_WAXING_GIBBOUS ;
-case 13 : return TXT_WAXING_GIBBOUS ;
-case 14 : return TXT_FULL_MOON ;
-case 15 : return TXT_WANING_GIBBOUS;
-case 16 : return TXT_WANING_GIBBOUS;
-case 17 : return TXT_WANING_GIBBOUS;
-case 18 : return TXT_WANING_GIBBOUS;
-case 19 : return TXT_WANING_GIBBOUS;
-case 20 : return TXT_WANING_GIBBOUS;
-case 21 : return TXT_THIRD_QUARTER ;
-case 22 : return TXT_WANING_CRESCENT;
-case 23 : return TXT_WANING_CRESCENT;
-case 24 : return TXT_WANING_CRESCENT;
-case 25 : return TXT_WANING_CRESCENT;
-case 26 : return TXT_WANING_CRESCENT;
-case 27 : return TXT_WANING_CRESCENT;
-case 28 : return TXT_NEW_MOON ;
-default:  return "";
-}
+  {
+  case 0 : return TXT_NEW_MOON;
+  case 1 : return TXT_WAXING_CRESCENT;
+  case 2 : return TXT_WAXING_CRESCENT;
+  case 3 : return TXT_WAXING_CRESCENT;
+  case 4 : return TXT_WAXING_CRESCENT;
+  case 5 : return TXT_WAXING_CRESCENT;
+  case 6 : return TXT_WAXING_CRESCENT;
+  case 7 : return TXT_FIRST_QUARTER;
+  case 8 : return TXT_WAXING_GIBBOUS;
+  case 9 : return TXT_WAXING_GIBBOUS;
+  case 10 : return TXT_WAXING_GIBBOUS;
+  case 11 : return TXT_WAXING_GIBBOUS;
+  case 12 : return TXT_WAXING_GIBBOUS;
+  case 13 : return TXT_WAXING_GIBBOUS;
+  case 14 : return TXT_FULL_MOON;
+  case 15 : return TXT_WANING_GIBBOUS;
+  case 16 : return TXT_WANING_GIBBOUS;
+  case 17 : return TXT_WANING_GIBBOUS;
+  case 18 : return TXT_WANING_GIBBOUS;
+  case 19 : return TXT_WANING_GIBBOUS;
+  case 20 : return TXT_WANING_GIBBOUS;
+  case 21 : return TXT_THIRD_QUARTER;
+  case 22 : return TXT_WANING_CRESCENT;
+  case 23 : return TXT_WANING_CRESCENT;
+  case 24 : return TXT_WANING_CRESCENT;
+  case 25 : return TXT_WANING_CRESCENT;
+  case 26 : return TXT_WANING_CRESCENT;
+  case 27 : return TXT_WANING_CRESCENT;
+  case 28 : return TXT_NEW_MOON;
+  default:  return "";
+  }
 } // end getMoonPhaseStr

@@ -86,16 +86,15 @@ const char *TXT_INDOOR_TEMPERATURE = "Temperature";
 const char *TXT_INDOOR_HUMIDITY    = "Humidity";
 
 // MOON PHASE
-const char *TXT_MOONPHASE           = "Moon Phase";
-const char *TXT_NEW_MOON			= "New Moon";
-const char *TXT_WAXING_CRESCENT		= "Waxing Crescent";
-const char *TXT_FIRST_QUARTER 		= "First Quarter";
-const char *TXT_WAXING_GIBBOUS		= "Waxing Gibbous";
-const char *TXT_FULL_MOON 			= "Full Moon";
-const char *TXT_WANING_GIBBOUS		= "Waning Gibbous";
-const char *TXT_THIRD_QUARTER   	= "Last Quarter";
-const char *TXT_WANING_CRESCENT  	= "Waning Crescent";
-  
+const char *TXT_MOONPHASE       = "Moon Phase";
+const char *TXT_NEW_MOON        = "New Moon";
+const char *TXT_WAXING_CRESCENT = "Waxing Crescent";
+const char *TXT_FIRST_QUARTER   = "First Quarter";
+const char *TXT_WAXING_GIBBOUS  = "Waxing Gibbous";
+const char *TXT_FULL_MOON       = "Full Moon";
+const char *TXT_WANING_GIBBOUS  = "Waning Gibbous";
+const char *TXT_THIRD_QUARTER   = "Last Quarter";
+const char *TXT_WANING_CRESCENT = "Waning Crescent";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Low";

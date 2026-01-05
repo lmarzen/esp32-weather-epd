@@ -80,8 +80,8 @@ const String OWM_LANG = "pt_br";
 const char *TXT_FEELS_LIKE         = "Sensa\347\343o t\351rmica";
 const char *TXT_SUNRISE            = "Nascer do Sol";
 const char *TXT_SUNSET             = "P\364r do Sol";
-const char *TXT_MOONRISE		   = "Nascer da Lua";			
-const char *TXT_MOONSET			   = "P\xF4r da Lua";		
+const char *TXT_MOONRISE           = "Nascer da Lua";
+const char *TXT_MOONSET            = "P\xF4r da Lua";
 const char *TXT_WIND               = "Vento";
 const char *TXT_HUMIDITY           = "Umidade";
 const char *TXT_UV_INDEX           = "\315ndice UV";
@@ -93,15 +93,15 @@ const char *TXT_INDOOR_TEMPERATURE = "Temperatura Interna";
 const char *TXT_INDOOR_HUMIDITY    = "Umidade Interna";
 
 // MOON PHASE
-const char *TXT_MOONPHASE			= "Fase lunar";			
-const char *TXT_NEW_MOON			= "Lua Nova";			
-const char *TXT_WAXING_CRESCENT		= "Lua Crescente (C\xF4ncava)";			
-const char *TXT_FIRST_QUARTER		= "Quarto Crescente";			
-const char *TXT_WAXING_GIBBOUS		= "Lua Gibosa Crescente";			
-const char *TXT_FULL_MOON			= "Lua Cheia";			
-const char *TXT_WANING_GIBBOUS		= "Lua Gibosa Minguante";			
-const char *TXT_THIRD_QUARTER		= "Quarto Minguante";			
-const char *TXT_WANING_CRESCENT		= "Lua Minguante (C\xF4ncava)";			
+const char *TXT_MOONPHASE       = "Fase lunar";
+const char *TXT_NEW_MOON        = "Lua Nova";
+const char *TXT_WAXING_CRESCENT = "Lua Crescente (C\xF4ncava)";
+const char *TXT_FIRST_QUARTER   = "Quarto Crescente";
+const char *TXT_WAXING_GIBBOUS  = "Lua Gibosa Crescente";
+const char *TXT_FULL_MOON       = "Lua Cheia";
+const char *TXT_WANING_GIBBOUS  = "Lua Gibosa Minguante";
+const char *TXT_THIRD_QUARTER   = "Quarto Minguante";
+const char *TXT_WANING_CRESCENT = "Lua Minguante (C\xF4ncava)";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Baixo";
