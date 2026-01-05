@@ -1530,3 +1530,124 @@ void disableBuiltinLED()
   gpio_deep_sleep_hold_en();
   return;
 } // end disableBuiltinLED
+
+// Define the set of moon phase icon base on the chosen moon phase style
+#ifdef MOONPHASE_PRIMARY
+static const unsigned char *moon_phase_icon_arr[] = {
+wi_moon_new_48x48,
+wi_moon_waxing_crescent_1_48x48,
+wi_moon_waxing_crescent_2_48x48,
+wi_moon_waxing_crescent_3_48x48,
+wi_moon_waxing_crescent_4_48x48,
+wi_moon_waxing_crescent_5_48x48,
+wi_moon_waxing_6_48x48,
+wi_moon_first_quarter_48x48,
+wi_moon_waxing_gibbous_1_48x48,
+wi_moon_waxing_gibbous_2_48x48,
+wi_moon_waxing_gibbous_3_48x48,
+wi_moon_waxing_gibbous_4_48x48,
+wi_moon_waxing_gibbous_5_48x48,
+wi_moon_waxing_gibbous_6_48x48,
+wi_moon_full_48x48,
+wi_moon_waning_gibbous_1_48x48,
+wi_moon_waning_gibbous_2_48x48,
+wi_moon_waning_gibbous_3_48x48,
+wi_moon_waning_gibbous_4_48x48,
+wi_moon_waning_gibbous_5_48x48,
+wi_moon_waning_gibbous_6_48x48,
+wi_moon_third_quarter_48x48,
+wi_moon_waning_crescent_1_48x48,
+wi_moon_waning_crescent_2_48x48,
+wi_moon_waning_crescent_3_48x48,
+wi_moon_waning_crescent_4_48x48,
+wi_moon_waning_crescent_5_48x48,
+wi_moon_waning_crescent_6_48x48,
+wi_moon_new_48x48 }; 
+#endif
+// end MOONPHASE_PRIMARY
+
+#ifdef MOONPHASE_ALTERNATIVE
+static const unsigned char *moon_phase_icon_arr[] = {
+wi_moon_alt_new_48x48,
+wi_moon_alt_waxing_crescent_1_48x48,
+wi_moon_alt_waxing_crescent_2_48x48,
+wi_moon_alt_waxing_crescent_3_48x48,
+wi_moon_alt_waxing_crescent_4_48x48,
+wi_moon_alt_waxing_crescent_5_48x48,
+wi_moon_alt_waxing_crescent_6_48x48,
+wi_moon_alt_first_quarter_48x48,
+wi_moon_alt_waxing_gibbous_1_48x48,
+wi_moon_alt_waxing_gibbous_2_48x48,
+wi_moon_alt_waxing_gibbous_3_48x48,
+wi_moon_alt_waxing_gibbous_4_48x48,
+wi_moon_alt_waxing_gibbous_5_48x48,
+wi_moon_alt_waxing_gibbous_6_48x48,
+wi_moon_alt_full_48x48,
+wi_moon_alt_waning_gibbous_1_48x48,
+wi_moon_alt_waning_gibbous_2_48x48,
+wi_moon_alt_waning_gibbous_3_48x48,
+wi_moon_alt_waning_gibbous_4_48x48,
+wi_moon_alt_waning_gibbous_5_48x48,
+wi_moon_alt_waning_gibbous_6_48x48,
+wi_moon_alt_third_quarter_48x48,
+wi_moon_alt_waning_crescent_1_48x48,
+wi_moon_alt_waning_crescent_2_48x48,
+wi_moon_alt_waning_crescent_3_48x48,
+wi_moon_alt_waning_crescent_4_48x48,
+wi_moon_alt_waning_crescent_5_48x48,
+wi_moon_alt_waning_crescent_6_48x48,
+wi_moon_alt_new_48x48 }; 
+#endif
+// end MOONPHASE_ALTERNATIVE
+
+/*  Returns the 48x48 moon phase icon bitmap based on api response between 0 and 1
+ *  0 and 1 means new moon
+ *  0.5 means full moon
+ *  scale range to match 28 numbers of different icons
+ *  offset +0.5 to shift icon to center of moon phase period
+*/
+const uint8_t *getMoonPhaseBitmap48(const owm_daily_t &daily)
+{
+  int n = static_cast<int>(daily.moon_phase * 28 + 0.5);
+    return moon_phase_icon_arr[n];
+} // end getMoonPhaseBitmap48
+
+
+// Returns the current moon phase string 
+  const char *getMoonPhaseStr(const owm_daily_t &daily)
+{
+  int n = static_cast<int>(daily.moon_phase * 28 + 0.5);
+  switch(n)
+{
+case 0 : return TXT_NEW_MOON;
+case 1 : return TXT_WAXING_CRESCENT;
+case 2 : return TXT_WAXING_CRESCENT;
+case 3 : return TXT_WAXING_CRESCENT;
+case 4 : return TXT_WAXING_CRESCENT;
+case 5 : return TXT_WAXING_CRESCENT;
+case 6 : return TXT_WAXING_CRESCENT;
+case 7 : return TXT_FIRST_QUARTER ;
+case 8 : return TXT_WAXING_GIBBOUS;
+case 9 : return TXT_WAXING_GIBBOUS ;
+case 10 : return TXT_WAXING_GIBBOUS ;
+case 11 : return TXT_WAXING_GIBBOUS ;
+case 12 : return TXT_WAXING_GIBBOUS ;
+case 13 : return TXT_WAXING_GIBBOUS ;
+case 14 : return TXT_FULL_MOON ;
+case 15 : return TXT_WANING_GIBBOUS;
+case 16 : return TXT_WANING_GIBBOUS;
+case 17 : return TXT_WANING_GIBBOUS;
+case 18 : return TXT_WANING_GIBBOUS;
+case 19 : return TXT_WANING_GIBBOUS;
+case 20 : return TXT_WANING_GIBBOUS;
+case 21 : return TXT_THIRD_QUARTER ;
+case 22 : return TXT_WANING_CRESCENT;
+case 23 : return TXT_WANING_CRESCENT;
+case 24 : return TXT_WANING_CRESCENT;
+case 25 : return TXT_WANING_CRESCENT;
+case 26 : return TXT_WANING_CRESCENT;
+case 27 : return TXT_WANING_CRESCENT;
+case 28 : return TXT_NEW_MOON ;
+default:  return "";
+}
+} // end getMoonPhaseStr

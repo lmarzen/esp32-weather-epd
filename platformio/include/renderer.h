@@ -84,5 +84,18 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
                    int rssi, uint32_t batVoltage);
 void drawError(const uint8_t *bitmap_196x196,
                const String &errMsgLn1, const String &errMsgLn2="");
+void drawCurrentSunrise(const owm_current_t &current);
+void drawCurrentSunset(const owm_current_t &current);
+void drawCurrentInTemp(float inTemp);
+void drawCurrentInHumidity(float inHumidity);
+void drawCurrentMoonrise(const owm_daily_t &today);
+void drawCurrentMoonset(const owm_daily_t &today);
+void drawCurrentWind(const owm_current_t &current);
+void drawCurrentHumidity(const owm_current_t &current);
+void drawCurrentUVI(const owm_current_t &current);
+void drawCurrentPressure(const owm_current_t &current);
+void drawCurrentVisibility(const owm_current_t &current);
+void drawCurrentAirQuality(const owm_resp_air_pollution_t &owm_air_pollution);
+void drawCurrentMoonphase(const owm_daily_t &today);
 
 #endif
