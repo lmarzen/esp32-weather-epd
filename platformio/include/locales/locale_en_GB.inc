@@ -84,6 +84,7 @@ const char *TXT_AIR_POLLUTION      = "Air Pollution";
 const char *TXT_VISIBILITY         = "Visibility";
 const char *TXT_INDOOR_TEMPERATURE = "Temperature";
 const char *TXT_INDOOR_HUMIDITY    = "Humidity";
+const char *TXT_DEWPOINT           = "Dew Point";
 
 // MOON PHASE
 const char *TXT_MOONPHASE       = "Moon Phase";
@@ -257,7 +258,7 @@ extern "C" {
 //   HONG_KONG_AQHI       INDIA_AQI            CHINA_AQI
 //   SINGAPORE_PSI        SOUTH_KOREA_CAI      UNITED_KINGDOM_DAQI
 //   UNITED_STATES_AQI
-const aqi_scale_t AQI_SCALE = HONG_KONG_AQHI;
+const aqi_scale_t AQI_SCALE = UNITED_KINGDOM_DAQI;
 
 const char *AUSTRALIA_AQI_TXT[6] =
 {

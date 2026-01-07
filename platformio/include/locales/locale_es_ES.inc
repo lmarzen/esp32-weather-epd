@@ -84,6 +84,7 @@ const char *TXT_AIR_POLLUTION      = "Contaminaci\363n del aire";
 const char *TXT_VISIBILITY         = "Visibilidad";
 const char *TXT_INDOOR_TEMPERATURE = "Temperatura";
 const char *TXT_INDOOR_HUMIDITY    = "Humedad";
+const char *TXT_DEWPOINT           = "Punto de rocío";
 
 // MOON PHASE
 const char *TXT_MOONPHASE       = "Fase lunar";

@@ -83,8 +83,6 @@ const char *TXT_SUNRISE            = "Lever de Soleil";
 const char *TXT_SUNSET             = "Coucher de Soleil";
 const char *TXT_MOONRISE           = "Lever de Lune";
 const char *TXT_MOONSET            = "Coucher de Lune";
-const char *TXT_MOONRISE           = "Moonrise";
-const char *TXT_MOONSET            = "Moonset";
 const char *TXT_WIND               = "Vent";
 const char *TXT_HUMIDITY           = "Humidit\351";
 const char *TXT_UV_INDEX           = "Indice UV";
@@ -94,6 +92,7 @@ const char *TXT_AIR_POLLUTION      = "Pollution de L'air";
 const char *TXT_VISIBILITY         = "Visibilit\351";
 const char *TXT_INDOOR_TEMPERATURE = "Temp\351rature";
 const char *TXT_INDOOR_HUMIDITY    = "Humidit\351";
+const char *TXT_DEWPOINT           = "Point de ros\351e";
 
 // MOON PHASE
 const char *TXT_MOONPHASE          = "Phase lunaire";
@@ -102,7 +101,7 @@ const char *TXT_WAXING_CRESCENT    = "Premier croissant";
 const char *TXT_FIRST_QUARTER      = "Premier quartier";
 const char *TXT_WAXING_GIBBOUS     = "Gibbeuse croissante";
 const char *TXT_FULL_MOON          = "Pleine";
-const char *TXT_WANING_GIBBOUS     = "Gibbeuse d\xE9croissante";
+const char *TXT_WANING_GIBBOUS     = "Gibbeuse d\351croissante";
 const char *TXT_THIRD_QUARTER      = "Dernier quartier";
 const char *TXT_WANING_CRESCENT    = "Dernier croissant";
 
