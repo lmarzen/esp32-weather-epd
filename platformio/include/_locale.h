@@ -56,6 +56,7 @@ extern const char *TXT_AIR_POLLUTION;
 extern const char *TXT_VISIBILITY;
 extern const char *TXT_INDOOR_TEMPERATURE;
 extern const char *TXT_INDOOR_HUMIDITY;
+extern const char *TXT_DEWPOINT;
 
 // MOON PHASE
 extern const char *TXT_MOONPHASE;
@@ -286,3 +287,4 @@ extern const char *TXT_WL_CONNECTION_LOST;
 extern const char *TXT_WL_DISCONNECTED;
 
 #endif
+
