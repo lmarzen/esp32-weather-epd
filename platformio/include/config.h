@@ -286,6 +286,14 @@
 //   1 : Enable
 #define DISPLAY_HOURLY_ICONS 1
 
+// OUTLOOK GRAPH VERTICAL LINE INTERVAL
+// Drawing vertical line at specified hour interval.
+// i.e. setting to 24 will draw line at day change (i.e. 0 am)
+// Possible intervals include [1 , 2 , 3 , 4 , 6 , 12 , 24 , 48 , 72] 
+// Other intervals may cause strange behavior
+// Comment out to turn off vertical line
+# define OUTLOOK_VERTICAL_LINE_INTERVAL  12
+
 // ALERTS
 //   The handling of alerts is complex. Each country has a unique national alert
 //   system that receives alerts from many different government agencies. This
