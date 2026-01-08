@@ -217,6 +217,7 @@
 // #define POS_MOONRISE    2
 // #define POS_MOONSET     3
 // #define POS_MOONPHASE   4
+// #define POS_DEWPOINT    5
 
 
 // Choose the style of moon phase icon you like

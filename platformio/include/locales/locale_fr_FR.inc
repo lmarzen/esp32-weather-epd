@@ -92,6 +92,7 @@ const char *TXT_AIR_POLLUTION      = "Pollution de L'air";
 const char *TXT_VISIBILITY         = "Visibilit\351";
 const char *TXT_INDOOR_TEMPERATURE = "Temp\351rature";
 const char *TXT_INDOOR_HUMIDITY    = "Humidit\351";
+const char *TXT_DEWPOINT           = "Point de ros\351e";
 
 // MOON PHASE
 const char *TXT_MOONPHASE          = "Phase lunaire";
@@ -100,7 +101,7 @@ const char *TXT_WAXING_CRESCENT    = "Premier croissant";
 const char *TXT_FIRST_QUARTER      = "Premier quartier";
 const char *TXT_WAXING_GIBBOUS     = "Gibbeuse croissante";
 const char *TXT_FULL_MOON          = "Pleine";
-const char *TXT_WANING_GIBBOUS     = "Gibbeuse d\xE9croissante";
+const char *TXT_WANING_GIBBOUS     = "Gibbeuse d\351croissante";
 const char *TXT_THIRD_QUARTER      = "Dernier quartier";
 const char *TXT_WANING_CRESCENT    = "Dernier croissant";
 

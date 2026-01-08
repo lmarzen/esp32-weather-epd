@@ -92,6 +92,7 @@ const char *TXT_AIR_POLLUTION      = "Ilmansaaste";
 const char *TXT_VISIBILITY         = "N\xE4kyvyys";
 const char *TXT_INDOOR_TEMPERATURE = "L\xE4mp\xF6tila";
 const char *TXT_INDOOR_HUMIDITY    = "Ilmankosteus";
+const char *TXT_DEWPOINT           = "Kastepiste";
 
 // MOON PHASE
 const char *TXT_MOONPHASE       = "Kuunvaihe";
