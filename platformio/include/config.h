@@ -47,6 +47,10 @@
 #define SENSOR_BME280
 // #define SENSOR_BME680
 
+// If you enconter issues with the BME280 sensor showing no data, uncomment and
+// add a small delay before reading it's value. 300ms seems to work for most people
+// #define SENSOR_INIT_DELAY_MS 300
+
 // 3 COLOR E-INK ACCENT COLOR
 // Defines the 3rd color to be used when a 3+ color display is selected.
 #if defined(DISP_3C_B) || defined(DISP_7C_F)
