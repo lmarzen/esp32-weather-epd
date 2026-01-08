@@ -1258,6 +1258,118 @@ void drawForecast(const owm_daily_t *daily, tm timeInfo)
   return;
 } // end drawAlerts
 
+
+void drawNextHourPrecip(const owm_minutely_t *minutely,
+                        const String &city, const String &date)
+{
+  float period_precipitation_mm = 0;
+
+  // Find continuous rain periods with gap tolerance
+  int rain_start_idx = -1;
+  int rain_end_idx = -1;
+  int gap_counter = 0;
+
+  for (int i = 0; i < OWM_NUM_MINUTELY; i++)
+  {
+    if (minutely[i].precipitation > 0)
+    {
+      // Value is given in mm/h
+      period_precipitation_mm += (minutely[i].precipitation / 60);
+
+      // Start of rain period
+      if (rain_start_idx == -1) {
+        rain_start_idx = i;
+      }
+      
+      // Reset gap counter while it rains
+      gap_counter = 0;
+      rain_end_idx = i;
+    }
+    else if (rain_start_idx != -1)
+    {
+      // We're in a potential gap
+      gap_counter++;
+
+      // If gap exceeds threshold, close the rain period
+      if (gap_counter > PRECIP_MAX_GAP_MINUTES)
+      {
+        rain_end_idx = i - gap_counter;
+        break;
+      }
+    }    
+  }
+
+  if (rain_start_idx == -1 || period_precipitation_mm < PRECIP_THRESHOLD_PERIOD)
+  {
+  #if DEBUG_LEVEL >= 1
+    Serial.println("[debug] no rain forecasted within the next hour");
+  #endif
+    return;
+  }
+
+
+  char timeBufferStart[12] = {}; // big enough to accommodate "hh:mm:ss am"
+  if (rain_start_idx >= 0 && rain_start_idx < OWM_NUM_MINUTELY) {
+    time_t ts = minutely[rain_start_idx].dt;
+    tm *timeInfo = localtime(&ts);
+    _strftime(timeBufferStart, sizeof(timeBufferStart), TIME_FORMAT, timeInfo);
+  }
+
+  char timeBufferEnd[12] = {}; // big enough to accommodate "hh:mm:ss am"
+  if (rain_end_idx >= 0 && rain_end_idx < OWM_NUM_MINUTELY) {
+    time_t ts = minutely[rain_end_idx].dt;
+    tm *timeInfo = localtime(&ts);
+    _strftime(timeBufferEnd, sizeof(timeBufferEnd), TIME_FORMAT, timeInfo);
+  }
+
+  char rain_alert_msg[100]; // big enough to accommodate full message based on the language
+
+  if (rain_start_idx == 0)
+  {
+    if (rain_end_idx == OWM_NUM_MINUTELY - 1)
+    {
+      sprintf(rain_alert_msg, TXT_RAIN_CONTINUOUS);
+    }
+    else
+    {
+      sprintf(rain_alert_msg, TXT_RAIN_UNTIL, timeBufferEnd);
+    }
+  }
+  else
+  {
+    if (rain_end_idx == OWM_NUM_MINUTELY - 1)
+    {
+      sprintf(rain_alert_msg, TXT_RAIN_FROM, timeBufferStart);
+    }
+    else
+    {
+      sprintf(rain_alert_msg, TXT_RAIN_FROM_TO, timeBufferStart, timeBufferEnd);
+    }
+  }
+
+  // TODO: Share this render code with drawAlerts ?
+  // But is expects owm_alerts_t and uses an icom the the event message which is not localized.
+
+  display.setFont(&FONT_16pt8b);
+  int city_w = getStringWidth(city);
+  display.setFont(&FONT_12pt8b);
+  int date_w = getStringWidth(date);
+  int max_w = DISP_WIDTH - 2 - std::max(city_w, date_w) - (196 + 4) - 8;
+
+  max_w -= 48;
+  display.drawInvertedBitmap(196, 8, wi_rain_48x48, 48, 48, GxEPD_BLACK);
+
+  display.setFont(&FONT_12pt8b);
+  if (getStringWidth(rain_alert_msg) <= max_w)
+  { // Fits on a single line with smaller font, draw along bottom
+    drawString(196 + 48 + 4, 24 + 8 - 12 + 17 + 1, rain_alert_msg, LEFT);
+  }
+  else
+  { // Does not fit on a single line, draw higher to allow room for 2nd line
+    drawMultiLnString(196 + 48 + 4, 24 + 8 - 12 + 17 - 11, rain_alert_msg, LEFT, max_w, 2, 23);
+  }
+}
+
 /* This function is responsible for drawing the city string and date
  * information in the top right corner.
  */

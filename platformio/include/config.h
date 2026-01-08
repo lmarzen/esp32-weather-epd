@@ -295,6 +295,16 @@
 //   Disable alerts by changing the DISPLAY_ALERTS macro to 0.
 #define DISPLAY_ALERTS 1
 
+//   When there are no alerts to display (either DISPLAY_ALERTS is set to 0 or
+//   there are no current alerts), the precipirations for the next hour can be
+//   displayed in the alerts area.
+//   Disable by changing the DISPLAY_NEXT_HOUR_PRECIP macro to 0.
+#define DISPLAY_NEXT_HOUR_PRECIP 1
+// Threshold to consider precipitation as "rain" for a period (mm/h)
+#define PRECIP_THRESHOLD_PERIOD 0.1f
+// Maximum gap in minutes to group precipitations as a single period
+#define PRECIP_MAX_GAP_MINUTES 5
+
 // STATUS BAR EXTRAS
 //   Extra information that can be displayed on the status bar. Set to 1 to
 //   enable.
