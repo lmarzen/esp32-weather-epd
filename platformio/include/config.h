@@ -47,7 +47,7 @@
 #define SENSOR_BME280
 // #define SENSOR_BME680
 
-// If you enconter issues with the BME280 sensor showing no data, uncomment and
+// If you encounter issues with the BME280 sensor showing no data, uncomment and
 // add a small delay before reading it's value. 300ms seems to work for most people
 // #define SENSOR_INIT_DELAY_MS 300
 
