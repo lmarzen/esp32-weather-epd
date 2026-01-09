@@ -42,6 +42,9 @@ const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
 const uint8_t PIN_BME_PWR =  4;   // Irrelevant if directly connected to 3.3V
 const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
+// DHT22
+const uint8_t PIN_DATA_DHT22 = 25; // ESP32 any GPIO pin for data connected to DHT22 sensor
+const uint8_t PIN_PWR_DHT22 = 12; // ESP32 any GPIO pin for power connected to DHT22 sensor
 
 // WIFI
 const char *WIFI_SSID     = "ssid";

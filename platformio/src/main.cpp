@@ -37,6 +37,10 @@
 #if defined(SENSOR_BME680)
   #include <Adafruit_BME680.h>
 #endif
+#if defined(SENSOR_DHT22)
+#include "DHTesp.h"
+DHTesp dht;
+#endif
 #if defined(USE_HTTPS_WITH_CERT_VERIF) || defined(USE_HTTPS_WITH_CERT_VERIF)
   #include <WiFiClientSecure.h>
 #endif
@@ -289,6 +293,7 @@ void setup()
   }
   killWiFi(); // WiFi no longer needed
 
+#if defined(SENSOR_BME280) || defined(SENSOR_BME680)
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BMEx80...
   pinMode(PIN_BME_PWR, OUTPUT);
   digitalWrite(PIN_BME_PWR, HIGH);
@@ -336,6 +341,41 @@ void setup()
     Serial.println(statusStr);
   }
   digitalWrite(PIN_BME_PWR, LOW);
+#endif
+
+#if defined(SENSOR_DHT22)
+// GET INDOOR TEMPERATURE AND HUMIDITY, start DHT22...
+  float inTemp     = NAN;
+  float inHumidity = NAN;
+  pinMode(PIN_PWR_DHT22, OUTPUT);
+  digitalWrite(PIN_PWR_DHT22, HIGH); // power up DHT22
+  delay(2000); // DHT22 needs time to wake up and take a correct reading.
+  dht.setup(PIN_DATA_DHT22, DHTesp::DHT22);
+  inTemp = dht.getTemperature();
+  inHumidity = dht.getHumidity();
+
+  if(inTemp && inHumidity) {
+    // check if DHT22 readings are valid
+    // note: readings are checked again before drawing to screen. If a reading
+    //       is not a number (NAN) then an error occurred, a dash '-' will be
+    //       displayed.
+    if (std::isnan(inTemp) || std::isnan(inHumidity))
+    {
+      statusStr = "DHT22 " + String(TXT_READ_FAILED);
+      Serial.println(statusStr);
+    }
+    else
+    {
+      Serial.println(TXT_SUCCESS);
+      Serial.println(inHumidity);
+      Serial.println(inTemp);
+    }
+  } else {
+    statusStr = "DHT22 " + String(TXT_NOT_FOUND); // check wiring
+    Serial.println(statusStr);
+  }
+  digitalWrite(PIN_PWR_DHT22, LOW); // power down DHT22 to save energy
+#endif
 
   String refreshTimeStr;
   getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
