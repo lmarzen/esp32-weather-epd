@@ -44,8 +44,14 @@ const uint8_t PIN_BME_PWR =  4;   // Irrelevant if directly connected to 3.3V
 const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
 
 // WIFI
-const char *WIFI_SSID     = "ssid";
-const char *WIFI_PASSWORD = "password";
+
+// List of Wi-Fi networks to try to connect to in the order of preference
+wifi_network_t wifi_networks[] = {
+    {"ssid", "password"},
+};
+
+uint8_t WIFI_NETWORKS_COUNT = sizeof(wifi_networks) / sizeof(wifi_networks[0]);
+
 const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
 // HTTP
