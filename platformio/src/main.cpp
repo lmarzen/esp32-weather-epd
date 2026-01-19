@@ -292,6 +292,9 @@ void setup()
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BMEx80...
   pinMode(PIN_BME_PWR, OUTPUT);
   digitalWrite(PIN_BME_PWR, HIGH);
+#if defined(SENSOR_INIT_DELAY_MS) && SENSOR_INIT_DELAY_MS > 0
+  delay(SENSOR_INIT_DELAY_MS);
+#endif
   TwoWire I2C_bme = TwoWire(0);
   I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
   float inTemp     = NAN;
