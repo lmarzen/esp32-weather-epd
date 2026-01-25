@@ -38,8 +38,9 @@
   #include <Adafruit_BME680.h>
 #endif
 #if defined(SENSOR_DHT22)
-#include "DHTesp.h"
-DHTesp dht;
+#include "DHT.h"
+#define DHTTYPE DHT22
+DHT dht(PIN_DATA_DHT22, DHTTYPE);
 #endif
 #if defined(USE_HTTPS_WITH_CERT_VERIF) || defined(USE_HTTPS_WITH_CERT_VERIF)
   #include <WiFiClientSecure.h>
@@ -350,9 +351,9 @@ void setup()
   pinMode(PIN_PWR_DHT22, OUTPUT);
   digitalWrite(PIN_PWR_DHT22, HIGH); // power up DHT22
   delay(2000); // DHT22 needs time to wake up and take a correct reading.
-  dht.setup(PIN_DATA_DHT22, DHTesp::DHT22);
-  inTemp = dht.getTemperature();
-  inHumidity = dht.getHumidity();
+  dht.begin();
+  inTemp = dht.readTemperature();
+  inHumidity = dht.readHumidity();
 
   if(inTemp && inHumidity) {
     // check if DHT22 readings are valid
