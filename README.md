@@ -51,14 +51,14 @@ Here are two (slightly outdated) examples utilizing various configuration option
 
   Some links below are affiliate links. Using them helps support the project at no extra cost to you—thanks for your support!
 
-  | Component Type  | Component                                    | Notes                                                     | Link                                                                         |
-  |-----------------|----------------------------------------------|-----------------------------------------------------------|------------------------------------------------------------------------------|
-  | ESP32           | FireBeetle 2 ESP32-E                         | Features low-power design, USB-C, and battery management. | Available [here](https://www.dfrobot.com/product-2195.html?tracking=PfSxQ8). |
-  | E-Paper Display | See [Panel Support](#panel-support).         | See [Panel Support](#panel-support).                      | See [Panel Support](#panel-support).                                         |
-  | Adapter Board   | DESPI-C02                                    | Waveshare HATs (rev 2.2/2.3) are not recommended.         | Available [here](https://www.aliexpress.us/item/3256804446769469.html).      |
-  | Sensor          | BME280                                       | Temperature, humidity, and pressure. 3.3V/5V compatible.  | Available from multiple vendors.                                             |
-  | Battery         | 3.7V LiPo w/ JST-PH2.0 connector             | Any capacity (e.g., 5000mAh for 6+ months runtime)        | Available from multiple vendors.                                             |
-  | Enclosure       | See [Enclosure Options](#enclosure-options). | See [Enclosure Options](#enclosure-options).              | See [Enclosure Options](#enclosure-options).                                 |
+  | Component Type  | Component                                    | Notes                                                                                                    | Link                                                                         |
+  |-----------------|----------------------------------------------|----------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+  | ESP32           | FireBeetle 2 ESP32-E                         | Features low-power design, USB-C, and battery management.                                                | Available [here](https://www.dfrobot.com/product-2195.html?tracking=PfSxQ8). |
+  | E-Paper Display | See [Panel Support](#panel-support).         | See [Panel Support](#panel-support).                                                                     | See [Panel Support](#panel-support).                                         |
+  | Adapter Board   | DESPI-C02                                    | Waveshare HATs (rev 2.2/2.3) are not recommended.                                                        | Available [here](https://www.aliexpress.us/item/3256804446769469.html).      |
+  | Sensor          | BME280 (or DHT22)                            | Temperature, humidity, and pressure (DHT22 only measures temperature and humidity). 3.3V/5V compatible.  | Available from multiple vendors.                                             |
+  | Battery         | 3.7V LiPo w/ JST-PH2.0 connector             | Any capacity (e.g., 5000mAh for 6+ months runtime)                                                       | Available from multiple vendors.                                             |
+  | Enclosure       | See [Enclosure Options](#enclosure-options). | See [Enclosure Options](#enclosure-options).                                                             | See [Enclosure Options](#enclosure-options).                                 |
 
 Other items needed:
 - Wires ("Jumper Wires" if looking to minimize/avoid soldering).
@@ -120,7 +120,7 @@ You'll want a nice way to show off your project. Here are a few popular choices.
 This project can be completed without any soldering, if you choose your component selection carefully.
 - Buy "Jumper Wires" to connect your components.
 - Buy the [FireBeetle 2 ESP32-E w/ Headers](https://www.dfrobot.com/product-2231.html?tracking=PfSxQ8).
-- Buy a BME280 with headers soldered from the factory.
+- Buy a BME280 (or DHT22) with headers soldered from the factory.
 - Buy a reset switch that is compatible with jumper wires.
 
 
