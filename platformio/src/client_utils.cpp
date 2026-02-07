@@ -39,6 +39,7 @@
 #include "config.h"
 #include "display_utils.h"
 #include "renderer.h"
+#include "user_config.h"
 #ifndef USE_HTTP
   #include <WiFiClientSecure.h>
 #endif
@@ -275,6 +276,185 @@ bool waitForSNTPSync(tm *timeInfo)
 
   return httpResponse;
 } // getOWMairpollution
+
+/* Fetch cryptocurrency data from CoinGecko API.
+ * Populates the crypto page with data for 4 coins.
+ *
+ * Returns HTTP_CODE_OK on success, error code otherwise.
+ */
+int fetchCoinGecko(page_data_t &page)
+{
+  Serial.println("Fetching CoinGecko data...");
+
+  WiFiClientSecure client;
+  client.setInsecure(); // CoinGecko uses HTTPS, skip cert verification
+
+  HTTPClient http;
+  http.setConnectTimeout(HTTP_CLIENT_TCP_TIMEOUT);
+  http.setTimeout(HTTP_CLIENT_TCP_TIMEOUT);
+
+  String ids = String(CRYPTO_1_ID) + "," + CRYPTO_2_ID + ","
+             + CRYPTO_3_ID + "," + CRYPTO_4_ID;
+  String url = "https://api.coingecko.com/api/v3/coins/markets"
+               "?vs_currency=" COINGECKO_VS_CURRENCY
+               "&ids=" + ids +
+               "&sparkline=true"
+               "&price_change_percentage=24h,7d,30d,1y";
+
+  // Add API key header if provided
+  String apiKey = COINGECKO_API_KEY;
+
+  Serial.println("  GET " + url);
+  http.begin(client, url);
+  http.addHeader("Accept", "application/json");
+  if (apiKey.length() > 0)
+  {
+    http.addHeader("x-cg-demo-api-key", apiKey);
+  }
+
+  int httpResponse = http.GET();
+  Serial.println("  CoinGecko response: " + String(httpResponse));
+
+  if (httpResponse == HTTP_CODE_OK)
+  {
+    // Initialize assets with user config display info
+    strncpy(page.assets[0].displaySymbol, CRYPTO_1_SYMBOL, sizeof(page.assets[0].displaySymbol) - 1);
+    strncpy(page.assets[1].displaySymbol, CRYPTO_2_SYMBOL, sizeof(page.assets[1].displaySymbol) - 1);
+    strncpy(page.assets[2].displaySymbol, CRYPTO_3_SYMBOL, sizeof(page.assets[2].displaySymbol) - 1);
+    strncpy(page.assets[3].displaySymbol, CRYPTO_4_SYMBOL, sizeof(page.assets[3].displaySymbol) - 1);
+
+    strncpy(page.assets[0].name, CRYPTO_1_NAME, sizeof(page.assets[0].name) - 1);
+    strncpy(page.assets[1].name, CRYPTO_2_NAME, sizeof(page.assets[1].name) - 1);
+    strncpy(page.assets[2].name, CRYPTO_3_NAME, sizeof(page.assets[2].name) - 1);
+    strncpy(page.assets[3].name, CRYPTO_4_NAME, sizeof(page.assets[3].name) - 1);
+
+    if (!deserializeCoinGecko(http.getStream(), page))
+    {
+      httpResponse = -256; // deserialization error
+    }
+  }
+
+  client.stop();
+  http.end();
+  return httpResponse;
+} // end fetchCoinGecko
+
+/* Fetch financial data from Yahoo Finance chart API for a single symbol.
+ * Uses range=1mo&interval=1d to get ~22 days of daily data.
+ *
+ * Returns HTTP_CODE_OK on success, error code otherwise.
+ */
+int fetchYahooFinance(const char *symbol, asset_data_t &asset)
+{
+  Serial.print("  Fetching Yahoo Finance: ");
+  Serial.println(symbol);
+
+  WiFiClientSecure client;
+  client.setInsecure(); // Yahoo Finance uses HTTPS
+
+  HTTPClient http;
+  http.setConnectTimeout(HTTP_CLIENT_TCP_TIMEOUT);
+  http.setTimeout(HTTP_CLIENT_TCP_TIMEOUT);
+
+  // URL-encode the symbol (^ needs encoding)
+  String encodedSymbol = symbol;
+  encodedSymbol.replace("^", "%5E");
+
+  String url = "https://query1.finance.yahoo.com/v8/finance/chart/"
+             + encodedSymbol + "?range=1mo&interval=1d";
+
+  http.begin(client, url);
+  http.addHeader("Accept", "application/json");
+  http.addHeader("User-Agent", "ESP32-Ticker/1.0");
+
+  int httpResponse = http.GET();
+  Serial.println("    Response: " + String(httpResponse));
+
+  if (httpResponse == HTTP_CODE_OK)
+  {
+    if (!deserializeYahooFinance(http.getStream(), asset))
+    {
+      httpResponse = -256;
+    }
+  }
+
+  client.stop();
+  http.end();
+  return httpResponse;
+} // end fetchYahooFinance
+
+/* Fetch all financial data for pages 1-4.
+ * Populates crypto, indices, commodities, and forex page data.
+ */
+void fetchAllFinancialData(page_data_t &cryptoPage,
+                           page_data_t &indicesPage,
+                           page_data_t &commoditiesPage,
+                           page_data_t &forexPage)
+{
+  Serial.println("=== Fetching all financial data ===");
+
+  // ── Page 1: Crypto (single API call for all 4 coins) ──
+  fetchCoinGecko(cryptoPage);
+
+  // ── Page 2: Stock Indices (4 Yahoo Finance calls) ──
+  Serial.println("Fetching Stock Indices...");
+  const char *indexSymbols[]  = {INDEX_1_SYMBOL, INDEX_2_SYMBOL, INDEX_3_SYMBOL, INDEX_4_SYMBOL};
+  const char *indexDisplays[] = {INDEX_1_DISPLAY, INDEX_2_DISPLAY, INDEX_3_DISPLAY, INDEX_4_DISPLAY};
+  const char *indexNames[]    = {INDEX_1_NAME, INDEX_2_NAME, INDEX_3_NAME, INDEX_4_NAME};
+  indicesPage.valid = false;
+  for (int i = 0; i < ASSETS_PER_PAGE; ++i)
+  {
+    strncpy(indicesPage.assets[i].displaySymbol, indexDisplays[i], sizeof(indicesPage.assets[i].displaySymbol) - 1);
+    strncpy(indicesPage.assets[i].name, indexNames[i], sizeof(indicesPage.assets[i].name) - 1);
+    strncpy(indicesPage.assets[i].symbol, indexSymbols[i], sizeof(indicesPage.assets[i].symbol) - 1);
+    indicesPage.assets[i].valid = false;
+    if (fetchYahooFinance(indexSymbols[i], indicesPage.assets[i]) == HTTP_CODE_OK)
+    {
+      indicesPage.valid = true;
+    }
+  }
+  indicesPage.lastUpdated = time(nullptr);
+
+  // ── Page 3: Commodities (4 Yahoo Finance calls) ──
+  Serial.println("Fetching Commodities...");
+  const char *comSymbols[]  = {COMMODITY_1_SYMBOL, COMMODITY_2_SYMBOL, COMMODITY_3_SYMBOL, COMMODITY_4_SYMBOL};
+  const char *comDisplays[] = {COMMODITY_1_DISPLAY, COMMODITY_2_DISPLAY, COMMODITY_3_DISPLAY, COMMODITY_4_DISPLAY};
+  const char *comNames[]    = {COMMODITY_1_NAME, COMMODITY_2_NAME, COMMODITY_3_NAME, COMMODITY_4_NAME};
+  commoditiesPage.valid = false;
+  for (int i = 0; i < ASSETS_PER_PAGE; ++i)
+  {
+    strncpy(commoditiesPage.assets[i].displaySymbol, comDisplays[i], sizeof(commoditiesPage.assets[i].displaySymbol) - 1);
+    strncpy(commoditiesPage.assets[i].name, comNames[i], sizeof(commoditiesPage.assets[i].name) - 1);
+    strncpy(commoditiesPage.assets[i].symbol, comSymbols[i], sizeof(commoditiesPage.assets[i].symbol) - 1);
+    commoditiesPage.assets[i].valid = false;
+    if (fetchYahooFinance(comSymbols[i], commoditiesPage.assets[i]) == HTTP_CODE_OK)
+    {
+      commoditiesPage.valid = true;
+    }
+  }
+  commoditiesPage.lastUpdated = time(nullptr);
+
+  // ── Page 4: Forex (4 Yahoo Finance calls) ──
+  Serial.println("Fetching Forex...");
+  const char *fxSymbols[]  = {FX_1_SYMBOL, FX_2_SYMBOL, FX_3_SYMBOL, FX_4_SYMBOL};
+  const char *fxDisplays[] = {FX_1_DISPLAY, FX_2_DISPLAY, FX_3_DISPLAY, FX_4_DISPLAY};
+  const char *fxNames[]    = {FX_1_NAME, FX_2_NAME, FX_3_NAME, FX_4_NAME};
+  forexPage.valid = false;
+  for (int i = 0; i < ASSETS_PER_PAGE; ++i)
+  {
+    strncpy(forexPage.assets[i].displaySymbol, fxDisplays[i], sizeof(forexPage.assets[i].displaySymbol) - 1);
+    strncpy(forexPage.assets[i].name, fxNames[i], sizeof(forexPage.assets[i].name) - 1);
+    strncpy(forexPage.assets[i].symbol, fxSymbols[i], sizeof(forexPage.assets[i].symbol) - 1);
+    forexPage.assets[i].valid = false;
+    if (fetchYahooFinance(fxSymbols[i], forexPage.assets[i]) == HTTP_CODE_OK)
+    {
+      forexPage.valid = true;
+    }
+  }
+  forexPage.lastUpdated = time(nullptr);
+
+  Serial.println("=== Financial data fetch complete ===");
+} // end fetchAllFinancialData
 
 /* Prints debug information about heap usage.
  */

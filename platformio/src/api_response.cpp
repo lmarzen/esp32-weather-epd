@@ -15,10 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <cstring>
 #include <vector>
 #include <ArduinoJson.h>
 #include "api_response.h"
 #include "config.h"
+#include "user_config.h"
 
 DeserializationError deserializeOneCall(WiFiClient &json,
                                         owm_resp_onecall_t &r)
@@ -252,4 +254,180 @@ DeserializationError deserializeAirQuality(WiFiClient &json,
 
   return error;
 } // end deserializeAirQuality
+
+/* Deserialize CoinGecko /coins/markets API response.
+ * Expects the response for 4 coins with sparkline=true and
+ * price_change_percentage=24h,7d,30d,1y.
+ *
+ * Returns true on success.
+ */
+bool deserializeCoinGecko(WiFiClient &json, page_data_t &page)
+{
+  JsonDocument filter;
+  // Filter to reduce memory: only extract what we need
+  for (int i = 0; i < ASSETS_PER_PAGE; ++i)
+  {
+    filter[i]["id"]                                = true;
+    filter[i]["symbol"]                            = true;
+    filter[i]["name"]                              = true;
+    filter[i]["current_price"]                     = true;
+    filter[i]["price_change_percentage_24h"]        = true;
+    filter[i]["price_change_percentage_7d_in_currency"]  = true;
+    filter[i]["price_change_percentage_30d_in_currency"] = true;
+    filter[i]["price_change_percentage_1y_in_currency"]  = true;
+    filter[i]["sparkline_in_7d"]["price"]           = true;
+  }
+
+  JsonDocument doc;
+  DeserializationError error = deserializeJson(doc, json,
+                                         DeserializationOption::Filter(filter));
+#if DEBUG_LEVEL >= 1
+  Serial.println("[debug] CoinGecko doc.overflowed() : "
+                 + String(doc.overflowed()));
+#endif
+  if (error)
+  {
+    Serial.println("CoinGecko deserialize error: " + String(error.c_str()));
+    return false;
+  }
+
+  JsonArray arr = doc.as<JsonArray>();
+  int idx = 0;
+  for (JsonObject coin : arr)
+  {
+    if (idx >= ASSETS_PER_PAGE) break;
+
+    asset_data_t &a = page.assets[idx];
+
+    const char *sym = coin["symbol"] | "";
+    const char *name = coin["name"] | "";
+    strncpy(a.symbol, sym, sizeof(a.symbol) - 1);
+    a.symbol[sizeof(a.symbol) - 1] = '\0';
+    strncpy(a.name, name, sizeof(a.name) - 1);
+    a.name[sizeof(a.name) - 1] = '\0';
+    // displaySymbol is set by the caller from user_config.h
+
+    a.price         = coin["current_price"]                     | 0.0f;
+    a.change_day    = coin["price_change_percentage_24h"]        | 0.0f;
+    a.change_week   = coin["price_change_percentage_7d_in_currency"]  | 0.0f;
+    a.change_month  = coin["price_change_percentage_30d_in_currency"] | 0.0f;
+    a.change_ytd    = coin["price_change_percentage_1y_in_currency"]  | 0.0f;
+    a.previousClose = a.price / (1.0f + a.change_day / 100.0f);
+
+    // Extract sparkline data (7-day, ~168 points) — downsample to 30 points
+    JsonArray sparkArr = coin["sparkline_in_7d"]["price"];
+    int totalPoints = sparkArr.size();
+    a.sparklineCount = 0;
+    if (totalPoints > 0)
+    {
+      int step = totalPoints / SPARKLINE_MAX_POINTS;
+      if (step < 1) step = 1;
+      for (int s = 0; s < totalPoints && a.sparklineCount < SPARKLINE_MAX_POINTS; s += step)
+      {
+        a.sparkline[a.sparklineCount++] = sparkArr[s].as<float>();
+      }
+    }
+    a.valid = true;
+    ++idx;
+  }
+
+  page.lastUpdated = time(nullptr);
+  page.valid = (idx > 0);
+  return page.valid;
+} // end deserializeCoinGecko
+
+/* Deserialize Yahoo Finance /v8/finance/chart/ API response for a single symbol.
+ * Populates one asset_data_t with current price, previous close, and sparkline.
+ *
+ * Returns true on success.
+ */
+bool deserializeYahooFinance(WiFiClient &json, asset_data_t &asset)
+{
+  JsonDocument filter;
+  filter["chart"]["result"][0]["meta"]["regularMarketPrice"] = true;
+  filter["chart"]["result"][0]["meta"]["previousClose"]      = true;
+  filter["chart"]["result"][0]["meta"]["currency"]           = true;
+  filter["chart"]["result"][0]["indicators"]["quote"][0]["close"] = true;
+
+  JsonDocument doc;
+  DeserializationError error = deserializeJson(doc, json,
+                                         DeserializationOption::Filter(filter));
+#if DEBUG_LEVEL >= 1
+  Serial.println("[debug] YahooFinance doc.overflowed() : "
+                 + String(doc.overflowed()));
+#endif
+  if (error)
+  {
+    Serial.println("Yahoo Finance deserialize error: " + String(error.c_str()));
+    return false;
+  }
+
+  JsonObject result = doc["chart"]["result"][0];
+  if (result.isNull())
+  {
+    Serial.println("Yahoo Finance: no result in response");
+    return false;
+  }
+
+  JsonObject meta = result["meta"];
+  asset.price         = meta["regularMarketPrice"] | 0.0f;
+  asset.previousClose = meta["previousClose"]      | 0.0f;
+
+  // Calculate day change percentage
+  if (asset.previousClose > 0.0f)
+  {
+    asset.change_day = ((asset.price - asset.previousClose) / asset.previousClose) * 100.0f;
+  }
+  else
+  {
+    asset.change_day = 0.0f;
+  }
+
+  // Extract close prices for sparkline
+  JsonArray closes = result["indicators"]["quote"][0]["close"];
+  asset.sparklineCount = 0;
+  int totalPoints = closes.size();
+  if (totalPoints > 0)
+  {
+    // For 1mo range with 1d interval, we get ~22 trading days
+    // Take up to SPARKLINE_MAX_POINTS
+    int step = 1;
+    if (totalPoints > SPARKLINE_MAX_POINTS)
+    {
+      step = totalPoints / SPARKLINE_MAX_POINTS;
+    }
+    float lastValid = 0.0f;
+    for (int i = 0; i < totalPoints && asset.sparklineCount < SPARKLINE_MAX_POINTS; i += step)
+    {
+      float val = closes[i].as<float>();
+      if (val > 0.0f)
+      {
+        lastValid = val;
+      }
+      asset.sparkline[asset.sparklineCount++] = (val > 0.0f) ? val : lastValid;
+    }
+
+    // Calculate week and month changes from sparkline data
+    if (asset.sparklineCount >= 2)
+    {
+      float oldest = asset.sparkline[0];
+      float newest = asset.sparkline[asset.sparklineCount - 1];
+      if (oldest > 0.0f)
+      {
+        asset.change_month = ((newest - oldest) / oldest) * 100.0f;
+      }
+      // Week change: ~5 trading days from end
+      int weekIdx = asset.sparklineCount - 5;
+      if (weekIdx < 0) weekIdx = 0;
+      float weekPrice = asset.sparkline[weekIdx];
+      if (weekPrice > 0.0f)
+      {
+        asset.change_week = ((newest - weekPrice) / weekPrice) * 100.0f;
+      }
+    }
+  }
+
+  asset.valid = (asset.price > 0.0f);
+  return asset.valid;
+} // end deserializeYahooFinance
 

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <cstdio>
 #include "_locale.h"
 #include "_strftime.h"
 #include "renderer.h"
@@ -22,6 +23,7 @@
 #include "config.h"
 #include "conversions.h"
 #include "display_utils.h"
+#include "user_config.h"
 
 // fonts
 #include FONT_HEADER
@@ -1756,4 +1758,272 @@ void drawError(const uint8_t *bitmap_196x196,
                              bitmap_196x196, 196, 196, ACCENT_COLOR);
   return;
 } // end drawError
+
+// ══════════════════════════════════════════════════════════════════════════════
+// FINANCIAL TICKER RENDERING
+// ══════════════════════════════════════════════════════════════════════════════
+
+/* Format a price as a string with appropriate precision.
+ * Large values (>=10000) get no decimals.
+ * Medium values (>=100) get 2 decimals.
+ * Small values (<1) get 4 decimals.
+ * Other values get 2 decimals.
+ */
+static String formatPrice(float price)
+{
+  if (price >= 100000.0f)
+  {
+    // Large prices like Bitcoin: show as "138,245"
+    int p = static_cast<int>(std::round(price));
+    String s = "";
+    if (p >= 1000000)
+    {
+      s += String(p / 1000000) + ",";
+      p %= 1000000;
+      char buf[8];
+      snprintf(buf, sizeof(buf), "%03d", p / 1000);
+      s += buf;
+      s += ",";
+      snprintf(buf, sizeof(buf), "%03d", p % 1000);
+      s += buf;
+    }
+    else if (p >= 1000)
+    {
+      s += String(p / 1000) + ",";
+      char buf[8];
+      snprintf(buf, sizeof(buf), "%03d", p % 1000);
+      s += buf;
+    }
+    else
+    {
+      s = String(p);
+    }
+    return s;
+  }
+  else if (price >= 1000.0f)
+  {
+    int p = static_cast<int>(std::round(price));
+    String s = String(p / 1000) + ",";
+    char buf[8];
+    snprintf(buf, sizeof(buf), "%03d", p % 1000);
+    s += buf;
+    return s;
+  }
+  else if (price >= 100.0f)
+  {
+    return String(price, 2);
+  }
+  else if (price >= 1.0f)
+  {
+    return String(price, 2);
+  }
+  else if (price > 0.0f)
+  {
+    return String(price, 4);
+  }
+  return "0.00";
+}
+
+/* Format a percentage change with sign and 1 decimal.
+ */
+static String formatChange(float change)
+{
+  String prefix = (change >= 0) ? "+" : "";
+  return prefix + String(change, 1) + "%";
+}
+
+/* Draw a sparkline chart within a bounding box.
+ */
+static void drawSparkline(int x, int y, int w, int h,
+                           const float *data, int count)
+{
+  if (count < 2) return;
+
+  // Find min/max
+  float minVal = data[0];
+  float maxVal = data[0];
+  for (int i = 1; i < count; ++i)
+  {
+    if (data[i] < minVal) minVal = data[i];
+    if (data[i] > maxVal) maxVal = data[i];
+  }
+
+  float range = maxVal - minVal;
+  if (range < 0.001f) range = 1.0f; // avoid division by zero
+
+  // Draw the line
+  for (int i = 1; i < count; ++i)
+  {
+    int x0 = x + ((i - 1) * w) / (count - 1);
+    int x1 = x + (i * w) / (count - 1);
+    int y0 = y + h - static_cast<int>(((data[i - 1] - minVal) / range) * h);
+    int y1 = y + h - static_cast<int>(((data[i] - minVal) / range) * h);
+
+    // Draw 2px thick line
+    display.drawLine(x0, y0, x1, y1, GxEPD_BLACK);
+    display.drawLine(x0, y0 + 1, x1, y1 + 1, GxEPD_BLACK);
+  }
+}
+
+/* Draw a single asset card within the 2x2 grid.
+ * cardX, cardY: top-left corner of this card's area.
+ * cardW, cardH: dimensions of this card's area.
+ */
+static void drawAssetCard(int cardX, int cardY, int cardW, int cardH,
+                           const asset_data_t &asset)
+{
+  const int pad = 8;
+  const int circleR = 20;
+  int cx = cardX + pad + circleR;
+  int cy = cardY + pad + circleR;
+
+  // Draw circle with display symbol
+  display.drawCircle(cx, cy, circleR, GxEPD_BLACK);
+  display.drawCircle(cx, cy, circleR - 1, GxEPD_BLACK);
+  display.setFont(&FONT_8pt8b);
+  drawString(cx, cy + 4, asset.displaySymbol, CENTER);
+
+  // Asset name
+  display.setFont(&FONT_12pt8b);
+  drawString(cx + circleR + 8, cardY + pad + 14, asset.name, LEFT);
+
+  if (!asset.valid)
+  {
+    display.setFont(&FONT_8pt8b);
+    drawString(cardX + pad, cardY + pad + 50, "No data", LEFT);
+    return;
+  }
+
+  // Price
+  display.setFont(&FONT_16pt8b);
+  String priceStr = "$" + formatPrice(asset.price);
+  drawString(cardX + pad, cardY + pad + 58, priceStr, LEFT);
+
+  // Change percentages - 2 rows of 2
+  display.setFont(&FONT_7pt8b);
+  int changeY = cardY + pad + 78;
+
+  String dayStr = "24h:" + formatChange(asset.change_day);
+  String weekStr = "7d:" + formatChange(asset.change_week);
+  drawString(cardX + pad, changeY, dayStr, LEFT);
+  drawString(cardX + pad + cardW / 2 - pad, changeY, weekStr, LEFT);
+
+  String monthStr = "30d:" + formatChange(asset.change_month);
+  String ytdStr = "1y:" + formatChange(asset.change_ytd);
+  drawString(cardX + pad, changeY + 14, monthStr, LEFT);
+  drawString(cardX + pad + cardW / 2 - pad, changeY + 14, ytdStr, LEFT);
+
+  // Sparkline
+  int sparkX = cardX + pad;
+  int sparkY = changeY + 30;
+  int sparkW = cardW - 2 * pad;
+  int sparkH = cardH - (sparkY - cardY) - pad;
+  if (sparkH > 6 && asset.sparklineCount >= 2)
+  {
+    // Draw a thin border around the sparkline area
+    display.drawRect(sparkX - 1, sparkY - 1, sparkW + 2, sparkH + 2, GxEPD_BLACK);
+    drawSparkline(sparkX, sparkY, sparkW, sparkH,
+                  asset.sparkline, asset.sparklineCount);
+  }
+}
+
+/* Render a full financial page (crypto, indices, commodities, or forex).
+ * Draws the header, 2x2 card grid, and footer/status bar.
+ */
+void renderFinancialPage(const page_data_t &data, const char *title,
+                         int pageNum, int totalPages,
+                         int rssi, uint32_t batVoltage)
+{
+  // ── Header ──
+  const int headerH = 36;
+  display.setFont(&FONT_14pt8b);
+  drawString(8, 24, title, LEFT);
+
+  // Date + time on right side
+  display.setFont(&FONT_11pt8b);
+  char dateTimeBuf[32] = {};
+  tm timeInfo = {};
+  if (getLocalTime(&timeInfo))
+  {
+    _strftime(dateTimeBuf, sizeof(dateTimeBuf), "%b %e, %Y  %l:%M %p", &timeInfo);
+  }
+  drawString(DISP_WIDTH - 8, 24, dateTimeBuf, RIGHT);
+
+  // Header separator line
+  display.drawLine(0, headerH, DISP_WIDTH - 1, headerH, GxEPD_BLACK);
+  display.drawLine(0, headerH + 1, DISP_WIDTH - 1, headerH + 1, GxEPD_BLACK);
+
+  // ── 2x2 Card Grid ──
+  const int footerH = 28;
+  const int gridTop = headerH + 2;
+  const int gridBottom = DISP_HEIGHT - footerH;
+  const int gridH = gridBottom - gridTop;
+  const int cardW = DISP_WIDTH / 2;
+  const int cardH = gridH / 2;
+
+  // Draw grid lines
+  // Vertical center line
+  display.drawLine(cardW, gridTop, cardW, gridBottom - 1, GxEPD_BLACK);
+  // Horizontal center line
+  display.drawLine(0, gridTop + cardH, DISP_WIDTH - 1, gridTop + cardH, GxEPD_BLACK);
+
+  // Draw 4 asset cards
+  for (int i = 0; i < ASSETS_PER_PAGE; ++i)
+  {
+    int col = i % 2;
+    int row = i / 2;
+    int cx = col * cardW;
+    int cy = gridTop + row * cardH;
+    drawAssetCard(cx, cy, cardW, cardH, data.assets[i]);
+  }
+
+  // ── Footer / Status Bar ──
+  display.drawLine(0, gridBottom, DISP_WIDTH - 1, gridBottom, GxEPD_BLACK);
+
+  display.setFont(&FONT_6pt8b);
+  int footerY = DISP_HEIGHT - 6;
+
+  // Page indicator
+  String pageStr = "Page " + String(pageNum) + "/" + String(totalPages);
+  drawString(8, footerY, pageStr, LEFT);
+
+  // Next refresh / data age
+  String dataStr;
+  if (data.valid && data.lastUpdated > 0)
+  {
+    time_t now = time(nullptr);
+    int age = static_cast<int>(now - data.lastUpdated);
+    if (age < 60)
+    {
+      dataStr = "Data: " + String(age) + "s ago";
+    }
+    else
+    {
+      dataStr = "Data: " + String(age / 60) + "m ago";
+    }
+  }
+  else
+  {
+    dataStr = "Data: unavailable";
+  }
+  drawString(DISP_WIDTH / 2, footerY, dataStr, CENTER);
+
+  // Battery + WiFi on right side
+  int pos = DISP_WIDTH - 4;
+#if BATTERY_MONITORING
+  uint32_t batPercent = calcBatPercent(batVoltage, MIN_BATTERY_VOLTAGE,
+                                       MAX_BATTERY_VOLTAGE);
+  String batStr = String(batPercent) + "%";
+  drawString(pos, footerY, batStr, RIGHT);
+  pos -= getStringWidth(batStr) + 2;
+  pos -= 24;
+  display.drawInvertedBitmap(pos, DISP_HEIGHT - 20,
+                             getBatBitmap24(batPercent), 24, 24, GxEPD_BLACK);
+  pos -= 8;
+#endif
+
+  pos -= 16;
+  display.drawInvertedBitmap(pos, DISP_HEIGHT - 16, getWiFiBitmap16(rssi),
+                             16, 16, GxEPD_BLACK);
+}
 

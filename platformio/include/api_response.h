@@ -216,6 +216,39 @@ DeserializationError deserializeOneCall(WiFiClient &json,
 DeserializationError deserializeAirQuality(WiFiClient &json,
                                            owm_resp_air_pollution_t &r);
 
+// ── Financial Ticker Data Structures ────────────────────────────────────────
+
+#define SPARKLINE_MAX_POINTS 30
+#define ASSETS_PER_PAGE       4
+
+// Generic asset data — works for crypto, stocks, commodities, and forex
+typedef struct asset_data
+{
+  char    symbol[12];                       // "BTC", "^GSPC", "GC=F"
+  char    name[24];                         // "Bitcoin", "S&P 500", "Gold"
+  char    displaySymbol[8];                 // What shows in the icon circle
+  float   price;                            // Current price/rate
+  float   previousClose;                    // For calculating day change
+  float   change_day;                       // % change today
+  float   change_week;                      // % change 7 days
+  float   change_month;                     // % change 30 days
+  float   change_ytd;                       // % change year-to-date (or 1y)
+  float   sparkline[SPARKLINE_MAX_POINTS];  // 30 data points for chart
+  int     sparklineCount;                   // How many points are valid
+  bool    valid;                            // Data fetch succeeded
+} asset_data_t;
+
+// A "page" of 4 assets
+typedef struct page_data
+{
+  asset_data_t assets[ASSETS_PER_PAGE];
+  time_t       lastUpdated;
+  bool         valid;
+} page_data_t;
+
+// Deserialization functions for financial APIs
+bool deserializeCoinGecko(WiFiClient &json, page_data_t &page);
+bool deserializeYahooFinance(WiFiClient &json, asset_data_t &asset);
 
 #endif
 

@@ -39,6 +39,13 @@ bool printLocalTime(tm *timeInfo);
   int getOWMairpollution(WiFiClientSecure &client, owm_resp_air_pollution_t &r);
 #endif
 
+// Financial API fetch functions
+int fetchCoinGecko(page_data_t &page);
+int fetchYahooFinance(const char *symbol, asset_data_t &asset);
+void fetchAllFinancialData(page_data_t &cryptoPage,
+                           page_data_t &indicesPage,
+                           page_data_t &commoditiesPage,
+                           page_data_t &forexPage);
 
 #endif
 

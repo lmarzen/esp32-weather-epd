@@ -99,4 +99,9 @@ void drawCurrentAirQuality(const owm_resp_air_pollution_t &owm_air_pollution);
 void drawCurrentMoonphase(const owm_daily_t &today);
 void drawCurrentDewpoint(const owm_current_t &current);
 
+// Financial ticker rendering
+void renderFinancialPage(const page_data_t &data, const char *title,
+                         int pageNum, int totalPages,
+                         int rssi, uint32_t batVoltage);
+
 #endif
