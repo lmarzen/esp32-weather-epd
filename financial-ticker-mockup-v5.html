@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Financial Ticker — Multi-Page Mockup v5</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0f14;
+            --surface: #1a1a22;
+            --border: #2a2a35;
+            --text: #e0e0e8;
+            --dim: #6e6e80;
+            --accent: #4fd1c5;
+            --accent-dim: #2d7a72;
+            --epaper-bg: #f0efe8;
+            --epaper-bg-header: #e4e3dc;
+            --ink: #1a1a1a;
+            --ink-light: #555;
+            --ink-lighter: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 32px 16px 48px;
+        }
+
+        .project-header { text-align: center; margin-bottom: 28px; }
+        .project-header h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px; font-weight: 600; letter-spacing: 2px;
+            color: var(--accent); text-transform: uppercase; margin-bottom: 6px;
+        }
+        .project-header .subtitle {
+            font-size: 13px; color: var(--dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .page-nav {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+        }
+        .page-dots { display: flex; gap: 8px; }
+        .page-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--border); cursor: pointer;
+            transition: all 0.3s; border: none; padding: 0;
+        }
+        .page-dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(79, 209, 197, 0.4);
+        }
+        .page-dot:hover:not(.active) { background: var(--dim); }
+
+        .nav-btn {
+            background: var(--surface); border: 1px solid var(--border);
+            color: var(--dim); font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; padding: 5px 12px; border-radius: 4px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .page-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 11px;
+            color: var(--accent); min-width: 120px; text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .auto-indicator {
+            font-family: 'JetBrains Mono', monospace; font-size: 10px;
+            color: var(--dim); display: flex; align-items: center;
+            gap: 6px; margin-bottom: 16px;
+        }
+        .auto-indicator .pulse {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent); animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        .device-frame {
+            background: #222230; padding: 16px; border-radius: 12px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .epaper {
+            width: 800px; height: 480px; background: var(--epaper-bg);
+            border: 1px solid #bbb; font-family: 'JetBrains Mono', monospace;
+            color: var(--ink); display: flex; flex-direction: column;
+            overflow: hidden; position: relative;
+        }
+
+        .page { display: none; flex-direction: column; height: 100%; }
+        .page.active { display: flex; }
+
+        /* ═══════════════════════════════════════════════
+           SHARED: Header / Footer for financial pages
+           ═══════════════════════════════════════════════ */
+        .ep-header {
+            height: 32px; min-height: 32px; display: flex;
+            justify-content: space-between; align-items: center;
+            padding: 0 14px; border-bottom: 2px solid var(--ink);
+            background: var(--epaper-bg-header);
+        }
+        .ep-header-title { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+        .ep-header-right { font-size: 10px; color: var(--ink-light); display: flex; align-items: center; gap: 12px; }
+        .page-counter { font-weight: 600; font-size: 11px; }
+
+        .ep-footer {
+            height: 24px; min-height: 24px; display: flex;
+            justify-content: space-between; align-items: center;
+            padding: 0 14px; border-top: 2px solid var(--ink);
+            background: var(--epaper-bg-header); font-size: 9px; color: var(--ink-light);
+        }
+        .footer-item { display: flex; align-items: center; gap: 4px; }
+
+        /* ═══════════════════════════════════════════════
+           FINANCIAL PAGES: 2×2 Card Grid
+           ═══════════════════════════════════════════════ */
+        .card-grid {
+            flex: 1; display: grid;
+            grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+        }
+        .card {
+            padding: 8px 12px 6px; display: flex; flex-direction: column;
+            border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+            overflow: hidden;
+        }
+        .card:nth-child(2n) { border-right: none; }
+        .card:nth-child(n+3) { border-bottom: none; }
+
+        .card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+        .card-icon {
+            width: 26px; height: 26px; background: var(--ink); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--epaper-bg); font-size: 7px; font-weight: 700;
+            flex-shrink: 0; letter-spacing: 0.3px;
+        }
+        .card-icon.square { border-radius: 4px; }
+        .card-name { font-size: 12px; font-weight: 600; }
+        .card-prices { margin-bottom: 2px; }
+        .price-primary { font-size: 19px; font-weight: 700; line-height: 1.15; }
+        .price-secondary { font-size: 10px; color: var(--ink-light); line-height: 1.15; }
+        .changes { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 9px; margin-bottom: 4px; }
+        .chg { display: flex; gap: 2px; }
+        .chg-label { color: var(--ink-lighter); }
+        .chg-val { font-weight: 600; }
+
+        .spark-wrap {
+            flex: 1; min-height: 30px; background: #f6f5ee;
+            border: 1px solid #bbb; position: relative;
+        }
+        .spark-wrap svg { width: 100%; height: 100%; display: block; }
+        .spark-period { position: absolute; bottom: 1px; right: 3px; font-size: 7px; color: var(--ink-lighter); }
+
+        /* ═══════════════════════════════════════════════
+           PAGE 5: Original Weather Station Layout
+           Faithful reproduction of esp32-weather-epd
+           ═══════════════════════════════════════════════ */
+        .wx-page {
+            display: flex; flex-direction: column; height: 100%;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Top bar: City, Date, Battery, WiFi */
+        .wx-topbar {
+            height: 28px; min-height: 28px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 12px; border-bottom: 1px solid var(--ink);
+            font-size: 10px;
+        }
+        .wx-topbar-left { font-weight: 600; font-size: 12px; }
+        .wx-topbar-right { display: flex; gap: 14px; align-items: center; color: var(--ink-light); font-size: 9px; }
+        .wx-topbar-right .status-icon { display: flex; align-items: center; gap: 3px; }
+
+        /* Main content area */
+        .wx-body {
+            flex: 1; display: grid;
+            grid-template-columns: 260px 1fr;
+            grid-template-rows: auto 1fr;
+            min-height: 0;
+        }
+
+        /* ── Current conditions (top-left) ── */
+        .wx-current {
+            grid-row: 1;
+            grid-column: 1;
+            border-right: 1px solid var(--ink);
+            border-bottom: 1px solid var(--ink);
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .wx-icon-area {
+            width: 96px; height: 96px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 4px;
+        }
+        .wx-icon-area svg { width: 88px; height: 88px; }
+
+        .wx-temp-now {
+            font-size: 48px; font-weight: 700; line-height: 1; margin-bottom: 2px;
+        }
+        .wx-desc {
+            font-size: 11px; color: var(--ink-light); margin-bottom: 6px;
+        }
+        .wx-hilo {
+            font-size: 11px; font-weight: 500;
+        }
+        .wx-feels {
+            font-size: 9px; color: var(--ink-lighter); margin-top: 2px;
+        }
+
+        /* ── 5-Day Forecast (top-right) ── */
+        .wx-forecast {
+            grid-row: 1;
+            grid-column: 2;
+            border-bottom: 1px solid var(--ink);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 6px;
+        }
+
+        .wx-fday {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 3px; flex: 1;
+        }
+        .wx-fday + .wx-fday { border-left: 1px dotted #ccc; }
+
+        .wx-fday-label { font-size: 10px; font-weight: 700; }
+        .wx-fday-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
+        .wx-fday-icon svg { width: 32px; height: 32px; }
+        .wx-fday-temp { font-size: 9px; font-weight: 500; }
+        .wx-fday-precip { font-size: 7px; color: var(--ink-lighter); }
+
+        /* ── Details panel (bottom-left) ── */
+        .wx-details {
+            grid-row: 2;
+            grid-column: 1;
+            border-right: 1px solid var(--ink);
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 9px;
+        }
+
+        .wx-detail-section-title {
+            font-size: 8px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--ink-lighter);
+            margin-top: 4px; margin-bottom: 2px;
+            border-bottom: 1px dotted #ccc; padding-bottom: 2px;
+        }
+        .wx-detail-section-title:first-child { margin-top: 0; }
+
+        .wx-detail-row {
+            display: flex; justify-content: space-between;
+            padding: 1px 0;
+        }
+        .wx-detail-label { color: var(--ink-light); }
+        .wx-detail-value { font-weight: 600; text-align: right; }
+
+        .wx-indoor-section {
+            margin-top: auto;
+            padding-top: 6px;
+            border-top: 1px solid #ccc;
+        }
+        .wx-indoor-title {
+            font-size: 8px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--ink-lighter); margin-bottom: 3px;
+        }
+        .wx-indoor-row {
+            display: flex; justify-content: space-around; text-align: center;
+        }
+        .wx-indoor-val { font-size: 14px; font-weight: 700; }
+        .wx-indoor-label { font-size: 7px; color: var(--ink-lighter); }
+
+        /* ── Hourly Outlook Graph (bottom-right) ── */
+        .wx-graph {
+            grid-row: 2;
+            grid-column: 2;
+            padding: 6px 10px 4px;
+            display: flex;
+            flex-direction: column;
+        }
+        .wx-graph-title {
+            font-size: 8px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--ink-lighter); margin-bottom: 4px;
+        }
+        .wx-graph-area {
+            flex: 1; position: relative;
+            border: 1px solid #bbb; background: #f6f5ee;
+        }
+        .wx-graph-area svg { width: 100%; height: 100%; display: block; }
+        .wx-graph-legend {
+            display: flex; justify-content: space-between;
+            font-size: 7px; color: var(--ink-lighter); margin-top: 2px;
+        }
+        .wx-graph-y-labels {
+            position: absolute; right: 3px; top: 0; bottom: 0;
+            display: flex; flex-direction: column; justify-content: space-between;
+            font-size: 7px; color: var(--ink-lighter); padding: 2px 0;
+        }
+        .wx-graph-key {
+            display: flex; gap: 12px; font-size: 7px; color: var(--ink-lighter); margin-top: 2px;
+        }
+        .wx-graph-key-item { display: flex; align-items: center; gap: 3px; }
+        .wx-graph-key-swatch {
+            width: 12px; height: 3px; display: inline-block;
+        }
+
+        /* ── Weather page footer (matches original) ── */
+        .wx-footer {
+            height: 22px; min-height: 22px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 12px; border-top: 1px solid var(--ink);
+            font-size: 8px; color: var(--ink-lighter);
+        }
+
+        /* ═══════════════════════════════════════════════
+           INFO PANEL (below device)
+           ═══════════════════════════════════════════════ */
+        .info-panel { margin-top: 24px; max-width: 832px; width: 100%; }
+        .info-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .info-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 6px; padding: 12px; text-align: center;
+            transition: border-color 0.2s;
+        }
+        .info-card.active-card { border-color: var(--accent); }
+        .info-card-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); margin-bottom: 4px; }
+        .info-card-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+        .info-card-desc { font-size: 10px; color: var(--dim); line-height: 1.4; }
+        .cycle-note {
+            text-align: center; margin-top: 16px;
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--dim);
+        }
+
+        @media (max-width: 880px) {
+            .device-frame { transform: scale(0.6); transform-origin: top center; }
+            .info-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="project-header">
+    <h1>ESP32 Financial Ticker</h1>
+    <div class="subtitle">GDEY075T7 · 800×480 · 5 rotating pages · 1 min cycle</div>
+</div>
+
+<div class="auto-indicator">
+    <span class="pulse"></span>
+    <span>AUTO-ROTATING · <span id="countdown">8</span>s</span>
+    <span style="margin-left:8px; cursor:pointer;" id="toggleAuto" title="Toggle auto-rotation">⏸</span>
+</div>
+
+<div class="page-nav">
+    <button class="nav-btn" id="prevBtn">◀ PREV</button>
+    <div class="page-dots">
+        <button class="page-dot active" data-page="0"></button>
+        <button class="page-dot" data-page="1"></button>
+        <button class="page-dot" data-page="2"></button>
+        <button class="page-dot" data-page="3"></button>
+        <button class="page-dot" data-page="4"></button>
+    </div>
+    <div class="page-label" id="pageLabel">CRYPTO</div>
+    <button class="nav-btn" id="nextBtn">NEXT ▶</button>
+</div>
+
+<div class="device-frame">
+    <div class="epaper">
+
+        <!-- ════════════════════ PAGE 1: CRYPTO ════════════════════ -->
+        <div class="page active" id="page-0">
+            <div class="ep-header">
+                <span class="ep-header-title">₿ Cryptocurrency</span>
+                <div class="ep-header-right">
+                    <span>Feb 7, 2026 · 2:47 PM</span>
+                    <span class="page-counter">1/5</span>
+                </div>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-top"><div class="card-icon">BTC</div><div class="card-name">Bitcoin</div></div>
+                    <div class="card-prices"><div class="price-primary">C$138,245</div><div class="price-secondary">US$97,420</div></div>
+                    <div class="changes">
+                        <div class="chg"><span class="chg-label">24h:</span><span class="chg-val">+2.3%</span></div>
+                        <div class="chg"><span class="chg-label">7d:</span><span class="chg-val">+5.1%</span></div>
+                        <div class="chg"><span class="chg-label">30d:</span><span class="chg-val">+12.4%</span></div>
+                        <div class="chg"><span class="chg-label">1y:</span><span class="chg-val">+89%</span></div>
+                    </div>
+                    <div class="spark-wrap">
+                        <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                            <polygon fill="#1a1a1a18" points="0,40 10,38 20,40 30,35 40,32 50,34 60,28 70,26 80,30 90,24 100,26 110,22 120,20 130,22 140,18 150,15 160,17 170,12 180,10 190,8 200,5 200,50 0,50"/>
+                            <polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,40 10,38 20,40 30,35 40,32 50,34 60,28 70,26 80,30 90,24 100,26 110,22 120,20 130,22 140,18 150,15 160,17 170,12 180,10 190,8 200,5"/>
+                        </svg><span class="spark-period">30d</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon">ETH</div><div class="card-name">Ethereum</div></div>
+                    <div class="card-prices"><div class="price-primary">C$4,892</div><div class="price-secondary">US$3,445</div></div>
+                    <div class="changes">
+                        <div class="chg"><span class="chg-label">24h:</span><span class="chg-val">+1.8%</span></div>
+                        <div class="chg"><span class="chg-label">7d:</span><span class="chg-val">+3.2%</span></div>
+                        <div class="chg"><span class="chg-label">30d:</span><span class="chg-val">+8.7%</span></div>
+                        <div class="chg"><span class="chg-label">1y:</span><span class="chg-val">+67%</span></div>
+                    </div>
+                    <div class="spark-wrap">
+                        <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                            <polygon fill="#1a1a1a18" points="0,38 15,36 30,40 45,34 60,30 75,32 90,27 105,24 120,28 135,22 150,18 165,20 180,15 200,12 200,50 0,50"/>
+                            <polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,38 15,36 30,40 45,34 60,30 75,32 90,27 105,24 120,28 135,22 150,18 165,20 180,15 200,12"/>
+                        </svg><span class="spark-period">30d</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon">HYPE</div><div class="card-name">Hyperliquid</div></div>
+                    <div class="card-prices"><div class="price-primary">C$32.84</div><div class="price-secondary">US$23.12</div></div>
+                    <div class="changes">
+                        <div class="chg"><span class="chg-label">24h:</span><span class="chg-val">+4.7%</span></div>
+                        <div class="chg"><span class="chg-label">7d:</span><span class="chg-val">+11.3%</span></div>
+                        <div class="chg"><span class="chg-label">30d:</span><span class="chg-val">+28.5%</span></div>
+                        <div class="chg"><span class="chg-label">1y:</span><span class="chg-val">—</span></div>
+                    </div>
+                    <div class="spark-wrap">
+                        <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                            <polygon fill="#1a1a1a18" points="0,45 15,42 30,38 45,40 60,35 75,30 90,32 105,25 120,22 135,20 150,24 165,18 180,14 200,10 200,50 0,50"/>
+                            <polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,45 15,42 30,38 45,40 60,35 75,30 90,32 105,25 120,22 135,20 150,24 165,18 180,14 200,10"/>
+                        </svg><span class="spark-period">30d</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon">ADA</div><div class="card-name">Cardano</div></div>
+                    <div class="card-prices"><div class="price-primary">C$1.42</div><div class="price-secondary">US$1.00</div></div>
+                    <div class="changes">
+                        <div class="chg"><span class="chg-label">24h:</span><span class="chg-val">+0.8%</span></div>
+                        <div class="chg"><span class="chg-label">7d:</span><span class="chg-val">-1.2%</span></div>
+                        <div class="chg"><span class="chg-label">30d:</span><span class="chg-val">+4.5%</span></div>
+                        <div class="chg"><span class="chg-label">1y:</span><span class="chg-val">+34%</span></div>
+                    </div>
+                    <div class="spark-wrap">
+                        <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                            <polygon fill="#1a1a1a18" points="0,32 20,35 40,30 60,33 80,28 100,31 120,26 140,30 160,24 180,27 200,22 200,50 0,50"/>
+                            <polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,32 20,35 40,30 60,33 80,28 100,31 120,26 140,30 160,24 180,27 200,22"/>
+                        </svg><span class="spark-period">30d</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ep-footer">
+                <div class="footer-item"><svg width="16" height="9" viewBox="0 0 20 10"><rect x="0" y="0" width="16" height="10" fill="none" stroke="#555" stroke-width="1.5"/><rect x="16" y="2.5" width="3" height="5" fill="#555"/><rect x="1.5" y="1.5" width="11" height="7" fill="#555"/></svg><span>87%</span></div>
+                <div class="footer-item">WiFi: Connected</div>
+                <div class="footer-item">Next page: 60s · Data: 5 min</div>
+            </div>
+        </div>
+
+        <!-- ════════════════════ PAGE 2: INDICES ════════════════════ -->
+        <div class="page" id="page-1">
+            <div class="ep-header">
+                <span class="ep-header-title">📈 Stock Indices</span>
+                <div class="ep-header-right"><span>Feb 7, 2026 · 2:48 PM</span><span class="page-counter">2/5</span></div>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">TSX</div><div class="card-name">S&P/TSX Composite</div></div>
+                    <div class="card-prices"><div class="price-primary">25,847.32</div></div>
+                    <div class="changes">
+                        <div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+0.42%</span></div>
+                        <div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">+1.1%</span></div>
+                        <div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+2.8%</span></div>
+                        <div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">+4.2%</span></div>
+                    </div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,35 20,33 40,36 60,30 80,28 100,32 120,26 140,24 160,22 180,20 200,18 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,35 20,33 40,36 60,30 80,28 100,32 120,26 140,24 160,22 180,20 200,18"/></svg><span class="spark-period">30d</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">NDQ</div><div class="card-name">NASDAQ Composite</div></div>
+                    <div class="card-prices"><div class="price-primary">19,654.18</div></div>
+                    <div class="changes">
+                        <div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+0.68%</span></div>
+                        <div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">+2.4%</span></div>
+                        <div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+5.1%</span></div>
+                        <div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">+7.8%</span></div>
+                    </div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,42 20,38 40,35 60,38 80,30 100,28 120,25 140,22 160,18 180,15 200,10 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,42 20,38 40,35 60,38 80,30 100,28 120,25 140,22 160,18 180,15 200,10"/></svg><span class="spark-period">30d</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">S&P</div><div class="card-name">S&P 500</div></div>
+                    <div class="card-prices"><div class="price-primary">6,025.44</div></div>
+                    <div class="changes">
+                        <div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+0.51%</span></div>
+                        <div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">+1.8%</span></div>
+                        <div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+3.6%</span></div>
+                        <div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">+5.4%</span></div>
+                    </div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,38 20,35 40,37 60,32 80,30 100,28 120,26 140,23 160,20 180,18 200,14 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,38 20,35 40,37 60,32 80,30 100,28 120,26 140,23 160,20 180,18 200,14"/></svg><span class="spark-period">30d</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">DJIA</div><div class="card-name">Dow Jones</div></div>
+                    <div class="card-prices"><div class="price-primary">44,312.67</div></div>
+                    <div class="changes">
+                        <div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+0.31%</span></div>
+                        <div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">+0.9%</span></div>
+                        <div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+2.1%</span></div>
+                        <div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">+3.6%</span></div>
+                    </div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,36 20,34 40,35 60,31 80,33 100,29 120,27 140,25 160,23 180,21 200,18 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,36 20,34 40,35 60,31 80,33 100,29 120,27 140,25 160,23 180,21 200,18"/></svg><span class="spark-period">30d</span></div>
+                </div>
+            </div>
+            <div class="ep-footer">
+                <div class="footer-item"><svg width="16" height="9" viewBox="0 0 20 10"><rect x="0" y="0" width="16" height="10" fill="none" stroke="#555" stroke-width="1.5"/><rect x="16" y="2.5" width="3" height="5" fill="#555"/><rect x="1.5" y="1.5" width="11" height="7" fill="#555"/></svg><span>87%</span></div>
+                <div class="footer-item">Mkt: OPEN</div>
+                <div class="footer-item">Next page: 60s · Data: 5 min</div>
+            </div>
+        </div>
+
+        <!-- ════════════════════ PAGE 3: COMMODITIES ════════════════════ -->
+        <div class="page" id="page-2">
+            <div class="ep-header">
+                <span class="ep-header-title">⛏ Commodities</span>
+                <div class="ep-header-right"><span>Feb 7, 2026 · 2:49 PM</span><span class="page-counter">3/5</span></div>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">AU</div><div class="card-name">Gold (XAU/USD)</div></div>
+                    <div class="card-prices"><div class="price-primary">US$2,864.30</div><div class="price-secondary">C$4,072/oz</div></div>
+                    <div class="changes"><div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+0.32%</span></div><div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">+1.4%</span></div><div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+3.2%</span></div><div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">+6.8%</span></div></div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,38 20,36 40,34 60,32 80,30 100,28 120,25 140,22 160,20 180,16 200,12 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,38 20,36 40,34 60,32 80,30 100,28 120,25 140,22 160,20 180,16 200,12"/></svg><span class="spark-period">30d</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">AG</div><div class="card-name">Silver (XAG/USD)</div></div>
+                    <div class="card-prices"><div class="price-primary">US$32.18</div><div class="price-secondary">C$45.74/oz</div></div>
+                    <div class="changes"><div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+0.85%</span></div><div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">+2.1%</span></div><div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+4.7%</span></div><div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">+8.2%</span></div></div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,40 20,42 40,38 60,35 80,37 100,30 120,28 140,25 160,22 180,18 200,15 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,40 20,42 40,38 60,35 80,37 100,30 120,28 140,25 160,22 180,18 200,15"/></svg><span class="spark-period">30d</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">OIL</div><div class="card-name">Crude Oil (WTI)</div></div>
+                    <div class="card-prices"><div class="price-primary">US$72.48</div><div class="price-secondary">C$103.02/bbl</div></div>
+                    <div class="changes"><div class="chg"><span class="chg-label">Day:</span><span class="chg-val">-0.61%</span></div><div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">-1.3%</span></div><div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+2.4%</span></div><div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">-3.1%</span></div></div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,20 20,22 40,18 60,24 80,28 100,25 120,30 140,28 160,32 180,34 200,30 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,20 20,22 40,18 60,24 80,28 100,25 120,30 140,28 160,32 180,34 200,30"/></svg><span class="spark-period">30d</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">KC</div><div class="card-name">Coffee (Arabica)</div></div>
+                    <div class="card-prices"><div class="price-primary">US$3.84/lb</div><div class="price-secondary">C$5.46/lb</div></div>
+                    <div class="changes"><div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+1.2%</span></div><div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">+3.8%</span></div><div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+12.1%</span></div><div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">+18.4%</span></div></div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,44 20,40 40,42 60,36 80,34 100,30 120,26 140,22 160,18 180,14 200,8 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,44 20,40 40,42 60,36 80,34 100,30 120,26 140,22 160,18 180,14 200,8"/></svg><span class="spark-period">30d</span></div>
+                </div>
+            </div>
+            <div class="ep-footer">
+                <div class="footer-item"><svg width="16" height="9" viewBox="0 0 20 10"><rect x="0" y="0" width="16" height="10" fill="none" stroke="#555" stroke-width="1.5"/><rect x="16" y="2.5" width="3" height="5" fill="#555"/><rect x="1.5" y="1.5" width="11" height="7" fill="#555"/></svg><span>87%</span></div>
+                <div class="footer-item">Futures: Active</div>
+                <div class="footer-item">Next page: 60s · Data: 5 min</div>
+            </div>
+        </div>
+
+        <!-- ════════════════════ PAGE 4: CURRENCIES ════════════════════ -->
+        <div class="page" id="page-3">
+            <div class="ep-header">
+                <span class="ep-header-title">💱 Foreign Exchange</span>
+                <div class="ep-header-right"><span>Feb 7, 2026 · 2:50 PM</span><span class="page-counter">4/5</span></div>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">$/$</div><div class="card-name">USD / CAD</div></div>
+                    <div class="card-prices"><div class="price-primary">1.4212</div><div class="price-secondary">1 USD = 1.4212 CAD</div></div>
+                    <div class="changes"><div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+0.12%</span></div><div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">-0.3%</span></div><div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+0.8%</span></div><div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">+1.2%</span></div></div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,30 20,28 40,32 60,26 80,24 100,28 120,22 140,25 160,20 180,18 200,16 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,30 20,28 40,32 60,26 80,24 100,28 120,22 140,25 160,20 180,18 200,16"/></svg><span class="spark-period">30d</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">€/$</div><div class="card-name">EUR / USD</div></div>
+                    <div class="card-prices"><div class="price-primary">1.0384</div><div class="price-secondary">1 EUR = 1.0384 USD</div></div>
+                    <div class="changes"><div class="chg"><span class="chg-label">Day:</span><span class="chg-val">-0.08%</span></div><div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">+0.4%</span></div><div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">-0.6%</span></div><div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">-1.8%</span></div></div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,18 20,20 40,16 60,22 80,24 100,20 120,26 140,28 160,24 180,30 200,32 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,18 20,20 40,16 60,22 80,24 100,20 120,26 140,28 160,24 180,30 200,32"/></svg><span class="spark-period">30d</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">$/¥</div><div class="card-name">USD / JPY</div></div>
+                    <div class="card-prices"><div class="price-primary">154.82</div><div class="price-secondary">1 USD = 154.82 JPY</div></div>
+                    <div class="changes"><div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+0.22%</span></div><div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">+0.8%</span></div><div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">+1.4%</span></div><div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">+2.1%</span></div></div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,35 20,32 40,34 60,28 80,26 100,30 120,24 140,22 160,20 180,16 200,14 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,35 20,32 40,34 60,28 80,26 100,30 120,24 140,22 160,20 180,16 200,14"/></svg><span class="spark-period">30d</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-top"><div class="card-icon square">£/$</div><div class="card-name">GBP / USD</div></div>
+                    <div class="card-prices"><div class="price-primary">1.2456</div><div class="price-secondary">1 GBP = 1.2456 USD</div></div>
+                    <div class="changes"><div class="chg"><span class="chg-label">Day:</span><span class="chg-val">+0.15%</span></div><div class="chg"><span class="chg-label">Wk:</span><span class="chg-val">-0.2%</span></div><div class="chg"><span class="chg-label">Mo:</span><span class="chg-val">-0.9%</span></div><div class="chg"><span class="chg-label">YTD:</span><span class="chg-val">-1.4%</span></div></div>
+                    <div class="spark-wrap"><svg viewBox="0 0 200 50" preserveAspectRatio="none"><polygon fill="#1a1a1a18" points="0,22 20,24 40,20 60,26 80,28 100,24 120,30 140,26 160,32 180,28 200,30 200,50 0,50"/><polyline fill="none" stroke="#1a1a1a" stroke-width="1.5" points="0,22 20,24 40,20 60,26 80,28 100,24 120,30 140,26 160,32 180,28 200,30"/></svg><span class="spark-period">30d</span></div>
+                </div>
+            </div>
+            <div class="ep-footer">
+                <div class="footer-item"><svg width="16" height="9" viewBox="0 0 20 10"><rect x="0" y="0" width="16" height="10" fill="none" stroke="#555" stroke-width="1.5"/><rect x="16" y="2.5" width="3" height="5" fill="#555"/><rect x="1.5" y="1.5" width="11" height="7" fill="#555"/></svg><span>87%</span></div>
+                <div class="footer-item">FX: 24h Market</div>
+                <div class="footer-item">Next page: 60s · Data: 5 min</div>
+            </div>
+        </div>
+
+        <!-- ════════════════════ PAGE 5: WEATHER (Original esp32-weather-epd layout) ════════════════════ -->
+        <div class="page" id="page-4">
+            <div class="wx-page">
+                <!-- Top bar: matches original project's header with city + date + status -->
+                <div class="wx-topbar">
+                    <div class="wx-topbar-left">Toronto, Ontario, Canada</div>
+                    <div class="wx-topbar-right">
+                        <span>Fri, Feb 7, 2026</span>
+                        <span>2:51 PM</span>
+                        <span class="status-icon">
+                            <svg width="12" height="9" viewBox="0 0 20 15"><path d="M10 15c0.8 0 1.5-0.7 1.5-1.5S10.8 12 10 12s-1.5 0.7-1.5 1.5S9.2 15 10 15z" fill="#555"/><path d="M10 9c-1.9 0-3.6 0.8-4.8 2l1.4 1.4c0.9-0.9 2.1-1.4 3.4-1.4s2.5 0.5 3.4 1.4l1.4-1.4C13.6 9.8 11.9 9 10 9z" fill="#555"/><path d="M10 5c-3 0-5.7 1.2-7.7 3.2l1.4 1.4C5.3 8 7.5 7 10 7s4.7 1 6.3 2.6l1.4-1.4C15.7 6.2 13 5 10 5z" fill="#555"/></svg>
+                        </span>
+                        <span class="status-icon">
+                            <svg width="16" height="9" viewBox="0 0 20 10"><rect x="0" y="0" width="16" height="10" fill="none" stroke="#555" stroke-width="1.5"/><rect x="16" y="2.5" width="3" height="5" fill="#555"/><rect x="1.5" y="1.5" width="11" height="7" fill="#555"/></svg>
+                            87%
+                        </span>
+                        <span>5/5</span>
+                    </div>
+                </div>
+
+                <div class="wx-body">
+                    <!-- Current Conditions (top-left) — large icon + temperature -->
+                    <div class="wx-current">
+                        <div class="wx-icon-area">
+                            <!-- Partly cloudy SVG icon (e-paper style, black strokes) -->
+                            <svg viewBox="0 0 100 100" fill="none" stroke="#1a1a1a" stroke-width="2.5">
+                                <!-- Sun behind -->
+                                <circle cx="60" cy="35" r="14" fill="none"/>
+                                <line x1="60" y1="14" x2="60" y2="19"/>
+                                <line x1="60" y1="51" x2="60" y2="56"/>
+                                <line x1="39" y1="35" x2="44" y2="35"/>
+                                <line x1="76" y1="35" x2="81" y2="35"/>
+                                <line x1="45.1" y1="20.1" x2="48.6" y2="23.6"/>
+                                <line x1="71.4" y1="46.4" x2="74.9" y2="49.9"/>
+                                <line x1="74.9" y1="20.1" x2="71.4" y2="23.6"/>
+                                <line x1="48.6" y1="46.4" x2="45.1" y2="49.9"/>
+                                <!-- Cloud in front -->
+                                <path d="M25 72 C25 72, 20 72, 18 68 C14 62, 20 55, 28 56 C28 48, 38 44, 46 48 C50 42, 62 42, 66 50 C74 50, 78 58, 72 64 C72 70, 66 72, 66 72 Z" fill="#f0efe8" stroke="#1a1a1a" stroke-width="2.5"/>
+                            </svg>
+                        </div>
+                        <div class="wx-temp-now">-8°C</div>
+                        <div class="wx-desc">Partly Cloudy</div>
+                        <div class="wx-hilo">H: -5° &nbsp; L: -12°</div>
+                        <div class="wx-feels">Feels like -14°C</div>
+                    </div>
+
+                    <!-- 5-Day Forecast (top-right) — row of daily forecasts with icons -->
+                    <div class="wx-forecast">
+                        <div class="wx-fday">
+                            <div class="wx-fday-label">SAT</div>
+                            <div class="wx-fday-icon"><svg viewBox="0 0 40 40" fill="none" stroke="#1a1a1a" stroke-width="1.8"><circle cx="20" cy="16" r="6"/><line x1="20" y1="5" x2="20" y2="8"/><line x1="20" y1="24" x2="20" y2="27"/><line x1="9" y1="16" x2="12" y2="16"/><line x1="28" y1="16" x2="31" y2="16"/><path d="M10 30 C10 30, 8 30, 7 28 C5 25, 8 22, 12 22.5 C12 19, 17 17.5, 20 19.5" stroke="#1a1a1a" stroke-width="1.5"/></svg></div>
+                            <div class="wx-fday-temp">-5° / -12°</div>
+                            <div class="wx-fday-precip">10%</div>
+                        </div>
+                        <div class="wx-fday">
+                            <div class="wx-fday-label">SUN</div>
+                            <div class="wx-fday-icon"><svg viewBox="0 0 40 40" fill="none" stroke="#1a1a1a" stroke-width="1.8"><path d="M8 28 C8 28, 6 28, 5 26 C3 22, 6 19, 10 19.5 C10 15, 16 13, 20 16 C22 12, 30 12, 32 18 C36 18, 38 22, 35 25 C35 28, 32 28, 32 28 Z"/><line x1="12" y1="32" x2="10" y2="36"/><line x1="20" y1="32" x2="18" y2="36"/><line x1="28" y1="32" x2="26" y2="36"/></svg></div>
+                            <div class="wx-fday-temp">-3° / -10°</div>
+                            <div class="wx-fday-precip">65%</div>
+                        </div>
+                        <div class="wx-fday">
+                            <div class="wx-fday-label">MON</div>
+                            <div class="wx-fday-icon"><svg viewBox="0 0 40 40" fill="none" stroke="#1a1a1a" stroke-width="1.8"><path d="M8 28 C8 28, 6 28, 5 26 C3 22, 6 19, 10 19.5 C10 15, 16 13, 20 16 C22 12, 30 12, 32 18 C36 18, 38 22, 35 25 C35 28, 32 28, 32 28 Z"/></svg></div>
+                            <div class="wx-fday-temp">-1° / -8°</div>
+                            <div class="wx-fday-precip">20%</div>
+                        </div>
+                        <div class="wx-fday">
+                            <div class="wx-fday-label">TUE</div>
+                            <div class="wx-fday-icon"><svg viewBox="0 0 40 40" fill="none" stroke="#1a1a1a" stroke-width="1.8"><path d="M8 28 C8 28, 6 28, 5 26 C3 22, 6 19, 10 19.5 C10 15, 16 13, 20 16 C22 12, 30 12, 32 18 C36 18, 38 22, 35 25 C35 28, 32 28, 32 28 Z"/></svg></div>
+                            <div class="wx-fday-temp">2° / -4°</div>
+                            <div class="wx-fday-precip">15%</div>
+                        </div>
+                        <div class="wx-fday">
+                            <div class="wx-fday-label">WED</div>
+                            <div class="wx-fday-icon"><svg viewBox="0 0 40 40" fill="none" stroke="#1a1a1a" stroke-width="1.8"><circle cx="20" cy="16" r="6"/><line x1="20" y1="5" x2="20" y2="8"/><line x1="20" y1="24" x2="20" y2="27"/><line x1="9" y1="16" x2="12" y2="16"/><line x1="28" y1="16" x2="31" y2="16"/><path d="M10 30 C10 30, 8 30, 7 28 C5 25, 8 22, 12 22.5 C12 19, 17 17.5, 20 19.5" stroke="#1a1a1a" stroke-width="1.5"/></svg></div>
+                            <div class="wx-fday-temp">4° / -2°</div>
+                            <div class="wx-fday-precip">5%</div>
+                        </div>
+                    </div>
+
+                    <!-- Details panel (bottom-left) — conditions + indoor sensor -->
+                    <div class="wx-details">
+                        <div class="wx-detail-section-title">Conditions</div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">Wind</span><span class="wx-detail-value">NW 22 km/h</span></div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">Humidity</span><span class="wx-detail-value">68%</span></div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">Pressure</span><span class="wx-detail-value">1018 hPa</span></div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">UV Index</span><span class="wx-detail-value">1 Low</span></div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">Visibility</span><span class="wx-detail-value">14 km</span></div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">Dew Point</span><span class="wx-detail-value">-13°C</span></div>
+
+                        <div class="wx-detail-section-title">Sun & Moon</div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">Sunrise</span><span class="wx-detail-value">7:22 AM</span></div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">Sunset</span><span class="wx-detail-value">5:38 PM</span></div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">Moon</span><span class="wx-detail-value">Waxing Gibbous</span></div>
+
+                        <div class="wx-detail-section-title">Air Quality</div>
+                        <div class="wx-detail-row"><span class="wx-detail-label">AQI</span><span class="wx-detail-value">42 — Good</span></div>
+
+                        <div class="wx-indoor-section">
+                            <div class="wx-indoor-title">Indoor (BME280)</div>
+                            <div class="wx-indoor-row">
+                                <div><div class="wx-indoor-val">21.4°C</div><div class="wx-indoor-label">TEMPERATURE</div></div>
+                                <div><div class="wx-indoor-val">38%</div><div class="wx-indoor-label">HUMIDITY</div></div>
+                                <div><div class="wx-indoor-val">1016</div><div class="wx-indoor-label">hPa</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hourly Outlook Graph (bottom-right) — temp line + precip bars -->
+                    <div class="wx-graph">
+                        <div class="wx-graph-title">Hourly Outlook — 48h</div>
+                        <div class="wx-graph-area">
+                            <svg viewBox="0 0 500 150" preserveAspectRatio="none">
+                                <!-- Horizontal grid lines -->
+                                <line x1="0" y1="30" x2="500" y2="30" stroke="#ddd" stroke-width="0.5"/>
+                                <line x1="0" y1="60" x2="500" y2="60" stroke="#ddd" stroke-width="0.5"/>
+                                <line x1="0" y1="90" x2="500" y2="90" stroke="#ddd" stroke-width="0.5"/>
+                                <line x1="0" y1="120" x2="500" y2="120" stroke="#ddd" stroke-width="0.5"/>
+
+                                <!-- Precipitation probability bars (shaded) -->
+                                <rect x="10" y="130" width="8" height="10" fill="#1a1a1a30"/>
+                                <rect x="20" y="125" width="8" height="15" fill="#1a1a1a30"/>
+                                <rect x="30" y="120" width="8" height="20" fill="#1a1a1a30"/>
+                                <rect x="40" y="115" width="8" height="25" fill="#1a1a1a30"/>
+                                <rect x="50" y="108" width="8" height="32" fill="#1a1a1a40"/>
+                                <rect x="60" y="100" width="8" height="40" fill="#1a1a1a40"/>
+                                <rect x="70" y="95" width="8" height="45" fill="#1a1a1a50"/>
+                                <rect x="80" y="90" width="8" height="50" fill="#1a1a1a50"/>
+                                <rect x="90" y="85" width="8" height="55" fill="#1a1a1a60"/>
+                                <rect x="100" y="80" width="8" height="60" fill="#1a1a1a60"/>
+                                <rect x="110" y="85" width="8" height="55" fill="#1a1a1a60"/>
+                                <rect x="120" y="90" width="8" height="50" fill="#1a1a1a50"/>
+                                <rect x="130" y="95" width="8" height="45" fill="#1a1a1a50"/>
+                                <rect x="140" y="100" width="8" height="40" fill="#1a1a1a40"/>
+                                <rect x="150" y="110" width="8" height="30" fill="#1a1a1a30"/>
+                                <rect x="160" y="118" width="8" height="22" fill="#1a1a1a30"/>
+                                <rect x="170" y="125" width="8" height="15" fill="#1a1a1a20"/>
+                                <rect x="180" y="128" width="8" height="12" fill="#1a1a1a20"/>
+                                <rect x="190" y="130" width="8" height="10" fill="#1a1a1a15"/>
+                                <rect x="200" y="132" width="8" height="8" fill="#1a1a1a10"/>
+                                <rect x="210" y="134" width="8" height="6" fill="#1a1a1a10"/>
+                                <rect x="220" y="135" width="8" height="5" fill="#1a1a1a10"/>
+                                <rect x="230" y="136" width="8" height="4" fill="#1a1a1a10"/>
+                                <rect x="240" y="136" width="8" height="4" fill="#1a1a1a10"/>
+
+                                <!-- Temperature line -->
+                                <polyline fill="none" stroke="#1a1a1a" stroke-width="2"
+                                    points="10,78 20,80 40,85 60,90 80,95 100,98 120,100 140,95 160,88 180,82 200,75 220,70 240,72 260,78 280,85 300,90 320,94 340,96 360,92 380,85 400,78 420,72 440,68 460,65 480,62 500,60"/>
+                            </svg>
+                            <div class="wx-graph-y-labels">
+                                <span>2°</span>
+                                <span>-2°</span>
+                                <span>-6°</span>
+                                <span>-10°</span>
+                                <span>-14°</span>
+                            </div>
+                        </div>
+                        <div style="display:flex; justify-content: space-between; align-items: center;">
+                            <div class="wx-graph-key">
+                                <div class="wx-graph-key-item"><span class="wx-graph-key-swatch" style="background:#1a1a1a;height:2px;"></span> Temperature</div>
+                                <div class="wx-graph-key-item"><span class="wx-graph-key-swatch" style="background:#1a1a1a40;height:8px;"></span> Precip. Prob.</div>
+                            </div>
+                            <div class="wx-graph-legend">
+                                <span>3PM → 3PM tomorrow → 3PM +2d</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer matches original project style -->
+                <div class="wx-footer">
+                    <span>Last updated: 2:51 PM EST</span>
+                    <span>OpenWeatherMap API · 30 min refresh</span>
+                    <span>Page 5/5 · Next: Crypto in 60s</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="info-panel">
+    <div class="info-grid">
+        <div class="info-card active-card" id="info-0"><div class="info-card-num">PAGE 1</div><div class="info-card-title">Crypto</div><div class="info-card-desc">BTC · ETH · HYPE · ADA<br>CoinGecko API</div></div>
+        <div class="info-card" id="info-1"><div class="info-card-num">PAGE 2</div><div class="info-card-title">Indices</div><div class="info-card-desc">TSX · NASDAQ · S&P · DJIA<br>Yahoo Finance</div></div>
+        <div class="info-card" id="info-2"><div class="info-card-num">PAGE 3</div><div class="info-card-title">Commodities</div><div class="info-card-desc">Gold · Silver · Oil · Coffee<br>Yahoo Finance</div></div>
+        <div class="info-card" id="info-3"><div class="info-card-num">PAGE 4</div><div class="info-card-title">FX Rates</div><div class="info-card-desc">USD/CAD · EUR/USD<br>USD/JPY · GBP/USD</div></div>
+        <div class="info-card" id="info-4"><div class="info-card-num">PAGE 5</div><div class="info-card-title">Weather</div><div class="info-card-desc">Original esp32-weather-epd<br>layout — untouched</div></div>
+    </div>
+    <div class="cycle-note">1 min per page → 5 min full rotation → data refresh every cycle</div>
+</div>
+
+<script>
+    let currentPage = 0;
+    const totalPages = 5;
+    const pageNames = ['CRYPTO', 'INDICES', 'COMMODITIES', 'FX RATES', 'WEATHER'];
+    let autoRotate = true;
+    let countdown = 8;
+
+    function showPage(n) {
+        currentPage = ((n % totalPages) + totalPages) % totalPages;
+        document.querySelectorAll('.page').forEach((p, i) => p.classList.toggle('active', i === currentPage));
+        document.querySelectorAll('.page-dot').forEach((d, i) => d.classList.toggle('active', i === currentPage));
+        document.querySelectorAll('.info-card').forEach((c, i) => c.classList.toggle('active-card', i === currentPage));
+        document.getElementById('pageLabel').textContent = pageNames[currentPage];
+        countdown = 8;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => showPage(currentPage - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => showPage(currentPage + 1));
+    document.querySelectorAll('.page-dot').forEach(d => d.addEventListener('click', () => showPage(parseInt(d.dataset.page))));
+    document.getElementById('toggleAuto').addEventListener('click', function() {
+        autoRotate = !autoRotate;
+        this.textContent = autoRotate ? '⏸' : '▶';
+    });
+
+    setInterval(() => {
+        if (autoRotate) { countdown--; if (countdown <= 0) showPage(currentPage + 1); }
+        document.getElementById('countdown').textContent = Math.max(0, countdown);
+    }, 1000);
+</script>
+</body>
+</html>
