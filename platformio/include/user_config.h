@@ -15,7 +15,7 @@
 // ── API Keys ─────────────────────────────────────────────────
 // CoinGecko: https://www.coingecko.com/en/api
 // Free demo key works fine for 10-30 calls/min
-#define COINGECKO_API_KEY   ""
+#define COINGECKO_API_KEY   "CG-5QB3M85gSbWvPaYQVS9dzghq"
 
 // OpenWeatherMap: configured in config.cpp (OWM_APIKEY)
 
