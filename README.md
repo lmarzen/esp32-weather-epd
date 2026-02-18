@@ -111,6 +111,7 @@ You'll want a nice way to show off your project. Here are a few popular choices.
     | [Plaste-Metz](https://www.printables.com/@PlasteMetz_576567)         | [Printables](https://www.printables.com/model/1160924-weather-station-case)                               |
     | [kenwch92](https://github.com/kenwch92)                              | [Printables](https://www.printables.com/model/1505838-over-engineered-display-stand-for-esp32-e-paper-we) |
     | [Eckerput](https://github.com/Eckerput)                              | [Thingiverse](https://www.thingiverse.com/thing:7112836)                                                  |
+    | [Thomax ](https://www.printables.com/@Thomax_386720)                 | [Printables](https://www.printables.com/model/1363448-esp32-e-paper-weather-display) |
 
   - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
 - Picture Frame
