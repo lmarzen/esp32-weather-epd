@@ -147,6 +147,12 @@ const char *TXT_UNITS_PRECIP_MILLIMETERS = "mm";
 const char *TXT_UNITS_PRECIP_CENTIMETERS = "cm";
 const char *TXT_UNITS_PRECIP_INCHES      = "in";
 
+// NEXT HOUR RAIN FORECAST
+const char *TXT_RAIN_CONTINUOUS = "Pluie sans interruption";
+const char *TXT_RAIN_UNTIL      = "Pluie jusqu'\340 %s";
+const char *TXT_RAIN_FROM       = "Pluie \340 partir de %s";
+const char *TXT_RAIN_FROM_TO    = "Pluie de %s \340 %s";
+
 // MISCELLANEOUS MESSAGES
 // Title Case
 const char *TXT_LOW_BATTERY = "Batterie Faible";
