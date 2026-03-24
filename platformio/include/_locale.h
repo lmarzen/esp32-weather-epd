@@ -1,5 +1,5 @@
 /* Locale data declarations for esp32-weather-epd.
- * Copyright (C) 2022-2024  Luke Marzen
+ * Copyright (C) 2022-2026  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,6 +45,8 @@ extern const String OWM_LANG;
 extern const char *TXT_FEELS_LIKE;
 extern const char *TXT_SUNRISE;
 extern const char *TXT_SUNSET;
+extern const char *TXT_MOONRISE;
+extern const char *TXT_MOONSET;
 extern const char *TXT_WIND;
 extern const char *TXT_HUMIDITY;
 extern const char *TXT_UV_INDEX;
@@ -54,6 +56,18 @@ extern const char *TXT_AIR_POLLUTION;
 extern const char *TXT_VISIBILITY;
 extern const char *TXT_INDOOR_TEMPERATURE;
 extern const char *TXT_INDOOR_HUMIDITY;
+extern const char *TXT_DEWPOINT;
+
+// MOON PHASE
+extern const char *TXT_MOONPHASE;
+extern const char *TXT_NEW_MOON;
+extern const char *TXT_WAXING_CRESCENT;
+extern const char *TXT_FIRST_QUARTER;
+extern const char *TXT_WAXING_GIBBOUS;
+extern const char *TXT_FULL_MOON;
+extern const char *TXT_WANING_GIBBOUS;
+extern const char *TXT_THIRD_QUARTER;
+extern const char *TXT_WANING_CRESCENT;
 
 // UV INDEX
 extern const char *TXT_UV_LOW;
@@ -273,3 +287,4 @@ extern const char *TXT_WL_CONNECTION_LOST;
 extern const char *TXT_WL_DISCONNECTED;
 
 #endif
+

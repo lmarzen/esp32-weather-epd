@@ -1,5 +1,5 @@
 /* Italian locale data for esp32-weather-epd.
- * Copyright (C) 2022-2024  Luke Marzen
+ * Copyright (C) 2022-2026  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,16 +51,16 @@ const char *LC_AM_STR      = "";
 // PM_STR                  Post Meridian affix
 const char *LC_PM_STR      = "";
 // DAY_{1-7}               name of the n-th day of the week
-const char *LC_DAY[7]      = {"domenica",   "luned\354",  "marted\354", "mercoled\354", 
+const char *LC_DAY[7]      = {"domenica",   "luned\354",  "marted\354", "mercoled\354",
                               "gioved\354", "venerd\354", "sabato"};
 // ABDAY_{1-7}             abbreviated ame of the n-th day of the week
 const char *LC_ABDAY[7]    = {"dom", "lun", "mar", "mer", "gio", "ven", "sab"};
 // MON_{1-12}              name of the n-th month of the year
-const char *LC_MON[12]     = {"gennaio",   "febbraio", "marzo",    "aprile", 
-                              "maggio",    "giugno",   "luglio",   "agosto", 
+const char *LC_MON[12]     = {"gennaio",   "febbraio", "marzo",    "aprile",
+                              "maggio",    "giugno",   "luglio",   "agosto",
                               "settembre", "ottobre",  "novembre", "dicembre"};
 // ABMON_{1-12}            abbreviated name of the n-th month of the year
-const char *LC_ABMON[12]   = {"gen", "feb", "mar", "apr", "mag", "giu", 
+const char *LC_ABMON[12]   = {"gen", "feb", "mar", "apr", "mag", "giu",
                               "lug", "ago", "set", "ott", "nov", "dic"};
 // ERA                     era description segments
 const char *LC_ERA         = "";
@@ -72,7 +72,7 @@ const char *LC_ERA_D_T_FMT = "";
 const char *LC_ERA_T_FMT   = "";
 
 // OWM LANGUAGE
-// For full list of languages, see 
+// For full list of languages, see
 // https://openweathermap.org/api/one-call-api#multi
 // Note: "[only] The contents of the 'description' field will be translated."
 const String OWM_LANG = "it";
@@ -81,6 +81,8 @@ const String OWM_LANG = "it";
 const char *TXT_FEELS_LIKE         = "Percepiti";
 const char *TXT_SUNRISE            = "Alba";
 const char *TXT_SUNSET             = "Tramonto";
+const char *TXT_MOONRISE           = "Sorgere della Luna";
+const char *TXT_MOONSET            = "Tramonto della Luna";
 const char *TXT_WIND               = "Vento";
 const char *TXT_HUMIDITY           = "Umidit\340";
 const char *TXT_UV_INDEX           = "Indice UV";
@@ -90,6 +92,18 @@ const char *TXT_AIR_POLLUTION      = "Inquinamento aria";
 const char *TXT_VISIBILITY         = "Visibilit\340";
 const char *TXT_INDOOR_TEMPERATURE = "Temperatura int.";
 const char *TXT_INDOOR_HUMIDITY    = "Umidit\340 int.";
+const char *TXT_DEWPOINT           = "Punto di rugiada";
+
+// MOON PHASE
+const char *TXT_MOONPHASE       = "Fase lunare";
+const char *TXT_NEW_MOON        = "Luna nuova";
+const char *TXT_WAXING_CRESCENT = "Luna crescente";
+const char *TXT_FIRST_QUARTER   = "Primo quarto";
+const char *TXT_WAXING_GIBBOUS  = "Gibbosa crescente";
+const char *TXT_FULL_MOON       = "Luna piena";
+const char *TXT_WANING_GIBBOUS  = "Gibbosa calante";
+const char *TXT_THIRD_QUARTER   = "Ultimo quarto";
+const char *TXT_WANING_CRESCENT = "Luna calante";
 
 // UV INDEX
 const char *TXT_UV_LOW       = "Basso";
@@ -239,7 +253,7 @@ const std::vector<String> TERM_HURRICANE =
 const std::vector<String> TERM_DUST =
     {"dust", "sand"};
 const std::vector<String> TERM_STRONG_WIND =
-    {"wind"};
+    {"wind", "monsoon"};
 
 // AIR QUALITY INDEX
 extern "C" {

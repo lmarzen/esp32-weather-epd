@@ -1,5 +1,5 @@
 /* Configuration option declarations for esp32-weather-epd.
- * Copyright (C) 2022-2025  Luke Marzen
+ * Copyright (C) 2022-2026  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,10 @@
 // Uncomment the macro that identifies your sensor.
 #define SENSOR_BME280
 // #define SENSOR_BME680
+
+// If you encounter issues with the BME280 sensor showing no data, uncomment and
+// add a small delay before reading it's value. 300ms seems to work for most people
+// #define SENSOR_INIT_DELAY_MS 300
 
 // 3 COLOR E-INK ACCENT COLOR
 // Defines the 3rd color to be used when a 3+ color display is selected.
@@ -149,8 +153,6 @@
 //   eventually the certificates on the esp32 will expire, requiring you to
 //   update the certificates in cert.h and reflash this software.
 //   Running cert.py will generate an updated cert.h file.
-//   The current certificate for api.openweathermap.org is valid until
-//   2026-04-10 23:59:59+00:00
 // (uncomment exactly one)
 // #define USE_HTTP
 // #define USE_HTTPS_NO_CERT_VERIF
@@ -195,6 +197,39 @@
 // #define WIND_ICONS_TERTIARY_INTERCARDINAL
 // #define WIND_ICONS_360
 
+// WIDGET POSITIONS
+// Set the order of current condition you want to display
+// in the following order
+//  0   1
+//  2   3
+//  4   5
+//  6   7
+//  8   9
+// if DISP_BW_V1 is used, 6,7,8,9 are not available
+#define POS_SUNRISE     0
+#define POS_SUNSET      1
+#define POS_WIND        2
+#define POS_HUMIDITY    3
+#define POS_UVI         4
+#define POS_PRESSURE    5
+#define POS_AIR_QULITY  6
+#define POS_VISIBILITY  7
+#define POS_INTEMP      8
+#define POS_INHUMIDITY  9
+// #define POS_MOONRISE    2
+// #define POS_MOONSET     3
+// #define POS_MOONPHASE   4
+// #define POS_DEWPOINT    5
+
+
+// Choose the style of moon phase icon you like
+//   Primary     : dark color means where the moon is
+//   Alternative : dark color means where the shadow is
+// Uncomment your preferred moon phase style.
+// #define MOONPHASE_PRIMARY
+#define MOONPHASE_ALTERNATIVE
+
+
 // FONTS
 // A handful of popular Open Source typefaces have been included with this
 // project for your convenience. Change the font by selecting its corresponding
@@ -224,6 +259,15 @@
 //   fonts. Using a font other than FreeSans may result in undesired spacing or
 //   other artifacts.
 #define FONT_HEADER "fonts/FreeSans.h"
+
+// FORECAST TEMPERATURE ORDER
+// The order of temperture Hi|Lo can optionally be configured using
+// the following options.
+//   HL   : High | Low
+//   LH   : Low | High
+//
+#define TEMP_ORDER_HL
+// #define TEMP_ORDER_LH
 
 // DAILY PRECIPITATION
 // Daily precipitation indicated under Hi|Lo can optionally be configured using
@@ -371,6 +415,10 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
       ^ defined(UNITS_HOURLY_PRECIP_INCHES))
   #error Invalid configuration. Exactly one houly precipitation measurement must be selected.
 #endif
+#if !(  defined(TEMP_ORDER_HL)      \
+      ^ defined(TEMP_ORDER_LH))
+  #error Invalid configuration. Exactly one temperature order must be selected.
+#endif
 #if !(  defined(UNITS_DAILY_PRECIP_POP)         \
       ^ defined(UNITS_DAILY_PRECIP_MILLIMETERS) \
       ^ defined(UNITS_DAILY_PRECIP_CENTIMETERS) \
@@ -418,6 +466,10 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
 #endif
 #if !(defined(DEBUG_LEVEL))
   #error Invalid configuration. DEBUG_LEVEL not defined.
+#endif
+#if !(  defined(MOONPHASE_PRIMARY)  \
+      ^ defined(MOONPHASE_ALTERNATIVE))
+  #error Invalid configuration. Exactly one moon phase style must be selected.
 #endif
 
 #endif

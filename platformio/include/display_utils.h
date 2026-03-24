@@ -1,5 +1,5 @@
 /* Display helper utility declarations for esp32-weather-epd.
- * Copyright (C) 2022-2025  Luke Marzen
+ * Copyright (C) 2022-2026  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,6 +78,8 @@ const char *getHttpResponsePhrase(int code);
 const char *getWifiStatusPhrase(wl_status_t status);
 void printHeapUsage();
 void disableBuiltinLED();
+const uint8_t *getMoonPhaseBitmap48(const owm_daily_t &daily);
+const char *getMoonPhaseStr(const owm_daily_t &daily);
 
 #endif
 

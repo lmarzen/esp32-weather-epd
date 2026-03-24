@@ -48,16 +48,16 @@ Here are two (slightly outdated) examples utilizing various configuration option
 
 ## Required Components
 
-  Some links below are affiliate links. Using them helps support the project at no extra cost to you—thanks for your support!
+Some links below are affiliate links. Using them helps support the project at no extra cost to you—thanks for your support!
 
-  | Component Type  | Component                                    | Notes                                                     | Link                                                                         |
-  |-----------------|----------------------------------------------|-----------------------------------------------------------|------------------------------------------------------------------------------|
-  | ESP32           | FireBeetle 2 ESP32-E                         | Features low-power design, USB-C, and battery management. | Available [here](https://www.dfrobot.com/product-2195.html?tracking=PfSxQ8). |
-  | E-Paper Display | See [Panel Support](#panel-support).         | See [Panel Support](#panel-support).                      | See [Panel Support](#panel-support).                                         |
-  | Adapter Board   | DESPI-C02                                    | Waveshare HATs (rev 2.2/2.3) are not recommended.         | Available [here](https://www.aliexpress.us/item/3256804446769469.html).      |
-  | Sensor          | BME280                                       | Temperature, humidity, and pressure. 3.3V/5V compatible.  | Available from multiple vendors.                                             |
-  | Battery         | 3.7V LiPo w/ JST-PH2.0 connector             | Any capacity (e.g., 5000mAh for 6+ months runtime)        | Available from multiple vendors.                                             |
-  | Enclosure       | See [Enclosure Options](#enclosure-options). | See [Enclosure Options](#enclosure-options).              | See [Enclosure Options](#enclosure-options).                                 |
+| Component Type  | Component                                    | Notes                                                     | Link                                                                         |
+| --------------- | -------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| ESP32           | FireBeetle 2 ESP32-E                         | Features low-power design, USB-C, and battery management. | Available [here](https://www.dfrobot.com/product-2195.html?tracking=PfSxQ8). |
+| E-Paper Display | See [Panel Support](#panel-support).         | See [Panel Support](#panel-support).                      | See [Panel Support](#panel-support).                                         |
+| Adapter Board   | DESPI-C02                                    | Waveshare HATs (rev 2.2/2.3) are not recommended.         | Available [here](https://www.aliexpress.us/item/3256804446769469.html).      |
+| Sensor          | BME280                                       | Temperature, humidity, and pressure. 3.3V/5V compatible.  | Available from multiple vendors.                                             |
+| Battery         | 3.7V LiPo w/ JST-PH2.0 connector             | Any capacity (e.g., 5000mAh for 6+ months runtime)        | Available from multiple vendors.                                             |
+| Enclosure       | See [Enclosure Options](#enclosure-options). | See [Enclosure Options](#enclosure-options).              | See [Enclosure Options](#enclosure-options).                                 |
 
 Other items needed:
 
@@ -70,16 +70,16 @@ Other items needed:
 
 Waveshare and Good Display make equivalent panels. Either variant will work.
 
-  | Panel                                   | Resolution | Colors          | Notes                                                                                                                 |
-  |-----------------------------------------|------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
-  | Waveshare 7.5in e-paper (v2)            | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper.htm). (recommended)                                |
-  | Good Display 7.5in e-paper (GDEY075T7)  | 800x480px  | Black/White     | [Temporarily Unavailable](https://www.aliexpress.com/item/3256802683908868.html)? (wrong product listed?)             |
-  | Waveshare 7.5in e-Paper (B)             | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-b.htm).                                            |
-  | Good Display 7.5in e-paper (GDEY075Z08) | 800x480px  | Red/Black/White | Available [here](https://www.aliexpress.com/item/3256803540460035.html).                                              |
-  | Waveshare 7.3in ACeP e-Paper (F)        | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-f.htm).                  |
-  | Good Display 7.3in e-paper (GDEY073D46) | 800x480px  | 7-Color         | Available [here](https://www.aliexpress.com/item/3256805485098421.html).                                              |
-  | Waveshare 7.5in e-paper (v1)            | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
-  | Good Display 7.5in e-paper (GDEW075T8)  | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
+| Panel                                   | Resolution | Colors          | Notes                                                                                                 |
+| --------------------------------------- | ---------- | --------------- | ----------------------------------------------------------------------------------------------------- |
+| Waveshare 7.5in e-paper (v2)            | 800x480px  | Black/White     | Available [here](https://www.waveshare.com/product/7.5inch-e-paper.htm). (recommended)                |
+| Good Display 7.5in e-paper (GDEY075T7)  | 800x480px  | Black/White     | Available [here](https://www.aliexpress.com/item/3256802683908868.html).                              |
+| Waveshare 7.5in e-Paper (B)             | 800x480px  | Red/Black/White | Available [here](https://www.waveshare.com/product/7.5inch-e-paper-b.htm).                            |
+| Good Display 7.5in e-paper (GDEY075Z08) | 800x480px  | Red/Black/White | Available [here](https://www.aliexpress.com/item/3256803540460035.html).                              |
+| Waveshare 7.3in ACeP e-Paper (F)        | 800x480px  | 7-Color         | Available [here](https://www.waveshare.com/product/displays/e-paper/epaper-1/7.3inch-e-paper-f.htm).  |
+| Good Display 7.3in e-paper (GDEY073D46) | 800x480px  | 7-Color         | Available [here](https://www.aliexpress.com/item/3256805485098421.html).                              |
+| Waveshare 7.5in e-paper (v1)            | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg). |
+| Good Display 7.5in e-paper (GDEW075T8)  | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg). |
 
 This software has limited support for accent colors. E-paper panels with additional colors tend to have longer refresh times, which will reduce battery life.
 
@@ -99,17 +99,20 @@ You'll want a nice way to show off your project. Here are a few popular choices.
 
   - Here is a list of community designs.
 
-    | Contributor                                                          | Link                                                                                                     |
-    | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-    | [Kingfisher](https://www.printables.com/@Kingfisher_32821)           | [Printables](https://www.printables.com/model/1139047-weather-station-e-ink-frame)                       |
-    | [Francois Allard](https://www.printables.com/@FrAllard_1585397)      | [Printables](https://www.printables.com/model/791477-weather-station-using-a-esp32)                      |
-    | [3D Nate](https://www.printables.com/@3DNate_451157)                 | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)                        |
-    | [Sven F.](https://github.com/Spanholz)                               | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)                     |
-    | [Layers Studio](https://www.printables.com/@LayersStudio)            | [Printables](https://www.printables.com/model/655768-esp32-e-paper-weather-display-stand)                |
-    | [PJ Veltri](https://www.printables.com/@PJVeltri_1590999)            | [Printables](https://www.printables.com/model/692944-base-and-display-holder-for-esp-32-e-paper-weather) |
-    | [TheMeanCanEHdian](https://www.printables.com/@TheMeanCanEH_1207348) | [Printables](https://www.printables.com/model/841458-weather-display-enclosure)                          |
-    | [MPHarms](https://www.thingiverse.com/mpharms/designs)               | [Thingiverse](https://www.thingiverse.com/thing:6666148)                                                 |
-    | [Plaste-Metz](https://www.printables.com/@PlasteMetz_576567)         | [Printables](https://www.printables.com/model/1160924-weather-station-case)                              |
+    | Contributor                                                          | Link                                                                                                      |
+    | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+    | [Kingfisher](https://www.printables.com/@Kingfisher_32821)           | [Printables](https://www.printables.com/model/1139047-weather-station-e-ink-frame)                        |
+    | [Francois Allard](https://www.printables.com/@FrAllard_1585397)      | [Printables](https://www.printables.com/model/791477-weather-station-using-a-esp32)                       |
+    | [3D Nate](https://www.printables.com/@3DNate_451157)                 | [Printables](https://www.printables.com/model/661183-e-ink-weather-station-frame)                         |
+    | [Sven F.](https://github.com/Spanholz)                               | [Printables](https://www.printables.com/model/657756-case-for-esp32-weather-station)                      |
+    | [Layers Studio](https://www.printables.com/@LayersStudio)            | [Printables](https://www.printables.com/model/655768-esp32-e-paper-weather-display-stand)                 |
+    | [PJ Veltri](https://www.printables.com/@PJVeltri_1590999)            | [Printables](https://www.printables.com/model/692944-base-and-display-holder-for-esp-32-e-paper-weather)  |
+    | [TheMeanCanEHdian](https://www.printables.com/@TheMeanCanEH_1207348) | [Printables](https://www.printables.com/model/841458-weather-display-enclosure)                           |
+    | [MPHarms](https://www.thingiverse.com/mpharms/designs)               | [Thingiverse](https://www.thingiverse.com/thing:6666148)                                                  |
+    | [Plaste-Metz](https://www.printables.com/@PlasteMetz_576567)         | [Printables](https://www.printables.com/model/1160924-weather-station-case)                               |
+    | [kenwch92](https://github.com/kenwch92)                              | [Printables](https://www.printables.com/model/1505838-over-engineered-display-stand-for-esp32-e-paper-we) |
+    | [Eckerput](https://github.com/Eckerput)                              | [Thingiverse](https://www.thingiverse.com/thing:7112836)                                                  |
+    | [Thomax](https://www.printables.com/@Thomax_386720)                 | [Printables](https://www.printables.com/model/1363448-esp32-e-paper-weather-display)                      |
 
   - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
 
