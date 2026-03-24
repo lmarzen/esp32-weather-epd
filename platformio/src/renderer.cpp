@@ -1,5 +1,5 @@
 /* Renderer for esp32-weather-epd.
- * Copyright (C) 2022-2025  Luke Marzen
+ * Copyright (C) 2022-2026  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,20 +38,20 @@
 #include "icons/icons_196x196.h"
 
 #ifdef DISP_BW_V2
-  GxEPD2_BW<GxEPD2_750_T7,
-            GxEPD2_750_T7::HEIGHT> display(
-    GxEPD2_750_T7(PIN_EPD_CS,
-                  PIN_EPD_DC,
-                  PIN_EPD_RST,
-                  PIN_EPD_BUSY));
+  GxEPD2_BW<GxEPD2_750_GDEY075T7,
+            GxEPD2_750_GDEY075T7::HEIGHT> display(
+    GxEPD2_750_GDEY075T7(PIN_EPD_CS,
+                         PIN_EPD_DC,
+                         PIN_EPD_RST,
+                         PIN_EPD_BUSY));
 #endif
 #ifdef DISP_3C_B
-  GxEPD2_3C<GxEPD2_750c_Z08,
-            GxEPD2_750c_Z08::HEIGHT / 2> display(
-    GxEPD2_750c_Z08(PIN_EPD_CS,
-                    PIN_EPD_DC,
-                    PIN_EPD_RST,
-                    PIN_EPD_BUSY));
+  GxEPD2_3C<GxEPD2_750c_GDEY075Z08,
+            GxEPD2_750c_GDEY075Z08::HEIGHT / 2> display(
+    GxEPD2_750c_GDEY075Z08(PIN_EPD_CS,
+                           PIN_EPD_DC,
+                           PIN_EPD_RST,
+                           PIN_EPD_BUSY));
 #endif
 #ifdef DISP_7C_F
   GxEPD2_7C<GxEPD2_730c_GDEY073D46,

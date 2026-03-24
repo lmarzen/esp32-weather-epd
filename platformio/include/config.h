@@ -1,5 +1,5 @@
 /* Configuration option declarations for esp32-weather-epd.
- * Copyright (C) 2022-2025  Luke Marzen
+ * Copyright (C) 2022-2026  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -153,8 +153,6 @@
 //   eventually the certificates on the esp32 will expire, requiring you to
 //   update the certificates in cert.h and reflash this software.
 //   Running cert.py will generate an updated cert.h file.
-//   The current certificate for api.openweathermap.org is valid until
-//   2026-04-10 23:59:59+00:00
 // (uncomment exactly one)
 // #define USE_HTTP
 // #define USE_HTTPS_NO_CERT_VERIF

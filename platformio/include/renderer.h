@@ -1,5 +1,5 @@
 /* Renderer declarations for esp32-weather-epd.
- * Copyright (C) 2022-2025  Luke Marzen
+ * Copyright (C) 2022-2026  Luke Marzen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,15 +28,15 @@
   #define DISP_WIDTH  800
   #define DISP_HEIGHT 480
   #include <GxEPD2_BW.h>
-  extern GxEPD2_BW<GxEPD2_750_T7,
-                   GxEPD2_750_T7::HEIGHT> display;
+  extern GxEPD2_BW<GxEPD2_750_GDEY075T7,
+                   GxEPD2_750_GDEY075T7::HEIGHT> display;
 #endif
 #ifdef DISP_3C_B
   #define DISP_WIDTH  800
   #define DISP_HEIGHT 480
   #include <GxEPD2_3C.h>
-  extern GxEPD2_3C<GxEPD2_750c_Z08,
-                   GxEPD2_750c_Z08::HEIGHT / 2> display;
+  extern GxEPD2_3C<GxEPD2_750c_GDEY075Z08,
+                   GxEPD2_750c_GDEY075Z08::HEIGHT / 2> display;
 #endif
 #ifdef DISP_7C_F
   #define DISP_WIDTH  800
