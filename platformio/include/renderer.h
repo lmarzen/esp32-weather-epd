@@ -77,6 +77,8 @@ void drawCurrentConditions(const owm_current_t &current,
 void drawForecast(const owm_daily_t *daily, tm timeInfo);
 void drawAlerts(std::vector<owm_alerts_t> &alerts,
                 const String &city, const String &date);
+void drawNextHourPrecip(const owm_minutely_t *minutely,
+                        const String &city, const String &date);
 void drawLocationDate(const String &city, const String &date);
 void drawOutlookGraph(const owm_hourly_t *hourly, const owm_daily_t *daily,
                       tm timeInfo);
