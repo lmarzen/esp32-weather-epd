@@ -26,6 +26,7 @@
 #include <SPI.h>
 #include <time.h>
 #include <WiFi.h>
+#include <WiFiManager.h>
 
 // additional libraries
 #include <Adafruit_BusIO_Register.h>
@@ -49,7 +50,7 @@
   static const uint16_t OWM_PORT = 443;
 #endif
 
-/* Power-on and connect WiFi.
+/* Power-on and connect WiFi using WiFi Manager.
  * Takes int parameter to store WiFi RSSI, or “Received Signal Strength
  * Indicator"
  *
@@ -58,33 +59,94 @@
 wl_status_t startWiFi(int &wifiRSSI)
 {
   WiFi.mode(WIFI_STA);
-  Serial.printf("%s '%s'", TXT_CONNECTING_TO, WIFI_SSID);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-  // timeout if WiFi does not connect in WIFI_TIMEOUT ms from now
-  unsigned long timeout = millis() + WIFI_TIMEOUT;
-  wl_status_t connection_status = WiFi.status();
+  WiFiManager wifi_manager;
+  wifi_manager.setConnectTimeout(10);
 
-  while ((connection_status != WL_CONNECTED) && (millis() < timeout))
-  {
-    Serial.print(".");
-    delay(50);
-    connection_status = WiFi.status();
-  }
-  Serial.println();
-
-  if (connection_status == WL_CONNECTED)
+  // Turn off config AP fallback to save on battery on random errors
+  wifi_manager.setEnableConfigPortal(false);
+  if (wifi_manager.autoConnect(WIFI_AP_SSID)) 
   {
     wifiRSSI = WiFi.RSSI(); // get WiFi signal strength now, because the WiFi
                             // will be turned off to save power!
     Serial.println("IP: " + WiFi.localIP().toString());
   }
-  else
-  {
-    Serial.printf("%s '%s'\n", TXT_COULD_NOT_CONNECT_TO, WIFI_SSID);
-  }
-  return connection_status;
+  return WiFi.status();
 } // startWiFi
+
+/* Power-on and connect WiFi.
+ * Takes int parameter to store WiFi RSSI, or “Received Signal Strength
+ * Indicator"
+ *
+ * Returns WiFi status.
+ */
+wl_status_t startDefaultWiFi(int &wifiRSSI)
+{
+    WiFi.mode(WIFI_STA);
+    Serial.printf("Connecting to '%s'", WIFI_SSID);
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+    // timeout if WiFi does not connect in 10s from now
+    unsigned long timeout = millis() + WIFI_TIMEOUT;
+    wl_status_t connection_status = WiFi.status();
+
+    while ((connection_status != WL_CONNECTED) && (millis() < timeout))
+    {
+      Serial.print(".");
+      delay(50);
+      connection_status = WiFi.status();
+    }
+    Serial.println();
+
+    if (connection_status == WL_CONNECTED)
+    {
+      wifiRSSI = WiFi.RSSI(); // get WiFi signal strength now, because the WiFi
+                              // will be turned off to save power!
+      Serial.println("IP: " + WiFi.localIP().toString());
+    }
+    else
+    {
+      Serial.printf("Could not connect to '%s'\n", WIFI_SSID);
+    }
+    return connection_status;
+} // startDefaultWiFi
+
+/* Callback when WiFi config AP is started
+ * Takes in a WiFiManager instance. 
+ */
+void configModeCallback(WiFiManager *myWiFiManager)
+{
+  Serial.println("Entered Configuration Mode");
+  Serial.print("Config SSID: ");
+  Serial.println(myWiFiManager->getConfigPortalSSID());
+  Serial.print("Config IP Address: ");
+  Serial.println(WiFi.softAPIP());
+}
+
+/* Power-on and start WiFi config AP.
+ * Takes int parameter to store WiFi RSSI, or “Received Signal Strength
+ * Indicator"
+ *
+ * Returns WiFi status.
+ */
+wl_status_t configureWiFi(int &wifiRSSI)
+{
+  WiFi.mode(WIFI_STA);
+
+  WiFiManager wifi_manager;
+  wifi_manager.setConnectTimeout(10);
+  wifi_manager.setConfigPortalTimeout(60 * 5);  
+  wifi_manager.setAPCallback(configModeCallback);
+  
+  // Start the configuration AP portal with 10 minute timeout
+  if (wifi_manager.startConfigPortal(WIFI_AP_SSID))
+  {
+    wifiRSSI = WiFi.RSSI(); // get WiFi signal strength now, because the WiFi
+                            // will be turned off to save power!
+    Serial.println("IP: " + WiFi.localIP().toString());
+  }
+  return WiFi.status();
+} // configureWiFi
 
 /* Disconnect and power-off WiFi.
  */
