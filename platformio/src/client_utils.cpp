@@ -44,9 +44,9 @@
 #endif
 
 #ifdef USE_HTTP
-  static const uint16_t OWM_PORT = 80;
+  static const uint16_t OWM_PORT = 6898;
 #else
-  static const uint16_t OWM_PORT = 443;
+  static const uint16_t OWM_PORT = 6898;
 #endif
 
 /* Power-on and connect WiFi.
@@ -152,19 +152,13 @@ bool waitForSNTPSync(tm *timeInfo)
   int attempts = 0;
   bool rxSuccess = false;
   DeserializationError jsonErr = {};
-  String uri = "/data/" + OWM_ONECALL_VERSION
-               + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG
-               + "&units=standard&exclude=minutely";
+  String uri = "/data";
 #if !DISPLAY_ALERTS
   // exclude alerts
   uri += ",alerts";
 #endif
 
-  // This string is printed to terminal to help with debugging. The API key is
-  // censored to reduce the risk of users exposing their key.
-  String sanitizedUri = OWM_ENDPOINT + uri + "&appid={API key}";
-
-  uri += "&appid=" + OWM_APIKEY;
+  String sanitizedUri = OWM_ENDPOINT;
 
   Serial.print(TXT_ATTEMPTING_HTTP_REQ);
   Serial.println(": " + sanitizedUri);
