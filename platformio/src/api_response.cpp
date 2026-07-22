@@ -27,7 +27,7 @@ DeserializationError deserializeOneCall(WiFiClient &json,
 
   JsonDocument filter;
   filter["current"]  = true;
-  filter["minutely"] = false;
+  filter["minutely"] = DISPLAY_NEXT_HOUR_PRECIP;
   filter["hourly"]   = true;
   filter["daily"]    = true;
 #if !DISPLAY_ALERTS
@@ -89,19 +89,20 @@ DeserializationError deserializeOneCall(WiFiClient &json,
   r.current.weather.description = current_weather["description"].as<const char *>();
   r.current.weather.icon        = current_weather["icon"]       .as<const char *>();
 
-  // minutely forecast is currently unused
-  // i = 0;
-  // for (JsonObject minutely : doc["minutely"].as<JsonArray>())
-  // {
-  //   r.minutely[i].dt            = minutely["dt"]           .as<int64_t>();
-  //   r.minutely[i].precipitation = minutely["precipitation"].as<float>();
+#if DISPLAY_NEXT_HOUR_PRECIP
+  i = 0;
+  for (JsonObject minutely : doc["minutely"].as<JsonArray>())
+  {
+    r.minutely[i].dt            = minutely["dt"]           .as<int64_t>();
+    r.minutely[i].precipitation = minutely["precipitation"].as<float>();
 
-  //   if (i == OWM_NUM_MINUTELY - 1)
-  //   {
-  //     break;
-  //   }
-  //   ++i;
-  // }
+    if (i == OWM_NUM_MINUTELY - 1)
+    {
+      break;
+    }
+    ++i;
+  }
+#endif
 
   i = 0;
   for (JsonObject hourly : doc["hourly"].as<JsonArray>())

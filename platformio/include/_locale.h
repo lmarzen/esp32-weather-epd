@@ -111,6 +111,12 @@ extern const char *TXT_UNITS_PRECIP_MILLIMETERS;
 extern const char *TXT_UNITS_PRECIP_CENTIMETERS;
 extern const char *TXT_UNITS_PRECIP_INCHES;
 
+// NEXT HOUR RAIN FORECAST
+extern const char *TXT_RAIN_CONTINUOUS;
+extern const char *TXT_RAIN_UNTIL;
+extern const char *TXT_RAIN_FROM;
+extern const char *TXT_RAIN_FROM_TO;
+
 // MISCELLANEOUS MESSAGES
 // Title Case
 extern const char *TXT_LOW_BATTERY;

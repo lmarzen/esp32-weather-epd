@@ -25,7 +25,7 @@
 #include <HTTPClient.h>
 #include <WiFi.h>
 
-#define OWM_NUM_MINUTELY       1 // 61
+#define OWM_NUM_MINUTELY      60 // 60
 #define OWM_NUM_HOURLY        48 // 48
 #define OWM_NUM_DAILY          8 // 8
 #define OWM_NUM_ALERTS         8 // OpenWeatherMaps does not specify a limit, but if you need more alerts you are probably doomed.
@@ -93,7 +93,7 @@ typedef struct owm_current
 typedef struct owm_minutely
 {
   int64_t dt;               // Time of the forecasted data, unix, UTC
-  float   precipitation;    // Precipitation volume, mm
+  float   precipitation;    // Precipitation volume, mm/h
 } owm_minutely_t;
 
 /*
@@ -172,8 +172,7 @@ typedef struct owm_resp_onecall
   String  timezone;         // Timezone name for the requested location
   int     timezone_offset;  // Shift in seconds from UTC
   owm_current_t   current;
-  // owm_minutely_t  minutely[OWM_NUM_MINUTELY];
-
+  owm_minutely_t  minutely[OWM_NUM_MINUTELY];
   owm_hourly_t    hourly[OWM_NUM_HOURLY];
   owm_daily_t     daily[OWM_NUM_DAILY];
   std::vector<owm_alerts_t> alerts;

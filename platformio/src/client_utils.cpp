@@ -154,10 +154,13 @@ bool waitForSNTPSync(tm *timeInfo)
   DeserializationError jsonErr = {};
   String uri = "/data/" + OWM_ONECALL_VERSION
                + "/onecall?lat=" + LAT + "&lon=" + LON + "&lang=" + OWM_LANG
-               + "&units=standard&exclude=minutely";
-#if !DISPLAY_ALERTS
-  // exclude alerts
-  uri += ",alerts";
+               + "&units=standard";
+#if !DISPLAY_NEXT_HOUR_PRECIP && !DISPLAY_ALERTS
+  uri += "&exclude=minutely,alerts";
+#elif !DISPLAY_NEXT_HOUR_PRECIP
+  uri += "&exclude=minutely";
+#elif !DISPLAY_ALERTS
+  uri += "&exclude=alerts";
 #endif
 
   // This string is printed to terminal to help with debugging. The API key is
