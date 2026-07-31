@@ -28,12 +28,14 @@
 //   DISP_7C_F  - 7.3in ACeP e-Paper (F)       800x480px  7-Color
 //   DISP_7C_E6 - 7.3in spectra 6 e-Paper (E6) 800x480px  7-Color
 //   DISP_BW_V1 - 7.5in e-Paper (v1)           640x384px  Black/White
+//   DISP_3C_E420 - 4.2in e-Paper (E420)       400x300px  Red/Black/White
 // Uncomment the macro that identifies your physical panel.
 #define DISP_BW_V2
 // #define DISP_3C_B
 // #define DISP_7C_F
 // #define DISP_7C_E6
 // #define DISP_BW_V1
+// #define DISP_3C_E420
 
 // E-PAPER DRIVER BOARD
 // The DESPI-C02 is the only officially supported driver board.
@@ -46,16 +48,19 @@
 
 // INDOOR ENVIRONMENT SENSOR
 // Uncomment the macro that identifies your sensor.
-#define SENSOR_BME280
+#if !defined(SENSOR_BME280) && !defined(SENSOR_BME680) && !defined(SENSOR_AHT20)
+  #define SENSOR_BME280
+#endif
 // #define SENSOR_BME680
+// #define SENSOR_AHT20
 
-// If you encounter issues with the BME280 sensor showing no data, uncomment and
-// add a small delay before reading it's value. 300ms seems to work for most people
+// If you encounter issues with the sensor showing no data, uncomment and add a
+// small delay before reading its value. 300ms works for most BME280 modules.
 // #define SENSOR_INIT_DELAY_MS 300
 
 // 3 COLOR E-INK ACCENT COLOR
 // Defines the 3rd color to be used when a 3+ color display is selected.
-#if defined(DISP_3C_B) || defined(DISP_7C_F)
+#if defined(DISP_3C_B) || defined(DISP_7C_F) || defined(DISP_3C_E420)
   // #define ACCENT_COLOR GxEPD_BLACK
   #define ACCENT_COLOR GxEPD_RED
   // #define ACCENT_COLOR GxEPD_GREEN
@@ -321,6 +326,9 @@
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;
+#if defined(NM_EPD_420)
+extern const uint8_t PIN_BAT_ADC_EN; // Battery ADC enable pin (active HIGH)
+#endif
 extern const uint8_t PIN_EPD_BUSY;
 extern const uint8_t PIN_EPD_CS;
 extern const uint8_t PIN_EPD_RST;
@@ -329,10 +337,11 @@ extern const uint8_t PIN_EPD_SCK;
 extern const uint8_t PIN_EPD_MISO;
 extern const uint8_t PIN_EPD_MOSI;
 extern const uint8_t PIN_EPD_PWR;
-extern const uint8_t PIN_BME_SDA;
-extern const uint8_t PIN_BME_SCL;
-extern const uint8_t PIN_BME_PWR;
+extern const uint8_t PIN_SENSOR_SDA;
+extern const uint8_t PIN_SENSOR_SCL;
+extern const uint8_t PIN_SENSOR_PWR;
 extern const uint8_t BME_ADDRESS;
+extern const uint8_t AHT20_ADDRESS;
 extern const char *WIFI_SSID;
 extern const char *WIFI_PASSWORD;
 extern const unsigned long WIFI_TIMEOUT;
@@ -369,7 +378,8 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
       ^ defined(DISP_3C_B)   \
       ^ defined(DISP_7C_F)   \
       ^ defined(DISP_7C_E6)  \
-      ^ defined(DISP_BW_V1))
+  ^ defined(DISP_BW_V1)  \
+  ^ defined(DISP_3C_E420))
   #error Invalid configuration. Exactly one display panel must be selected.
 #endif
 #if !(  defined(DRIVER_WAVESHARE) \
@@ -377,7 +387,8 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
   #error Invalid configuration. Exactly one driver board must be selected.
 #endif
 #if !(  defined(SENSOR_BME280) \
-      ^ defined(SENSOR_BME680))
+      ^ defined(SENSOR_BME680) \
+      ^ defined(SENSOR_AHT20))
   #error Invalid configuration. Exactly one sensor must be selected.
 #endif
 #if !(defined(LOCALE))
