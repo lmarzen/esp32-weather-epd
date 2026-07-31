@@ -41,6 +41,9 @@
 #if defined(SENSOR_BME680)
   #include <Adafruit_BME680.h>
 #endif
+#if defined(SENSOR_AHT20)
+  #include <Adafruit_AHTX0.h>
+#endif
 #if defined(USE_HTTPS_WITH_CERT_VERIF) || defined(USE_HTTPS_WITH_CERT_VERIF)
   #include <WiFiClientSecure.h>
 #endif
@@ -317,40 +320,66 @@ void setup()
   }
   killWiFi(); // WiFi no longer needed
 
-  // GET INDOOR TEMPERATURE AND HUMIDITY, start BMEx80...
-  pinMode(PIN_BME_PWR, OUTPUT);
-  digitalWrite(PIN_BME_PWR, HIGH);
-#if defined(SENSOR_INIT_DELAY_MS) && SENSOR_INIT_DELAY_MS > 0
+  // GET INDOOR TEMPERATURE AND HUMIDITY
+  pinMode(PIN_SENSOR_PWR, OUTPUT);
+  digitalWrite(PIN_SENSOR_PWR, HIGH);
+#if defined(SENSOR_AHT20)
+  delay(50); // AHT20 requires at least 40ms after power-on
+#elif defined(SENSOR_INIT_DELAY_MS) && SENSOR_INIT_DELAY_MS > 0
   delay(SENSOR_INIT_DELAY_MS);
 #endif
-  TwoWire I2C_bme = TwoWire(0);
-  I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
+  TwoWire I2C_sensor = TwoWire(0);
+  I2C_sensor.begin(PIN_SENSOR_SDA, PIN_SENSOR_SCL, 100000); // 100kHz
   float inTemp     = NAN;
   float inHumidity = NAN;
+  bool sensorFound = false;
 #if defined(SENSOR_BME280)
-  Serial.print(String(TXT_READING_FROM) + " BME280... ");
+  const char *sensorName = "BME280";
   Adafruit_BME280 bme;
-
-  if(bme.begin(BME_ADDRESS, &I2C_bme))
+  sensorFound = bme.begin(BME_ADDRESS, &I2C_sensor);
+  if (sensorFound)
   {
-#endif
-#if defined(SENSOR_BME680)
-  Serial.print(String(TXT_READING_FROM) + " BME680... ");
-  Adafruit_BME680 bme(&I2C_bme);
-
-  if(bme.begin(BME_ADDRESS))
-  {
-#endif
     inTemp     = bme.readTemperature(); // Celsius
     inHumidity = bme.readHumidity();    // %
-
-    // check if BME readings are valid
+  }
+#elif defined(SENSOR_BME680)
+  const char *sensorName = "BME680";
+  Adafruit_BME680 bme(&I2C_sensor);
+  sensorFound = bme.begin(BME_ADDRESS);
+  if (sensorFound)
+  {
+    inTemp     = bme.readTemperature(); // Celsius
+    inHumidity = bme.readHumidity();    // %
+  }
+#elif defined(SENSOR_AHT20)
+  const char *sensorName = "AHT20";
+  Adafruit_AHTX0 aht;
+  I2C_sensor.beginTransmission(AHT20_ADDRESS);
+  if (I2C_sensor.endTransmission() == 0)
+  {
+    sensorFound = aht.begin(&I2C_sensor);
+  }
+  if (sensorFound)
+  {
+    sensors_event_t humidityEvent;
+    sensors_event_t temperatureEvent;
+    if (aht.getEvent(&humidityEvent, &temperatureEvent))
+    {
+      inTemp     = temperatureEvent.temperature;    // Celsius
+      inHumidity = humidityEvent.relative_humidity; // %
+    }
+  }
+#endif
+  Serial.print(String(TXT_READING_FROM) + " " + sensorName + "... ");
+  if (sensorFound)
+  {
+    // Check if sensor readings are valid.
     // note: readings are checked again before drawing to screen. If a reading
     //       is not a number (NAN) then an error occurred, a dash '-' will be
     //       displayed.
     if (std::isnan(inTemp) || std::isnan(inHumidity))
     {
-      statusStr = "BME " + String(TXT_READ_FAILED);
+      statusStr = String(sensorName) + " " + TXT_READ_FAILED;
       Serial.println(statusStr);
     }
     else
@@ -360,10 +389,10 @@ void setup()
   }
   else
   {
-    statusStr = "BME " + String(TXT_NOT_FOUND); // check wiring
+    statusStr = String(sensorName) + " " + TXT_NOT_FOUND; // check wiring
     Serial.println(statusStr);
   }
-  digitalWrite(PIN_BME_PWR, LOW);
+  digitalWrite(PIN_SENSOR_PWR, LOW);
 
   String refreshTimeStr;
   getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);

@@ -33,6 +33,10 @@ Here are two (slightly outdated) examples utilizing various configuration option
   <img src="showcase/demo-london.jpg" width="49%" />
 </p>
 
+The NM-EPD-420 working like below:
+
+![NM-EPD-420 pcb](showcase/nm-epd-420-pcb.png)
+
 ![NM-EPD-420 demo](showcase/nm-epd-420.png)
 
 ## Contents
@@ -127,7 +131,7 @@ You'll want a nice way to show off your project. Here are a few popular choices.
 
 ### Low-Cost Alternative: NM-EPD-420
 
-If you want a **plug-and-play, cost-effective** solution, the **[NM-EPD-420](https://github.com/RockBase-iot/NM-EPD-420)** board is an excellent choice. It integrates an **ESP32-S3**, a **4.2″ tri-color e-paper panel (GDEY042Z98, 400×300)**, an **AHT20** environmental sensor, battery management, and audio codec on a single PCB. By reusing the 4.2″ panel with a re-optimized UI layout, the overall BOM cost is greatly reduced while preserving a similar user experience.
+If you want a **plug-and-play, cost-effective** solution, the **[NM-EPD-420](https://rockbase.shop/products/nm-epd-420/)** board is an excellent choice. It integrates an **ESP32-S3**, a **4.2″ tri-color e-paper panel (GDEY042Z98, 400×300)**, an **AHT20** environmental sensor, battery management, and audio codec on a single PCB. By reusing the 4.2″ panel with a re-optimized UI layout, the overall BOM cost is greatly reduced while preserving a similar user experience.
 
 **Key specs:**
 - **MCU:** ESP32-S3 (16 MB Flash, PSRAM, Wi-Fi & BLE)
@@ -139,7 +143,7 @@ If you want a **plug-and-play, cost-effective** solution, the **[NM-EPD-420](htt
 
 **Project support status:**
 - Display and battery monitoring are fully supported out of the box.
-- The current firmware uses an **externally connected BME280** (via the I²C header) for pressure/temperature/humidity data. The on-board AHT20 can be used for temperature/humidity if you wire it to the same I²C bus and adjust the sensor driver in your own fork.
+- The on-board **AHT20** is supported for indoor temperature and humidity in the `nm-epd-420` environment. BME280 and BME680 remain available for other boards or external sensor configurations.
 - To build for this board, select the `nm-epd-420` environment in `platformio.ini`:
   ```bash
   pio run -e nm-epd-420
@@ -153,7 +157,7 @@ This project can be completed without any soldering, if you choose your componen
 - Buy the [FireBeetle 2 ESP32-E w/ Headers](https://www.dfrobot.com/product-2231.html?tracking=PfSxQ8).
 - Buy a BME280 with headers soldered from the factory.
 - Buy a reset switch that is compatible with jumper wires.
-- **Even simpler:** Use the **NM-EPD-420** all-in-one board (only an external BME280 sensor needs to be connected with jumper wires if you require pressure data).
+- **Even simpler:** Use the **NM-EPD-420** all-in-one board; its on-board AHT20 requires no sensor wiring.
 
 
 ## Setup Guide
@@ -191,7 +195,7 @@ Cut the low power pad for even longer battery life.
 
 The NM-EPD-420 is largely plug-and-play:
 1. Connect a **3.7 V LiPo battery** to the JST-PH2.0 connector (watch polarity—cut and swap wires if needed).
-2. **Internal BME280** to the I²C header (`SDA` / `SCL`) for indoor environmental data.
+2. The on-board **AHT20** provides indoor temperature and humidity without external wiring.
 3. Plug the board into your computer via USB-C for flashing and charging.
 
 No driver-board wiring is required—the e-paper is already wired to the ESP32-S3 on the PCB.
