@@ -28,7 +28,11 @@
 #include "client_utils.h"
 #include "config.h"
 #include "display_utils.h"
-#include "icons/icons_196x196.h"
+#ifdef DISP_3C_E420
+  #include "icons/icons_96x96.h"
+#else
+  #include "icons/icons_196x196.h"
+#endif
 #include "renderer.h"
 
 #if defined(SENSOR_BME280)
@@ -160,7 +164,11 @@ void setup()
       initDisplay();
       do
       {
+        #ifdef DISP_3C_E420
+        drawError(battery_alert_0deg_96x96, TXT_LOW_BATTERY);
+        #else
         drawError(battery_alert_0deg_196x196, TXT_LOW_BATTERY);
+        #endif
       } while (display.nextPage());
       powerOffDisplay();
     }
@@ -218,7 +226,11 @@ void setup()
       Serial.println(TXT_NETWORK_NOT_AVAILABLE);
       do
       {
+        #ifdef DISP_3C_E420
+        drawError(wifi_x_96x96, TXT_NETWORK_NOT_AVAILABLE);
+        #else
         drawError(wifi_x_196x196, TXT_NETWORK_NOT_AVAILABLE);
+        #endif
       } while (display.nextPage());
     }
     else
@@ -226,7 +238,11 @@ void setup()
       Serial.println(TXT_WIFI_CONNECTION_FAILED);
       do
       {
+        #ifdef DISP_3C_E420
+        drawError(wifi_x_96x96, TXT_WIFI_CONNECTION_FAILED);
+        #else
         drawError(wifi_x_196x196, TXT_WIFI_CONNECTION_FAILED);
+        #endif
       } while (display.nextPage());
     }
     powerOffDisplay();
@@ -243,7 +259,11 @@ void setup()
     initDisplay();
     do
     {
+      #ifdef DISP_3C_E420
+      drawError(wi_time_4_96x96, TXT_TIME_SYNCHRONIZATION_FAILED);
+      #else
       drawError(wi_time_4_196x196, TXT_TIME_SYNCHRONIZATION_FAILED);
+      #endif
     } while (display.nextPage());
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
@@ -268,7 +288,11 @@ void setup()
     initDisplay();
     do
     {
+      #ifdef DISP_3C_E420
+      drawError(wi_cloud_down_96x96, statusStr, tmpStr);
+      #else
       drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+      #endif
     } while (display.nextPage());
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
@@ -282,7 +306,11 @@ void setup()
     initDisplay();
     do
     {
+      #ifdef DISP_3C_E420
+      drawError(wi_cloud_down_96x96, statusStr, tmpStr);
+      #else
       drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+      #endif
     } while (display.nextPage());
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);

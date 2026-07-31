@@ -1,6 +1,8 @@
 # ESP32 E-Paper Weather Display
 
-A low-power weather display using a wifi-enabled ESP32 microcontroller and a 7.5" E-Paper display. Weather data is fetched from the OpenWeatherMap API, and an onboard sensor provides indoor temperature and humidity.
+A low-power weather display using a WiFi-enabled ESP32 microcontroller and an E-Paper display. Weather data is fetched from the OpenWeatherMap API, and an onboard sensor provides indoor temperature and humidity.
+
+This project now supports both the classic **7.5″** panels (800×480) and a new **4.2″ tri-color** layout (400×300). The smaller 4.2″ option offers a **significantly lower cost** while retaining the same rich weather information and similar visual experience thanks to a re-optimized UI layout.
 
 <p float="left">
   <img src="showcase/assembled-demo-raleigh-front.jpg" />
@@ -12,9 +14,11 @@ A low-power weather display using a wifi-enabled ESP32 microcontroller and a 7.5
 
 ## Features
 
-- Ultra-low power consumption: ~14μA in sleep, ~83mA during refresh (~15s).
+- Ultra-low power consumption: ~14μA in sleep, ~83mA during refresh (~15s on 7.5″, ~10s on 4.2″ 3-color).
 
 - Long battery life: 6-12 months on a 5000mAh battery with 30-minute update frequency.
+
+- **Dual display support**: 7.5″ high-resolution or cost-optimized 4.2″ tri-color e-paper.
 
 - Customizable display: Supports multiple languages, units, time/date formats, AQI scales, personalization options, and much more.
 
@@ -28,6 +32,8 @@ Here are two (slightly outdated) examples utilizing various configuration option
   <img src="showcase/demo-new-york.jpg" width="49%" />
   <img src="showcase/demo-london.jpg" width="49%" />
 </p>
+
+![NM-EPD-420 demo](showcase/nm-epd-420.png)
 
 ## Contents
 
@@ -59,6 +65,7 @@ Here are two (slightly outdated) examples utilizing various configuration option
   | Sensor          | BME280                                       | Temperature, humidity, and pressure. 3.3V/5V compatible.  | Available from multiple vendors.                                             |
   | Battery         | 3.7V LiPo w/ JST-PH2.0 connector             | Any capacity (e.g., 5000mAh for 6+ months runtime)        | Available from multiple vendors.                                             |
   | Enclosure       | See [Enclosure Options](#enclosure-options). | See [Enclosure Options](#enclosure-options).              | See [Enclosure Options](#enclosure-options).                                 |
+  | ESP32 (alt.)    | **NM-EPD-420** (ESP32-S3 + 4.2″ EPD)         | All-in-one board with integrated tri-color E-Paper. See [below](#low-cost-alternative-nm-epd-420). | [RockBase IoT](https://github.com/RockBase-iot/NM-EPD-420) |
 
 Other items needed:
 - Wires ("Jumper Wires" if looking to minimize/avoid soldering).
@@ -81,6 +88,7 @@ Other items needed:
   | Good Display 7.3in e-paper (GDEP073E01) | 800x480px  | 7-Color         | Available [here](https://www.good-display.com/blank7.html?productId=533).                                             |
   | Waveshare 7.5in e-paper (v1)            | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
   | Good Display 7.5in e-paper (GDEW075T8)  | 640x384px  | Black/White     | Limited support. Some information not displayed, see [image](showcase/demo-waveshare75-version1.jpg).                 |
+  | **NM-EPD-420 4.2in (GDEY042Z98)**     | **400x300px** | **Red/Black/White** | **Low-cost tri-color panel used on the NM-EPD-420 board.**                                                            |
 
   This software has limited support for accent colors. E-paper panels with additional colors tend to have longer refresh times, which will reduce battery life.
 
@@ -117,6 +125,27 @@ You'll want a nice way to show off your project. Here are a few popular choices.
   - If you want to share your own 3D printable designs, your contributions are highly encouraged and welcome!
 - Picture Frame
 
+### Low-Cost Alternative: NM-EPD-420
+
+If you want a **plug-and-play, cost-effective** solution, the **[NM-EPD-420](https://github.com/RockBase-iot/NM-EPD-420)** board is an excellent choice. It integrates an **ESP32-S3**, a **4.2″ tri-color e-paper panel (GDEY042Z98, 400×300)**, an **AHT20** environmental sensor, battery management, and audio codec on a single PCB. By reusing the 4.2″ panel with a re-optimized UI layout, the overall BOM cost is greatly reduced while preserving a similar user experience.
+
+**Key specs:**
+- **MCU:** ESP32-S3 (16 MB Flash, PSRAM, Wi-Fi & BLE)
+- **Display:** 4.2″ 400×300 Red/Black/White e-paper (GxEPD2 driver)
+- **Sensor:** AHT20 (temperature & humidity over I²C)
+- **Battery:** 3.7 V LiPo JST-PH2.0 connector with resistor-divider ADC monitoring
+- **Audio:** ES8311 codec + on-board speaker + DMIC microphone
+- **Expansion:** µSD card slot + SPI header for LoRa (SX126x) modules
+
+**Project support status:**
+- Display and battery monitoring are fully supported out of the box.
+- The current firmware uses an **externally connected BME280** (via the I²C header) for pressure/temperature/humidity data. The on-board AHT20 can be used for temperature/humidity if you wire it to the same I²C bus and adjust the sensor driver in your own fork.
+- To build for this board, select the `nm-epd-420` environment in `platformio.ini`:
+  ```bash
+  pio run -e nm-epd-420
+  pio run -e nm-epd-420 --target upload
+  ```
+
 ### Solder-Free Component Selection (Optional)
 
 This project can be completed without any soldering, if you choose your component selection carefully.
@@ -124,11 +153,14 @@ This project can be completed without any soldering, if you choose your componen
 - Buy the [FireBeetle 2 ESP32-E w/ Headers](https://www.dfrobot.com/product-2231.html?tracking=PfSxQ8).
 - Buy a BME280 with headers soldered from the factory.
 - Buy a reset switch that is compatible with jumper wires.
+- **Even simpler:** Use the **NM-EPD-420** all-in-one board (only an external BME280 sensor needs to be connected with jumper wires if you require pressure data).
 
 
 ## Setup Guide
 
 ### Wiring
+
+#### FireBeetle 2 ESP32-E (default)
 
 The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
 
@@ -155,6 +187,14 @@ Cut the low power pad for even longer battery life.
 
 ![Wiring diagram with DESPI-C02 driver board.](showcase/wiring_diagram_despi-c02.png)
 
+#### NM-EPD-420
+
+The NM-EPD-420 is largely plug-and-play:
+1. Connect a **3.7 V LiPo battery** to the JST-PH2.0 connector (watch polarity—cut and swap wires if needed).
+2. **Internal BME280** to the I²C header (`SDA` / `SCL`) for indoor environmental data.
+3. Plug the board into your computer via USB-C for flashing and charging.
+
+No driver-board wiring is required—the e-paper is already wired to the ESP32-S3 on the PCB.
 
 ### Configuration, Compilation, and Upload
 
@@ -172,6 +212,11 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
 
    b. Navigate to this project and select the folder called "platformio".
 
+   c. If you are using the **NM-EPD-420**, switch the default environment in `platformio.ini`:
+      ```ini
+      default_envs = nm-epd-420
+      ```
+
 5. Configure Options.
 
    - Most configuration options are located in [config.cpp](platformio/src/config.cpp), with a few  in [config.h](platformio/include/config.h).
@@ -187,6 +232,8 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
      - Time and date formats.
 
      - Sleep duration.
+
+     - **Display panel:** If using the NM-EPD-420 or any 4.2″ tri-color panel, ensure `DISP_3C_E420` is selected in `config.h` (this is the default in the `nm-epd-420` branch/environment).
 
    - Important settings to configure in config.h:
 

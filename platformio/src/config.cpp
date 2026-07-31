@@ -25,7 +25,28 @@
 // Note: LED_BUILTIN pin will be disabled to reduce power draw.  Refer to your
 //       board's pinout to ensure you avoid using a pin with this shared 
 //       functionality.
-//
+
+#if defined(NM_EPD_420)
+// NM-EPD-420 pinout
+// ADC enable pin: pull HIGH to power the battery voltage divider circuit
+const uint8_t PIN_BAT_ADC_EN = 43; // GPIO43, active HIGH
+// ADC pin used to measure battery voltage (via resistor divider, ratio 1:2)
+const uint8_t PIN_BAT_ADC  = 3;   // GPIO3
+// Pins for E-Paper Driver Board
+const uint8_t PIN_EPD_BUSY = 6;
+const uint8_t PIN_EPD_CS   = 46;
+const uint8_t PIN_EPD_RST  = 5;
+const uint8_t PIN_EPD_DC   = 4;
+const uint8_t PIN_EPD_SCK  = 2;
+const uint8_t PIN_EPD_MISO = 10; // Not used, as no data from display
+const uint8_t PIN_EPD_MOSI = 1;
+const uint8_t PIN_EPD_PWR  = 21; // Irrelevant if directly connected to 3.3V
+// I2C Pins used for BME280/BME680
+const uint8_t PIN_BME_SDA = 39;
+const uint8_t PIN_BME_SCL = 38;
+const uint8_t PIN_BME_PWR = 21;  // Irrelevant if directly connected to 3.3V
+#else
+// FireBeetle 2 ESP32-E pinout (default)
 // ADC pin used to measure battery voltage
 const uint8_t PIN_BAT_ADC  = A2; // A0 for micro-usb firebeetle
 // Pins for E-Paper Driver Board
@@ -37,10 +58,11 @@ const uint8_t PIN_EPD_SCK  = 18;
 const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
 const uint8_t PIN_EPD_MOSI = 23;
 const uint8_t PIN_EPD_PWR  = 26; // Irrelevant if directly connected to 3.3V
-// I2C Pins used for BME280
+// I2C Pins used for BME280/BME680
 const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
-const uint8_t PIN_BME_PWR =  4;   // Irrelevant if directly connected to 3.3V
+const uint8_t PIN_BME_PWR =  4;  // Irrelevant if directly connected to 3.3V
+#endif
 const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
 
 // WIFI

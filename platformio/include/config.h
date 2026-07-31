@@ -28,12 +28,14 @@
 //   DISP_7C_F  - 7.3in ACeP e-Paper (F)       800x480px  7-Color
 //   DISP_7C_E6 - 7.3in spectra 6 e-Paper (E6) 800x480px  7-Color
 //   DISP_BW_V1 - 7.5in e-Paper (v1)           640x384px  Black/White
+//   DISP_3C_E420 - 4.2in e-Paper (E420)       400x300px  Red/Black/White
 // Uncomment the macro that identifies your physical panel.
 #define DISP_BW_V2
 // #define DISP_3C_B
 // #define DISP_7C_F
 // #define DISP_7C_E6
 // #define DISP_BW_V1
+// #define DISP_3C_E420
 
 // E-PAPER DRIVER BOARD
 // The DESPI-C02 is the only officially supported driver board.
@@ -55,7 +57,7 @@
 
 // 3 COLOR E-INK ACCENT COLOR
 // Defines the 3rd color to be used when a 3+ color display is selected.
-#if defined(DISP_3C_B) || defined(DISP_7C_F)
+#if defined(DISP_3C_B) || defined(DISP_7C_F) || defined(DISP_3C_E420)
   // #define ACCENT_COLOR GxEPD_BLACK
   #define ACCENT_COLOR GxEPD_RED
   // #define ACCENT_COLOR GxEPD_GREEN
@@ -321,6 +323,9 @@
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;
+#if defined(NM_EPD_420)
+extern const uint8_t PIN_BAT_ADC_EN; // Battery ADC enable pin (active HIGH)
+#endif
 extern const uint8_t PIN_EPD_BUSY;
 extern const uint8_t PIN_EPD_CS;
 extern const uint8_t PIN_EPD_RST;
@@ -369,7 +374,8 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
       ^ defined(DISP_3C_B)   \
       ^ defined(DISP_7C_F)   \
       ^ defined(DISP_7C_E6)  \
-      ^ defined(DISP_BW_V1))
+  ^ defined(DISP_BW_V1)  \
+  ^ defined(DISP_3C_E420))
   #error Invalid configuration. Exactly one display panel must be selected.
 #endif
 #if !(  defined(DRIVER_WAVESHARE) \
