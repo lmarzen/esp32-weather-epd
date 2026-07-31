@@ -92,10 +92,11 @@
 
 // Widget layout constants — different for 4.2in (400x300) vs 7.5in (800x480)
 // Layout grid for current-condition widgets:
-//   DISP_3C_E420 (4.2in): 2 cols × 5 rows, icon=24×24, col=85px, base_y=104
+//   DISP_3C_E420 (4.2in): 2 cols × 5 rows, icon=24×24, col=75px, base_y=104
 //   others       (7.5in): 2 cols × 5 rows, icon=48×48, col=162px, base_y=204
 #ifdef DISP_3C_E420
-  static const int WI_COL  = 85;   // column width (px)
+  static const int WI_COL  = 75;   // column width (px) — keeps right column
+                                   // clear of the outlook graph's y-axis labels
   static const int WI_Y0   = 104;  // first-row base y
   static const int WI_DY   = 30;   // row stride (icon 24 + gap 6)
   static const int WI_SZ   = 24;   // icon size
@@ -335,7 +336,7 @@ void drawCurrentSunrise(const owm_current_t &current)
   time_t ts = current.sunrise;
   tm *timeInfo = localtime(&ts);
   _strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, timeBuffer, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, timeBuffer, LEFT, ACCENT_COLOR);
 
   return;
 }
@@ -407,9 +408,9 @@ void drawCurrentWind(const owm_current_t &current)
 #endif
 
 #if defined(WIND_INDICATOR_ARROW) && !defined(DISP_3C_E420)
-  drawString((WI_LOFF + 24) + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString((WI_LOFF + 24) + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #else
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #endif
 #ifdef DISP_3C_E420
   display.setFont(&FONT_5pt8b);
@@ -422,10 +423,10 @@ void drawCurrentWind(const owm_current_t &current)
   dataStr = String(current.wind_deg) + "\260";
 #ifdef DISP_3C_E420
   display.setFont(&FONT_6pt8b);
-  drawString(display.getCursorX() + 3, WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(display.getCursorX() + 3, WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #else
   display.setFont(&FONT_12pt8b);
-  drawString(display.getCursorX() + 6, WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(display.getCursorX() + 6, WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #endif
 #endif
 #if defined(WIND_INDICATOR_CPN_CARDINAL)                \
@@ -435,10 +436,10 @@ void drawCurrentWind(const owm_current_t &current)
   dataStr = getCompassPointNotation(current.wind_deg);
 #ifdef DISP_3C_E420
   display.setFont(&FONT_6pt8b);
-  drawString(display.getCursorX() + 3, WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(display.getCursorX() + 3, WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #else
   display.setFont(&FONT_12pt8b);
-  drawString(display.getCursorX() + 6, WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(display.getCursorX() + 6, WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #endif
 #endif
 
@@ -483,7 +484,7 @@ void drawCurrentUVI(const owm_current_t &current)
   unsigned int uvi = static_cast<unsigned int>(
                                 std::max(std::round(current.uvi), 0.0f));
   dataStr = String(uvi);
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #ifdef DISP_3C_E420
   display.setFont(&FONT_5pt8b);
 #else
@@ -494,7 +495,7 @@ void drawCurrentUVI(const owm_current_t &current)
   if (getStringWidth(dataStr) <= max_w)
   { // Fits on a single line, draw along bottom
     drawString(display.getCursorX() + sp, WI_Y0 + WI_DDY + WI_DY * PosY,
-               dataStr, LEFT);
+               dataStr, LEFT, ACCENT_COLOR);
   }
   else
   { // use smaller font
@@ -503,13 +504,13 @@ void drawCurrentUVI(const owm_current_t &current)
     { // Fits on a single line with smaller font, draw along bottom
       drawString(display.getCursorX() + sp,
                  WI_Y0 + WI_DDY + WI_DY * PosY,
-                 dataStr, LEFT);
+                 dataStr, LEFT, ACCENT_COLOR);
     }
     else
     { // Does not fit on a single line, draw higher to allow room for 2nd line
       drawMultiLnString(display.getCursorX() + sp,
                         WI_Y0 + WI_DDY + WI_DY * PosY - 10,
-                        dataStr, LEFT, max_w, 2, 10);
+                        dataStr, LEFT, max_w, 2, 10, ACCENT_COLOR);
     }
   }
   return;
@@ -573,7 +574,7 @@ void drawCurrentAirQuality(const owm_resp_air_pollution_t &owm_air_pollution)
   {
     dataStr = String(aqi);
   }
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #ifdef DISP_3C_E420
   display.setFont(&FONT_5pt8b);
 #else
@@ -584,7 +585,7 @@ void drawCurrentAirQuality(const owm_resp_air_pollution_t &owm_air_pollution)
   if (getStringWidth(dataStr) <= max_w)
   { // Fits on a single line, draw along bottom
     drawString(display.getCursorX() + sp, WI_Y0 + WI_DDY + WI_DY * PosY,
-               dataStr, LEFT);
+               dataStr, LEFT, ACCENT_COLOR);
   }
   else
   { // use smaller font
@@ -593,13 +594,13 @@ void drawCurrentAirQuality(const owm_resp_air_pollution_t &owm_air_pollution)
     { // Fits on a single line with smaller font, draw along bottom
       drawString(display.getCursorX() + sp,
                  WI_Y0 + WI_DDY + WI_DY * PosY,
-                 dataStr, LEFT);
+                 dataStr, LEFT, ACCENT_COLOR);
     }
     else
     { // Does not fit on a single line, draw higher to allow room for 2nd line
       drawMultiLnString(display.getCursorX() + sp,
                         WI_Y0 + WI_DDY + WI_DY * PosY - 10,
-                        dataStr, LEFT, max_w, 2, 10);
+                        dataStr, LEFT, max_w, 2, 10, ACCENT_COLOR);
     }
   }
 
@@ -658,7 +659,7 @@ void drawCurrentInTemp(float inTemp)
 #if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
   dataStr += "\260";
 #endif
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
   return;
 }
 #endif
@@ -697,7 +698,7 @@ void drawCurrentSunset(const owm_current_t &current)
   time_t ts = current.sunset;
   tm *timeInfo = localtime(&ts);
   _strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, timeBuffer, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, timeBuffer, LEFT, ACCENT_COLOR);
 
   return;
 }
@@ -735,13 +736,13 @@ void drawCurrentHumidity(const owm_current_t &current)
   display.setFont(&FONT_12pt8b);
 #endif
   dataStr = String(current.humidity);
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #ifdef DISP_3C_E420
   display.setFont(&FONT_5pt8b);
 #else
   display.setFont(&FONT_8pt8b);
 #endif
-  drawString(display.getCursorX(), WI_Y0 + WI_DDY + WI_DY * PosY, "%", LEFT);
+  drawString(display.getCursorX(), WI_Y0 + WI_DDY + WI_DY * PosY, "%", LEFT, ACCENT_COLOR);
   return;
 }
 #endif
@@ -819,14 +820,14 @@ void drawCurrentPressure(const owm_current_t &current)
 #else
   display.setFont(&FONT_12pt8b);
 #endif
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #ifdef DISP_3C_E420
   display.setFont(&FONT_5pt8b);
 #else
   display.setFont(&FONT_8pt8b);
 #endif
   drawString(display.getCursorX(), WI_Y0 + WI_DDY + WI_DY * PosY,
-             unitStr, LEFT);
+             unitStr, LEFT, ACCENT_COLOR);
 
   return;
 }
@@ -891,14 +892,14 @@ void drawCurrentVisibility(const owm_current_t &current)
 #endif
     dataStr = "> " + dataStr;
   }
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #ifdef DISP_3C_E420
   display.setFont(&FONT_5pt8b);
 #else
   display.setFont(&FONT_8pt8b);
 #endif
   drawString(display.getCursorX(), WI_Y0 + WI_DDY + WI_DY * PosY,
-             unitStr, LEFT);
+             unitStr, LEFT, ACCENT_COLOR);
 
   return;
 }
@@ -943,13 +944,13 @@ void drawCurrentInHumidity(float inHumidity)
   {
     dataStr = "--";
   }
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, dataStr, LEFT, ACCENT_COLOR);
 #ifdef DISP_3C_E420
   display.setFont(&FONT_5pt8b);
 #else
   display.setFont(&FONT_8pt8b);
 #endif
-  drawString(display.getCursorX(), WI_Y0 + WI_DDY + WI_DY * PosY, "%", LEFT);
+  drawString(display.getCursorX(), WI_Y0 + WI_DDY + WI_DY * PosY, "%", LEFT, ACCENT_COLOR);
   return;
 }
 #endif
@@ -989,7 +990,7 @@ void drawCurrentMoonrise(const owm_daily_t &today)
   time_t ts = today.moonrise;
   tm *timeInfo = localtime(&ts);
   _strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, timeBuffer, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, timeBuffer, LEFT, ACCENT_COLOR);
 
   return;
 }
@@ -1017,7 +1018,7 @@ void drawCurrentMoonset(const owm_daily_t &today)
 #else
   display.setFont(&FONT_7pt8b);
 #endif
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_LDY + WI_DY * PosY, TXT_MOONSET, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_LDY + WI_DY * PosY, TXT_MOONSET, LEFT, ACCENT_COLOR);
 
   // moonset
 #ifdef DISP_3C_E420
@@ -1029,7 +1030,7 @@ void drawCurrentMoonset(const owm_daily_t &today)
   time_t ts = today.moonset;
   tm *timeInfo = localtime(&ts);
   _strftime(timeBuffer, sizeof(timeBuffer), TIME_FORMAT, timeInfo);
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, timeBuffer, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY, timeBuffer, LEFT, ACCENT_COLOR);
 
   return;
 }
@@ -1058,7 +1059,7 @@ void drawCurrentMoonphase(const owm_daily_t &daily)
 #else
   display.setFont(&FONT_7pt8b);
 #endif
-  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_LDY + WI_DY * PosY, TXT_MOONPHASE, LEFT);
+  drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_LDY + WI_DY * PosY, TXT_MOONPHASE, LEFT, ACCENT_COLOR);
 
   // moonphase
   const int sp = 8;
@@ -1072,7 +1073,7 @@ void drawCurrentMoonphase(const owm_daily_t &daily)
   if (getStringWidth(dataStr) <= max_w)
   { // Fits on a single line, draw along bottom
     drawString(WI_LOFF + (WI_COL * PosX), WI_Y0 + WI_DDY + WI_DY * PosY,
-               dataStr, LEFT);
+               dataStr, LEFT, ACCENT_COLOR);
   }
   else
   { // use smaller font
@@ -1081,13 +1082,13 @@ void drawCurrentMoonphase(const owm_daily_t &daily)
     { // Fits on a single line with smaller font, draw along bottom
       drawString(WI_LOFF + (WI_COL * PosX),
                  WI_Y0 + WI_DDY + WI_DY * PosY,
-                 dataStr, LEFT);
+                 dataStr, LEFT, ACCENT_COLOR);
     }
     else
     { // Does not fit on a single line, draw higher to allow room for 2nd line
       drawMultiLnString(WI_LOFF + (WI_COL * PosX),
                         WI_Y0 + WI_DDY + WI_DY * PosY - 10,
-                        dataStr, LEFT, max_w, 2, 10);
+                        dataStr, LEFT, max_w, 2, 10, ACCENT_COLOR);
     }
   }
 
@@ -1380,7 +1381,7 @@ void drawForecast(const owm_daily_t *daily, tm timeInfo)
 #ifdef TEMP_ORDER_HL
   #ifdef DISP_3C_E420
     drawString(x + 15 - 3, 49 + 69 / 4 + 38 / 2 - 6 / 2 + 12 / 2, hiStr, RIGHT);
-    drawString(x + 15 + 3, 49 + 69 / 4 + 38 / 2 - 6 / 2 + 12 / 2, loStr, LEFT);
+    drawString(x + 15 + 3, 49 + 69 / 4 + 38 / 2 - 6 / 2 + 12 / 2, loStr, LEFT, ACCENT_COLOR);
   #else
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, hiStr, RIGHT);
     drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, loStr, LEFT);
@@ -1389,7 +1390,7 @@ void drawForecast(const owm_daily_t *daily, tm timeInfo)
 #ifdef TEMP_ORDER_LH
   #ifdef DISP_3C_E420
     drawString(x + 15 - 3, 49 + 69 / 4 + 38 / 2 - 6 / 2 + 12 / 2, loStr, RIGHT);
-    drawString(x + 15 + 3, 49 + 69 / 4 + 38 / 2 - 6 / 2 + 12 / 2, hiStr, LEFT);
+    drawString(x + 15 + 3, 49 + 69 / 4 + 38 / 2 - 6 / 2 + 12 / 2, hiStr, LEFT, ACCENT_COLOR);
   #else
     drawString(x + 31 - 4, 98 + 69 / 2 + 38 - 6 + 12, loStr, RIGHT);
     drawString(x + 31 + 5, 98 + 69 / 2 + 38 - 6 + 12, hiStr, LEFT);
@@ -1563,10 +1564,19 @@ void drawForecast(const owm_daily_t *daily, tm timeInfo)
 void drawLocationDate(const String &city, const String &date)
 {
   // location, date
+#ifdef DISP_3C_E420
+  // 4.2in (400x300): use compact fonts in the top-right corner so the city
+  // and date do not collide with the 5-day forecast row below them.
+  display.setFont(&FONT_8pt8b);
+  drawString(DISP_WIDTH - 2, 12, city, RIGHT, ACCENT_COLOR);
+  display.setFont(&FONT_6pt8b);
+  drawString(DISP_WIDTH - 2, 25, date, RIGHT);
+#else
   display.setFont(&FONT_16pt8b);
   drawString(DISP_WIDTH - 2, 23, city, RIGHT, ACCENT_COLOR);
   display.setFont(&FONT_12pt8b);
   drawString(DISP_WIDTH - 2, 30 + 4 + 17, date, RIGHT);
+#endif
   return;
 } // end drawLocationDate
 
@@ -1607,10 +1617,11 @@ void drawOutlookGraph(const owm_hourly_t *hourly, const owm_daily_t *daily,
                       tm timeInfo)
 {
 #ifdef DISP_3C_E420
-  const int xPos0 = 175;
+  const int xPos0 = 180;
   int xPos1 = DISP_WIDTH;
   const int yPos0 = 108;
-  const int yPos1 = DISP_HEIGHT - 23;
+  // leave room below the graph for the x-axis time labels and the status bar
+  const int yPos1 = DISP_HEIGHT - 46;
 #else
   const int xPos0 = 350;
   int xPos1 = DISP_WIDTH;
@@ -1763,7 +1774,11 @@ void drawOutlookGraph(const owm_hourly_t *hourly, const owm_daily_t *daily,
   {
     String dataStr;
     int yTick = static_cast<int>(yPos0 + (i * yInterval));
-    display.setFont(&FONT_8pt8b);
+    #ifdef DISP_3C_E420
+        display.setFont(&FONT_6pt8b);
+    #else
+      display.setFont(&FONT_8pt8b);
+    #endif
     // Temperature
     dataStr = String(tempBoundMax - (i * yTempMajorTicks));
 #if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
@@ -1813,7 +1828,11 @@ void drawOutlookGraph(const owm_hourly_t *hourly, const owm_daily_t *daily,
   int hourInterval = static_cast<int>(ceil(HOURLY_GRAPH_MAX
                                            / static_cast<float>(xMaxTicks)));
   float xInterval = (xPos1 - xPos0 - 1) / static_cast<float>(HOURLY_GRAPH_MAX);
-  display.setFont(&FONT_8pt8b);
+  #ifdef DISP_3C_E420
+      display.setFont(&FONT_6pt8b);
+  #else
+      display.setFont(&FONT_8pt8b);
+  #endif
 
   // precalculate all x and y coordinates for temperature values
   float yPxPerUnit = (yPos1 - yPos0)
@@ -1832,7 +1851,11 @@ void drawOutlookGraph(const owm_hourly_t *hourly, const owm_daily_t *daily,
 #if DISPLAY_HOURLY_ICONS
   int day_idx = 0;
 #endif
+#ifdef DISP_3C_E420
+  display.setFont(&FONT_6pt8b);
+#else
   display.setFont(&FONT_8pt8b);
+#endif
   for (int i = 0; i < HOURLY_GRAPH_MAX; ++i)
   {
     int xTick = static_cast<int>(xPos0 + (i * xInterval));
