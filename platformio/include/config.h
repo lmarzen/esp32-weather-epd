@@ -319,6 +319,25 @@
 //   level 2: print api responses to serial monitor
 #define DEBUG_LEVEL 0
 
+// --- Schedule Data Structures ---
+//
+// Structure representing a schedule segment.
+struct ScheduleSegment {
+  uint8_t dayMask;        // Bitmask for days: bit0 = Sunday, bit1 = Monday, ... bit6 = Saturday.
+  const char* startTime;  // Start time in "HH:MM" format.
+  const char* endTime;    // End time in "HH:MM" format.
+  int interval;           // Update interval in minutes.
+};
+
+// Helper macros for days (0=Sunday, 1=Monday, …, 6=Saturday)
+#define SUNDAY    (1 << 0)
+#define MONDAY    (1 << 1)
+#define TUESDAY   (1 << 2)
+#define WEDNESDAY (1 << 3)
+#define THURSDAY  (1 << 4)
+#define FRIDAY    (1 << 5)
+#define SATURDAY  (1 << 6)
+
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;
 extern const uint8_t PIN_EPD_BUSY;
@@ -351,9 +370,8 @@ extern const char *REFRESH_TIME_FORMAT;
 extern const char *NTP_SERVER_1;
 extern const char *NTP_SERVER_2;
 extern const unsigned long NTP_TIMEOUT;
-extern const int SLEEP_DURATION;
-extern const int BED_TIME;
-extern const int WAKE_TIME;
+extern ScheduleSegment scheduleSegments[];
+extern const int scheduleSegmentsCount;
 extern const int HOURLY_GRAPH_MAX;
 extern const uint32_t WARN_BATTERY_VOLTAGE;
 extern const uint32_t LOW_BATTERY_VOLTAGE;
