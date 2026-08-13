@@ -53,16 +53,22 @@ Preferences prefs;
 /* Put esp32 into ultra low-power deep sleep (<11μA).
  * Aligns wake time to the minute. Sleep times defined in config.cpp.
  */
-void beginDeepSleep(unsigned long startTime, tm *timeInfo)
+void beginDeepSleep(unsigned long startTime, tm *timeInfo, bool fromError = false)
 {
   if (!getLocalTime(timeInfo))
   {
     Serial.println(TXT_REFERENCING_OLDER_TIME_NOTICE);
   }
 
+  int deepSleepDuration = SLEEP_DURATION;
+  if (fromError)
+  {
+    deepSleepDuration = ERROR_SLEEP_DURATION;
+  }
+
   // To simplify sleep time calculations, the current time stored by timeInfo
   // will be converted to time relative to the WAKE_TIME. This way if a
-  // SLEEP_DURATION is not a multiple of 60 minutes it can be more trivially,
+  // deepSleepDuration is not a multiple of 60 minutes it can be more trivially,
   // aligned and it can easily be deterimined whether we must sleep for
   // additional time due to bedtime.
   // i.e. when curHour == 0, then timeInfo->tm_hour == WAKE_TIME
@@ -78,17 +84,17 @@ void beginDeepSleep(unsigned long startTime, tm *timeInfo)
   const int curSecond = curHour * 3600
                       + timeInfo->tm_min * 60
                       + timeInfo->tm_sec;
-  const int desiredSleepSeconds = SLEEP_DURATION * 60;
-  const int offsetMinutes = curMinute % SLEEP_DURATION;
+  const int desiredSleepSeconds = deepSleepDuration * 60;
+  const int offsetMinutes = curMinute % deepSleepDuration;
   const int offsetSeconds = curSecond % desiredSleepSeconds;
 
-  // align wake time to nearest multiple of SLEEP_DURATION
-  int sleepMinutes = SLEEP_DURATION - offsetMinutes;
+  // align wake time to nearest multiple of deepSleepDuration
+  int sleepMinutes = deepSleepDuration - offsetMinutes;
   if (desiredSleepSeconds - offsetSeconds < 120
    || offsetSeconds / (float)desiredSleepSeconds > 0.95f)
-  { // if we have a sleep time less than 2 minutes OR less 5% SLEEP_DURATION,
+  { // if we have a sleep time less than 2 minutes OR less 5% deepSleepDuration,
     // skip to next alignment
-    sleepMinutes += SLEEP_DURATION;
+    sleepMinutes += deepSleepDuration;
   }
 
   // estimated wake time, if this falls in a sleep period then sleepDuration
@@ -230,7 +236,7 @@ void setup()
       } while (display.nextPage());
     }
     powerOffDisplay();
-    beginDeepSleep(startTime, &timeInfo);
+    beginDeepSleep(startTime, &timeInfo, true);
   }
 
   // TIME SYNCHRONIZATION
@@ -246,7 +252,7 @@ void setup()
       drawError(wi_time_4_196x196, TXT_TIME_SYNCHRONIZATION_FAILED);
     } while (display.nextPage());
     powerOffDisplay();
-    beginDeepSleep(startTime, &timeInfo);
+    beginDeepSleep(startTime, &timeInfo, true);
   }
 
   // MAKE API REQUESTS
@@ -262,6 +268,11 @@ void setup()
   int rxStatus = getOWMonecall(client, owm_onecall);
   if (rxStatus != HTTP_CODE_OK)
   {
+    // Perform one retry
+    rxStatus = getOWMonecall(client, owm_onecall);
+  }
+  if (rxStatus != HTTP_CODE_OK)
+  {
     killWiFi();
     statusStr = "One Call " + OWM_ONECALL_VERSION + " API";
     tmpStr = String(rxStatus, DEC) + ": " + getHttpResponsePhrase(rxStatus);
@@ -271,9 +282,14 @@ void setup()
       drawError(wi_cloud_down_196x196, statusStr, tmpStr);
     } while (display.nextPage());
     powerOffDisplay();
-    beginDeepSleep(startTime, &timeInfo);
+    beginDeepSleep(startTime, &timeInfo, true);
   }
   rxStatus = getOWMairpollution(client, owm_air_pollution);
+  if (rxStatus != HTTP_CODE_OK)
+  {
+    // Perform one retry
+    rxStatus = getOWMairpollution(client, owm_air_pollution);
+  }
   if (rxStatus != HTTP_CODE_OK)
   {
     killWiFi();
@@ -285,7 +301,7 @@ void setup()
       drawError(wi_cloud_down_196x196, statusStr, tmpStr);
     } while (display.nextPage());
     powerOffDisplay();
-    beginDeepSleep(startTime, &timeInfo);
+    beginDeepSleep(startTime, &timeInfo, true);
   }
   killWiFi(); // WiFi no longer needed
 

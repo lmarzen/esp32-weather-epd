@@ -121,6 +121,9 @@ const unsigned long NTP_TIMEOUT = 20000; // ms
 // Note: The OpenWeatherMap model is updated every 10 minutes, so updating more
 //       frequently than that is unnessesary.
 const int SLEEP_DURATION = 30; // minutes
+// Similar to above, this allows for a shorter duration for sleep after encountering
+// an error to allow for faster recovery in the case of an unreliable network.
+const int ERROR_SLEEP_DURATION = 5; // minutes
 // Bed Time Power Savings.
 // If BED_TIME == WAKE_TIME, then this battery saving feature will be disabled.
 // (range: [0-23])
