@@ -48,6 +48,7 @@
 // Uncomment the macro that identifies your sensor.
 #define SENSOR_BME280
 // #define SENSOR_BME680
+// #define SENSOR_SHT4X // fixed i2c address 0x44, BME_ADDRESS is ignored
 
 // If you encounter issues with the BME280 sensor showing no data, uncomment and
 // add a small delay before reading it's value. 300ms seems to work for most people
@@ -377,7 +378,8 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
   #error Invalid configuration. Exactly one driver board must be selected.
 #endif
 #if !(  defined(SENSOR_BME280) \
-      ^ defined(SENSOR_BME680))
+      ^ defined(SENSOR_BME680) \
+      ^ defined(SENSOR_SHT4X))
   #error Invalid configuration. Exactly one sensor must be selected.
 #endif
 #if !(defined(LOCALE))

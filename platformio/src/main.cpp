@@ -37,6 +37,9 @@
 #if defined(SENSOR_BME680)
   #include <Adafruit_BME680.h>
 #endif
+#if defined(SENSOR_SHT4X)
+  #include <Adafruit_SHT4x.h>
+#endif
 #if defined(USE_HTTPS_WITH_CERT_VERIF) || defined(USE_HTTPS_WITH_CERT_VERIF)
   #include <WiFiClientSecure.h>
 #endif
@@ -289,7 +292,7 @@ void setup()
   }
   killWiFi(); // WiFi no longer needed
 
-  // GET INDOOR TEMPERATURE AND HUMIDITY, start BMEx80...
+  // GET INDOOR TEMPERATURE AND HUMIDITY
   pinMode(PIN_BME_PWR, OUTPUT);
   digitalWrite(PIN_BME_PWR, HIGH);
 #if defined(SENSOR_INIT_DELAY_MS) && SENSOR_INIT_DELAY_MS > 0
@@ -313,6 +316,7 @@ void setup()
   if(bme.begin(BME_ADDRESS))
   {
 #endif
+#if defined(SENSOR_BME280) || defined(SENSOR_BME680)
     inTemp     = bme.readTemperature(); // Celsius
     inHumidity = bme.readHumidity();    // %
 
@@ -335,6 +339,31 @@ void setup()
     statusStr = "BME " + String(TXT_NOT_FOUND); // check wiring
     Serial.println(statusStr);
   }
+#endif
+#if defined(SENSOR_SHT4X)
+  Serial.print(String(TXT_READING_FROM) + " SHT4x... ");
+  Adafruit_SHT4x sht4;
+  if (sht4.begin(&I2C_bme))
+  {
+    sensors_event_t humidity, temp;
+    if (sht4.getEvent(&humidity, &temp))
+    {
+      inTemp     = temp.temperature;            // Celsius
+      inHumidity = humidity.relative_humidity;  // %
+      Serial.println(TXT_SUCCESS);
+    }
+    else
+    {
+      statusStr = "SHT4x " + String(TXT_READ_FAILED);
+      Serial.println(statusStr);
+    }
+  }
+  else
+  {
+    statusStr = "SHT4x " + String(TXT_NOT_FOUND); // check wiring
+    Serial.println(statusStr);
+  }
+#endif
   digitalWrite(PIN_BME_PWR, LOW);
 
   String refreshTimeStr;
