@@ -69,6 +69,7 @@
 // the files in src/locales. Please feel free to create a pull request to add
 // official support for your locale.
 //   Language (Territory)            code
+//   Czech (Czechia)                 cs_CZ
 //   German (Germany)                de_DE
 //   English (United Kingdom)        en_GB
 //   English (United States)         en_US
