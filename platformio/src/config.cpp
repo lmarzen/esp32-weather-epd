@@ -26,8 +26,31 @@
 //       board's pinout to ensure you avoid using a pin with this shared 
 //       functionality.
 //
+#ifdef BOARD_RETERMINAL_E1002
+// Seeed reTerminal E1001/E1002 -- fixed internal wiring, do not change.
+// (Sources: Seeed wiki "Arduino Cookbook" pages for the reTerminal E Series.)
+// ADC pin used to measure battery voltage (GPIO1 = ADC1_CH0, 1:2 divider).
+const uint8_t PIN_BAT_ADC  = 1;
+// Must be driven HIGH to connect the battery divider to the ADC.
+const uint8_t PIN_BAT_EN   = 21;
+// Built-in panel (E1002: 7.3in Spectra 6 GDEP073E01; E1001: 7.5in GDEY075T7)
+const uint8_t PIN_EPD_BUSY = 13;
+const uint8_t PIN_EPD_CS   = 10;
+const uint8_t PIN_EPD_RST  = 12;
+const uint8_t PIN_EPD_DC   = 11;
+const uint8_t PIN_EPD_SCK  = 7;  // SPI bus shared with the microSD slot
+const uint8_t PIN_EPD_MISO = 8;  // (SD's MISO; the panel itself returns no data)
+const uint8_t PIN_EPD_MOSI = 9;
+const uint8_t PIN_EPD_PWR  = PIN_UNUSED; // panel supply is hardwired
+// Onboard SHT4x temperature/humidity sensor
+const uint8_t PIN_BME_SDA = 19;
+const uint8_t PIN_BME_SCL = 20;
+const uint8_t PIN_BME_PWR = PIN_UNUSED;  // sensor supply is hardwired
+const uint8_t BME_ADDRESS = 0x44;        // SHT4x fixed I2C address
+#else
 // ADC pin used to measure battery voltage
 const uint8_t PIN_BAT_ADC  = A2; // A0 for micro-usb firebeetle
+const uint8_t PIN_BAT_EN   = PIN_UNUSED; // FireBeetle divider is always connected
 // Pins for E-Paper Driver Board
 const uint8_t PIN_EPD_BUSY = 14; // 5 for micro-usb firebeetle
 const uint8_t PIN_EPD_CS   = 13;
@@ -42,6 +65,7 @@ const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
 const uint8_t PIN_BME_PWR =  4;   // Irrelevant if directly connected to 3.3V
 const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
+#endif // BOARD_RETERMINAL_E1002
 
 // WIFI
 const char *WIFI_SSID     = "ssid";

@@ -29,11 +29,21 @@
 //   DISP_7C_E6 - 7.3in spectra 6 e-Paper (E6) 800x480px  7-Color
 //   DISP_BW_V1 - 7.5in e-Paper (v1)           640x384px  Black/White
 // Uncomment the macro that identifies your physical panel.
+// (Building with -e seeed_reterminal_e1002 or -e seeed_reterminal_e1001
+//  selects the panel automatically: the E1002's built-in 7.3in Spectra 6
+//  panel is a GDEP073E01 (DISP_7C_E6); the E1001's 7.5in monochrome panel
+//  is a GDEY075T7 (DISP_BW_V2).)
+#if defined(BOARD_RETERMINAL_E1001)
+  #define DISP_BW_V2
+#elif defined(BOARD_RETERMINAL_E1002)
+  #define DISP_7C_E6
+#else
 #define DISP_BW_V2
 // #define DISP_3C_B
 // #define DISP_7C_F
 // #define DISP_7C_E6
 // #define DISP_BW_V1
+#endif
 
 // E-PAPER DRIVER BOARD
 // The DESPI-C02 is the only officially supported driver board.
@@ -46,8 +56,14 @@
 
 // INDOOR ENVIRONMENT SENSOR
 // Uncomment the macro that identifies your sensor.
+// (The reTerminal E1001/E1002 have an SHT4x temperature/humidity sensor
+//  onboard, selected automatically when building their environments.)
+#ifdef BOARD_RETERMINAL_E1002
+  #define SENSOR_SHT4X
+#else
 #define SENSOR_BME280
 // #define SENSOR_BME680
+#endif
 
 // If you encounter issues with the BME280 sensor showing no data, uncomment and
 // add a small delay before reading it's value. 300ms seems to work for most people
@@ -333,6 +349,12 @@ extern const uint8_t PIN_BME_SDA;
 extern const uint8_t PIN_BME_SCL;
 extern const uint8_t PIN_BME_PWR;
 extern const uint8_t BME_ADDRESS;
+// Sentinel for pins a board does not have or need (e.g. hardwired supplies
+// on the reTerminal E-series).
+#define PIN_UNUSED 0xFF
+// Battery-divider enable pin (reTerminal E-series); PIN_UNUSED on boards
+// whose divider is always connected.
+extern const uint8_t PIN_BAT_EN;
 extern const char *WIFI_SSID;
 extern const char *WIFI_PASSWORD;
 extern const unsigned long WIFI_TIMEOUT;
@@ -377,7 +399,8 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
   #error Invalid configuration. Exactly one driver board must be selected.
 #endif
 #if !(  defined(SENSOR_BME280) \
-      ^ defined(SENSOR_BME680))
+      ^ defined(SENSOR_BME680) \
+      ^ defined(SENSOR_SHT4X))
   #error Invalid configuration. Exactly one sensor must be selected.
 #endif
 #if !(defined(LOCALE))
