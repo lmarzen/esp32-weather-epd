@@ -138,6 +138,9 @@ void setup()
 #endif
 
   disableBuiltinLED();
+  // Before any SPI activity: an unparked microSD slot on the panel's bus
+  // stops the display refreshing whenever a card is inserted.
+  idleSDCard();
 
   // Open namespace for read/write to non-volatile storage
   prefs.begin(NVS_NAMESPACE, false);

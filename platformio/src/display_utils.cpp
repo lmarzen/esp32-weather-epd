@@ -1540,6 +1540,40 @@ const char *getWifiStatusPhrase(wl_status_t status)
   }
 } // end getWifiStatusPhrase
 
+/* Parks the microSD slot so that an inserted card cannot disturb the ePaper
+ * display.
+ *
+ * On the reTerminal E1002 the slot shares SCK and MOSI with the panel. This
+ * firmware never uses the card, so without this both SD control pins stay in
+ * their reset state as high-impedance inputs: the slot is left unpowered,
+ * and an inserted card then clamps the shared bus through the ESD protection
+ * diodes on its I/O pins, which conduct against its own dead supply rail.
+ * The panel stops seeing a valid logic high and never refreshes -- reported
+ * on the E1002 as "the screen is never refreshed if a micro SD card is
+ * plugged", with no card behaving normally.
+ *
+ * Powering the slot lets the card hold its inputs high-impedance as
+ * intended, and driving its chip select high keeps it from ever answering
+ * traffic meant for the panel. Neither pin is held through deep sleep, so
+ * the slot powers back down while asleep and sleep current is unchanged.
+ *
+ * Must run before any SPI activity, i.e. before the first initDisplay().
+ */
+void idleSDCard()
+{
+  if (PIN_SD_EN != PIN_UNUSED)
+  {
+    pinMode(PIN_SD_EN, OUTPUT);
+    digitalWrite(PIN_SD_EN, HIGH);
+  }
+  if (PIN_SD_CS != PIN_UNUSED)
+  {
+    pinMode(PIN_SD_CS, OUTPUT);
+    digitalWrite(PIN_SD_CS, HIGH);
+  }
+  return;
+} // end idleSDCard
+
 /* This function sets the builtin LED to LOW and disables it even during deep
  * sleep.
  */

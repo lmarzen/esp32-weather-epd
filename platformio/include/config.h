@@ -345,6 +345,10 @@ extern const uint8_t PIN_EPD_SCK;
 extern const uint8_t PIN_EPD_MISO;
 extern const uint8_t PIN_EPD_MOSI;
 extern const uint8_t PIN_EPD_PWR;
+// microSD slot control pins, PIN_UNUSED on boards whose SD slot (if any)
+// does not share the ePaper SPI bus. See idleSDCard().
+extern const uint8_t PIN_SD_EN;
+extern const uint8_t PIN_SD_CS;
 extern const uint8_t PIN_BME_SDA;
 extern const uint8_t PIN_BME_SCL;
 extern const uint8_t PIN_BME_PWR;

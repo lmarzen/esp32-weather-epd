@@ -42,6 +42,11 @@ const uint8_t PIN_EPD_SCK  = 7;  // SPI bus shared with the microSD slot
 const uint8_t PIN_EPD_MISO = 8;  // (SD's MISO; the panel itself returns no data)
 const uint8_t PIN_EPD_MOSI = 9;
 const uint8_t PIN_EPD_PWR  = PIN_UNUSED; // panel supply is hardwired
+// microSD slot. Unused by this firmware, but it sits on the panel's SPI bus
+// and must be parked -- see idleSDCard() in display_utils.cpp.
+// (The E1003 puts SD power enable on GPIO39 instead of 16.)
+const uint8_t PIN_SD_EN    = 16; // active high, powers the slot
+const uint8_t PIN_SD_CS    = 14;
 // Onboard SHT4x temperature/humidity sensor
 const uint8_t PIN_BME_SDA = 19;
 const uint8_t PIN_BME_SCL = 20;
@@ -60,6 +65,9 @@ const uint8_t PIN_EPD_SCK  = 18;
 const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
 const uint8_t PIN_EPD_MOSI = 23;
 const uint8_t PIN_EPD_PWR  = 26; // Irrelevant if directly connected to 3.3V
+// No microSD slot sharing the panel's SPI bus on this wiring.
+const uint8_t PIN_SD_EN    = PIN_UNUSED;
+const uint8_t PIN_SD_CS    = PIN_UNUSED;
 // I2C Pins used for BME280
 const uint8_t PIN_BME_SDA = 17;
 const uint8_t PIN_BME_SCL = 16;
