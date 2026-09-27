@@ -295,6 +295,11 @@
 //   Disable alerts by changing the DISPLAY_ALERTS macro to 0.
 #define DISPLAY_ALERTS 1
 
+// OUTBOUND MQTT TELEMETRY
+// Disabled by default. Home Assistant discovery requires MQTT telemetry.
+#define MQTT_ENABLED 0
+#define MQTT_HOME_ASSISTANT_DISCOVERY 0
+
 // STATUS BAR EXTRAS
 //   Extra information that can be displayed on the status bar. Set to 1 to
 //   enable.
@@ -363,8 +368,17 @@ extern const unsigned long LOW_BATTERY_SLEEP_INTERVAL;
 extern const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL;
 extern const uint32_t MAX_BATTERY_VOLTAGE;
 extern const uint32_t MIN_BATTERY_VOLTAGE;
+extern const char *MQTT_BROKER;
+extern const uint16_t MQTT_PORT;
+extern const char *MQTT_USERNAME;
+extern const char *MQTT_PASSWORD;
+extern const char *MQTT_BASE_TOPIC;
+extern const char *MQTT_DEVICE_NAME;
 
 // CONFIG VALIDATION - DO NOT MODIFY
+#if MQTT_HOME_ASSISTANT_DISCOVERY && !MQTT_ENABLED
+  #error Invalid configuration. Home Assistant discovery requires MQTT_ENABLED.
+#endif
 #if !(  defined(DISP_BW_V2)  \
       ^ defined(DISP_3C_B)   \
       ^ defined(DISP_7C_F)   \

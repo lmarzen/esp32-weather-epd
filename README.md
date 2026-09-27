@@ -39,6 +39,7 @@ Here are two (slightly outdated) examples utilizing various configuration option
   - [Wiring](#wiring)
   - [Configuration, Compilation, and Upload](#configuration-compilation-and-upload)
   - [OpenWeatherMap API Key](#openweathermap-api-key)
+- [MQTT Telemetry](#mqtt-telemetry)
 - [Error Messages and Troubleshooting](#error-messages-and-troubleshooting)
   - [Low Battery](#low-battery)
   - [WiFi Connection](#wifi-connection)
@@ -220,6 +221,22 @@ Here's how to subscribe and avoid any credit card changes:
    - Go to <https://home.openweathermap.org/subscriptions/billing_info/onecall_30/base?key=base&service=onecall_30>
    - Follow the instructions to complete the subscription.
    - Go to <https://home.openweathermap.org/subscriptions> and set the "Calls per day (no more than)" to 1,000. This ensures you will never overrun the free calls.
+
+## MQTT Telemetry
+
+Optional outbound MQTT telemetry is disabled by default. Set `MQTT_ENABLED` to
+`1` in [config.h](platformio/include/config.h) to enable publishing. Configure
+the broker, port, credentials, base topic, and device name in
+[config.cpp](platformio/src/config.cpp). Telemetry is published to
+`<MQTT_BASE_TOPIC>/state` and includes temperature in Celsius, humidity,
+battery voltage in volts, and Wi-Fi RSSI in dBm. MQTT is outbound-only; standard
+MQTT consumers can use these values without Home Assistant.
+
+Set `MQTT_HOME_ASSISTANT_DISCOVERY` to `1` in `config.h` to additionally publish
+Home Assistant MQTT Discovery configurations for Temperature, Humidity,
+Battery Voltage, and Wi-Fi RSSI, grouped under one device. Discovery
+configurations are retained, while state telemetry is not retained. Because
+the device deep-sleeps between updates, no availability topic is used.
 
 ## Error Messages and Troubleshooting
 
