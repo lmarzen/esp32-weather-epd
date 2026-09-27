@@ -48,6 +48,15 @@ const char *WIFI_SSID     = "ssid";
 const char *WIFI_PASSWORD = "password";
 const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
+// MQTT
+// Replace these placeholders with your broker details before enabling MQTT.
+const char *MQTT_BROKER = "192.168.1.10";
+const uint16_t MQTT_PORT = 1883;
+const char *MQTT_USERNAME = "username";
+const char *MQTT_PASSWORD = "password";
+const char *MQTT_BASE_TOPIC = "esp32-weather-epd";
+const char *MQTT_DEVICE_NAME = "ESP32 Weather EPD";
+
 // HTTP
 // The following errors are likely the result of insuffient http client tcp 
 // timeout:
@@ -163,4 +172,3 @@ const uint32_t MIN_BATTERY_VOLTAGE = 3000; // (millivolts)
 // FONTS
 // ALERTS
 // BATTERY MONITORING
-

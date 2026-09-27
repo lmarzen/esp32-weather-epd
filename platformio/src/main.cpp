@@ -29,6 +29,7 @@
 #include "config.h"
 #include "display_utils.h"
 #include "icons/icons_196x196.h"
+#include "mqtt_utils.h"
 #include "renderer.h"
 
 #if defined(SENSOR_BME280)
@@ -287,7 +288,9 @@ void setup()
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
   }
+#if !MQTT_ENABLED
   killWiFi(); // WiFi no longer needed
+#endif
 
   // GET INDOOR TEMPERATURE AND HUMIDITY, start BMEx80...
   pinMode(PIN_BME_PWR, OUTPUT);
@@ -336,6 +339,11 @@ void setup()
     Serial.println(statusStr);
   }
   digitalWrite(PIN_BME_PWR, LOW);
+
+#if MQTT_ENABLED
+  publishMqttTelemetry(inTemp, inHumidity, batteryVoltage, wifiRSSI);
+  killWiFi(); // WiFi no longer needed
+#endif
 
   String refreshTimeStr;
   getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
