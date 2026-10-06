@@ -1675,7 +1675,7 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
   uint32_t batPercent = calcBatPercent(batVoltage,
                                        MIN_BATTERY_VOLTAGE,
                                        MAX_BATTERY_VOLTAGE);
-#if defined(DISP_3C_B) || defined(DISP_7C_F)
+#if defined(DISP_3C_B) || defined(DISP_7C_F) || defined(DISP_7C_E6)
   if (batVoltage < WARN_BATTERY_VOLTAGE)
   {
     dataColor = ACCENT_COLOR;
