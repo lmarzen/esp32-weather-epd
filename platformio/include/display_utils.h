@@ -78,6 +78,7 @@ const char *getHttpResponsePhrase(int code);
 const char *getWifiStatusPhrase(wl_status_t status);
 void printHeapUsage();
 void disableBuiltinLED();
+void idleSDCard();
 const uint8_t *getMoonPhaseBitmap48(const owm_daily_t &daily);
 const char *getMoonPhaseStr(const owm_daily_t &daily);
 

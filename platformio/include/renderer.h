@@ -56,8 +56,22 @@
   #define DISP_WIDTH  800
   #define DISP_HEIGHT 480
   #include <GxEPD2_7C.h>
-  extern GxEPD2_7C<GxEPD2_730c_GDEP073E01,
-            GxEPD2_730c_GDEP073E01::HEIGHT / 4> display;
+  // Some GDEP073E01 panel variants (the reTerminal E1002's, for one) take
+  // longer than the stock driver's 20s busy timeout to complete a full
+  // refresh, which aborts the wait mid-update ("Busy Timeout!"). Raise the
+  // limit; it only matters when exceeded, so faster panels are unaffected.
+  class GxEPD2_730c_GDEP073E01_Patient : public GxEPD2_730c_GDEP073E01
+  {
+  public:
+    GxEPD2_730c_GDEP073E01_Patient(int16_t cs, int16_t dc, int16_t rst,
+                                   int16_t busy)
+        : GxEPD2_730c_GDEP073E01(cs, dc, rst, busy)
+    {
+      _busy_timeout = 45000000; // us
+    }
+  };
+  extern GxEPD2_7C<GxEPD2_730c_GDEP073E01_Patient,
+            GxEPD2_730c_GDEP073E01_Patient::HEIGHT / 4> display;
 #endif
 
 typedef enum alignment

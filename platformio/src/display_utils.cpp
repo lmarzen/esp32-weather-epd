@@ -40,9 +40,29 @@ uint32_t readBatteryVoltage()
   // __attribute__((unused)) disables compiler warnings about this variable
   // being unused (Clang, GCC) which is the case when DEBUG_LEVEL == 0.
   esp_adc_cal_value_t val_type __attribute__((unused));
+  if (PIN_BAT_EN != PIN_UNUSED)
+  { // some boards (reTerminal E-series) gate the divider behind an enable pin
+    pinMode(PIN_BAT_EN, OUTPUT);
+    digitalWrite(PIN_BAT_EN, HIGH);
+    delay(20); // let the divider settle
+  }
+#ifdef CONFIG_IDF_TARGET_ESP32S3
+  // The legacy esp_adc_cal path below reads 0 on the ESP32-S3 (verified on
+  // the reTerminal E1002); Arduino's calibrated helper reads correctly there.
+  uint32_t s3MilliVolts = analogReadMilliVolts(PIN_BAT_ADC);
+#else
   adc_power_acquire();
   uint16_t adc_val = analogRead(PIN_BAT_ADC);
   adc_power_release();
+#endif
+  if (PIN_BAT_EN != PIN_UNUSED)
+  {
+    digitalWrite(PIN_BAT_EN, LOW);
+  }
+#ifdef CONFIG_IDF_TARGET_ESP32S3
+  (void)adc_chars;
+  return s3MilliVolts * 2; // 1:2 divider, same as the calculation below
+#else
 
   // We will use the eFuse ADC calibration bits, to get accurate voltage
   // readings. The DFRobot FireBeetle Esp32-E V1.0's ADC is 12 bit, and uses
@@ -71,6 +91,7 @@ uint32_t readBatteryVoltage()
   // multiplied by 2.
   batteryVoltage *= 2;
   return batteryVoltage;
+#endif // CONFIG_IDF_TARGET_ESP32S3
 } // end readBatteryVoltage
 
 /* Returns battery percentage, rounded to the nearest integer.
@@ -1519,16 +1540,62 @@ const char *getWifiStatusPhrase(wl_status_t status)
   }
 } // end getWifiStatusPhrase
 
+/* Parks the microSD slot so that an inserted card cannot disturb the ePaper
+ * display.
+ *
+ * On the reTerminal E1002 the slot shares SCK and MOSI with the panel. This
+ * firmware never uses the card, so without this both SD control pins stay in
+ * their reset state as high-impedance inputs: the slot is left unpowered,
+ * and an inserted card then clamps the shared bus through the ESD protection
+ * diodes on its I/O pins, which conduct against its own dead supply rail.
+ * The panel stops seeing a valid logic high and never refreshes -- reported
+ * on the E1002 as "the screen is never refreshed if a micro SD card is
+ * plugged", with no card behaving normally.
+ *
+ * Powering the slot lets the card hold its inputs high-impedance as
+ * intended, and driving its chip select high keeps it from ever answering
+ * traffic meant for the panel. Neither pin is held through deep sleep, so
+ * the slot powers back down while asleep and sleep current is unchanged.
+ *
+ * Must run before any SPI activity, i.e. before the first initDisplay().
+ */
+void idleSDCard()
+{
+  if (PIN_SD_EN != PIN_UNUSED)
+  {
+    pinMode(PIN_SD_EN, OUTPUT);
+    digitalWrite(PIN_SD_EN, HIGH);
+  }
+  if (PIN_SD_CS != PIN_UNUSED)
+  {
+    pinMode(PIN_SD_CS, OUTPUT);
+    digitalWrite(PIN_SD_CS, HIGH);
+  }
+  return;
+} // end idleSDCard
+
 /* This function sets the builtin LED to LOW and disables it even during deep
  * sleep.
  */
 void disableBuiltinLED()
 {
+#ifdef BOARD_RETERMINAL_E1002
+  // The XIAO module's LED_BUILTIN define is GPIO21, which on this board is
+  // the battery-measure enable pin -- holding it low breaks the battery
+  // reading. The E-series' actual user LED is GPIO6, inverted (LOW = on),
+  // so off means driving it HIGH.
+  pinMode(6, OUTPUT);
+  digitalWrite(6, HIGH);
+  gpio_hold_en(static_cast<gpio_num_t>(6));
+  gpio_deep_sleep_hold_en();
+  return;
+#else
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
   gpio_hold_en(static_cast<gpio_num_t>(LED_BUILTIN));
   gpio_deep_sleep_hold_en();
   return;
+#endif // BOARD_RETERMINAL_E1002
 } // end disableBuiltinLED
 
 // Define the set of moon phase icon base on the chosen moon phase style

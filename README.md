@@ -60,6 +60,14 @@ Here are two (slightly outdated) examples utilizing various configuration option
   | Battery         | 3.7V LiPo w/ JST-PH2.0 connector             | Any capacity (e.g., 5000mAh for 6+ months runtime)        | Available from multiple vendors.                                             |
   | Enclosure       | See [Enclosure Options](#enclosure-options). | See [Enclosure Options](#enclosure-options).              | See [Enclosure Options](#enclosure-options).                                 |
 
+  Alternatively, the Seeed Studio **reTerminal E1001** (7.5" black/white) and
+  **reTerminal E1002** (7.3" Spectra 6 full color) are supported as
+  all-in-one devices: they combine an ESP32-S3, the e-paper panel, an
+  onboard SHT4x temperature/humidity sensor, a battery, and an enclosure --
+  no wiring needed. Build with `pio run -e seeed_reterminal_e1001` or
+  `-e seeed_reterminal_e1002`; the panel, sensor, and pin mapping are
+  selected automatically.
+
 Other items needed:
 - Wires ("Jumper Wires" if looking to minimize/avoid soldering).
 - Solder Iron + Solder (unless following [Solder-Free Component Selection](#solder-free-component-selection-optional)).
