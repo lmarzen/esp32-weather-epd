@@ -27,9 +27,11 @@
 #include "api_response.h"
 #include "client_utils.h"
 #include "config.h"
+#include "config_portal.h"
 #include "display_utils.h"
 #include "icons/icons_196x196.h"
 #include "renderer.h"
+#include "settings.h"
 
 #if defined(SENSOR_BME280)
   #include <Adafruit_BME280.h>
@@ -66,29 +68,33 @@ void beginDeepSleep(unsigned long startTime, tm *timeInfo)
   // aligned and it can easily be deterimined whether we must sleep for
   // additional time due to bedtime.
   // i.e. when curHour == 0, then timeInfo->tm_hour == WAKE_TIME
+  int curSleepDuration = Settings::getSleepDuration();
+  int curBedTime = Settings::getBedTime();
+  int curWakeTime = Settings::getWakeTime();
+
   int bedtimeHour = INT_MAX;
-  if (BED_TIME != WAKE_TIME)
+  if (curBedTime != curWakeTime)
   {
-    bedtimeHour = (BED_TIME - WAKE_TIME + 24) % 24;
+    bedtimeHour = (curBedTime - curWakeTime + 24) % 24;
   }
 
   // time is relative to wake time
-  int curHour = (timeInfo->tm_hour - WAKE_TIME + 24) % 24;
+  int curHour = (timeInfo->tm_hour - curWakeTime + 24) % 24;
   const int curMinute = curHour * 60 + timeInfo->tm_min;
   const int curSecond = curHour * 3600
                       + timeInfo->tm_min * 60
                       + timeInfo->tm_sec;
-  const int desiredSleepSeconds = SLEEP_DURATION * 60;
-  const int offsetMinutes = curMinute % SLEEP_DURATION;
+  const int desiredSleepSeconds = curSleepDuration * 60;
+  const int offsetMinutes = curMinute % curSleepDuration;
   const int offsetSeconds = curSecond % desiredSleepSeconds;
 
   // align wake time to nearest multiple of SLEEP_DURATION
-  int sleepMinutes = SLEEP_DURATION - offsetMinutes;
+  int sleepMinutes = curSleepDuration - offsetMinutes;
   if (desiredSleepSeconds - offsetSeconds < 120
    || offsetSeconds / (float)desiredSleepSeconds > 0.95f)
   { // if we have a sleep time less than 2 minutes OR less 5% SLEEP_DURATION,
     // skip to next alignment
-    sleepMinutes += SLEEP_DURATION;
+    sleepMinutes += curSleepDuration;
   }
 
   // estimated wake time, if this falls in a sleep period then sleepDuration
@@ -138,6 +144,26 @@ void setup()
 
   // Open namespace for read/write to non-volatile storage
   prefs.begin(NVS_NAMESPACE, false);
+  Settings::init();
+
+  // Check if configuration mode was requested via button or if device is not configured
+  pinMode(PIN_CONFIGURE_PORTAL, INPUT_PULLUP);
+  bool configButtonPressed = (digitalRead(PIN_CONFIGURE_PORTAL) == LOW);
+  bool unconfigured = !Settings::isConfigured() && (Settings::getWiFiSSID() == "ssid" || Settings::getWiFiSSID().length() == 0);
+
+  if (configButtonPressed || unconfigured)
+  {
+    Serial.println("Entering Configuration Portal Mode...");
+    prefs.end();
+    initDisplay();
+    do
+    {
+      drawError(wifi_x_196x196, "Weather Station Config", String("Connect to ") + CONFIG_AP_SSID);
+    } while (display.nextPage());
+    powerOffDisplay();
+
+    runConfigPortal(); // Runs web portal and restarts ESP upon saving or timeout
+  }
 
 #if BATTERY_MONITORING
   uint32_t batteryVoltage = readBatteryVoltage();
@@ -234,7 +260,7 @@ void setup()
   }
 
   // TIME SYNCHRONIZATION
-  configTzTime(TIMEZONE, NTP_SERVER_1, NTP_SERVER_2);
+  configTzTime(Settings::getTimezone(), NTP_SERVER_1, NTP_SERVER_2);
   bool timeConfigured = waitForSNTPSync(&timeInfo);
   if (!timeConfigured)
   {
@@ -350,9 +376,9 @@ void setup()
                           owm_air_pollution, inTemp, inHumidity);
     drawOutlookGraph(owm_onecall.hourly, owm_onecall.daily, timeInfo);
     drawForecast(owm_onecall.daily, timeInfo);
-    drawLocationDate(CITY_STRING, dateStr);
+    drawLocationDate(Settings::getCityString(), dateStr);
 #if DISPLAY_ALERTS
-    drawAlerts(owm_onecall.alerts, CITY_STRING, dateStr);
+    drawAlerts(owm_onecall.alerts, Settings::getCityString(), dateStr);
 #endif
     drawStatusBar(statusStr, refreshTimeStr, wifiRSSI, batteryVoltage);
   } while (display.nextPage());

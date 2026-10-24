@@ -43,6 +43,11 @@ const uint8_t PIN_BME_SCL = 16;
 const uint8_t PIN_BME_PWR =  4;   // Irrelevant if directly connected to 3.3V
 const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
 
+// CONFIGURATION PORTAL
+// Pin used to trigger configuration mode on boot (GPIO 27 is the onboard button on FireBeetle 2 ESP32-E)
+const uint8_t PIN_CONFIGURE_PORTAL = 27;
+const char *CONFIG_AP_SSID = "WeatherStation-Config";
+
 // WIFI
 const char *WIFI_SSID     = "ssid";
 const char *WIFI_PASSWORD = "password";

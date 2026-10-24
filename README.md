@@ -20,6 +20,8 @@ A low-power weather display using a wifi-enabled ESP32 microcontroller and a 7.5
 
 - Easy recharging: USB-C charging with battery monitoring.
 
+- Dynamic Web Configuration: Configure Wi-Fi, location, OpenWeatherMap API key, timezone, and update schedule on the fly via a captive web portal without re-flashing firmware.
+
 The hourly outlook graph (bottom right) shows a line indicating temperature and shaded bars indicating probability of precipitation (or optionally volume of precipitation).
 
 Here are two (slightly outdated) examples utilizing various configuration options:
@@ -38,6 +40,7 @@ Here are two (slightly outdated) examples utilizing various configuration option
 - [Setup Guide](#setup-guide)
   - [Wiring](#wiring)
   - [Configuration, Compilation, and Upload](#configuration-compilation-and-upload)
+  - [Dynamic Web Configuration](#dynamic-web-configuration)
   - [OpenWeatherMap API Key](#openweathermap-api-key)
 - [Error Messages and Troubleshooting](#error-messages-and-troubleshooting)
   - [Low Battery](#low-battery)
@@ -207,6 +210,31 @@ PlatformIO for VSCode is used for managing dependencies, code compilation, and u
       - If using a FireBeetle 2 ESP32-E and you receive the error `Wrong boot mode detected (0x13)! The chip needs to be in download mode.` unplug the power from the board, connect GPIO0 ([labeled 0/D5](https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654#target_5)) to GND, and power it back up to put the board in download mode.
 
       - If you are getting other errors during the upload process, you may need to install drivers to allow you to upload code to the ESP32.
+
+### Dynamic Web Configuration
+
+This project includes an on-demand, mobile-friendly captive web portal that allows you to configure or update settings on the fly without having to edit code or reflash the ESP32.
+
+#### Settings Configurable via Web Portal:
+- Wi-Fi SSID & Password (with live scan of available networks)
+- OpenWeatherMap API Key
+- Location (Latitude, Longitude, and City Name)
+- POSIX Timezone string (e.g. `PST8PDT,M3.2.0,M11.1.0` or `EST5EDT,M3.2.0,M11.1.0`)
+- Update Schedule (Refresh interval in minutes, Bed Time hour, Wake Time hour)
+
+#### How to Enter Configuration Mode:
+- **First Boot**: If the ESP32 has not yet been configured (or Wi-Fi credentials are missing), it will automatically launch the configuration portal on startup.
+- **Manual Trigger**: Hold down the onboard user button on the FireBeetle 2 ESP32-E (GPIO 27 / `PIN_CONFIGURE_PORTAL`) while pressing and releasing the Reset (RST) button or powering on the board.
+
+#### Connecting and Configuring:
+1. The e-paper screen will display: `Weather Station Config: Connect to WeatherStation-Config`.
+2. Connect your phone or computer to the Wi-Fi network named **`WeatherStation-Config`** (no password required).
+3. The captive portal setup page should open automatically. If not, open a browser and go to `http://192.168.4.1`.
+4. Enter or update your configuration options and click **Save and Reboot**.
+5. The ESP32 saves the settings to non-volatile storage (NVS) and restarts automatically with your new configuration.
+
+> **Note:**
+> Settings saved through the web portal take precedence over the defaults compiled in `config.cpp`. Any field left blank or unconfigured in the portal will continue to fall back to the compile-time defaults.
 
 ### OpenWeatherMap API Key
 
