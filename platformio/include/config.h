@@ -75,11 +75,19 @@
 //   Estonian (Estonia)              et_EE
 //   Finnish (Finland)               fi_FI
 //   French (France)                 fr_FR
+//   Greek (Greece)                  el_GR
 //   Italiano (Italia)               it_IT
 //   Dutch (Belgium)                 nl_BE
 //   Portuguese (Brazil)             pt_BR
 //   Spanish (Spain)                 es_ES
-#define LOCALE en_US
+#ifndef LOCALE
+  #define LOCALE en_US
+#endif
+
+#define EPD_LOCALE_JOIN_INNER(a, b) a##b
+#define EPD_LOCALE_JOIN(a, b) EPD_LOCALE_JOIN_INNER(a, b)
+#define EPD_LOCALE_IS_GREEK_el_GR 1
+#define EPD_LOCALE_IS_GREEK(code) EPD_LOCALE_JOIN(EPD_LOCALE_IS_GREEK_, code)
 
 // UNITS
 // Define exactly one macro for each measurement type below.
@@ -260,7 +268,16 @@
 //   FreeSans font, but this project supports the ability to modularly swap
 //   fonts. Using a font other than FreeSans may result in undesired spacing or
 //   other artifacts.
-#define FONT_HEADER "fonts/FreeSans.h"
+#if EPD_LOCALE_IS_GREEK(LOCALE)
+  #ifndef FONT_HEADER
+    #define FONT_HEADER "fonts/FreeSansGreek.h"
+  #endif
+  #define FONT_ENCODING_CP1253
+#else
+  #ifndef FONT_HEADER
+    #define FONT_HEADER "fonts/FreeSans.h"
+  #endif
+#endif
 
 // FORECAST TEMPERATURE ORDER
 // The order of temperture Hi|Lo can optionally be configured using

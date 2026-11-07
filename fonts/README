@@ -43,3 +43,24 @@ What does this script do?
 
 The fonts used for this project could be swapped out relatively easily if
 desired.
+
+
+Greek (CP1253) font generation
+------------------------------
+
+Greek text is stored as UTF-8 in the locale file and converted to CP1253 at
+render time. The Greek GFX fonts use the byte range 0x20..0xFF and include the
+Greek characters defined by Windows code page 1253.
+
+Dependencies:
+  Python 3
+  Pillow
+
+To regenerate all Greek font sizes, run this command from the repository root:
+  python fonts/generate_cp1253_gfx.py
+
+The generated headers are written to:
+  platformio/lib/esp32-weather-epd-assets/fonts/FreeSansGreek
+
+The aggregate include file is written to:
+  platformio/lib/esp32-weather-epd-assets/fonts/FreeSansGreek.h
