@@ -22,6 +22,7 @@
 #include "config.h"
 #include "conversions.h"
 #include "display_utils.h"
+#include "text_encoding.h"
 
 // fonts
 #include FONT_HEADER
@@ -88,7 +89,8 @@ uint16_t getStringWidth(const String &text)
 {
   int16_t x1, y1;
   uint16_t w, h;
-  display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
+  String displayText = encodeDisplayText(text);
+  display.getTextBounds(displayText, 0, 0, &x1, &y1, &w, &h);
   return w;
 }
 
@@ -98,7 +100,8 @@ uint16_t getStringHeight(const String &text)
 {
   int16_t x1, y1;
   uint16_t w, h;
-  display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
+  String displayText = encodeDisplayText(text);
+  display.getTextBounds(displayText, 0, 0, &x1, &y1, &w, &h);
   return h;
 }
 
@@ -109,8 +112,9 @@ void drawString(int16_t x, int16_t y, const String &text, alignment_t alignment,
 {
   int16_t x1, y1;
   uint16_t w, h;
+  String displayText = encodeDisplayText(text);
   display.setTextColor(color);
-  display.getTextBounds(text, x, y, &x1, &y1, &w, &h);
+  display.getTextBounds(displayText, x, y, &x1, &y1, &w, &h);
   if (alignment == RIGHT)
   {
     x = x - w;
@@ -120,7 +124,7 @@ void drawString(int16_t x, int16_t y, const String &text, alignment_t alignment,
     x = x - w / 2;
   }
   display.setCursor(x, y);
-  display.print(text);
+  display.print(displayText);
   return;
 } // end drawString
 
@@ -139,7 +143,7 @@ void drawMultiLnString(int16_t x, int16_t y, const String &text,
                        uint16_t color)
 {
   uint16_t current_line = 0;
-  String textRemaining = text;
+  String textRemaining = encodeDisplayText(text);
   // print until we reach max_lines or no more text remains
   while (current_line < max_lines && !textRemaining.isEmpty())
   {
